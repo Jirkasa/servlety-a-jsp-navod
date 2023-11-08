@@ -1,0 +1,32 @@
+.navigation {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: .8rem;
+
+    list-style: none;
+
+    &__link {
+        &:link, &:visited {
+            display: block;
+
+            padding: .8rem 1.6rem;
+            
+            font-size: 1.6rem;
+            font-weight: 500;
+            line-height: 2.4rem;
+            text-decoration: none;
+
+            color: @colors[grey-80];
+            background-color: @colors[analogic-2-light];
+            border: .2rem solid @colors[analogic-2];
+            border-radius: .4rem;
+
+            transition: all .2s;
+        }
+
+        &:hover {
+            background-color: @colors[analogic-2];
+        }
+    }
+}

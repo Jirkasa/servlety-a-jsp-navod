@@ -1,0 +1,21 @@
+.tutorial-page-layout {
+    padding: 0 @grid-padding;
+
+    &__container {
+        max-width: @grid-width;
+        margin: 0 auto;
+        #display-12-grid();
+    }
+
+    &__navigation-side {
+        grid-column: span 3;
+        padding: 1.6rem;
+
+        background-color: @colors[grey-20];
+    }
+
+    &__content {
+        grid-column: span 8;
+        padding: 3.2rem 0;
+    }
+}

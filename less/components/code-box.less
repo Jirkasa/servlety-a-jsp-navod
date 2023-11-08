@@ -1,0 +1,120 @@
+.code-box {
+    &__files {
+        display: flex;
+        overflow-x: auto;
+
+        // width
+        &::-webkit-scrollbar {
+            height: .8rem;
+        }
+
+        // track
+        &::-webkit-scrollbar-track {
+            background: darken(@colors[grey-40], 8%);
+        }
+
+        // handle
+        &::-webkit-scrollbar-thumb {
+            background: @colors[grey-60];
+
+            &:hover {
+                background: darken(@colors[grey-60], 5%);
+            }
+        }
+    }
+
+    &__file-button {
+        display: flex;
+        align-items: center;
+        gap: .8rem;
+
+        padding: .8rem 1.6rem .8rem .8rem;
+
+        font-size: 1.6rem;
+        line-height: 1;
+
+        color: @colors[grey-80];
+        background-color: @colors[analogic-2-light];
+        border: none;
+        border-top-left-radius: .8rem;
+        border-top-right-radius: .8rem;
+
+        transition: all .2s;
+        cursor: pointer;
+
+        svg {
+            width: 1.6rem;
+            height: 1.6rem;
+            fill: @colors[grey-80];
+        }
+
+        &--active, &:hover {
+            background-color: @colors[analogic-2];
+        }
+    }
+
+    &__code {
+        display: flex;
+
+        &--hidden {
+            display: none;
+        }
+
+        pre {
+            flex: 2;
+            width: 100%;
+
+            font-size: 1.6rem;
+            line-height: 2rem;
+        }
+
+        code {
+            font-family: 'Ubuntu Mono', monospace;
+            padding: .8rem !important;
+            margin: 0;
+
+            border-radius: .4rem;
+            border-top-left-radius: 0;
+
+            // width
+            &::-webkit-scrollbar {
+                height: 1.6rem;
+            }
+
+            // track
+            &::-webkit-scrollbar-track {
+                background: darken(@colors[grey-40], 8%);
+            }
+
+            // handle
+            &::-webkit-scrollbar-thumb {
+                background: @colors[grey-60];
+
+                &:hover {
+                    background: darken(@colors[grey-60], 5%);
+                }
+            }
+        }
+    }
+
+    &__code-container {
+        overflow: hidden;
+        width: 100%;
+    }
+
+    &__line-numbers {
+        flex: 1;
+        padding: .8rem;
+
+        font-size: 1.6rem;
+        line-height: 2rem;
+        text-align: right;
+
+        background-color: darken(#333, 6%);
+        border-bottom-left-radius: .4rem;
+
+        > div {
+            color: @colors[grey-60];
+        }
+    }
+}

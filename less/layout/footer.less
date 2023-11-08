@@ -1,0 +1,30 @@
+.footer {
+    padding: .8rem @grid-padding;
+
+    background-color: @colors[grey-80];
+
+    &__content {
+        max-width: @grid-width;
+        margin: 0 auto;
+    }
+
+    &__text {
+        font-size: 1.6rem;
+        line-height: 2.4rem;
+        text-align: center;
+
+        color: @colors[white];
+    }
+
+    &__link {
+        &:link, &:visited {
+            text-decoration: none;
+
+            color: @colors[analogic-5];
+        }
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
