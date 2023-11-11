@@ -1,0 +1,109 @@
+<%- include("../../includes/page-start.ejs") %>
+    <%- include("../../includes/header.ejs") %>
+    <%- include("../../includes/tutorial-page-layout-start.ejs") %>
+        <h1 class="heading-primary u-mb-4">Příprava pro vývoj</h1>
+        <p class="paragraph u-mb-4">Vítejte v tutoriálu o tvorbě webových aplikací pomocí servletů a JSP. Jedná se o technologie z Java Enterprise Edition. Tento...[dopsat]</p>
+        <h2 class="heading-secondary u-mb-2">Co pro vývoj potřebujeme</h2>
+        <p class="paragraph u-mb-1">Abychom mohli začít s vývojem, potřebujeme si nainstalovat následující věci:</p>
+        <ul class="list u-mb-4">
+            <li><strong>JDK</strong> - budeme programovat v Javě, takže potřebuje Java Development Kit</li>
+            <li><strong>Webový server</strong> - budou na něm běžet naše servlety</li>
+            <li><strong>IDE</strong> - aplikace ve které budeme programovat</li>
+            <li><strong>Databáze</strong> - pokud budeme chtít v naší aplikaci pracovat s databází</li>
+        </ul>
+        <h2 class="heading-secondary u-mb-2">Instalace JDK</h2>
+        <p class="paragraph u-mb-2">Začneme s instalací JDK. Pokud programujete v Javě, tak jej již určitě máte nainstalovaný a můžete tuto část přeskočit. Já jsem se instalaci JDK do tohoto tutoriálu rozhodl přidat jen pro úplnost.</p>
+        <p class="paragraph u-mb-2">Jak JDK nainstalovat ukazuje následující slider s popsanými obrázky, který si můžete projít.</p>
+        <!-- TODO - přidat slider -->
+        <p class="paragraph u-mb-2">Po instalaci JDK bychom také měli nastavit systémovou proměnnou JAVA_HOME, protože některé programy by bez ní neběželi správně. Eclipse IDE to třeba nepotřebuje, ale například Tomcat (webový server, který budeme používat) ano. Následující slider ukazuje, jak systémovou proměnnou JAVA_HOME nastavit.</p>
+        <!-- TODO - přidat slider -->
+    <%- include("../../includes/tutorial-page-layout-end.ejs") %>
+    <%- include("../../includes/footer.ejs") %>
+<%- include("../../includes/page-end.ejs") %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+    - úvod
+    - instalace JDK (8, 11, nebo 17)
+    - konfigurace mavenu při startu projektu
+    - vytvoření projektu
+    - stažení IDE
+    - nastavení klávesnice v Eclipse
+    - JSP a Servlety jsou součástí Java EE
+    - instalace Tomcat
+    - zastavení Tomcatu
+    - Maven
+    - MySQL - pro část s databází
+
+    - Tomcat, odškrtnout Show readme a finish
+
+    - eclipse workspace je jednoduše složka, kde budeme ukládat zdrojové kódy našich projektů
+        - můžeme ji tak nechat, nebo vybrat jinou (asi bych doporučoval vytvořit si na to něco podle sebe)
+
+    - eclipse 'download packages'
+
+    - po instalaci Eclipse zkusit jestli to funguje, vytvořit základní zkušební projekt, a až poté nainstalovat MySQL
+
+    - u dependencies vysvětlit co jednotlivé možnosti znamenají (a ukázat i screenshoty s mvnrepository)
+
+    - javax na jakarta v Tomcat 10
+    - tomcat admin admin
+
+    - JRE se nainstalovalo spolu s JDK
+
+    - pokud chceme pracovat s javou nebo java related tools, tak ještě můžeme nastavit JAVA_HOME (potom ještě vygoogluju proč přesně)
+
+    - u těch tutoriálů s obrázkama bych asi mohl udělat nějaký slider a jen u těch obrázků popisovat co se má dělat, kam se má kliknout
+
+    - složka target slouží pro eclipse
+    
+    - jak eclipse používat se budou muset naučit v nějakém jiném tutoriálu
+        - tento tutoriál počítá s tím, že už máte s Javou nějaké zkušenosti, takže jste již nějaké IDE používali a základní věci jako jak vytvořit Java balíček, třídu, atd. víte
+    
+    - uvidím jestli nebudu muset stáhnout maven
+
+    - přidání projektu do Tomcatu
+
+    - samostatná část - přidání Tomcat Serveru do Eclipsu
+
+    - war - web archive
+
+    - velké J v deklaraci.. web.xml - řádek
+
+    - při přidávání nového tomcat serveru poprvé se vybírá složka s tomcatem
+
+    - po uložení nastavení Tomcat serveru v eclipse dát Ctrl + S
+
+    - tomcat screenshot 19: po kliknutí na šipku vedle... se otevře co v Tomcat serveru servírujeme za aplikace
+
+    - start the mysql server at startup - doporučuji (nezabere to moc paměti)
+    
+    - pokud by při stahování došlo k nějaké chybě, tak ať se vrátí zpátky, smažou co se nainstalovalo dobře, a znovu zkusili instalování pustit (mě se to stalo, proto je na screenu jen jedna položka)
+    - pokud by potřebovali potom třeba ještě něco později doinstalovat, tak ten installer můžou spustit znovu
+
+    - i trochu vysvětlit ten pom.xml
+ -->
