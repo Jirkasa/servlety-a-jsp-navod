@@ -11,7 +11,7 @@ function createHtmlWebpackPluginsForTutorialPages() {
         const htmlPlugin = new HtmlWebpackPlugin({
             template: path.resolve(__dirname, "pages", "tutorial", pageName, "index.ejs"),
             filename: `${pageName}/index.html`,
-            chunks: ["style", "codeBoxInitializer"],
+            chunks: ["style", "tutorial"],
             inject: true
         });
     
@@ -26,7 +26,7 @@ module.exports = {
     entry: {
         style: './less/main.less',
         icons: './icons/main.js',
-        codeBoxInitializer: './ts/code-box-initializer/main.ts'
+        tutorial: './ts/main.ts'
     },
     output: {
         clean: true
@@ -43,7 +43,7 @@ module.exports = {
                 }, 'template-ejs-loader']
             },
             {
-                test: /\.ts$/,
+                test: /(\.ts|\.d.ts)$/,
                 use: 'ts-loader',
                 exclude: /node_modules/,
             },

@@ -1,80 +1,78 @@
 import CodeBoxCode from "./CodeBoxCode";
+import CodeButton from "./CodeButton";
 import EventSourcePoint from "./EventSourcePoint";
 
-/**
- * Represents code box.
- */
-class CodeBox {
-    /** Stores all code box codes. */
-    private codes : CodeBoxCode[];
-    /** Event source for file button clicks. */
-    private onFileButtonClickEventSource : EventSourcePoint<CodeBoxCode>;
-    /** Stores code that is currently being displayed in code box. */
-    private activeCode : CodeBoxCode | null;
-
+abstract class CodeBox {
     private static readonly CSS_CODE_BOX_CLASS = "code-box";
-    private static readonly CSS_BUTTONS_CONTAINER_CLASS = "code-box__files";
+    private static readonly CSS_NO_CODE_MESSAGE_CLASS = "code-box__no-code-message";
+    private static readonly CSS_NO_CODE_MESSAGE_HIDDEN_CLASS = "code-box__no-code-message--hidden";
+    private static readonly NO_CODE_MESSAGE_TEXT = "Není vybrán žádný soubor";
 
-    /**
-     * Initializes new code box.
-     * @param codeBoxElement Element containing code examples (pre elements with data-code attribute) to be used as code box.
-     */
-    constructor(codeBoxElement : HTMLElement) {
-        this.codes = [];
-        this.activeCode = null;
-        this.onFileButtonClickEventSource = new EventSourcePoint();
+    private codeBoxElement : HTMLElement;
+    private noImplicitActiveCode : boolean;
+    private noCodeElement : HTMLElement;
+    private codeButtons : CodeButton[];
+    private onCodeButtonClickEventSource : EventSourcePoint<CodeButton>;
+    private activeCodeButton : CodeButton | null;
+
+    constructor(codeBoxElement: HTMLElement, noImplicitActiveCode: boolean = false) {
+        this.codeBoxElement = codeBoxElement;
+        this.noImplicitActiveCode = noImplicitActiveCode;
+        this.codeButtons = [];
+        this.onCodeButtonClickEventSource = new EventSourcePoint();
+        this.activeCodeButton = null;
 
         codeBoxElement.classList.add(CodeBox.CSS_CODE_BOX_CLASS);
 
-        // create container for file buttons
-        const buttonsContainer = document.createElement("div");
-        buttonsContainer.classList.add(CodeBox.CSS_BUTTONS_CONTAINER_CLASS);
-        codeBoxElement.appendChild(buttonsContainer);
+        this.noCodeElement = document.createElement("div");
+        this.noCodeElement.innerText = CodeBox.NO_CODE_MESSAGE_TEXT;
+        this.noCodeElement.classList.add(CodeBox.CSS_NO_CODE_MESSAGE_CLASS);
 
-        const codeElements : NodeListOf<HTMLElement> = codeBoxElement.querySelectorAll("[data-code]");
+        this.onCodeButtonClickEventSource.subscribe(codeButton => this.onCodeButtonClick(codeButton));
+    }
 
-        // create codes (instances of CodeBoxCode)
+    protected init() : void {
+        this.codeBoxElement.appendChild(this.noCodeElement);
+
+        const codeElements = this.codeBoxElement.querySelectorAll("[data-code]");
         codeElements.forEach(codeElement => {
-            const code = new CodeBoxCode(
-                codeElement,
-                buttonsContainer,
-                codeBoxElement,
-                this.onFileButtonClickEventSource
-            );
-            this.codes.push(code);
+            const codeBoxCode = new CodeBoxCode(codeElement as HTMLElement, this.codeBoxElement);
+            const codeElementDataset = (codeElement as HTMLElement).dataset;
 
-            // if code should be active
-            if (codeElement.hasAttribute("data-code-active")) {
-                this.activeCode = code;
-                delete codeElement.dataset.codeActive;
+            const codeButton = this.createCodeButton(codeBoxCode, codeElementDataset);
+            codeButton.setOnClickEventSource(this.onCodeButtonClickEventSource);
+
+            if (codeElementDataset.active) {
+                this.activeCodeButton = codeButton;
             }
+
+            this.codeButtons.push(codeButton);
         });
 
-        // if no code is set as active, the first one is activated
-        if (!this.activeCode && this.codes.length > 0) {
-            this.activeCode = this.codes[0];
+        if (!this.activeCodeButton && !this.noImplicitActiveCode && this.codeButtons.length > 0) {
+            this.activeCodeButton = this.codeButtons[0];
         }
 
-        if (this.activeCode) {
-            this.activeCode.show();
+        if (this.activeCodeButton) {
+            this.noCodeElement.classList.add(CodeBox.CSS_NO_CODE_MESSAGE_HIDDEN_CLASS);
+            this.activeCodeButton.activate();
+            this.activeCodeButton.codeBoxCode.show();
         }
-
-        // remove data attribute
-        delete codeBoxElement.dataset.codeBox;
-
-        // assign handler for event source
-        this.onFileButtonClickEventSource.subscribe((code) => this.onFileButtonClick(code));
     }
 
-    /**
-     * Called when file button is clicked.
-     * @param code CodeBoxCode which file button was clicked.
-     */
-    private onFileButtonClick(code : CodeBoxCode) : void {
-        if (this.activeCode) this.activeCode.hide();
-        code.show();
-        this.activeCode = code;
+    private onCodeButtonClick(codeButton: CodeButton) : void {
+        if (this.activeCodeButton) {
+            this.activeCodeButton.deactivate();
+            this.activeCodeButton.codeBoxCode.hide();
+        } else {
+            this.noCodeElement.classList.add(CodeBox.CSS_NO_CODE_MESSAGE_HIDDEN_CLASS);
+        }
+        codeButton.activate();
+        codeButton.codeBoxCode.show();
+        this.activeCodeButton = codeButton;
     }
+
+    protected abstract createCodeButton(codeBoxCode: CodeBoxCode, codeElementDataset: DOMStringMap) : CodeButton;
 }
 
 export default CodeBox;

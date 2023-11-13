@@ -18,10 +18,12 @@
   },
   "homepage": "https://github.com/Jirkasa/servlety-a-jsp-navod#readme",
   "devDependencies": {
+    "@splidejs/splide": "^4.1.4",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.8.1",
     "css-minimizer-webpack-plugin": "^5.0.1",
     "ejs": "^3.1.9",
+    "handy-collapse": "^1.1.0",
     "html-loader": "^4.2.0",
     "html-webpack-plugin": "^5.5.3",
     "less": "^4.2.0",

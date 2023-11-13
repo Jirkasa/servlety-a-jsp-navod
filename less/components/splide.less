@@ -1,0 +1,70 @@
+.splide {
+    padding: 0 @slider-arrow-button-size + 1.6rem;
+
+    &__arrow {
+        position: absolute;
+        top: 50%;
+
+        width: @slider-arrow-button-size;
+        height: @slider-arrow-button-size;
+
+        background-color: @colors[analogic-2];
+        border: none;
+        border-radius: .8rem;
+
+        cursor: pointer;
+
+        svg {
+            #center-pos-abs();
+            width: 2.4rem;
+            height: 2.4rem;
+            fill: @colors[grey-80];
+        }
+
+        &:disabled {
+            cursor: unset;
+
+            background-color: @colors[grey-40];
+            svg {
+                fill: @colors[grey-60];
+            }
+        }
+
+        &--prev {
+            left: 0;
+            transform: scaleX(-1) translateY(-50%);
+        }
+
+        &--next {
+            right: 0;
+        }
+    }
+
+    &__track {
+        border: .2rem solid @colors[grey-40];
+        border-radius: .4rem;
+        background-color: @colors[grey-20];
+    }
+
+    &__pagination {
+        padding-top: .8rem;
+        gap: .8rem;
+
+        &__page {
+            width: 1.2rem;
+            height: 1.2rem;
+
+            border-radius: 50%;
+            border: none;
+            background-color: @colors[analogic-2-light];
+
+            transition: all .2s;
+
+            cursor: pointer;
+        }
+
+        .is-active, &__page:hover {
+            background-color: @colors[analogic-2];
+        }
+    }
+}

@@ -2,7 +2,7 @@
     <%- include("../../includes/header.ejs") %>
     <%- include("../../includes/tutorial-page-layout-start.ejs") %>
         <h1 class="heading-primary u-mb-4">Příprava pro vývoj</h1>
-        <p class="paragraph u-mb-4">Vítejte v tutoriálu o tvorbě webových aplikací pomocí servletů a JSP. Jedná se o technologie z Java Enterprise Edition. Tento...[dopsat]</p>
+        <p class="paragraph u-mb-4">Vítejte v tutoriálu o tvorbě webových aplikací pomocí servletů a JSP. Jedná se o technologie z Java Enterprise Edition. Tento...[dopsat a napsat že instalace je ukázána jen pro operační systém Windows.]</p>
         <h2 class="heading-secondary u-mb-2">Co pro vývoj potřebujeme</h2>
         <p class="paragraph u-mb-1">Abychom mohli začít s vývojem, potřebujeme si nainstalovat následující věci:</p>
         <ul class="list u-mb-4">
@@ -14,9 +14,24 @@
         <h2 class="heading-secondary u-mb-2">Instalace JDK</h2>
         <p class="paragraph u-mb-2">Začneme s instalací JDK. Pokud programujete v Javě, tak jej již určitě máte nainstalovaný a můžete tuto část přeskočit. Já jsem se instalaci JDK do tohoto tutoriálu rozhodl přidat jen pro úplnost.</p>
         <p class="paragraph u-mb-2">Jak JDK nainstalovat ukazuje následující slider s popsanými obrázky, který si můžete projít.</p>
-        <!-- TODO - přidat slider -->
+        <%- include("./includes/jdk-installation-slider.ejs") %>
         <p class="paragraph u-mb-2">Po instalaci JDK bychom také měli nastavit systémovou proměnnou JAVA_HOME, protože některé programy by bez ní neběželi správně. Eclipse IDE to třeba nepotřebuje, ale například Tomcat (webový server, který budeme používat) ano. Následující slider ukazuje, jak systémovou proměnnou JAVA_HOME nastavit.</p>
-        <!-- TODO - přidat slider -->
+        <%- include("./includes/java-home-setup-slider.ejs") %>
+        <h2 class="heading-secondary u-mb-2">Instalace Tomcatu</h2>
+        <p class="paragraph u-mb-2">Jako webový server budeme používat Tomcat. Jak jsem již psal na začátku, tak servlety a JSP jsou součástí Java Enterprise Edition (Java EE). Co za technologie do Javy EE patří, si můžete prohlédnout v <a href="https://www.oracle.com/java/technologies/javaee/javaeetechnologies.html" target="_blank" class="link">tomto listu</a>. Java EE je ale v podstatě jen taková abstraktní kolekce specifikací. Potřebujeme její implementaci - to znamená nějaký aplikační server. Na tomto serveru budeme své aplikace spouštět.</p>
+        <p class="paragraph u-mb-2">Tomcat se liší od jiných aplikačních serverů jako je třeba GlassFish nebo WildFly tím, že podporuje jen malé množství technologií, které Java EE nabízí. Co podporuje za technologie si můžete přečíst třeba v <a href="https://stackoverflow.com/questions/2857077/which-technologies-does-tomcat-support" target="_blank" class="link">této StackOverflow otázce</a>, která obsahuje velmi dobrou odpověď. Pokud bychom ale chtěli, tak jak se můžete v odpovědi této otázky dočíst, můžeme si nějaké technologie z Javy EE přidat sami poskytnutím JAR souborů.</p>
+        <p class="paragraph u-mb-2">V následujícím slideru se dozvíte, jak Tomcat nainstalovat.</p>
+        <%- include("./includes/tomcat-installation-slider.ejs") %>
+        <h2 class="heading-secondary u-mb-2">Instalace Eclipse IDE</h2>
+        <p class="paragraph u-mb-2">K programování potřebujeme nějaké vývojové prostředí (IDE), abychom mohli komfortně psát kód a snadněji se nám vyvíjeli aplikace. Pokud programujete v Javě, tak již pravděpodobně nějaké nainstalované máte. Můžete jej tedy klidně použít, akorát budete muset přijít na to, jak jej nakonfigurovat pro použití s Tomcatem. V tomto tutoriálu si ale ukážeme, jak nainstalovat a nakonfigurovat IDE jménem Eclipse. Instalaci ukazuje následující slider.</p>
+        <%- include("./includes/eclipse-installation-slider.ejs") %>
+        <p class="paragraph u-mb-4">Jak Eclipse používat tu popisovat nebudu. Jen jsem vám ukázal jak jej stáhnout a na to jak jej používat si můžete najít nějaký jiný tutoriál.</p>
+        <h2 class="heading-secondary u-mb-2">Vytvoření projektu</h2>
+        <p class="paragraph u-mb-2">Teď již máme nainstalováno vše, co je potřebné pro vytvoření jednoduchého projektu. Pustíme se tedy do toho a vytvoříme si jednoduchou "Hello World" aplikaci. Zároveň si při tom nastavíme Tomcat v Eclipsu.</p>
+        <p class="paragraph u-mb-2">Budeme vytvářet Maven projekt. Pokud nevíte co to Maven je nebo s ním nemáte žádné zkušenosti, tak nevadí. Já na něj v době psaní tohoto tutoriálu také nejsem žádný expert. Nebudeme jej nijak složitě konfigurovat. Jen si ukážeme jak si vytvořit projekt a dozvíte se co to je. Jak Maven projekt vytvořit v Eclipse ukazuje následující slider.</p>
+        <%- include("./includes/create-maven-project-slider.ejs") %>
+        <p class="paragraph u-mb-2">V následující [můžou si prohlédnout strukturu...]</p>
+        <%- include("./includes/testSimpleCodeBox.ejs") %>
     <%- include("../../includes/tutorial-page-layout-end.ejs") %>
     <%- include("../../includes/footer.ejs") %>
 <%- include("../../includes/page-end.ejs") %>
@@ -48,7 +63,8 @@
 
 <!--
     - úvod
-    - instalace JDK (8, 11, nebo 17)
+        - dopsat
+    - instalace je ukázána jen pro windows
     - konfigurace mavenu při startu projektu
     - vytvoření projektu
     - stažení IDE
@@ -59,7 +75,9 @@
     - Maven
     - MySQL - pro část s databází
 
-    - Tomcat, odškrtnout Show readme a finish
+    - target složku zobrazovat jen v první ukázce (potom asi už ne - nebo možná jo, ale napsat, že se tam aplikace buildí a že ji tam tedy v Eclipse najdou sestavenou - tady v ukázkách na webu v ní není nic)
+
+    - slidery dát do includes složky
 
     - eclipse workspace je jednoduše složka, kde budeme ukládat zdrojové kódy našich projektů
         - můžeme ji tak nechat, nebo vybrat jinou (asi bych doporučoval vytvořit si na to něco podle sebe)
@@ -74,12 +92,8 @@
     - tomcat admin admin
 
     - JRE se nainstalovalo spolu s JDK
-
-    - pokud chceme pracovat s javou nebo java related tools, tak ještě můžeme nastavit JAVA_HOME (potom ještě vygoogluju proč přesně)
-
-    - u těch tutoriálů s obrázkama bych asi mohl udělat nějaký slider a jen u těch obrázků popisovat co se má dělat, kam se má kliknout
-
-    - složka target slouží pro eclipse
+    
+    - složka target slouží pro maven
     
     - jak eclipse používat se budou muset naučit v nějakém jiném tutoriálu
         - tento tutoriál počítá s tím, že už máte s Javou nějaké zkušenosti, takže jste již nějaké IDE používali a základní věci jako jak vytvořit Java balíček, třídu, atd. víte

@@ -1,4 +1,10 @@
 .code-box {
+    &--project {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+    }
+
     &__files {
         display: flex;
         overflow-x: auto;
@@ -56,6 +62,9 @@
     &__code {
         display: flex;
 
+        background-color: #333;
+        border-radius: .4rem;
+
         &--hidden {
             display: none;
         }
@@ -75,6 +84,7 @@
 
             border-radius: .4rem;
             border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
 
             // width
             &::-webkit-scrollbar {
@@ -113,8 +123,37 @@
         background-color: darken(#333, 6%);
         border-bottom-left-radius: .4rem;
 
+        &--project {
+            border-bottom-left-radius: none;
+            padding-left: .8rem + @code-box-project-button-size + @code-box-project-panel-border-width;
+        }
+
         > div {
             color: @colors[grey-60];
+        }
+    }
+
+    &__no-code-message {
+        font-size: 2rem;
+        text-transform: uppercase;
+        text-align: center;
+
+        color: @colors[grey-40];
+        background-color: #333;
+        border-radius: .4rem;
+
+        padding: 9.6rem 1.6rem;
+
+        &--simple {
+            border-top-left-radius: 0;
+        }
+        &--project {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        &--hidden {
+            display: none;
         }
     }
 }

@@ -16,4 +16,16 @@ class CodeBoxInitializer {
     }
 }
 
+/*
+Struktura tříd:
+    CodeBox
+        SimpleCodeBox
+        ProjectCodeBox
+    CodeBoxCode (ten nakonec nebude mít tlačítko) - bude představovat jen samotný kód
+    CodeButton
+        
+
+    - v README bych potom mohl vytvořit UML diagram
+*/
+
 export default CodeBoxInitializer;

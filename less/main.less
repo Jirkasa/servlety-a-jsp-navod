@@ -1,18 +1,29 @@
+// ABSTRACTS - things that are not in final CSS code (variables and so on...)
 @import "./abstracts/mixins.less";
 @import "./abstracts/variables.less";
 
+// VENDORS - 3rd party styles
 @import "./vendors/highlightjs.less";
+@import "@splidejs/splide/dist/css/splide-core.min.css";
 
+// BASE - basic styles
 @import "./base/animations.less";
 @import "./base/base.less";
 @import "./base/typography.less";
 @import "./base/utilities.less";
 
+// LAYOUT - layout components
 @import "./layout/footer.less";
 @import "./layout/header.less";
 @import "./layout/page.less";
 @import "./layout/tutorial-page-layout.less";
 
+// COMPONENTS
+@import "./components/code-box-project-panel.less";
 @import "./components/code-box.less";
 @import "./components/link.less";
 @import "./components/navigation.less";
+@import "./components/slider-page.less";
+@import "./components/splide.less";
+
+// PAGES - page specific components

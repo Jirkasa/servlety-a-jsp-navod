@@ -20,10 +20,44 @@
         data attributy:
             data-code-box
             data-code=[nazev]
-            data-project
+            data-code-highlight=[řádek-řádek, řádek-řádek] - může jich být víc
+            data-code-active - nastaví, že soubor bude v code boxu vybraný
+            data-project=[id] - pokud nebude mít id, nepůjde extendovat
+            data-project-name=[nazev]
+            data-project-extends
             nějak musím vytvořit složky (asi data-folders)
-                - asi se to vytvoří podle struktury 
+                - asi se to vytvoří podle struktury
             data-folder (složka, ve které soubor bude) - defaultně bude v root složce
             data-java-package (nastaví se balíček, ve kterém soubor bude) - defaultně žádný (defaultní)
             data-java-packages-folder (automaticky se tam vytvoří příslušné složky)
+            - JEŠTĚ POŘEŠIT MAZÁNÍ SOUBORŮ A SLOŽEK
+            - pokud nebude vybrán (atributem - na ten jsem ještě zapomněl) žádný soubor, tak se vypíše že není vybrán žádný soubor
+            - ještě by mohlo jít nastavit, které složky budou otevřené a které zavřené - to ještě uvidím
+            - napsat to potom do README
      -->
+
+     <!-- 
+        data atributy - hotovo:
+        CODE BOX:
+            data-code-box (pokud se používá data-project atribut, tak je to nepovinné)
+            data-no-buttons (nezobrazí se u SimpleCodeBoxu header s tlačítky)
+            data-no-implicit-active-code (jen pro simple, u data-project to bude automaticky nastaveno)
+            data-project=[?id]
+            data-project-name=[název_projektu]
+            data-project-extends=[project-id]
+            data-project-removed-resources[path, path...]
+
+        CODE
+            data-code=[?název_souboru]
+            data-folder
+            data-code-highlight=[řádek-řádek, řádek-řádek...]
+            data-code-active
+            data-java-package
+
+        PROJECT FOLDERS
+        (root ul element)
+            data-project-folders
+        (li)
+            data-opened
+            data-java-packages-folder
+      -->
