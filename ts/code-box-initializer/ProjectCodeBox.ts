@@ -83,6 +83,7 @@ class ProjectCodeBox extends CodeBox {
         this.init();
 
         this.sortJavaPackages();
+        this.sortFileButtons();
     }
 
     private onPanelToggleButtonClick() : void {
@@ -146,6 +147,13 @@ class ProjectCodeBox extends CodeBox {
         } else {
             return new ProjectCodeButton(fileName || "unnamed", folderCollapsible.collapsibleElement, codeBoxCode);
         }
+    }
+
+    private sortFileButtons() : void {
+        this.rootFolder.sortFileButtons();
+        this.folders.forEach(folder => folder.sortFileButtons());
+        this.defaultJavaPackage?.sortFileButtons();
+        this.javaPackages.forEach(javaPackage => javaPackage.sortFileButtons());
     }
 
     private sortJavaPackages() : void {

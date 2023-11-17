@@ -46,6 +46,29 @@ class CollapsibleContainer {
         element.appendChild(this.buttonElement);
         element.appendChild(this.collapsibleElement);
     }
+
+    sortFileButtons() {
+        const buttons: HTMLElement[] = [];
+
+        const children = this.collapsibleElement.children;
+        for (let i = 0; i < children.length; i++) {
+            const child = children[i];
+
+            if (child.tagName === "BUTTON" && (!child.nextElementSibling || child.nextElementSibling.tagName == "BUTTON")) {
+                buttons.push(child as HTMLElement);
+            }
+        }
+
+        buttons.sort((a, b) => {
+            if (a.innerText.toLowerCase() < b.innerText.toLowerCase()) return -1;
+            if (a.innerText.toLowerCase() == b.innerText.toLowerCase()) return 0;
+            return 1;
+        });
+
+        for (let button of buttons) {
+            this.collapsibleElement.appendChild(button);
+        }
+    }
 }
 
 export default CollapsibleContainer;
