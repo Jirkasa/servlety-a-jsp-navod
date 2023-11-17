@@ -195,6 +195,10 @@
         text-transform: uppercase;
         text-align: center;
 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
         color: @colors[grey-40];
         background-color: #333;
         border-radius: .4rem;
@@ -209,7 +213,9 @@
         border-top-left-radius: 0;
     }
     &--project &__no-code-message {
+        padding-left: 1.6rem + @code-box-project-button-size;
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
+        min-height: 40rem; // todo - vytvořit na to proměnnou
     }
 }

@@ -25,7 +25,7 @@ abstract class CodeBox {
         codeBoxElement.classList.add(CodeBox.CSS_CODE_BOX_CLASS);
 
         this.noCodeElement = document.createElement("div");
-        this.noCodeElement.innerText = CodeBox.NO_CODE_MESSAGE_TEXT;
+        this.noCodeElement.innerHTML = `<span>${CodeBox.NO_CODE_MESSAGE_TEXT}</span>`;
         this.noCodeElement.classList.add(CodeBox.CSS_NO_CODE_MESSAGE_CLASS);
 
         this.onCodeButtonClickEventSource.subscribe(codeButton => this.onCodeButtonClick(codeButton));

@@ -1,9 +1,10 @@
 import CodeBox from "./CodeBox";
 import CodeBoxCode from "./CodeBoxCode";
 import CodeButton from "./CodeButton";
+import CollapsibleContainer from "./CollapsibleContainer";
+import CollapsibleContainerFactory from "./CollapsibleContainerFactory";
 import ProjectCodeButton from "./ProjectCodeButton";
 import SVGIconElementCreator from "./SVGIconElementCreator";
-import SimpleCodeButton from "./SimpleCodeButton";
 
 class ProjectCodeBox extends CodeBox {
     private static readonly CSS_CODE_BOX_MODIFIER_CLASS = "code-box--project";
@@ -13,27 +14,20 @@ class ProjectCodeBox extends CodeBox {
     private static readonly CSS_PANEL_TOGGLE_BUTTON_CLASS = "code-box-project-panel__toggle-button";
     private static readonly CSS_PANEL_TOGGLE_BUTTON_OPENED_MODIFIER_CLASS = "code-box-project-panel__toggle-button--opened";
     private static readonly CSS_PANEL_HEADING_CLASS = "code-box-project-panel__heading";
-    private static readonly CSS_PANEL_ITEM_CLASS = "code-box-project-panel__item";
-    private static readonly CSS_PANEL_ITEM_ARROW_ICON_CLASS = "code-box-project-panel__item-arrow-icon";
-    private static readonly CSS_PANEL_ITEM_ICON_CLASS = "code-box-project-panel__item-icon";
-    private static readonly CSS_PANEL_ITEM_ICON_FOLDER_MODIFIER_CLASS = "code-box-project-panel__item-icon--folder";
-    private static readonly CSS_PANEL_COLLAPSIBLE_CLASS = "code-box-project-panel__collapsible";
-    private static readonly CSS_COLLAPSIBLE_ACTIVE_CLASS = "is-active";
     private static readonly CSS_PANEL_HORIZONTAL_RULE_CLASS = "code-box-project-panel__horizontal-rule";
 
     private static readonly PANEL_TOGGLE_BUTTON_ICON_NAME = "double-arrow-right";
-    private static readonly ITEM_ARROW_ICON_NAME = "arrow-right";
-    private static readonly PROJECT_ITEM_ICON_NAME = "inventory";
-    private static readonly FOLDER_ITEM_ICON_NAME = "opened-folder";
 
     private static readonly PANEL_TOGGLE_BUTTON_TEXT = "Otevří/Zavřít boční panel";
 
     private static readonly occupiedProjectIds : Map<string, boolean> = new Map();
 
-    private folders : Map<string, HTMLElement>;
-    private rootFolder : HTMLElement;
-    private javaPackages : Map<string, HTMLElement>; // todo - toto ještě nevím jak udělám, ono se ty balíčky tvoří automaticky
+    private folders : Map<string, CollapsibleContainer>;
+    private rootFolder : CollapsibleContainer;
+    // todo - default java package
+    private javaPackages : Map<string, CollapsibleContainer>; // todo - toto ještě nevím jak udělám, ono se ty balíčky tvoří automaticky a mělo by to být seřazené - řazení pořeším potom
     private panelElement : HTMLElement;
+    private panelContentElement : HTMLElement;
     private panelToggleButton : HTMLButtonElement;
     private projectId : string;
 
@@ -59,9 +53,9 @@ class ProjectCodeBox extends CodeBox {
         this.panelElement.classList.add(ProjectCodeBox.CSS_PANEL_CLASS);
         codeBoxElement.appendChild(this.panelElement);
 
-        const panelContent = document.createElement("div");
-        panelContent.classList.add(ProjectCodeBox.CSS_PANEL_CONTENT_CLASS);
-        this.panelElement.appendChild(panelContent);
+        this.panelContentElement = document.createElement("div");
+        this.panelContentElement.classList.add(ProjectCodeBox.CSS_PANEL_CONTENT_CLASS);
+        this.panelElement.appendChild(this.panelContentElement);
 
         this.panelToggleButton = this.createPanelToggleButton();
         this.panelToggleButton.addEventListener("click", () => this.onPanelToggleButtonClick());
@@ -69,19 +63,20 @@ class ProjectCodeBox extends CodeBox {
         const folderStructureHeading = document.createElement("h3");
         folderStructureHeading.classList.add(ProjectCodeBox.CSS_PANEL_HEADING_CLASS);
         folderStructureHeading.innerText = "Adresářová struktura";
-        panelContent.appendChild(folderStructureHeading);
+        this.panelContentElement.appendChild(folderStructureHeading);
 
-        this.rootFolder = this.createRootFolder(panelContent, codeBoxElement.dataset.projectName || "unnamed");
+        this.rootFolder = CollapsibleContainerFactory.createProjectRoot(codeBoxElement.dataset.projectName || "unnamed", this.projectId);
+        this.rootFolder.appendToElement(this.panelContentElement);
         this.createFoldersStructure(this.rootFolder);
 
         const horizontalRule = document.createElement("hr");
         horizontalRule.classList.add(ProjectCodeBox.CSS_PANEL_HORIZONTAL_RULE_CLASS);
-        panelContent.appendChild(horizontalRule);
+        this.panelContentElement.appendChild(horizontalRule);
 
         const javaPackagesHeading = document.createElement("h3");
         javaPackagesHeading.classList.add(ProjectCodeBox.CSS_PANEL_HEADING_CLASS);
         javaPackagesHeading.innerText = "Java balíčky";
-        panelContent.appendChild(javaPackagesHeading);
+        this.panelContentElement.appendChild(javaPackagesHeading);
 
         this.init();
     }
@@ -98,15 +93,64 @@ class ProjectCodeBox extends CodeBox {
 
     protected createCodeButton(codeBoxCode: CodeBoxCode, codeElementDataset: DOMStringMap): CodeButton {
         const folderPath = codeElementDataset.folder;
+        // const javaPackage = codeElementDataset.javaPackage;
 
-        let container;
+        // let javaPackageElement;
+        // if (javaPackage !== undefined) {
+        //     javaPackageElement = this.javaPackages.get(javaPackage);
+        //     if (!javaPackageElement) {
+        //         // todo - potom se to bude i sortovat, takže to umístit přesně tam kam se to má umístit
+        //         // todo - a asi to i rozsekat do více funkcí - asi určitě
+        //             // - ne, musím na ty folders vytvořit novou třídu, protože tohle je na hovno
+        //         const button = document.createElement("button");
+        //         button.classList.add(ProjectCodeBox.CSS_PANEL_ITEM_CLASS);
+        //         button.innerHTML = `
+        //         <div class="${ProjectCodeBox.CSS_PANEL_ITEM_ARROW_ICON_CLASS}">
+        //             ${SVGIconElementCreator.create(ProjectCodeBox.ITEM_ARROW_ICON_NAME)}
+        //         </div>
+        //         <div class="${ProjectCodeBox.CSS_PANEL_ITEM_ICON_CLASS} ${ProjectCodeBox.CSS_PANEL_ITEM_ICON_PACKAGE_MODIFIER_CLASS}">
+        //             ${SVGIconElementCreator.create(ProjectCodeBox.PACKAGE_ITEM_ICON_NAME)}
+        //         </div>
+        //         <span>${javaPackage}</span>
+        //         `;
+        //         this.panelContentElement.appendChild(button);
+
+        //         const javaPackageElement = document.createElement("div");
+        //         javaPackageElement.classList.add(ProjectCodeBox.CSS_PANEL_COLLAPSIBLE_CLASS);
+        //         this.panelContentElement.appendChild(javaPackageElement);
+
+        //         // collapsible_id_java_package_${javaPackage}_${this.projectId}
+
+        //         button.setAttribute("data-hc-control", `collapsible_id_java_package_${javaPackage}_${this.projectId}`);
+        //         javaPackageElement.setAttribute("data-hc-content", `collapsible_id_java_package_${javaPackage}_${this.projectId}`);
+
+        //         this.javaPackages.set(javaPackage, javaPackageElement);
+        //     }
+
+        //     if (codeElementDataset.javaPackageOpened !== undefined) {
+        //         javaPackageElement?.classList.add(ProjectCodeBox.CSS_COLLAPSIBLE_ACTIVE_CLASS);
+        //         console.log("s");
+        //     }
+        // }
+
+        // potřebuju udělat tohle:
+        /*
+         - pokud má atribut javaPackage, tak umístit tlačítko i do packages části a vytvořit MultiProjectCodeButton
+            - pokud nemá hodnotu, tak umístit do defaultního balíčku
+            - pokud má hodnotu, tak umístit do požadovaného balíčku
+         - pokud není folder atribut specifikovaný, tak se vezme automaticky podle balíčku
+         - pokud je folder atribut specifikovaný, tak se tam to tlačítko umístí
+
+         */
+
+        let folderCollapsible;
         if (folderPath) {
-            container = this.folders.get(folderPath);
-            if (!container) container = this.rootFolder;
+            folderCollapsible = this.folders.get(folderPath);
+            if (!folderCollapsible) folderCollapsible = this.rootFolder;
         } else {
-            container = this.rootFolder;
+            folderCollapsible = this.rootFolder;
         }
-        return new ProjectCodeButton(codeElementDataset.code || "unnamed", container, codeBoxCode);
+        return new ProjectCodeButton(codeElementDataset.code || "unnamed", folderCollapsible.collapsibleElement, codeBoxCode);
     }
 
     private createPanelToggleButton() : HTMLButtonElement {
@@ -121,38 +165,14 @@ class ProjectCodeBox extends CodeBox {
         return button;
     }
 
-    private createRootFolder(parentElement: HTMLElement, folderName: string) : HTMLElement {
-        const button = document.createElement("button");
-        button.classList.add(ProjectCodeBox.CSS_PANEL_ITEM_CLASS);
-        button.innerHTML = `
-        <div class="${ProjectCodeBox.CSS_PANEL_ITEM_ARROW_ICON_CLASS}">
-            ${SVGIconElementCreator.create(ProjectCodeBox.ITEM_ARROW_ICON_NAME)}
-        </div>
-        <div class="${ProjectCodeBox.CSS_PANEL_ITEM_ICON_CLASS}">
-            ${SVGIconElementCreator.create(ProjectCodeBox.PROJECT_ITEM_ICON_NAME)}
-        </div>
-        <span>${folderName}</span>
-        `;
-        parentElement.appendChild(button);
-
-        const collapsible = document.createElement("div");
-        collapsible.classList.add(ProjectCodeBox.CSS_PANEL_COLLAPSIBLE_CLASS, ProjectCodeBox.CSS_COLLAPSIBLE_ACTIVE_CLASS);
-        parentElement.appendChild(collapsible);
-
-        button.setAttribute("data-hc-control", `root_project_collapsible_${this.projectId}`);
-        collapsible.setAttribute("data-hc-content", `root_project_collapsible_${this.projectId}`);
-
-        return collapsible;
-    }
-
-    private createFoldersStructure(rootElement : HTMLElement) : void {
+    private createFoldersStructure(rootCollapsible : CollapsibleContainer) : void {
         const foldersElement = this.codeBoxElement.querySelector("[data-project-folders]")!;
 
-        this.createFoldersStructureTraverse(foldersElement as HTMLElement, rootElement);
+        this.createFoldersStructureTraverse(foldersElement as HTMLElement, rootCollapsible);
         foldersElement.remove();
     }
 
-    private createFoldersStructureTraverse(ulElement: HTMLElement, parentElement: HTMLElement, parentFolderNames: string[] = []) { // todo - přejmenovat
+    private createFoldersStructureTraverse(ulElement: HTMLElement, parentCollapsible: CollapsibleContainer, parentFolderNames: string[] = []) { // todo - přejmenovat
         for (let i = 0; i < ulElement.children.length; i++) {
             let child = ulElement.children[i];
 
@@ -172,35 +192,16 @@ class ProjectCodeBox extends CodeBox {
                 }
             });
             if (folderName) {
-                const button = document.createElement("button");
-                button.classList.add(ProjectCodeBox.CSS_PANEL_ITEM_CLASS);
-                button.innerHTML = `
-                <div class="${ProjectCodeBox.CSS_PANEL_ITEM_ARROW_ICON_CLASS}">
-                    ${SVGIconElementCreator.create(ProjectCodeBox.ITEM_ARROW_ICON_NAME)}
-                </div>
-                <div class="${ProjectCodeBox.CSS_PANEL_ITEM_ICON_CLASS} ${ProjectCodeBox.CSS_PANEL_ITEM_ICON_FOLDER_MODIFIER_CLASS}">
-                    ${SVGIconElementCreator.create(ProjectCodeBox.FOLDER_ITEM_ICON_NAME)}
-                </div>
-                <span>${folderName}</span>
-                `;
-                parentElement.appendChild(button);
-
-                const collapsible = document.createElement("div");
-                collapsible.classList.add(ProjectCodeBox.CSS_PANEL_COLLAPSIBLE_CLASS);
-                if (child instanceof HTMLElement && child.hasAttribute("data-opened")) {
-                    collapsible.classList.add(ProjectCodeBox.CSS_COLLAPSIBLE_ACTIVE_CLASS);
-                }
-                parentElement.appendChild(collapsible);
-                
                 const folderPath = [...parentFolderNames, folderName].join("/");
 
-                button.setAttribute("data-hc-control", `collapsible_id_${folderPath}_${this.projectId}`);
-                collapsible.setAttribute("data-hc-content", `collapsible_id_${folderPath}_${this.projectId}`);
+                let openedOnInit = child instanceof HTMLElement && child.hasAttribute("data-opened");
+                const folderCollapsible = CollapsibleContainerFactory.createFolder(folderName, folderPath, this.projectId, openedOnInit);
+                folderCollapsible.appendToElement(parentCollapsible.collapsibleElement);
 
-                this.folders.set(folderPath, collapsible);
+                this.folders.set(folderPath, folderCollapsible);
 
                 if (childUlElement) {
-                    this.createFoldersStructureTraverse(childUlElement, collapsible, [...parentFolderNames, folderName]);
+                    this.createFoldersStructureTraverse(childUlElement, folderCollapsible, [...parentFolderNames, folderName]);
                 }
             }
         }
