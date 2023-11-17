@@ -27,6 +27,7 @@ class ProjectCodeBox extends CodeBox {
     private folders : Map<string, CollapsibleContainer>;
     private defaultJavaPackage : CollapsibleContainer | null;
     private javaPackages : Map<string, CollapsibleContainer>; // todo - toto ještě nevím jak udělám, ono se ty balíčky tvoří automaticky a mělo by to být seřazené - řazení pořeším potom
+    private javaPackagesFolderPath: string | null;
     private panelElement : HTMLElement;
     private panelContentElement : HTMLElement;
     private panelToggleButton : HTMLButtonElement;
@@ -48,6 +49,8 @@ class ProjectCodeBox extends CodeBox {
         this.folders = new Map();
         this.javaPackages = new Map();
         this.defaultJavaPackage = null;
+
+        this.javaPackagesFolderPath = null;
 
         codeBoxElement.classList.add(ProjectCodeBox.CSS_CODE_BOX_MODIFIER_CLASS);
 
@@ -97,7 +100,7 @@ class ProjectCodeBox extends CodeBox {
     }
 
     protected createCodeButton(codeBoxCode: CodeBoxCode, codeElementDataset: DOMStringMap): CodeButton {
-        const folderPath = codeElementDataset.folder;
+        let folderPath = codeElementDataset.folder;
         const javaPackage = codeElementDataset.javaPackage?.trim();
         const fileName = codeElementDataset.code;
 
@@ -122,17 +125,32 @@ class ProjectCodeBox extends CodeBox {
             if (codeElementDataset.javaPackageOpened !== undefined) {
                 javaPackageCollapsible.setAsOpenedOnInit();
             }
+
+            if (folderPath === undefined && this.javaPackagesFolderPath) {
+                const folderNames = javaPackage.split(".");
+
+                // folderPath = "";
+                folderPath = this.javaPackagesFolderPath;
+                let previousFolder = this.folders.get(folderPath);
+                if (previousFolder) {
+                    for (let folderName of folderNames) {
+                        if (folderName.trim().length === 0) continue;
+                        folderPath += `/${folderName}`;
+
+                        console.log(folderPath);
+                        
+                        let folder = this.folders.get(folderPath);
+                        if (!folder) {
+                            folder = CollapsibleContainerFactory.createFolder(folderName, folderPath, this.projectId);
+                            folder.appendToElement(previousFolder.collapsibleElement);
+                            this.folders.set(folderPath, folder);
+                        }
+
+                        previousFolder = folder;
+                    }
+                }
+            }
         }
-
-        // potřebuju udělat tohle:
-        /*
-         - pokud má atribut javaPackage, tak umístit tlačítko i do packages části a vytvořit MultiProjectCodeButton
-            - pokud nemá hodnotu, tak umístit do defaultního balíčku
-            - pokud má hodnotu, tak umístit do požadovaného balíčku
-         - pokud není folder atribut specifikovaný, tak se vezme automaticky podle balíčku
-         - pokud je folder atribut specifikovaný, tak se tam to tlačítko umístí
-
-         */
 
         let folderCollapsible;
         if (folderPath) {
@@ -221,6 +239,10 @@ class ProjectCodeBox extends CodeBox {
                 folderCollapsible.appendToElement(parentCollapsible.collapsibleElement);
 
                 this.folders.set(folderPath, folderCollapsible);
+
+                if (child.hasAttribute("data-java-packages-folder")) {
+                    this.javaPackagesFolderPath = folderPath;
+                }
 
                 if (childUlElement) {
                     this.createFoldersStructureTraverse(childUlElement, folderCollapsible, [...parentFolderNames, folderName]);
