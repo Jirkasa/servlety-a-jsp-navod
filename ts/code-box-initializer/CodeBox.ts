@@ -8,7 +8,7 @@ abstract class CodeBox {
     private static readonly CSS_NO_CODE_MESSAGE_HIDDEN_CLASS = "code-box__no-code-message--hidden";
     private static readonly NO_CODE_MESSAGE_TEXT = "Není vybrán žádný soubor";
 
-    private codeBoxElement : HTMLElement;
+    protected codeBoxElement : HTMLElement;
     private noImplicitActiveCode : boolean;
     private noCodeElement : HTMLElement;
     private codeButtons : CodeButton[];
@@ -42,7 +42,7 @@ abstract class CodeBox {
             const codeButton = this.createCodeButton(codeBoxCode, codeElementDataset);
             codeButton.setOnClickEventSource(this.onCodeButtonClickEventSource);
 
-            if (codeElementDataset.active) {
+            if (codeElement.hasAttribute("data-active")) {
                 this.activeCodeButton = codeButton;
             }
 
@@ -61,6 +61,8 @@ abstract class CodeBox {
     }
 
     private onCodeButtonClick(codeButton: CodeButton) : void {
+        if (this.activeCodeButton === codeButton) return;
+
         if (this.activeCodeButton) {
             this.activeCodeButton.deactivate();
             this.activeCodeButton.codeBoxCode.hide();
@@ -70,9 +72,13 @@ abstract class CodeBox {
         codeButton.activate();
         codeButton.codeBoxCode.show();
         this.activeCodeButton = codeButton;
+
+        this.onDisplayedCodeChanged();
     }
 
     protected abstract createCodeButton(codeBoxCode: CodeBoxCode, codeElementDataset: DOMStringMap) : CodeButton;
+
+    protected onDisplayedCodeChanged() {}
 }
 
 export default CodeBox;

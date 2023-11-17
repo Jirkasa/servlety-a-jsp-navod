@@ -1,13 +1,30 @@
+import ProjectCodeBox from "./ProjectCodeBox";
 import SimpleCodeBox from "./SimpleCodeBox";
+import HandyCollapse from "handy-collapse";
+
+let initialized = false;
 
 function initCodeBoxes() : void {
-    const codeBoxes : NodeListOf<HTMLElement> = document.querySelectorAll("[data-code-box]"); // potom brát v potaz i data-project atribute
+    if (initialized) {
+        throw new Error("Code boxes are already initialized.");
+    }
+    const codeBoxes : NodeListOf<HTMLElement> = document.querySelectorAll("[data-code-box], [data-project]");
 
     codeBoxes.forEach(codeBoxElement => {
-        new SimpleCodeBox(codeBoxElement, codeBoxElement.hasAttribute("data-no-implicit-active"));
+        if (codeBoxElement.hasAttribute("data-project")) {
+            new ProjectCodeBox(codeBoxElement);
+        } else {
+            new SimpleCodeBox(codeBoxElement);
+        }
     });
 
-    // todo - odstranit data attributy (ať se to neinicializuje znovu)
+    const handyCollapse = new HandyCollapse({
+        closeOthers: false,
+        animationSpeed: 140,
+        cssEasing: "linear"
+    });
+
+    initialized = true;
 }
 
 export default initCodeBoxes;

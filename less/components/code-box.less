@@ -9,6 +9,10 @@
         display: flex;
         overflow-x: auto;
 
+        &--hidden {
+            display: none;
+        }
+
         // width
         &::-webkit-scrollbar {
             height: .8rem;
@@ -79,37 +83,86 @@
 
         code {
             font-family: 'Ubuntu Mono', monospace;
-            padding: .8rem !important;
+            padding: @code-box-code-padding !important;
             margin: 0;
 
             border-radius: .4rem;
             border-top-left-radius: 0;
             border-bottom-left-radius: 0;
 
-            // width
-            &::-webkit-scrollbar {
-                height: 1.6rem;
-            }
+            overflow: visible !important;
 
-            // track
-            &::-webkit-scrollbar-track {
-                background: darken(@colors[grey-40], 8%);
-            }
+            // // width
+            // &::-webkit-scrollbar {
+            //     height: 1.6rem;
+            // }
 
-            // handle
-            &::-webkit-scrollbar-thumb {
-                background: @colors[grey-60];
+            // // track
+            // &::-webkit-scrollbar-track {
+            //     background: darken(@colors[grey-40], 8%);
+            // }
 
-                &:hover {
-                    background: darken(@colors[grey-60], 5%);
-                }
-            }
+            // // handle
+            // &::-webkit-scrollbar-thumb {
+            //     background: @colors[grey-60];
+
+            //     &:hover {
+            //         background: darken(@colors[grey-60], 5%);
+            //     }
+            // }
         }
+    }
+    &--simple &__code {
+        border-top-left-radius: 0;
+    }
+    &--project &__code {
+        min-height: 40rem;
+    }
+
+    // needed for code highlighting because of scrolling
+    &__code-outer-container {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
     }
 
     &__code-container {
         overflow: hidden;
         width: 100%;
+        height: 100%;
+
+        overflow: auto;
+
+        // width
+        &::-webkit-scrollbar {
+            height: 1.6rem;
+        }
+
+        // track
+        &::-webkit-scrollbar-track {
+            background: darken(@colors[grey-40], 8%);
+        }
+
+        // handle
+        &::-webkit-scrollbar-thumb {
+            background: @colors[grey-60];
+
+            &:hover {
+                background: darken(@colors[grey-60], 5%);
+            }
+        }
+    }
+
+    &__code-highlight-box {
+        position: absolute;
+        top: @code-box-code-padding;
+        left: (@code-box-code-padding / 2rem);
+        width: ~"calc(100% - @{code-box-code-padding})";
+
+        background-color: rgba(@colors[analogic-1], .15);
+        border: .1rem solid @colors[analogic-1];
+
+        pointer-events: none;
     }
 
     &__line-numbers {
@@ -121,16 +174,20 @@
         text-align: right;
 
         background-color: darken(#333, 6%);
+        border-top-left-radius: .4rem;;
         border-bottom-left-radius: .4rem;
-
-        &--project {
-            border-bottom-left-radius: none;
-            padding-left: .8rem + @code-box-project-button-size + @code-box-project-panel-border-width;
-        }
 
         > div {
             color: @colors[grey-60];
         }
+    }
+    &--simple &__line-numbers {
+        border-top-left-radius: 0;
+    }
+    &--project &__line-numbers {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        padding-left: .8rem + @code-box-project-button-size + @code-box-project-panel-border-width;
     }
 
     &__no-code-message {
@@ -144,16 +201,15 @@
 
         padding: 9.6rem 1.6rem;
 
-        &--simple {
-            border-top-left-radius: 0;
-        }
-        &--project {
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
-        }
-
         &--hidden {
             display: none;
         }
+    }
+    &--simple &__no-code-message {
+        border-top-left-radius: 0;
+    }
+    &--project &__no-code-message {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
     }
 }

@@ -1,12 +1,15 @@
 .code-box-project-panel {
     position: absolute;
     top: 0;
+    z-index: 10;
     right: 100%;
     transform: translateX(@code-box-project-button-size + @code-box-project-panel-border-width);
     height: 100%;
     max-width: 50%;
 
     display: flex;
+
+    transition: all .2s;
 
     &--opened {
         transform: translateX(100%);
@@ -41,6 +44,14 @@
             width: 2.4rem;
             height: 2.4rem;
             fill: @colors[grey-80];
+
+            transition: all .2s .1s;
+        }
+
+        &--opened {
+            svg {
+                transform: translate(-50%, -50%) scaleX(-1);
+            }
         }
     }
 
