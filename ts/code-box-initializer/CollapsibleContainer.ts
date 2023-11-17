@@ -9,10 +9,13 @@ class CollapsibleContainer {
 
     private static ITEM_ARROW_ICON_NAME = "arrow-right";
 
+    public readonly name: string;
     public readonly buttonElement: HTMLButtonElement;
     public readonly collapsibleElement: HTMLElement;
 
     constructor(iconName: string, name: string, collapsibleId: string, openedOnInit: boolean = false, cssIconModifierClass: string = "") {
+        this.name = name;
+        
         this.buttonElement = document.createElement("button");
         this.buttonElement.classList.add(CollapsibleContainer.CSS_ITEM_CLASS);
         this.buttonElement.innerHTML = `
@@ -24,21 +27,19 @@ class CollapsibleContainer {
         </div>
         <span>${name}</span>
         `;
-        // parentElement.appendChild(this.buttonElement);
 
         this.collapsibleElement = document.createElement("div");
         this.collapsibleElement.classList.add(CollapsibleContainer.CSS_COLLAPSIBLE_CLASS);
 
-        if (openedOnInit) {
-            this.buttonElement.classList.add(CollapsibleContainer.CSS_COLLAPSIBLE_ACTIVE_CLASS);
-            this.collapsibleElement.classList.add(CollapsibleContainer.CSS_COLLAPSIBLE_ACTIVE_CLASS);
-        }
-        // parentElement.appendChild(collapsible);
-        
-        // const folderPath = [...parentFolderNames, folderName].join("/");
+        if (openedOnInit) this.setAsOpenedOnInit();
 
         this.buttonElement.setAttribute("data-hc-control", collapsibleId);
         this.collapsibleElement.setAttribute("data-hc-content", collapsibleId);
+    }
+
+    setAsOpenedOnInit() {
+        this.buttonElement.classList.add(CollapsibleContainer.CSS_COLLAPSIBLE_ACTIVE_CLASS);
+        this.collapsibleElement.classList.add(CollapsibleContainer.CSS_COLLAPSIBLE_ACTIVE_CLASS);
     }
 
     appendToElement(element: Element) {
@@ -48,6 +49,3 @@ class CollapsibleContainer {
 }
 
 export default CollapsibleContainer;
-
-// todo - na vytváření tady toho asi vytvořit factory, bude to lepší - nebo to můžou být static metody (factory method)
-    // - static metody ne, nemáte to co vědět o těch CSS třídách

@@ -3,6 +3,7 @@ import CodeBoxCode from "./CodeBoxCode";
 import CodeButton from "./CodeButton";
 import CollapsibleContainer from "./CollapsibleContainer";
 import CollapsibleContainerFactory from "./CollapsibleContainerFactory";
+import MultiProjectCodeButton from "./MultiProjectCodeButton";
 import ProjectCodeButton from "./ProjectCodeButton";
 import SVGIconElementCreator from "./SVGIconElementCreator";
 
@@ -22,9 +23,9 @@ class ProjectCodeBox extends CodeBox {
 
     private static readonly occupiedProjectIds : Map<string, boolean> = new Map();
 
-    private folders : Map<string, CollapsibleContainer>;
     private rootFolder : CollapsibleContainer;
-    // todo - default java package
+    private folders : Map<string, CollapsibleContainer>;
+    private defaultJavaPackage : CollapsibleContainer | null;
     private javaPackages : Map<string, CollapsibleContainer>; // todo - toto ještě nevím jak udělám, ono se ty balíčky tvoří automaticky a mělo by to být seřazené - řazení pořeším potom
     private panelElement : HTMLElement;
     private panelContentElement : HTMLElement;
@@ -46,6 +47,7 @@ class ProjectCodeBox extends CodeBox {
 
         this.folders = new Map();
         this.javaPackages = new Map();
+        this.defaultJavaPackage = null;
 
         codeBoxElement.classList.add(ProjectCodeBox.CSS_CODE_BOX_MODIFIER_CLASS);
 
@@ -79,6 +81,8 @@ class ProjectCodeBox extends CodeBox {
         this.panelContentElement.appendChild(javaPackagesHeading);
 
         this.init();
+
+        this.sortJavaPackages();
     }
 
     private onPanelToggleButtonClick() : void {
@@ -93,45 +97,31 @@ class ProjectCodeBox extends CodeBox {
 
     protected createCodeButton(codeBoxCode: CodeBoxCode, codeElementDataset: DOMStringMap): CodeButton {
         const folderPath = codeElementDataset.folder;
-        // const javaPackage = codeElementDataset.javaPackage;
+        const javaPackage = codeElementDataset.javaPackage?.trim();
+        const fileName = codeElementDataset.code;
 
-        // let javaPackageElement;
-        // if (javaPackage !== undefined) {
-        //     javaPackageElement = this.javaPackages.get(javaPackage);
-        //     if (!javaPackageElement) {
-        //         // todo - potom se to bude i sortovat, takže to umístit přesně tam kam se to má umístit
-        //         // todo - a asi to i rozsekat do více funkcí - asi určitě
-        //             // - ne, musím na ty folders vytvořit novou třídu, protože tohle je na hovno
-        //         const button = document.createElement("button");
-        //         button.classList.add(ProjectCodeBox.CSS_PANEL_ITEM_CLASS);
-        //         button.innerHTML = `
-        //         <div class="${ProjectCodeBox.CSS_PANEL_ITEM_ARROW_ICON_CLASS}">
-        //             ${SVGIconElementCreator.create(ProjectCodeBox.ITEM_ARROW_ICON_NAME)}
-        //         </div>
-        //         <div class="${ProjectCodeBox.CSS_PANEL_ITEM_ICON_CLASS} ${ProjectCodeBox.CSS_PANEL_ITEM_ICON_PACKAGE_MODIFIER_CLASS}">
-        //             ${SVGIconElementCreator.create(ProjectCodeBox.PACKAGE_ITEM_ICON_NAME)}
-        //         </div>
-        //         <span>${javaPackage}</span>
-        //         `;
-        //         this.panelContentElement.appendChild(button);
-
-        //         const javaPackageElement = document.createElement("div");
-        //         javaPackageElement.classList.add(ProjectCodeBox.CSS_PANEL_COLLAPSIBLE_CLASS);
-        //         this.panelContentElement.appendChild(javaPackageElement);
-
-        //         // collapsible_id_java_package_${javaPackage}_${this.projectId}
-
-        //         button.setAttribute("data-hc-control", `collapsible_id_java_package_${javaPackage}_${this.projectId}`);
-        //         javaPackageElement.setAttribute("data-hc-content", `collapsible_id_java_package_${javaPackage}_${this.projectId}`);
-
-        //         this.javaPackages.set(javaPackage, javaPackageElement);
-        //     }
-
-        //     if (codeElementDataset.javaPackageOpened !== undefined) {
-        //         javaPackageElement?.classList.add(ProjectCodeBox.CSS_COLLAPSIBLE_ACTIVE_CLASS);
-        //         console.log("s");
-        //     }
-        // }
+        let javaPackageCollapsible;
+        if (javaPackage !== undefined) {
+            if (javaPackage.length > 0) {
+                javaPackageCollapsible = this.javaPackages.get(javaPackage);
+                if (!javaPackageCollapsible) {
+                    javaPackageCollapsible = CollapsibleContainerFactory.createJavaPackage(javaPackage, this.projectId);
+                    javaPackageCollapsible.appendToElement(this.panelContentElement);
+                    this.javaPackages.set(javaPackage, javaPackageCollapsible);
+                }
+            } else {
+                javaPackageCollapsible = this.defaultJavaPackage;
+                if (!javaPackageCollapsible) {
+                    javaPackageCollapsible = CollapsibleContainerFactory.createDefaultJavaPackage(this.projectId);
+                    javaPackageCollapsible.appendToElement(this.panelContentElement);
+                    this.defaultJavaPackage = javaPackageCollapsible;
+                }
+            }
+            
+            if (codeElementDataset.javaPackageOpened !== undefined) {
+                javaPackageCollapsible.setAsOpenedOnInit();
+            }
+        }
 
         // potřebuju udělat tohle:
         /*
@@ -150,7 +140,31 @@ class ProjectCodeBox extends CodeBox {
         } else {
             folderCollapsible = this.rootFolder;
         }
-        return new ProjectCodeButton(codeElementDataset.code || "unnamed", folderCollapsible.collapsibleElement, codeBoxCode);
+
+        if (javaPackageCollapsible) {
+            return new MultiProjectCodeButton(fileName || "unnamed", [folderCollapsible.collapsibleElement, javaPackageCollapsible.collapsibleElement], codeBoxCode);
+        } else {
+            return new ProjectCodeButton(fileName || "unnamed", folderCollapsible.collapsibleElement, codeBoxCode);
+        }
+    }
+
+    private sortJavaPackages() : void {
+        const javaPackages: CollapsibleContainer[] = [];
+        this.javaPackages.forEach(javaPackage => {
+            javaPackages.push(javaPackage);
+        });
+
+        javaPackages.sort((a, b) => {
+            if (a.name < b.name) return -1;
+            if (a.name == b.name) return 0;
+            return 1;
+        });
+
+        console.log(javaPackages);
+        for (let javaPackage of javaPackages) {
+            this.panelContentElement.appendChild(javaPackage.buttonElement);
+            this.panelContentElement.appendChild(javaPackage.collapsibleElement);
+        }
     }
 
     private createPanelToggleButton() : HTMLButtonElement {
