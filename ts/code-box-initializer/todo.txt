@@ -1,3 +1,7 @@
 vytvořit složky:
     CodeBox
     CodeButton
+
+- vytvořit stránku "Popis zdrojového kódu projektu"
+    - tam vysvětlím jak to funguje
+    - jak strukturuju kód

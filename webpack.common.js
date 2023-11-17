@@ -10,7 +10,7 @@ function createHtmlWebpackPluginsForTutorialPages() {
     fs.readdirSync("./pages/tutorial").forEach(pageName => {
         const htmlPlugin = new HtmlWebpackPlugin({
             template: path.resolve(__dirname, "pages", "tutorial", pageName, "index.ejs"),
-            filename: `${pageName}/index.html`,
+            filename: `tutorial/${pageName}/index.html`,
             chunks: ["style", "tutorial"],
             inject: true
         });

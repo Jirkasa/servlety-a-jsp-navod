@@ -2,6 +2,7 @@ import CodeBox from "./CodeBox";
 import CodeBoxCode from "./CodeBoxCode";
 import CodeButton from "./CodeButton";
 import ProjectCodeButton from "./ProjectCodeButton";
+import SVGIconElementCreator from "./SVGIconElementCreator";
 import SimpleCodeButton from "./SimpleCodeButton";
 
 class ProjectCodeBox extends CodeBox {
@@ -15,16 +16,15 @@ class ProjectCodeBox extends CodeBox {
     private static readonly CSS_PANEL_ITEM_CLASS = "code-box-project-panel__item";
     private static readonly CSS_PANEL_ITEM_ARROW_ICON_CLASS = "code-box-project-panel__item-arrow-icon";
     private static readonly CSS_PANEL_ITEM_ICON_CLASS = "code-box-project-panel__item-icon";
-    private static readonly CSS_PANEL_ITEM_ICON_FILE_MODIFIER_CLASS = "code-box-project-panel__item-icon--file";
     private static readonly CSS_PANEL_ITEM_ICON_FOLDER_MODIFIER_CLASS = "code-box-project-panel__item-icon--folder";
     private static readonly CSS_PANEL_COLLAPSIBLE_CLASS = "code-box-project-panel__collapsible";
     private static readonly CSS_COLLAPSIBLE_ACTIVE_CLASS = "is-active";
+    private static readonly CSS_PANEL_HORIZONTAL_RULE_CLASS = "code-box-project-panel__horizontal-rule";
 
     private static readonly PANEL_TOGGLE_BUTTON_ICON_NAME = "double-arrow-right";
     private static readonly ITEM_ARROW_ICON_NAME = "arrow-right";
     private static readonly PROJECT_ITEM_ICON_NAME = "inventory";
     private static readonly FOLDER_ITEM_ICON_NAME = "opened-folder";
-    private static readonly FILE_ITEM_ICON_NAME = "file";
 
     private static readonly PANEL_TOGGLE_BUTTON_TEXT = "Otevří/Zavřít boční panel";
 
@@ -72,8 +72,16 @@ class ProjectCodeBox extends CodeBox {
         panelContent.appendChild(folderStructureHeading);
 
         this.rootFolder = this.createRootFolder(panelContent, codeBoxElement.dataset.projectName || "unnamed");
-
         this.createFoldersStructure(this.rootFolder);
+
+        const horizontalRule = document.createElement("hr");
+        horizontalRule.classList.add(ProjectCodeBox.CSS_PANEL_HORIZONTAL_RULE_CLASS);
+        panelContent.appendChild(horizontalRule);
+
+        const javaPackagesHeading = document.createElement("h3");
+        javaPackagesHeading.classList.add(ProjectCodeBox.CSS_PANEL_HEADING_CLASS);
+        javaPackagesHeading.innerText = "Java balíčky";
+        panelContent.appendChild(javaPackagesHeading);
 
         this.init();
     }
@@ -106,9 +114,7 @@ class ProjectCodeBox extends CodeBox {
         button.classList.add(ProjectCodeBox.CSS_PANEL_TOGGLE_BUTTON_CLASS);
         button.innerHTML = `
         ${ProjectCodeBox.PANEL_TOGGLE_BUTTON_TEXT}
-        <svg>
-            <use xlink:href="./static/icon-sprite.svg#${ProjectCodeBox.PANEL_TOGGLE_BUTTON_ICON_NAME}"></use>
-        </svg>
+        ${SVGIconElementCreator.create(ProjectCodeBox.PANEL_TOGGLE_BUTTON_ICON_NAME)}
         `;
         this.panelElement.appendChild(button);
 
@@ -120,14 +126,10 @@ class ProjectCodeBox extends CodeBox {
         button.classList.add(ProjectCodeBox.CSS_PANEL_ITEM_CLASS);
         button.innerHTML = `
         <div class="${ProjectCodeBox.CSS_PANEL_ITEM_ARROW_ICON_CLASS}">
-            <svg>
-                <use xlink:href="./static/icon-sprite.svg#${ProjectCodeBox.ITEM_ARROW_ICON_NAME}"></use>
-            </svg>
+            ${SVGIconElementCreator.create(ProjectCodeBox.ITEM_ARROW_ICON_NAME)}
         </div>
         <div class="${ProjectCodeBox.CSS_PANEL_ITEM_ICON_CLASS}">
-            <svg>
-                <use xlink:href="./static/icon-sprite.svg#${ProjectCodeBox.PROJECT_ITEM_ICON_NAME}"></use>
-            </svg>
+            ${SVGIconElementCreator.create(ProjectCodeBox.PROJECT_ITEM_ICON_NAME)}
         </div>
         <span>${folderName}</span>
         `;
@@ -174,14 +176,10 @@ class ProjectCodeBox extends CodeBox {
                 button.classList.add(ProjectCodeBox.CSS_PANEL_ITEM_CLASS);
                 button.innerHTML = `
                 <div class="${ProjectCodeBox.CSS_PANEL_ITEM_ARROW_ICON_CLASS}">
-                    <svg>
-                        <use xlink:href="./static/icon-sprite.svg#${ProjectCodeBox.ITEM_ARROW_ICON_NAME}"></use>
-                    </svg>
+                    ${SVGIconElementCreator.create(ProjectCodeBox.ITEM_ARROW_ICON_NAME)}
                 </div>
                 <div class="${ProjectCodeBox.CSS_PANEL_ITEM_ICON_CLASS} ${ProjectCodeBox.CSS_PANEL_ITEM_ICON_FOLDER_MODIFIER_CLASS}">
-                    <svg>
-                        <use xlink:href="./static/icon-sprite.svg#${ProjectCodeBox.FOLDER_ITEM_ICON_NAME}"></use>
-                    </svg>
+                    ${SVGIconElementCreator.create(ProjectCodeBox.FOLDER_ITEM_ICON_NAME)}
                 </div>
                 <span>${folderName}</span>
                 `;

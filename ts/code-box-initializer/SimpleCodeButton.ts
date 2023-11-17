@@ -1,5 +1,6 @@
 import CodeBoxCode from "./CodeBoxCode";
 import ElementCodeButton from "./ElementCodeButton";
+import SVGIconElementCreator from "./SVGIconElementCreator";
 
 class SimpleCodeButton extends ElementCodeButton {
     private static readonly CSS_BUTTON_CLASS = "code-box__file-button";
@@ -12,9 +13,7 @@ class SimpleCodeButton extends ElementCodeButton {
 
         this.buttonElement.classList.add(SimpleCodeButton.CSS_BUTTON_CLASS);
         this.buttonElement.innerHTML = `
-            <svg>
-                <use xlink:href="./static/icon-sprite.svg#${SimpleCodeButton.BUTTON_ICON_NAME}"></use>
-            </svg>
+            ${SVGIconElementCreator.create(SimpleCodeButton.BUTTON_ICON_NAME)}
             <span>${this.buttonElement.innerText}</span>
         `;
     }
