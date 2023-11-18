@@ -30,8 +30,18 @@
         <p class="paragraph u-mb-2">Teď již máme nainstalováno vše, co je potřebné pro vytvoření jednoduchého projektu. Pustíme se tedy do toho a vytvoříme si jednoduchou "Hello World" aplikaci. Zároveň si při tom nastavíme Tomcat v Eclipsu.</p>
         <p class="paragraph u-mb-2">Budeme vytvářet Maven projekt. Pokud nevíte co to Maven je nebo s ním nemáte žádné zkušenosti, tak nevadí. Já na něj v době psaní tohoto tutoriálu také nejsem žádný expert. Nebudeme jej nijak složitě konfigurovat. Jen si ukážeme jak si vytvořit projekt a dozvíte se co to je. Jak Maven projekt vytvořit v Eclipse ukazuje následující slider.</p>
         <%- include("./includes/create-maven-project-slider.ejs") %>
-        <p class="paragraph u-mb-2">V následující [můžou si prohlédnout strukturu...]</p>
-        
+        <p class="paragraph u-mb-2">V následující ukázce si můžete po otevření levého panelu prohlédnou adresářovou strukturu našeho vytvořeného projektu.</p>
+        <%- include("./includes/code-box-1.ejs") %>
+        <p class="paragraph u-mb-2">Projekt vlastně obsahuje <a href="https://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html" target="_blank" class="link">standardní Maven adresářovou strukturu</a>. V kořenové složce projektu máme složku src, target a soubor pom.xml. Složka src slouží pro ukládání souborů naší aplikace. Do složky target nám Maven naši aplikaci sestavuje, nic do ní tedy neukládáme. Tady na webu v ukázkách bude tato složka vždy prázdná, ale pokud si ji otevřete u sebe, tak tam uvidíte vaši sestavenou aplikaci. Soubor pom.xml slouží ke konfiguraci Maven projektu. Můžeme si do něj třeba napsat, že chceme používat nějakou Java knihovnu. Maven si obsah souboru pom.xml přečte a automaticky nám knihovnu stáhne abychom ji mohli používat. Nemusíme si ji tedy stahovat ručně. A to je jen jedna z věcí, se kterými nám Maven pomáhá. Tento kurz ale není o Mavenu, takže nebudu zabíhat do detailů. Také ani nemůžu, protože v době psaní tohoto tutoriálu toho o něm ještě moc nevím.</p>
+        <p class="paragraph u-mb-1">Složka src dále obsahuje složky main a test. Složka main slouží pro zdrojové soubory naší aplikace a složka test pro její testy. Pokud bychom tedy chtěli pro naši aplikaci napsat testy, tak je umístíme do složky test. Ve složce main najdete zatím prázdné složky jménem java, resources a webapp. Zde je popsáno k čemu slouží:</p>
+        <ul class="list u-mb-2">
+            <li><b>src/main/java</b> - obsahuje Java soubory (obsahuje vlastně klasickou hierarchii pro java balíčky)</li>
+            <li><b>src/main/resources</b> - může obsahovat třeba různé XML soubory, .properties soubory, atd. (prostě věci, které nejsou Java soubory)</li>
+            <li><b>src/main/webapp</b> - obsahuje soubory pro webovou aplikaci (třeba různé javascript soubory, CSS styly, atd.)</li>
+        </ul>
+        <p class="paragraph u-mb-2">Pokud jste ještě nikdy v Eclipse nevytvářeli žádný projekt pomocí Mavenu nebo jej máte nově naintalovaný, tak po otevření souboru pom.xml uvidíte, že vám Eclipse hlásí chybu. Jak tuto chybu vyřešit ukazuje následující slider.</p>
+        <%- include("./includes/eclipse-javadoc-error-slider.ejs") %>
+        <p class="paragraph u-mb-2">Chybu v pom.xml jsme opravili a můžeme tedy začít s tím, že si náš Maven projekt nakonfigurujeme. -dopsat</p>
     <%- include("../../includes/tutorial-page-layout-end.ejs") %>
     <%- include("../../includes/footer.ejs") %>
 <%- include("../../includes/page-end.ejs") %>
@@ -87,13 +97,6 @@
     - po instalaci Eclipse zkusit jestli to funguje, vytvořit základní zkušební projekt, a až poté nainstalovat MySQL
 
     - u dependencies vysvětlit co jednotlivé možnosti znamenají (a ukázat i screenshoty s mvnrepository)
-
-    - javax na jakarta v Tomcat 10
-    - tomcat admin admin
-
-    - JRE se nainstalovalo spolu s JDK
-    
-    - složka target slouží pro maven
     
     - jak eclipse používat se budou muset naučit v nějakém jiném tutoriálu
         - tento tutoriál počítá s tím, že už máte s Javou nějaké zkušenosti, takže jste již nějaké IDE používali a základní věci jako jak vytvořit Java balíček, třídu, atd. víte
