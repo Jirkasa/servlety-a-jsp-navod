@@ -87,6 +87,11 @@ class ProjectCodeBox extends CodeBox {
 
         this.sortJavaPackages();
         this.sortFileButtons();
+
+        if (this.javaPackages.size === 0 && !this.defaultJavaPackage) {
+            horizontalRule.remove();
+            javaPackagesHeading.remove();
+        }
     }
 
     private onPanelToggleButtonClick() : void {
