@@ -41,21 +41,20 @@
         CODE BOX:
             data-code-box (pokud se používá data-project atribut, tak je to nepovinné) - HOTOVO
             data-no-buttons (nezobrazí se u SimpleCodeBoxu header s tlačítky) - HOTOVO
-            data-no-implicit-active-code (jen pro simple, u data-project to bude automaticky nastaveno) - HOTOVO
+            data-no-implicit-active (jen pro simple, u data-project to bude automaticky nastaveno) - HOTOVO
             data-project=[id] - HOTOVO - ID je potřeba
             data-project-name=[název_projektu] - HOTOVO
             data-project-extends=[project-id]
-            data-project-removed-resources[path, path...]
+            data-project-removed-resources[path, path...] - toto asi nebude, spíš bude ten konfigurační ul element
 
         CODE
             data-code=[?název_souboru] - HOTOVO
             data-folder - HOTOVO
             data-code-highlight=[řádek-řádek, řádek-řádek...] - HOTOVO
             data-active - HOTOVO
-            data-opened - HOTOVO
             data-closed (ASI NE - ale nějak to budu chtít v podprojektech zavírat, takže uvidím)
-            data-java-package (nemusí se dát data-folder, ale pokud se dá, tak se to do té složky umístí) - pokud se nespecifikuje hodnota, tak se to umístí do defaultního balíčku
-            data-java-package-opened
+            data-java-package (nemusí se dát data-folder, ale pokud se dá, tak se to do té složky umístí) - pokud se nespecifikuje hodnota, tak se to umístí do defaultního balíčku - HOTOVO
+            data-java-package-opened - HOTOVO
 
         - ty opened atd. atributy se asi nebudou dědit - ne všechno se bude dědit, to potom napíšu
 
@@ -64,5 +63,11 @@
             data-project-folders - HOTOVO
         (li)
             data-opened - HOTOVO - asi by se to možná hodilo nastavovat i na java soubory - a nebo spíš vytvořit ještě jiný data atribut nebo něco na otevření složky pomocí cesty - to by asi bylo jednodušší a přijatelnější
-            data-java-packages-folder
+            data-java-packages-folder - HOTOVO
+        
+        Možná bude něco podobného jako ten ul element pro složky pro nastavení podprojektu:
+            - které složky se otevřou
+            - které složky nebo soubory se smažou
+        
+        - teď je asi na čase začít vytvářet tabulky, kde budou tady ty data atributy popsané
       -->

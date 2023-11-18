@@ -129,15 +129,12 @@ class ProjectCodeBox extends CodeBox {
             if (folderPath === undefined && this.javaPackagesFolderPath) {
                 const folderNames = javaPackage.split(".");
 
-                // folderPath = "";
                 folderPath = this.javaPackagesFolderPath;
                 let previousFolder = this.folders.get(folderPath);
                 if (previousFolder) {
                     for (let folderName of folderNames) {
                         if (folderName.trim().length === 0) continue;
                         folderPath += `/${folderName}`;
-
-                        console.log(folderPath);
                         
                         let folder = this.folders.get(folderPath);
                         if (!folder) {
@@ -186,7 +183,6 @@ class ProjectCodeBox extends CodeBox {
             return 1;
         });
 
-        console.log(javaPackages);
         for (let javaPackage of javaPackages) {
             this.panelContentElement.appendChild(javaPackage.buttonElement);
             this.panelContentElement.appendChild(javaPackage.collapsibleElement);

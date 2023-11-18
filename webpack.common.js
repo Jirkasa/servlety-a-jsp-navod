@@ -85,7 +85,13 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, "pages", "index.ejs"),
-            chunks: ["style", "codeBoxInitializer"],
+            chunks: ["style"],
+            inject: true
+        }),
+        new HtmlWebpackPlugin({
+            template: path.resolve(__dirname, "pages", "popis-zdrojoveho-kodu-projektu", "index.ejs"),
+            filename: "popis-zdrojoveho-kodu-projektu/index.html",
+            chunks: ["style", "tutorial"],
             inject: true
         }),
         ...tutorialPages,

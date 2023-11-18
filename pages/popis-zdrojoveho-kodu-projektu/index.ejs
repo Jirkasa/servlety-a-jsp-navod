@@ -1,0 +1,138 @@
+<%- include("../includes/page-start.ejs", {pathToRootFolder: "../"}) %>
+    <%- include("../includes/header.ejs") %>
+    <%- include("../includes/tutorial-page-layout-start.ejs") %>
+        <h1 class="heading-primary u-mb-4">Popis zdrojového kódu projektu</h1>
+        <p class="paragraph u-mb-4">Tabulka atributů pro code boxy:</p>
+        <h2 class="heading-secondary u-mb-2">Code Box</h2>
+        <p class="paragraph u-mb-2">Popsat a vysvětlit to i s ukázkami. Vytvořit na to tady tutoriál - na začátku zobrazit tyto tabulky, které si mohou přečíst, ale poté vytvořím tutoriál.</p>
+        <h3 class="heading-tertiary u-mb-2">Atributy pro container</h3>
+        <table class="table u-mb-4">
+            <thead>
+                <tr>
+                    <th>Atribut</th>
+                    <th>Hodnota</th>
+                    <th>Popis</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>data-code-box</td>
+                    <td></td>
+                    <td>Nastavuje, že se jedná o code box element.</td>
+                </tr>
+                <tr>
+                    <td>data-no-buttons</td>
+                    <td></td>
+                    <td>Nastavuje, že se nemají zobrazit tlačítka na přepínání ukázek kódu. Funguje to jen pokud není nastaven data-project atribut.</td>
+                </tr>
+                <tr>
+                    <td>data-no-implicit-active</td>
+                    <td></td>
+                    <td>Nastavuje, že se nemá automaticky zobrazit první ukázka kódu, pokud pro žádnou ukázku kódu není nastaven atribut data-active. Pokud je nastaven atribut data-project, tak je tento atribut také automaticky nastaven.</td>
+                </tr>
+                <tr>
+                    <td>data-project</td>
+                    <td>ID projektu</td>
+                    <td>Nastavuje, že se jedná o code box, který se zobrazí jak projekt (bočním vysouvacím panelem). Pokud je tento atribut nastavený, tak není potřeba nastavovat data-code-box atribut.</td>
+                </tr>
+                <tr>
+                    <td>data-project-name</td>
+                    <td>název projektu</td>
+                    <td>Nastavuje název projektu. Má smysl jen pokud je nastavený atribut data-project.</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3 class="heading-tertiary u-mb-2">Elementy s kódy</h3>
+        <p class="paragraph u-mb-2">pre element, který má code element</p>
+        <table class="table u-mb-4">
+            <thead>
+                <tr>
+                    <th>Atribut</th>
+                    <th>Hodnota</th>
+                    <th>Popis</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>data-code</td>
+                    <td>název souboru (defaultní hodnota: "unnamed")</td>
+                    <td>Nastavuje, že se jedná o ukázku kódu.</td>
+                </tr>
+                <tr>
+                    <td>data-active</td>
+                    <td></td>
+                    <td>Nastavuje, že se má ukázka kódu v code boxu zobrazit jako první.</td>
+                </tr>
+                <tr>
+                    <td>data-code-highlight</td>
+                    <td>start-konec,řádek,... (např. "1-3,5" zvýrazní řádky 1 až 3 a řádek 5)</td>
+                    <td>Nastavuje, které řádky ukázky kódu se mají zvýraznit.</td>
+                </tr>
+                <tr>
+                    <td>data-folder</td>
+                    <td>cesta ke složce (např. src/main/webapp)</td>
+                    <td>Nastavuje, do jaké složky se má umístit tlačítko pro otevření ukázky kódu (defaultně se tlačítka umísťují do kořenové složky projektu). Má smysl jen pokud má code box nastaven atribut data-project.</td>
+                </tr>
+                <tr>
+                    <td>data-java-package</td>
+                    <td>název Java balíčku (např. io.github.jirkasa) - pokud název není specifikován, použije se defaultní balíček</td>
+                    <td>Nastavuje, do jakého Java balíčku ukázka kódu patří (mělo by se používat pro Java soubory).</td>
+                </tr>
+                <tr>
+                    <td>data-java-package-opened</td>
+                    <td></td>
+                    <td>Nastavuje, že se má Java balíček, do kterého ukázka kódu patří, v bočním panelu code boxu otevřít.</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3 class="heading-tertiary u-mb-2">Složky projektu</h3>
+        <p class="paragraph u-mb-2">konfigurační ul element v code boxu</p>
+        <table class="table u-mb-4">
+            <thead>
+                <tr>
+                    <th>Atribut</th>
+                    <th>Hodnota</th>
+                    <th>Popis</th>
+                    <th>Kam nastavit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>data-project-folders</td>
+                    <td></td>
+                    <td>Nastavuje, že se jedná o element s konfigurací</td>
+                    <td>kořenový ul element</td>
+                </tr>
+                <tr>
+                    <td>data-opened</td>
+                    <td></td>
+                    <td>Nastavuje, že se má složka otevřít.</td>
+                    <td>li element</td>
+                </tr>
+                <tr>
+                    <td>data-java-packages-folder</td>
+                    <td></td>
+                    <td>Nastavuje, že se jedná o složku, ve které se budou automaticky vytvářet složky pro Java balíčky.</td>
+                    <td>li element</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="paragraph u-mb-2">Ty konfigurační elementy musím ještě raději skrýt v CSS.</p>
+        <!-- 
+            Zbývající atributy:
+            - data-project-extends=[project-id]
+
+            - data-project-commands (bude to ul s li)
+                li budou mít vždy data-command-something atribut a hodnotu budou mít jako jejich text
+            - data-command-remove-file [path]
+            - data-command-remove-folder [path]
+            - data-command-rename-file [path] - může být více se stejným jménem, tak kdyžtak přejmenovat všechny - sice je to blbost, ale budu podporovat více souborů se stejným názvem
+            - data-command-rename-folder [path]
+            - data-command-open-folder [path]
+            - data-command-open-java-package [name]
+            - data-command-set-active-file [path]
+            - data-command-code-highlight=[hodnoty] [path]
+         -->
+    <%- include("../includes/tutorial-page-layout-end.ejs") %>
+    <%- include("../includes/footer.ejs") %>
+<%- include("../includes/page-end.ejs") %>
