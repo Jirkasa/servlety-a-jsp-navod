@@ -159,6 +159,8 @@ class ProjectCodeBox extends CodeBox {
 
         // process commands after initialization of code box
         this.processCommandsAfterInit();
+
+        this.removeConfigurationElements();
     }
 
     /**
@@ -607,6 +609,17 @@ class ProjectCodeBox extends CodeBox {
     }
 
     /**
+     * Removes configuration elements after initialization of code box.
+     */
+    private removeConfigurationElements() {
+        const commandElementsContainer = this.codeBoxElement.querySelector("[data-project-commands]");
+        const foldersElement = this.codeBoxElement.querySelector("[data-project-folders]");
+
+        if (commandElementsContainer) commandElementsContainer.remove();
+        if (foldersElement) foldersElement.remove();
+    }
+
+    /**
      * Finds code elements in code box based on passed file path.
      * @param path Path of file (code).
      * @returns Code elements.
@@ -755,7 +768,6 @@ class ProjectCodeBox extends CodeBox {
         if (!foldersElement) return;
 
         this.createFoldersStructureTraverse(foldersElement as HTMLElement, rootCollapsible);
-        foldersElement.remove();
     }
 
     /**
