@@ -4,18 +4,21 @@ import HandyCollapse from "handy-collapse";
 
 let initialized = false;
 
+/**
+ * Initializes code boxes.
+ */
 function initCodeBoxes() : void {
-    if (initialized) {
-        throw new Error("Code boxes are already initialized.");
-    }
-    const codeBoxElements : NodeListOf<HTMLElement> = document.querySelectorAll("[data-code-box], [data-project]");
+    if (initialized) throw new Error("Code boxes are already initialized.");
 
-    // let forNow: ProjectCodeBox;
+    // get all code box elements on page
+    const codeBoxElements : NodeListOf<HTMLElement> = document.querySelectorAll("[data-code-box], [data-project]");
 
     const createdProjectCodeBoxes = new Map<string, ProjectCodeBox>();
     const postponedCodeBoxElements: HTMLElement[] = [];
 
+    // create code boxes or postpone their creation for later
     codeBoxElements.forEach(codeBoxElement => {
+        // create project|simple code box
         if (codeBoxElement.hasAttribute("data-project")) {
             let codeBox: ProjectCodeBox | undefined;
             if (codeBoxElement.dataset.projectExtends !== undefined) {
@@ -36,6 +39,7 @@ function initCodeBoxes() : void {
         }
     });
 
+    // create project code boxes which creation was postponed
     let resolvedCount = 0;
     while (postponedCodeBoxElements.length > 0) {
         for (let i = 0; i < postponedCodeBoxElements.length; i++) {
@@ -46,6 +50,7 @@ function initCodeBoxes() : void {
             if (createdProjectCodeBoxes.has(codeBoxElement.dataset.projectExtends)) {
                 const codeBox = new ProjectCodeBox(codeBoxElement, createdProjectCodeBoxes.get(codeBoxElement.dataset.projectExtends));
                 createdProjectCodeBoxes.set(codeBox.getProjectId(), codeBox);
+                
                 postponedCodeBoxElements.splice(i, 1);
                 i--;
                 resolvedCount++;
@@ -56,6 +61,7 @@ function initCodeBoxes() : void {
         resolvedCount = 0;
     }
 
+    // initialize collapsibles
     new HandyCollapse({
         closeOthers: false,
         animationSpeed: 140,
@@ -66,17 +72,3 @@ function initCodeBoxes() : void {
 }
 
 export default initCodeBoxes;
-
-/* 
-    Dědění:
-        - zdědění všech folders
-        - zdědění všech ukázek kódu (ukázky kódu se tedy musí někde ukládat...)
-        - zdědění složky pro java packages
-            - vezmou se podle toho java packages (ukázka kódu tedy musí mít vlastnost java package)
-                - asi také složku - a nebo nevím, spíš ne, spíš se to, ve které složce to je bude ukládat jinak
-            - java packages folder půjde nastavit jen jednou, poté již nepůjde, a vlastně se ani nebude brát konfigurační ul element pro data-project-folders
-
-        - to je vlastně vše co se má zdědit
-    
-    - u složek budu muset ukládat i to, jestli byly vygenerovány automaticky když se vytvářel java balíček
-*/

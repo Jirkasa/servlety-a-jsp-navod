@@ -6,11 +6,20 @@ Splide.defaults = {
     preloadPages: 2
 }
 
+let initialized = false;
+
+/**
+ * Initializes sliders.
+ */
 function initSliders() : void {
+    if (initialized) throw new Error("Code boxes are already initialized.");
+
     const sliders = document.querySelectorAll("[data-slider]");
     sliders.forEach(slider => {
         new Splide(slider as HTMLElement).mount();
     });
+
+    initialized = true;
 }
 
 export default initSliders;
