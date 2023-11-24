@@ -27,7 +27,7 @@
         <%- include("./includes/eclipse-installation-slider.ejs") %>
         <p class="paragraph u-mb-4">Jak Eclipse používat tu popisovat nebudu. Jen jsem vám ukázal jak jej stáhnout a na to jak jej používat si můžete najít nějaký jiný tutoriál.</p>
         <h2 class="heading-secondary u-mb-2">Vytvoření projektu</h2>
-        <p class="paragraph u-mb-2">Teď již máme nainstalováno vše, co je potřebné pro vytvoření jednoduchého projektu. Pustíme se tedy do toho a vytvoříme si jednoduchou "Hello World" aplikaci. Zároveň si při tom nastavíme Tomcat v Eclipsu.</p>
+        <p class="paragraph u-mb-2">Teď již máme nainstalováno vše, co je potřebné pro vytvoření jednoduchého projektu. Pustíme se tedy do toho a vytvoříme si jednoduchou "Hello World" aplikaci. Až ji budeme mít hotovou, tak si ukážeme, jak do Eclipse přidat Tomcat server a aplikaci si spustíme.</p>
         <p class="paragraph u-mb-2">Budeme vytvářet Maven projekt. Pokud nevíte co to Maven je nebo s ním nemáte žádné zkušenosti, tak nevadí. Já na něj v době psaní tohoto tutoriálu také nejsem žádný expert. Nebudeme jej nijak složitě konfigurovat. Jen si ukážeme jak si vytvořit projekt a dozvíte se co to je. Jak Maven projekt vytvořit v Eclipse ukazuje následující slider.</p>
         <%- include("./includes/create-maven-project-slider.ejs") %>
         <p class="paragraph u-mb-2">V následující ukázce si můžete po otevření levého panelu prohlédnou adresářovou strukturu našeho vytvořeného projektu.</p>
@@ -59,15 +59,21 @@
         <%- include("./includes/code-box-5.ejs") %>
         <p class="paragraph u-mb-2">Teď musíme Tomcatu dát vědět, kdy má náš servlet spustit. To můžeme nastavit pomocí souboru web.xml. Ten se umisťuje do složky WEB-INF, kterou můžeme vytvořit ve složce webapp. Z následující ukázky si můžete pro tento soubor zkopírovat základní kód. Nebo si jej můžete zkopírovat <a href="https://docs.oracle.com/cd/E24329_01/web.1211/e21049/web_xml.htm#WBAPP503" target="_blank" class="link">odsud</a>.</p>
         <%- include("./includes/code-box-6.ejs") %>
-        <%- include("./includes/test8.ejs") %>
-        <%- include("./includes/test7.ejs") %>
+        <p class="paragraph u-mb-2">Pomocí elementu servlet, společně s jeho podelementy servlet-name a servlet-class můžeme ve web.xml náš vytvořený servlet nadefinovat. Jak to udělat ukazuje následující ukázka. Pomocí elementu servlet-name nastavujeme název servletu a pomocí elementu servlet-class pro něj specifikujeme třídu.</p>
+        <%- include("./includes/code-box-7.ejs") %>
+        <p class="paragraph u-mb-2">Poté můžeme nastavit, kdy se má servlet použít. K tomu slouží element servlet-mapping, kde pomocí elementu servlet-name nastavíme servlet a pomocí elementu url-pattern URL, pro které se má servlet zavolat.</p>
+        <%- include("./includes/code-box-8.ejs") %>
+        <p class="paragraph u-mb-4">Naše první aplikace je hotová a připravena na spuštění v Tomcat serveru.</p>
+        <h2 class="heading-secondary u-mb-2">Přidání Tomcat serveru do Eclipse</h2>
+        <p class="paragraph u-mb-2">Abychom si naši aplikaci mohli spustit, tak si musíme do Eclipse přidat Tomcat server a aplikaci na něj nasadit. Postup pro přidání Tomcat serveru do Eclipse ukazuje následující slider.</p>
+        <%- include("./includes/eclipse-add-tomcat-server-slider.ejs") %>
+        <p class="paragraph u-mb-2">Poté co jsme si do Eclipse Tomcat server přidali, tak si na něm můžeme naši aplikaci spustit. Následující slider ukazuje, jak to můžeme udělat.</p>
+        <%- include("./includes/eclipse-run-tomcat-server-slider.ejs") %>
+        <h2 class="heading-secondary u-mb-2">Instalace MySQL</h2>
+        <p class="paragraph u-mb-2"></p>
     <%- include("../../includes/tutorial-page-layout-end.ejs") %>
     <%- include("../../includes/footer.ejs") %>
 <%- include("../../includes/page-end.ejs") %>
-
-
-
-<!-- todo - ta složka WEB-INF -->
 
 
 
