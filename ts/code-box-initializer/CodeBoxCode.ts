@@ -1,5 +1,6 @@
 class CodeBoxCode {
-    private rootElement : HTMLElement;
+    private rootElement: HTMLElement;
+    private codeElement: HTMLElement;
 
     private static readonly CSS_CODE_CLASS = "code-box__code";
     private static readonly CSS_CODE_HIDDEN_CLASS = "code-box__code--hidden";
@@ -15,6 +16,8 @@ class CodeBoxCode {
         this.rootElement = document.createElement("div");
         this.rootElement.classList.add(CodeBoxCode.CSS_CODE_CLASS);
         codeBoxElement.appendChild(this.rootElement);
+
+        this.codeElement= codeElement;
 
         const lineNumbersContainer = document.createElement("div");
         lineNumbersContainer.classList.add(CodeBoxCode.CSS_LINE_NUMBERS_CONTAINER_CLASS);
@@ -39,12 +42,22 @@ class CodeBoxCode {
         return !this.rootElement.classList.contains(CodeBoxCode.CSS_CODE_HIDDEN_CLASS);
     }
 
-    show() : void {
+    public show() : void {
         this.rootElement.classList.remove(CodeBoxCode.CSS_CODE_HIDDEN_CLASS);
     }
 
-    hide() : void {
+    public hide() : void {
         this.rootElement.classList.add(CodeBoxCode.CSS_CODE_HIDDEN_CLASS);
+    }
+
+    public cloneCodeElement() : HTMLElement {
+        const codeElement = this.codeElement.cloneNode(true) as HTMLElement;
+
+        delete codeElement.dataset.codeHighlight;
+        delete codeElement.dataset.active;
+        delete codeElement.dataset.javaPackageOpened;
+
+        return codeElement;
     }
 
     private addHighlightBoxes(container: HTMLElement, codeElementDataset: DOMStringMap) {

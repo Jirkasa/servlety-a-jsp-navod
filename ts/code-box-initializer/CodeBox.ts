@@ -12,6 +12,7 @@ abstract class CodeBox {
     private noImplicitActiveCode : boolean;
     private noCodeElement : HTMLElement;
     private codeButtons : CodeButton[];
+    protected codes : CodeBoxCode[];
     private onCodeButtonClickEventSource : EventSourcePoint<CodeButton>;
     private activeCodeButton : CodeButton | null;
 
@@ -19,6 +20,7 @@ abstract class CodeBox {
         this.codeBoxElement = codeBoxElement;
         this.noImplicitActiveCode = noImplicitActiveCode;
         this.codeButtons = [];
+        this.codes = [];
         this.onCodeButtonClickEventSource = new EventSourcePoint();
         this.activeCodeButton = null;
 
@@ -36,6 +38,11 @@ abstract class CodeBox {
 
         const codeElements = this.codeBoxElement.querySelectorAll("[data-code]");
         codeElements.forEach(codeElement => {
+            if (!this.validateCodeElement(codeElement as HTMLElement)) {
+                codeElement.remove();
+                return;
+            }
+
             const codeBoxCode = new CodeBoxCode(codeElement as HTMLElement, this.codeBoxElement);
             const codeElementDataset = (codeElement as HTMLElement).dataset;
 
@@ -47,6 +54,7 @@ abstract class CodeBox {
             }
 
             this.codeButtons.push(codeButton);
+            this.codes.push(codeBoxCode);
         });
 
         if (!this.activeCodeButton && !this.noImplicitActiveCode && this.codeButtons.length > 0) {
@@ -74,6 +82,10 @@ abstract class CodeBox {
         this.activeCodeButton = codeButton;
 
         this.onDisplayedCodeChanged();
+    }
+
+    protected validateCodeElement(codeElement: HTMLElement) : boolean { // todo - napsat, že vlastně je to pre element
+        return true;
     }
 
     protected abstract createCodeButton(codeBoxCode: CodeBoxCode, codeElementDataset: DOMStringMap) : CodeButton;

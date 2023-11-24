@@ -40,6 +40,11 @@
                     <td>název projektu</td>
                     <td>Nastavuje název projektu. Má smysl jen pokud je nastavený atribut data-project.</td>
                 </tr>
+                <tr>
+                    <td>data-project-extends</td>
+                    <td>ID projektu</td>
+                    <td>Nastavuje, který code box má code box rozšiřovat. Jen pro použití s code boxy, které jsou zobrazeny jako projekt.</td>
+                </tr>
             </tbody>
         </table>
         <h3 class="heading-tertiary u-mb-2">Elementy s kódy</h3>
@@ -117,24 +122,90 @@
                 </tr>
             </tbody>
         </table>
-        <p class="paragraph u-mb-2">Ty konfigurační elementy musím ještě raději skrýt v CSS.</p>
-        <!-- 
-            Zbývající atributy:
-            - data-project-extends=[project-id]
-
-            - data-project-commands (bude to ul s li)
-                li budou mít vždy data-command-something atribut a hodnotu budou mít jako jejich text
-            - data-command-remove-file [path]
-            - data-command-remove-folder [path]
-            - data-command-rename-file [path] - může být více se stejným jménem, tak kdyžtak přejmenovat všechny - sice je to blbost, ale budu podporovat více souborů se stejným názvem
-            - data-command-rename-folder [path]
-            - data-command-open-folder [path]
-            - data-command-open-java-package [name]
-            - data-command-set-active-file [path]
-            - data-command-code-highlight=[hodnoty] [path]
-
-            - možná pokud nebudou žádné balíčky, tak tam tu část nezobrazovat - díky tomu to potom bude moci někdo použít i mimo Javu
-         -->
+        <h3 class="heading-tertiary u-mb-2">Container pro příkazy projektu</h3>
+        <p class="paragraph u-mb-4">container, který slouží k uchování příkazů pro projekt (data-project-commands)</p>
+        <h3 class="heading-tertiary u-mb-2">Příkazy</h3>
+        <p class="paragraph u-mb-2">elementy s příkazy</p>
+        <table class="table u-mb-4">
+            <thead>
+                <tr>
+                    <th>Atribut</th>
+                    <th>Hodnota atributu</th>
+                    <th>Hodnota elementu</th>
+                    <th>Popis</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>data-command-create-folder</td>
+                    <td></td>
+                    <td>cesta</td>
+                    <td>Vytvoří složku nebo více složek dle zadané cesty.</td>
+                </tr>
+                <tr>
+                    <td>data-command-remove-folder</td>
+                    <td></td>
+                    <td>cesta ke složce</td>
+                    <td>Odstraní složku.</td>
+                </tr>
+                <tr>
+                    <td>data-command-remove-file</td>
+                    <td></td>
+                    <td>cesta k souboru</td>
+                    <td>Odstraní soubor.</td>
+                </tr>
+                <tr>
+                    <td>data-command-rename-folder</td>
+                    <td>nový název</td>
+                    <td>cesta ke složce</td>
+                    <td>Přejmenuje složku.</td>
+                </tr>
+                <tr>
+                    <td>data-command-rename-file</td>
+                    <td>nový název</td>
+                    <td>cesta k souboru</td>
+                    <td>Přejmenuje soubor.</td>
+                </tr>
+                <tr>
+                    <td>data-command-open-folder</td>
+                    <td></td>
+                    <td>cesta ke složce</td>
+                    <td>Otevře složku.</td>
+                </tr>
+                <tr>
+                    <td>data-command-open-folder-to-root</td>
+                    <td></td>
+                    <td>cesta ke složce</td>
+                    <td>Otevře složku a všechny její nadsložky.</td>
+                </tr>
+                <tr>
+                    <td>data-command-open-java-package</td>
+                    <td></td>
+                    <td>název Java balíčku</td>
+                    <td>Otevře Java balíček.</td>
+                </tr>
+                <tr>
+                    <td>data-command-set-active-file</td>
+                    <td></td>
+                    <td>cesta k souboru</td>
+                    <td>Nastaví soubor, který se v code boxu zobrazí jako první.</td>
+                </tr>
+                <tr>
+                    <td>data-command-code-highlight</td>
+                    <td>start-konec,řádek,...</td>
+                    <td>cesta k souboru</td>
+                    <td>Nastavuje zvýraznění kódu stejně jako atribut data-code-highlight.</td>
+                </tr>
+                <tr>
+                    <td>data-command-set-java-packages-folder</td>
+                    <td></td>
+                    <td>cesta ke složce</td>
+                    <td>Nastavuje cestu ke složce, která se použije pro Java balíčky.</td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- todo - není to neprůstřelný, rozhodně to obsahuje chyby, ale pokud to budou používat normálně, neměl by být problém -->
+        <!-- todo - není vyloučeno že z toho udělám potom knihovnu - ale to bych to musel trochu přepsat, trochu víc promyslet a taky na to napsat testy -->
     <%- include("../includes/tutorial-page-layout-end.ejs") %>
     <%- include("../includes/footer.ejs") %>
 <%- include("../includes/page-end.ejs") %>

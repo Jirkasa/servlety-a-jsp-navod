@@ -41,12 +41,33 @@
         </ul>
         <p class="paragraph u-mb-2">Pokud jste ještě nikdy v Eclipse nevytvářeli žádný projekt pomocí Mavenu nebo jej máte nově naintalovaný, tak po otevření souboru pom.xml uvidíte, že vám Eclipse hlásí chybu. Jak tuto chybu vyřešit ukazuje následující slider.</p>
         <%- include("./includes/eclipse-javadoc-error-slider.ejs") %>
-        <p class="paragraph u-mb-2">Chybu v pom.xml jsme opravili a můžeme tedy začít s tím, že si náš Maven projekt nakonfigurujeme. Jak jsem již psal, používá se k tomu soubor pom.xml. -dopsat</p>
+        <p class="paragraph u-mb-2">Chybu v pom.xml jsme opravili a můžeme tedy začít s tím, že si náš Maven projekt nakonfigurujeme. Jak jsem již psal, používá se k tomu soubor pom.xml. První věc, kterou uděláme, je přidání elementu properties, kde nastavíme pár vlastností, jak ukazuje následující ukázka.</p>
+        <%- include("./includes/code-box-2.ejs") %>
+        <p class="paragraph u-mb-2">Vlastnost project.build.sourceEncoding a project.reporting.outputEncoding nastavuje kódování. K čemu přesně to slouží nevím, jen přidávám tyto řádky kódu do každého Maven projektu, který vytvářím. Jak jsem již psal, tak Mavenu v době psaní tohoto tutoriálu zatím moc nerozumím. Na dalším řádku nastavujeme vlastnost java.version, kterou používáme na posledních dvou řádcích, pomocí kterých nastavujeme verzi Javy, která se má použít.</p>
+        <p class="paragraph u-mb-2">Nyní si nadefinujeme, co za knihovny chceme v našem projektu použít. Budeme potřebovat servlety, takže si je v pom.xml připíšeme do části dependencies, jak ukazuje následující ukázka.</p>
+        <%- include("./includes/code-box-3.ejs") %>
+        <p class="paragraph u-mb-2">Kód, který ukázka ukazuje, jsem zkopíroval z <a href="https://mvnrepository.com/search?q=servlet" target="_blank" class="link">www.mvnrepository.com</a>. Tento web můžete použít k vyhledávání Maven repozitářů a kopírovat si odtamtud kód, který si můžete přidávat do části dependencies pro jejich použití. Slovo dependencies vlastně česky znamená závislosti. Definujeme tam tedy věci, na kterých je náš projekt závislý. Můžeme mít libovolný počet závislostí (dependency elementů). Každý dependency element se skládá z vlastností groupId, artifactId, version a scope. Co tyto jednotlivé vlastnosti znamenají popisuje následující seznam:</p>
+        <ul class="list u-mb-2">
+            <li><b>groupId</b> - jedinečný název společnosti nebo skupiny, která projekt vytvořila</li>
+            <li><b>artifactId</b> - unikátní název projektu</li>
+            <li><b>version</b> - verze projektu</li>
+            <li><b>scope</b> - může být typu "compile", "provided", "runtime", "test", "system" nebo "import" (v našem případě používáme provided - to znamená, že implementaci pro servlety nám poskytne Tomcat)</li>
+        </ul>
+        <p class="paragraph u-mb-2">Teď již máme nastaveno vše pro to, abychom mohli začít se samotným programováním servletů. Vytvoříme tedy třídu, kterou pojmenujeme třeba jako HelloWorldServlet a nastavíme jí, že dědí od třídy HttpServlet z balíčku javax.servlet.http.</p>
+        <%- include("./includes/code-box-4.ejs") %>
+        <p class="paragraph u-mb-2">Jelikož jde v této části jen o to, abychom si vůbec zkusili spustit alespoň úplně jednoduchý projekt, tak tu nebudu zatím nic podrobně vysvětlovat. Náš první servlet jen vyrenderuje stránku s nápisem "Hello World". Můžete si tedy jen zkopírovat kód z následující ukázky.</p>
+        <%- include("./includes/code-box-5.ejs") %>
+        <p class="paragraph u-mb-2">Teď musíme Tomcatu dát vědět, kdy má náš servlet spustit. To můžeme nastavit pomocí souboru web.xml. Ten se umisťuje do složky WEB-INF, kterou můžeme vytvořit ve složce webapp. Z následující ukázky si můžete pro tento soubor zkopírovat základní kód. Nebo si jej můžete zkopírovat <a href="https://docs.oracle.com/cd/E24329_01/web.1211/e21049/web_xml.htm#WBAPP503" target="_blank" class="link">odsud</a>.</p>
+        <%- include("./includes/code-box-6.ejs") %>
+        <%- include("./includes/test7.ejs") %>
+        <%- include("./includes/test8.ejs") %>
     <%- include("../../includes/tutorial-page-layout-end.ejs") %>
     <%- include("../../includes/footer.ejs") %>
 <%- include("../../includes/page-end.ejs") %>
 
 
+
+<!-- todo - ta složka WEB-INF -->
 
 
 
