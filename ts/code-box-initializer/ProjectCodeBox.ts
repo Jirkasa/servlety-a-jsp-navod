@@ -121,6 +121,10 @@ class ProjectCodeBox extends CodeBox {
         return this.rootFolder.name;
     }
 
+    public getProjectId() {
+        return this.projectId;
+    }
+
     private onPanelToggleButtonClick() : void {
         this.panelToggleButton.classList.toggle(ProjectCodeBox.CSS_PANEL_TOGGLE_BUTTON_OPENED_MODIFIER_CLASS);
         this.panelElement.classList.toggle(ProjectCodeBox.CSS_PANEL_OPENED_MODIFIER_CLASS);

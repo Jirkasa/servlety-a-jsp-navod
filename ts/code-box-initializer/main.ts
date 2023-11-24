@@ -8,22 +8,53 @@ function initCodeBoxes() : void {
     if (initialized) {
         throw new Error("Code boxes are already initialized.");
     }
-    const codeBoxes : NodeListOf<HTMLElement> = document.querySelectorAll("[data-code-box], [data-project]");
+    const codeBoxElements : NodeListOf<HTMLElement> = document.querySelectorAll("[data-code-box], [data-project]");
 
-    let forNow: ProjectCodeBox;
+    // let forNow: ProjectCodeBox;
 
-    codeBoxes.forEach(codeBoxElement => {
+    const createdProjectCodeBoxes = new Map<string, ProjectCodeBox>();
+    const postponedCodeBoxElements: HTMLElement[] = [];
+
+    codeBoxElements.forEach(codeBoxElement => {
         if (codeBoxElement.hasAttribute("data-project")) {
-            // todo - promyslet to předávání předků (zatím to mám jen na zkoušku takto)
-            if (forNow && codeBoxElement.hasAttribute("data-project-extends")) {
-                forNow = new ProjectCodeBox(codeBoxElement, forNow);
+            let codeBox: ProjectCodeBox | undefined;
+            if (codeBoxElement.dataset.projectExtends !== undefined) {
+                if (createdProjectCodeBoxes.has(codeBoxElement.dataset.projectExtends)) {
+                    codeBox = new ProjectCodeBox(codeBoxElement, createdProjectCodeBoxes.get(codeBoxElement.dataset.projectExtends));
+                }
             } else {
-                forNow = new ProjectCodeBox(codeBoxElement);
+                codeBox = new ProjectCodeBox(codeBoxElement);
+            }
+
+            if (codeBox) {
+                createdProjectCodeBoxes.set(codeBox.getProjectId(), codeBox);
+            } else {
+                postponedCodeBoxElements.push(codeBoxElement);
             }
         } else {
             new SimpleCodeBox(codeBoxElement);
         }
     });
+
+    let resolvedCount = 0;
+    while (postponedCodeBoxElements.length > 0) {
+        for (let i = 0; i < postponedCodeBoxElements.length; i++) {
+            const codeBoxElement = postponedCodeBoxElements[i];
+
+            if (codeBoxElement.dataset.projectExtends === undefined) throw new Error("Something went wrong when initializing code boxes.");
+
+            if (createdProjectCodeBoxes.has(codeBoxElement.dataset.projectExtends)) {
+                const codeBox = new ProjectCodeBox(codeBoxElement, createdProjectCodeBoxes.get(codeBoxElement.dataset.projectExtends));
+                createdProjectCodeBoxes.set(codeBox.getProjectId(), codeBox);
+                postponedCodeBoxElements.splice(i, 1);
+                i--;
+                resolvedCount++;
+            }
+        }
+
+        if (resolvedCount === 0) break;
+        resolvedCount = 0;
+    }
 
     new HandyCollapse({
         closeOthers: false,
