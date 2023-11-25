@@ -2,7 +2,7 @@
     <%- include("../../includes/header.ejs") %>
     <%- include("../../includes/tutorial-page-layout-start.ejs") %>
         <h1 class="heading-primary u-mb-4">Příprava pro vývoj</h1>
-        <p class="paragraph u-mb-4">Vítejte v tutoriálu o tvorbě webových aplikací pomocí servletů a JSP. Jedná se o technologie z Java Enterprise Edition. Tento...[dopsat a napsat že instalace je ukázána jen pro operační systém Windows.]</p>
+        <p class="paragraph u-mb-4">Vítejte v tutoriálu o tvorbě webových aplikací pomocí servletů a JSP. Jedná se o technologie z Java Enterprise Edition. Tato první část se věnuje instalaci věcí, které pro to budeme potřebovat. Instalace je ukázána pouze pro operační systém Windows, takže pokud máte jiný operační systém, budete si pro instalaci jednotlivých věcí muset najít jiný návod.</p>
         <h2 class="heading-secondary u-mb-2">Co pro vývoj potřebujeme</h2>
         <p class="paragraph u-mb-1">Abychom mohli začít s vývojem, potřebujeme si nainstalovat následující věci:</p>
         <ul class="list u-mb-4">
@@ -74,83 +74,7 @@
         <%- include("./includes/mysql-installation-slider.ejs") %>
         <p class="paragraph u-mb-2">Pokud si chceme ověřit, že se nám MySQL server nainstaloval, tak si můžeme třeba zkusit spustit klienta příkazového řádku MySQL. Jedná se o aplikaci, pomocí které můžeme s MySQL serverem komunikovat prostřednictvím příkazového řádku. Jiná možnost je použít nějakou GUI aplikaci, jako je třeba MySQL Workbench, kterou jsme si nainstalovali společně s MySQL serverem. Následující slider ukazuje, jak můžeme klienta příkazového řádku spustit.</p>
         <%- include("./includes/run-mysql-command-line-client-slider.ejs") %>
+        <p class="paragraph">Pro tuto první část je to vše. Instalaci máme za sebou a zkusili jsme si vytvořit první jednoduchý projekt. V dalších částech tutoriálu se tedy můžeme o servletech a JSP začít učit více do hloubky.</p>
     <%- include("../../includes/tutorial-page-layout-end.ejs") %>
     <%- include("../../includes/footer.ejs") %>
 <%- include("../../includes/page-end.ejs") %>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--
-    - úvod
-        - dopsat
-    - instalace je ukázána jen pro windows
-    - konfigurace mavenu při startu projektu
-    - vytvoření projektu
-    - stažení IDE
-    - nastavení klávesnice v Eclipse
-    - JSP a Servlety jsou součástí Java EE
-    - instalace Tomcat
-    - zastavení Tomcatu
-    - Maven
-    - MySQL - pro část s databází
-
-    - target složku zobrazovat jen v první ukázce (potom asi už ne - nebo možná jo, ale napsat, že se tam aplikace buildí a že ji tam tedy v Eclipse najdou sestavenou - tady v ukázkách na webu v ní není nic)
-
-    - slidery dát do includes složky
-
-    - eclipse workspace je jednoduše složka, kde budeme ukládat zdrojové kódy našich projektů
-        - můžeme ji tak nechat, nebo vybrat jinou (asi bych doporučoval vytvořit si na to něco podle sebe)
-
-    - eclipse 'download packages'
-
-    - po instalaci Eclipse zkusit jestli to funguje, vytvořit základní zkušební projekt, a až poté nainstalovat MySQL
-
-    - u dependencies vysvětlit co jednotlivé možnosti znamenají (a ukázat i screenshoty s mvnrepository)
-    
-    - jak eclipse používat se budou muset naučit v nějakém jiném tutoriálu
-        - tento tutoriál počítá s tím, že už máte s Javou nějaké zkušenosti, takže jste již nějaké IDE používali a základní věci jako jak vytvořit Java balíček, třídu, atd. víte
-    
-    - uvidím jestli nebudu muset stáhnout maven
-
-    - přidání projektu do Tomcatu
-
-    - samostatná část - přidání Tomcat Serveru do Eclipsu
-
-    - war - web archive
-
-    - velké J v deklaraci.. web.xml - řádek
-
-    - při přidávání nového tomcat serveru poprvé se vybírá složka s tomcatem
-
-    - po uložení nastavení Tomcat serveru v eclipse dát Ctrl + S
-
-    - tomcat screenshot 19: po kliknutí na šipku vedle... se otevře co v Tomcat serveru servírujeme za aplikace
-
-    - start the mysql server at startup - doporučuji (nezabere to moc paměti)
-    
-    - pokud by při stahování došlo k nějaké chybě, tak ať se vrátí zpátky, smažou co se nainstalovalo dobře, a znovu zkusili instalování pustit (mě se to stalo, proto je na screenu jen jedna položka)
-    - pokud by potřebovali potom třeba ještě něco později doinstalovat, tak ten installer můžou spustit znovu
-
-    - i trochu vysvětlit ten pom.xml
- -->
