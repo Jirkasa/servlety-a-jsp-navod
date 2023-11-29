@@ -92,24 +92,13 @@
 
             overflow: visible !important;
 
-            // // width
-            // &::-webkit-scrollbar {
-            //     height: 1.6rem;
-            // }
-
-            // // track
-            // &::-webkit-scrollbar-track {
-            //     background: darken(@colors[grey-40], 8%);
-            // }
-
-            // // handle
-            // &::-webkit-scrollbar-thumb {
-            //     background: @colors[grey-60];
-
-            //     &:hover {
-            //         background: darken(@colors[grey-60], 5%);
-            //     }
-            // }
+            // when this class is set to code element, it is not highlighted, but .hljs class is not added by highlight.js
+            // so it has to be styled on its own
+            &.no-highlight {
+                display: block;
+                background: #333;
+                color: @colors[grey-20];
+            }
         }
     }
     &--simple &__code {

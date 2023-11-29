@@ -1,0 +1,31 @@
+<div data-project="10" data-project-extends="9" class="u-mb-2">
+<pre data-code="Servlet2.java" data-java-package data-active><code>import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.GenericServlet;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+
+public class Servlet2 extends GenericServlet {
+
+    @Override
+    public void service(ServletRequest req, ServletResponse res) throws ServletException, IOException {
+        res.setContentType("text/html; charset=utf-8");
+        
+        try (PrintWriter out = res.getWriter()) {
+            out.println("&lt;!DOCTYPE html&gt;");
+            out.println("&lt;html&gt;");
+            out.println("&lt;head&gt;");
+            out.println("&lt;meta charset=\"UTF-8\"&gt;");
+            out.println("&lt;title&gt;Úvod do Servletů&lt;/title&gt;");
+            out.println("&lt;/head&gt;");
+            out.println("&lt;body&gt;");
+            out.println("&lt;h1&gt;Servlet2&lt;/h1&gt;");
+            out.println("&lt;p&gt;Servlet, vytvořený zděděním třídy GenericServlet.&lt;/p&gt;");
+            out.println("&lt;/body&gt;");
+            out.println("&lt;/html&gt;");
+        }
+    }
+}</code></pre>
+</div>
