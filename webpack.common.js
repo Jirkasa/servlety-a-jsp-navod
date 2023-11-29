@@ -11,7 +11,7 @@ function createHtmlWebpackPluginsForTutorialPages() {
         const htmlPlugin = new HtmlWebpackPlugin({
             template: path.resolve(__dirname, "pages", "tutorial", pageName, "index.ejs"),
             filename: `tutorial/${pageName}/index.html`,
-            chunks: ["style", "tutorial"],
+            chunks: ["style", "common", "tutorial"],
             inject: true
         });
     
@@ -26,7 +26,8 @@ module.exports = {
     entry: {
         style: './less/main.less',
         icons: './icons/main.js',
-        tutorial: './ts/main.ts'
+        common: './ts/common/main.ts',
+        tutorial: './ts/tutorial-page/main.ts'
     },
     output: {
         clean: true
@@ -85,13 +86,13 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, "pages", "index.ejs"),
-            chunks: ["style"],
+            chunks: ["style", "common"],
             inject: true
         }),
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, "pages", "popis-zdrojoveho-kodu-projektu", "index.ejs"),
             filename: "popis-zdrojoveho-kodu-projektu/index.html",
-            chunks: ["style", "tutorial"],
+            chunks: ["style", "common", "tutorial"],
             inject: true
         }),
         ...tutorialPages,
