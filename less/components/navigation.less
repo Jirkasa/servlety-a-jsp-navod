@@ -6,6 +6,33 @@
 
     list-style: none;
 
+    padding: 1.6rem;
+
+    position: sticky;
+    top: @header-height;
+    overflow-y: auto;
+    max-height: ~"calc(100vh - @{header-height})";
+
+     // width
+     &::-webkit-scrollbar {
+        width: 1.2rem;
+    }
+
+    // track
+    &::-webkit-scrollbar-track {
+        // background: lighten(@colors[grey-40], 5%);
+        background: @colors[grey-30];
+    }
+
+    // handle
+    &::-webkit-scrollbar-thumb {
+        background: @colors[grey-40];
+
+        &:hover {
+            background: darken(@colors[grey-40], 5%);
+        }
+    }
+
     &__link {
         &:link, &:visited {
             display: block;
