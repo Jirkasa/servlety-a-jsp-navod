@@ -1,0 +1,26 @@
+<div data-code-box data-no-buttons class="u-mb-6">
+<pre data-code="MujServlet.java"><code>import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class MujServlet extends HttpServlet {
+    
+    protected void doPatch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        res.setContentType("text/html; charset=utf-8");
+        res.getWriter().write("PATCH request byl zpracován");
+    }
+        
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        if (req.getMethod().equalsIgnoreCase("PATCH")) {
+            doPatch(req, res);
+        } else {
+            super.service(req, res);
+        }
+    }
+}</code></pre>
+</div>
