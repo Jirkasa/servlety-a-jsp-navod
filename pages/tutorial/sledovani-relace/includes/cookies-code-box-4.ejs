@@ -1,0 +1,55 @@
+<div data-project="13" data-project-extends="12" class="u-mb-2">
+<pre data-code="JmenoServlet.java" data-java-package data-java-package-opened data-active data-code-highlight="21-52"><code>import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class JmenoServlet extends HttpServlet {
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        String jmeno = req.getParameter("jmeno");
+        
+        Cookie cookie = new Cookie("jmeno", jmeno);
+        res.addCookie(cookie);
+        
+        res.sendRedirect("./jmeno");
+    }
+    
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        Cookie[] cookies = req.getCookies();
+        
+        String jmeno = null;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("jmeno")) {
+                    jmeno = cookie.getValue();
+                }
+            }
+        }
+        
+        res.setContentType("text/html; charset=utf-8");
+        try (PrintWriter out = res.getWriter()) {
+            out.println("&lt;!DOCTYPE html&gt;");
+            out.println("&lt;html&gt;");
+            out.println("&lt;head&gt;");
+            out.println("&lt;meta charset=\"UTF-8\"&gt;");
+            out.println("&lt;title&gt;Cookies&lt;/title&gt;");
+            out.println("&lt;/head&gt;");
+            out.println("&lt;body&gt;");
+            if (jmeno != null) {
+                out.println("&lt;h1&gt;Zadané jméno: " + jmeno + "&lt;/h1&gt;");
+            } else {
+                out.println("&lt;h1&gt;Není zadané žádné jméno&lt;/h1&gt;");
+            }
+            out.println("&lt;a href=\"./zadej-jmeno\"&gt;Zadat nové jméno&lt;/a&gt;");
+            out.println("&lt;/body&gt;");
+            out.println("&lt;/html&gt;");
+        }
+    }
+}</code></pre>
+</div>

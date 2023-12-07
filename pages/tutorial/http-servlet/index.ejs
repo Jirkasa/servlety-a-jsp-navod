@@ -58,7 +58,7 @@
         <h2 class="heading-secondary u-mb-2">Přidání podpory pro metodu PATCH</h2>
         <p class="paragraph u-mb-2">Jak jsem již psal, tak pro HTTP metodu PATCH neexistuje v HttpServlet třídě metoda doPatch. Můžeme si ji ale sami přidat. Je k tomu potřeba přepsat metodu service, ve které zjistíme, jakou metodou byl poslán request. Pokud byl poslán metodou PATCH, tak zavoláme metodu doPatch, jinak zavoláme metodu service nadtřídy. Následující ukázka ukazuje, jak to udělat.</p>
         <%- include("./includes/add-patch-method-support-code-box.ejs") %>
-        <p class="paragraph">To je pro tuto část vše. V příští části si ukážeme různé způsoby, jak sledovat stav uživatele, když prochází webovými stránkami.</p>
+        <p class="paragraph">To je pro tuto část vše. V příští části si ukážeme různé způsoby, jak ukládat informace o uživateli, když prochází webovými stránkami.</p>
     <%- include("../../includes/tutorial-page-layout-end.ejs") %>
     <%- include("../../includes/footer.ejs") %>
 <%- include("../../includes/page-end.ejs") %>
