@@ -1,0 +1,19 @@
+<div data-project="10" data-project-extends="9" class="u-mb-2">
+    <pre data-code="PageEndServlet.java" data-java-package data-java-package-opened data-active><code>import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class PageEndServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        // vytvoření konce stránky
+        PrintWriter out = res.getWriter();
+        out.println("&lt;/body&gt;");
+        out.println("&lt;/html&gt;");
+    }
+}</code></pre>
+</div>

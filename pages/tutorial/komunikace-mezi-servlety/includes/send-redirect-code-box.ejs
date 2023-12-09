@@ -1,0 +1,15 @@
+<div data-code-box data-no-buttons class="u-mb-6">
+    <pre data-code="Servlet1.java" data-code-highlight="11"><code>import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class Servlet1 extends HttpServlet {
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        res.sendRedirect("./servlet-2");
+    }
+}</code></pre>
+</div>

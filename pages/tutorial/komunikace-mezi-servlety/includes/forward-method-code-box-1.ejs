@@ -1,0 +1,76 @@
+<div data-project="4" data-project-name="metoda-forward" class="u-mb-2">
+    <ul data-project-folders>
+        <li>
+            src
+            <ul>
+                <li>
+                    main
+                    <ul>
+                        <li data-java-packages-folder>java</li>
+                        <li>resources</li>
+                        <li>webapp</li>
+                    </ul>
+                </li>
+                <li>
+                    test
+                    <ul>
+                        <li>java</li>
+                        <li>resources</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>target</li>
+    </ul>
+<pre data-code="pom.xml"><code>&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;io.github.jirkasa&lt;/groupId&gt;
+    &lt;artifactId&gt;metoda-forward&lt;/artifactId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;name&gt;metoda-forward&lt;/name&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+        &lt;maven.compiler.source&gt;${java.version}&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;${java.version}&lt;/maven.compiler.target&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;4.0.1&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;</code></pre>
+<pre data-code="NahodneCisloServlet.java" data-java-package data-java-package-opened data-active><code>import java.io.IOException;
+import java.util.Random;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class NahodneCisloServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        Random rand = new Random();
+        // vygenerování náhodného čísla
+        int randomNumber = rand.nextInt(100);
+        
+        // získání request dispatcheru pro ZobrazCisloServlet
+        RequestDispatcher dispatcher = req.getRequestDispatcher("/zobraz-cislo");
+        
+        // aby měl k vygenerovanému číslu druhý servlet přístup, tak jej nastavíme jako atribut
+        req.setAttribute("nahodneCislo", randomNumber);
+        
+        // předání requestu pro zpracování servletem ZobrazCisloServlet
+        dispatcher.forward(req, res);
+    }
+}</code></pre>
+</div>

@@ -1,0 +1,18 @@
+<div data-project="9" data-project-extends="8" class="u-mb-2">
+    <pre data-code="PageObsahServlet.java" data-java-package data-java-package-opened data-active><code>import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class PageObsahServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        // vytvoření obsahu stránky
+        PrintWriter out = res.getWriter();
+        out.println("&lt;h1&gt;Obsah stránky&lt;/h1&gt;");
+    }
+}</code></pre>
+</div>

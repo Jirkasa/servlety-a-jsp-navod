@@ -1,0 +1,31 @@
+<div data-project="5" data-project-extends="4" class="u-mb-2">
+    <pre data-code="ZobrazCisloServlet.java" data-java-package data-java-package-opened data-active><code>import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class ZobrazCisloServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        // získání atributu, který nastavil předchozí servlet
+        int nahodneCislo = (int) req.getAttribute("nahodneCislo");
+        
+        res.setContentType("text/html; charset=utf-8");
+        try (PrintWriter out = res.getWriter()) {
+            out.println("&lt;!DOCTYPE html&gt;");
+            out.println("&lt;html&gt;");
+            out.println("&lt;head&gt;");
+            out.println("&lt;meta charset=\"UTF-8\"&gt;");
+            out.println("&lt;title&gt;Metoda forward&lt;/title&gt;");
+            out.println("&lt;/head&gt;");
+            out.println("&lt;body&gt;");
+            out.println("&lt;h1&gt;Náhodné číslo je: " + nahodneCislo + "&lt;/h1&gt;");
+            out.println("&lt;/body&gt;");
+            out.println("&lt;/html&gt;");
+        }
+    }
+}</code></pre>
+</div>
