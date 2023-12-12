@@ -2,20 +2,23 @@
     <%- include("../../includes/header.ejs") %>
     <%- include("../../includes/tutorial-page-layout-start.ejs") %>
         <h1 class="heading-primary u-mb-4">Úvod do JSP</h1>
-        <p class="paragraph u-mb-4"></p>
+        <p class="paragraph u-mb-4">V této části se pustíme do JSP (Java Server Pages). V podstatě se tu jen dozvíte co to je. Více do hloubky to začneme zkoumat až v dalších částech tutoriálu.</p>
+        <h2 class="heading-secondary u-mb-2">Co je JSP</h2>
+        <p class="paragraph u-mb-2">JSP je zkratka pro Java Server Pages. Jedná se o technologii z Java EE, stejně jako servlety. Umožňuje kombinovat HTML s Java kódem a můžeme tak jednoduše vytvářet dynamické webové stránky.</p>
+        <p class="paragraph u-mb-4">JSP má se servlety mnoho společného, jelikož se ve výsledku jedná také o servlety. JSP soubory jsou totiž JSP containerem konvertovány do servletů než začnou zpracovávat requesty. To co jsme se naučili o servletech pro nás bude užitečné i u JSP. Jedná se vlastně o takový jiný způsob tvorby servletů, který je lepší, pokud chceme dynamicky vytvářet nějakou stránku než třeba zpracovávat nějaký formulář.</p>
+        <h2 class="heading-secondary u-mb-2">Request-Response cyklus</h2>
+        <p class="paragraph u-mb-4">JSP soubory se konvertují na servlety. Můžeme s nimi tedy ze servletů komunikovat prostřednictvím request dispatcheru. Také ale nemusíme klasické servlety vytvářet vůbec a používat jen JSP. Když klient pošle request na JSP stránku, tak se zjistí, zda je JSP stránka již zkonvertována na servlet. Pokud není, tak se nejdříve zkonvertuje (vytvoří se servlet třída). Poté se servlet použije pro zpracování requestu a poslání response (HTML stránky).</p>
+        <img src="../../static/img/illustrations/RequestResponseJSPCyklus.svg" alt="request-response JSP cyklus" class="image u-mb-6">
+        <h2 class="heading-secondary u-mb-2">Kam ukládat JSP soubory</h2>
+        <p class="paragraph u-mb-4">JSP soubory se na serveru ukládají s koncovkou "jsp" do složky webapp. Pro vše co je ve složce webapp mohou uživatelé provést request a získat to. Tato složka slouží k uložení věcí jako jsou JavaScript soubory, CSS styly, obrázky, a tak podobně. Kromě těchto věcí tam můžeme umístit naše JSP soubory a uživatelé k nim budou mít přístup, aniž bychom něco mapovali v souboru web.xml. To ve většině případů ale nechceme. Alternativa může být ukládat je do podsložky WEB-INF spolu se souborem web.xml. K této složce totiž uživatelé přístup nemají. Až se začneme učit o MVC vzoru, tak to tak uděláme. Prozatím ale budeme JSP soubory ukládat mimo ni, abychom nemuseli mapování řešit.</p>
+        <h2 class="heading-secondary u-mb-2">Struktura JSP stránky</h2>
+        <p class="paragraph u-mb-2">Jak jsem již psal, tak JSP je kombinací HTML a Java kódu. JSP stránka se skládá z HTML tagů a Java kódu uzavřeného speciálními tagy &lt;% a %&gt;. Tomuto kódu se říká skriplety. Kromě skripletů toho JSP podporuje ještě víc a později se s různými typy tagů seznámíme.</p>
+        <p class="paragraph u-mb-2">Abychom viděli jak vypadá jednoduchá JSP stránka, založíme si nový Maven projekt a vytvoříme si ji. Projekt můžeme pojmenovat třeba jako "uvod-do-jsp" a ve složce webapp vytvoříme třeba soubor stranka.jsp. Následující ukázka ukazuje kód, který si do tohoto souboru můžete zkopírovat. Zatím nemusíte moc chápat jak to funguje. Jde nám jen o to se podívat, jak vůbec JSP kód vypadá.</p>
+        <%- include("./includes/code-box-1.ejs") %>
+        <p class="paragraph u-mb-2">Jak můžete v předchozí ukázce vidět, tak v JSP kódu můžeme třeba vytvořit for cyklus a vypsat několik elementů pod sebe, aniž bychom je kopírovali, nebo například můžeme vypsat na stránku serverový čas.</p>
+        <p class="paragraph u-mb-2">Jelikož máme JSP soubor přímo ve složce webapp (nemáme jej v podsložce WEB-INF), tak se k němu dostaneme i bez mapování ve web.xml. Pokud si otevřete <a href="http://localhost:8080/uvod-do-jsp/stranka.jsp" target="_blank" class="link">http://localhost:8080/uvod-do-jsp/stranka.jsp</a>, tak byste měli vidět stránku, kterou ukazuje následující obrázek.</p>
+        <img src="../../static/img/screenshots/JSPStranka.png" alt="Vygenerovaná stránka" class="image image--full-width image--with-border u-mb-6">
+        <p class="paragraph">Tato část byla jen takovým úvodem do JSP. Jen jste se dozvěděli co to JSP je, kde vytvářet JSP soubory a podívali jste se jak zhruba JSP kód vypadá. V příštích částech se o JSP dozvíte víc.</p>
     <%- include("../../includes/tutorial-page-layout-end.ejs") %>
     <%- include("../../includes/footer.ejs") %>
 <%- include("../../includes/page-end.ejs") %>
-
-<!-- 
-    - https://www.javatpoint.com/servlet-filter
-        - možná na to přidat odkaz - na celý ten tutoriál
-
-    - Tomcat všemu dává přístup, i když není nastavený mapping (ještě vyzkouším)
-        - tak nedává
-        - dává jen tomu, co je ve složce webapp
-            - vše co je ve složce WEB-INF není dostupné prohlížečům
-            - potom je ještě složka META-INF, na tu se potom také podívám
-    
-    - někde ještě přidat, jak vytvořit custom error pages
- -->
