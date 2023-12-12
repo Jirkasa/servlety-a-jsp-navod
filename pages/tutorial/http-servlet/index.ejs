@@ -54,7 +54,7 @@
         <p class="paragraph u-mb-2">Náš servlet je hotový, teď již jen zbývá namapovat jej na URL v souboru web.xml. Vytvoříme tedy ve složce webapp složku WEB-INF a v ní soubor web.xml. Náš servlet můžeme namapovat třeba jako domovskou stránku aplikace napsáním "/" do url-pattern elementu (vlastně to nastaví, že se to zavolá pro jakékoliv URL), jak ukazuje následující ukázka.</p>
         <%- include("./includes/code-box-3.ejs") %>
         <p class="paragraph u-mb-2">Pokud si aplikaci spustíte, tak po navštívení <a href="http://localhost:8080/http-servlet/" target="_blank" class="link">http://localhost:8080/http-servlet/</a> uvidíte stránku, kterou ukazuje následující obrázek.</p>
-        <img src="../../static/img/screenshots/StrankaProServletVytvorenyZdedenimHttpServletTridy.png" alt="Stránka pro servlet vytvořený zděděním třídy HttpServlet" class="image image-full-width image--with-border u-mb-6">
+        <img src="../../static/img/screenshots/StrankaProServletVytvorenyZdedenimHttpServletTridy.png" alt="Stránka pro servlet vytvořený zděděním třídy HttpServlet" class="image image--full-width image--with-border u-mb-6">
         <h2 class="heading-secondary u-mb-2">Přidání podpory pro metodu PATCH</h2>
         <p class="paragraph u-mb-2">Jak jsem již psal, tak pro HTTP metodu PATCH neexistuje v HttpServlet třídě metoda doPatch. Můžeme si ji ale sami přidat. Je k tomu potřeba přepsat metodu service, ve které zjistíme, jakou metodou byl poslán request. Pokud byl poslán metodou PATCH, tak zavoláme metodu doPatch, jinak zavoláme metodu service nadtřídy. Následující ukázka ukazuje, jak to udělat.</p>
         <%- include("./includes/add-patch-method-support-code-box.ejs") %>

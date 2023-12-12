@@ -10,7 +10,7 @@
         <p class="paragraph u-mb-2">Servlety jsou Java programy, které běží na webovém serveru (např. Tomcatu). Používají se ke zpracování požadavku, který webový server obdržel, a k vytvoření odpovědi, která je odeslána zpět klientovi.</p>
         <p class="paragraph u-mb-2">Použitím servletů můžeme vytvářet dynamické webové stránky. To znamená, že obsah HTML stránek, které klient ze serveru obdrží není statický (není v kódu vložený napevno). HTML stránka se generuje v servletu, když na server přijde od klienta požadavek. Díky tomu můžeme na stránce například zobrazovat nějaká data z databáze.</p>
         <p class="paragraph u-mb-4">Jak servlety zjednodušeně fungují, můžete vidět v následujícím obrázku. Když na server dorazí požadavek, tak se vybere servlet, který jej zpracuje a vytvoří odpověď (HTML stránku). HTML stránka se poté pošle klientovi.</p>
-        <img src="../../static/img/illustrations/JakServletyFunguji.svg" alt="Jak fungují servlety" class="image image-full-width u-mb-6">
+        <img src="../../static/img/illustrations/JakServletyFunguji.svg" alt="Jak fungují servlety" class="image image--full-width u-mb-6">
         <h2 class="heading-secondary u-mb-2">Komponenty URL adresy</h2>
         <p class="paragraph u-mb-2">Když klient vytváří požadavek, který chce poslat na server, používá k tomu komponenty URL adresy. Příklad URL adresy můžete vidět v následující ukázce:</p>
         <%- include("./includes/url-example-code-box.ejs") %>
@@ -160,7 +160,7 @@
         <p class="paragraph u-mb-2">Po nadefinování servletu jej můžeme namapovat na nějaké URL pomocí elementu servlet-mapping. V jeho podelementu servlet-name specifikujeme název servletu, který chceme namapovat, a v podelementu url-pattern můžeme nastavit URL, pro které se má servlet volat. Můžeme si jej namapovat třeba na "/servlet-implementaci-servlet-rozhrani", jak ukazuje následující ukázka.</p>
         <%- include("./includes/code-box-8.ejs") %>
         <p class="paragraph u-mb-2">Pokud si teď naši aplikaci spustíte a navštívíte <a href="http://localhost:8080/uvod-do-servletu/servlet-implementaci-servlet-rozhrani" target="_blank" class="link">http://localhost:8080/uvod-do-servletu/servlet-implementaci-servlet-rozhrani</a>, tak uvidíte stejnou stránku, kterou ukazuje následující obrázek.</p>
-        <img src="../../static/img/screenshots/StrankaProServletVytvorenyImplementaciServletRozhrani.png" alt="Stránka pro servlet vytvořený implementací Servlet rozhraní" class="image image-full-width image--with-border u-mb-6">
+        <img src="../../static/img/screenshots/StrankaProServletVytvorenyImplementaciServletRozhrani.png" alt="Stránka pro servlet vytvořený implementací Servlet rozhraní" class="image image--full-width image--with-border u-mb-6">
         <h2 class="heading-secondary u-mb-2">Vytvoření servletu zděděním třídy GenericServlet</h2>
         <p class="paragraph u-mb-2">Lepší cesta jak vytvořit servlet, je vytvořit podtřídu abstraktní třídy GenericServlet. Ta implementuje rozhraní Servlet a má až na metodu service všechny jeho metody implementované. Tvorba servletu je pro nás tedy tímto způsobem jednodušší než implementací Servlet rozhraní napřímo. Můžeme implementovat jen metodu service.</p>
         <p class="paragraph u-mb-2">Pro ukázku si v našem projektu vytvoříme třídu, kterou můžeme pojmenovat jako Servlet2 a nastavíme, že dědí od třídy GenericServlet.</p>
@@ -170,7 +170,7 @@
         <p class="paragraph u-mb-2">V souboru web.xml můžeme servlet nastavit třeba pro URL "/servlet-zdedenim-tridy-generic-servlet", jak ukazuje následující ukázka.</p>
         <%- include("./includes/code-box-11.ejs") %>
         <p class="paragraph u-mb-2">Po restartu Tomcatu a navštívení <a href="http://localhost:8080/uvod-do-servletu/servlet-zdedenim-tridy-generic-servlet" target="_blank" class="link">http://localhost:8080/uvod-do-servletu/servlet-zdedenim-tridy-generic-servlet</a> by jste měli vidět stránku, kterou ukazuje následující obrázek.</p>
-        <img src="../../static/img/screenshots/StrankaProServletVytvorenyZdedenimGenericServletTridy.png" alt="Stránka pro servlet vytvořený zděděním třídy GenericServlet" class="image image-full-width image--with-border u-mb-6">
+        <img src="../../static/img/screenshots/StrankaProServletVytvorenyZdedenimGenericServletTridy.png" alt="Stránka pro servlet vytvořený zděděním třídy GenericServlet" class="image image--full-width image--with-border u-mb-6">
         <h2 class="heading-secondary u-mb-2">Inicializační parametry servletů</h2>
         <p class="paragraph u-mb-2">V souboru web.xml si pro naše servlety můžeme definovat inicializační parametry. Jedná se o hodnoty, které Tomcat předá do servletu když jej inicializuje prostřednictvím init metody. Inicializační parametry se vytváří prostřednictvím init-param elementů uvnitř servlet elementu. Pomocí jeho podelementu param-name specifikujeme název parametru a pomocí podelementu param-value hodnotu parametru.</p>
         <p class="paragraph u-mb-2">V našem projektu si třeba pro náš druhý servlet vytvoříme inicializační parametr, pomocí kterého budeme moci měnit nadpis stránky. Následující ukázka ukazuje, jak to můžeme v souboru web.xml udělat.</p>
@@ -178,7 +178,7 @@
         <p class="paragraph u-mb-2">V servletu můžeme inicializační parametr získat ze ServletConfig objektu, který nám Tomcat předává do metody init. Přepíšeme ji tedy, inicializační parametr si v ní získáme a uložíme a poté jej budeme používat v metodě service. Následující ukázka ukazuje upravenou třídu Servlet2.</p>
         <%- include("./includes/code-box-13.ejs") %>
         <p class="paragraph u-mb-2">Po restartu Tomcatu a navštívení <a href="http://localhost:8080/uvod-do-servletu/servlet-zdedenim-tridy-generic-servlet" target="_blank" class="link">http://localhost:8080/uvod-do-servletu/servlet-zdedenim-tridy-generic-servlet</a> by jste měli vidět, že se jako nadpis stránky použil text z inicializačního parametru.</p>
-        <img src="../../static/img/screenshots/NadpisStrankyPodleInicializacnihoParametru.png" alt="Nadpis stránky podle inicializačního parametru" class="image image-full-width image--with-border u-mb-6">
+        <img src="../../static/img/screenshots/NadpisStrankyPodleInicializacnihoParametru.png" alt="Nadpis stránky podle inicializačního parametru" class="image image--full-width image--with-border u-mb-6">
         <p class="paragraph u-mb-2">Pro tuto část je to všechno. Dozvěděli jste se co je to servlet a zkusili jsme si jej vytvořit dvěma způsoby. V příští části, která je o HTTP servletech, si ukážeme třetí a nejlepší způsob jak vytvořit servlet.</p>
     <%- include("../../includes/tutorial-page-layout-end.ejs") %>
     <%- include("../../includes/footer.ejs") %>

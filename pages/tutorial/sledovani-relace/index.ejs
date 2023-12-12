@@ -19,32 +19,32 @@
         <p class="paragraph u-mb-2">Vytvoříme si soubor web.xml (ve složce src/main/webapp/WEB-INF) a servlet namapujeme třeba na URL "/zadej-jmeno".</p>
         <%- include("./includes/url-rewriting-code-box-2.ejs") %>
         <p class="paragraph u-mb-2">Po spuštění aplikace si můžete stránku zobrazit otevřením <a href="http://localhost:8080/url-rewriting/zadej-jmeno" target="_blank" class="link">http://localhost:8080/url-rewriting/zadej-jmeno</a>.</p>
-        <img src="../../static/img/screenshots/URLRewritingZadejJmenoStranka.png" alt="Stránka pro zadání jména" class="image image-full-width image--with-border u-mb-2">
+        <img src="../../static/img/screenshots/URLRewritingZadejJmenoStranka.png" alt="Stránka pro zadání jména" class="image image--full-width image--with-border u-mb-2">
         <p class="paragraph u-mb-2">Teď si vytvoříme servlet pro stránku s pozdravem. Pojmenujeme jej třeba jako PozdravServlet. Budeme reagovat na requesty poslané metodou POST, protože formulář touto metodou odesíláme. Implementujeme tedy metodu doPost, ve které získáme uživatelovo jméno a zobrazíme jej na stránce kterou vygenerujeme. Také na stránku umístíme odkaz na stránku ke zjištění jména, který bude mít jako query parametr nastavený uživatelovo jméno.</p>
         <%- include("./includes/url-rewriting-code-box-3.ejs") %>
         <p class="paragraph u-mb-2">Ve web.xml servlet namapujeme na "/pozdrav", jelikož tam směřuje formulář, který jsme vytvořili pro zadání jména.</p>
         <%- include("./includes/url-rewriting-code-box-4.ejs") %>
         <p class="paragraph u-mb-2">Když teď na stránce pro zadání jména zadáme ve formuláři jméno a odešleme jej, tak se nám zobrazí stránka s pozdravem a naše jméno nám vypíše.</p>
-        <img src="../../static/img/screenshots/URLRewritingPozdravStranka.png" alt="Stránka s pozdravem" class="image image-full-width image--with-border u-mb-2">
+        <img src="../../static/img/screenshots/URLRewritingPozdravStranka.png" alt="Stránka s pozdravem" class="image image--full-width image--with-border u-mb-2">
         <p class="paragraph u-mb-2">Na stránku s pozdravem jsme také přidali odkaz na stránku, která nám jméno vypíše ještě jednou. Takže si pro ni vytvoříme servlet. Můžeme jej pojmenovat třeba jako JakeJeJmenoServlet. Následující ukázka jej ukazuje.</p>
         <%- include("./includes/url-rewriting-code-box-5.ejs") %>
         <p class="paragraph u-mb-2">V souboru web.xml můžeme servlet namapovat na "/jake-je-jmeno".</p>
         <%- include("./includes/url-rewriting-code-box-6.ejs") %>
         <p class="paragraph u-mb-2">Pokud teď kliknete na odkaz na stránce s pozdravem, tak se vám otevře stránka, kterou ukazuje následující obrázek, a zobrazí se vám zadané jméno.</p>
-        <img src="../../static/img/screenshots/URLRewritingJakeJeJmenoStranka.png" alt="Stránka zobrazující jméno" class="image image-full-width image--with-border u-mb-2">
+        <img src="../../static/img/screenshots/URLRewritingJakeJeJmenoStranka.png" alt="Stránka zobrazující jméno" class="image image--full-width image--with-border u-mb-2">
         <p class="paragraph u-mb-4">O čemu URL rewriting je, vám je teď už asi jasné. Je to o tom, že do odkazů nastavujeme query parametry a ukládáme tím tedy informace mezi stránkami.</p>
         <h2 class="heading-secondary u-mb-2">Skryté inputy</h2>
         <p class="paragraph u-mb-2">Jako další techniku pro sledování relace si ukážeme použití skrytých inputů ve formulářích. Pro jeho vyzkoušení nám stačí upravit třídu PozdravServlet z ukázky pro url-rewriting. Namísto odkazu na stránku přidáme formulář se skrytým inputem (nastavíme mu atribut type na hidden) a tlačítkem pro jeho odeslání. Formulář se bude posílat metodou GET abychom nemuseli upravovat i třídu JakeJeJmenoServlet. To znamená, že se hodnoty formuláře budou posílat jako query string v URL (výsledné URL requestu bude stejné jako u odkazu).</p>
         <%- include("./includes/skryte-inputy-code-box-1.ejs") %>
         <p class="paragraph u-mb-2">Následující obrázek ukazuje, jak teď bude stránka s pozdravem vypadat. Tlačítko se chová úplně stejně jako předtím odkaz.</p>
-        <img src="../../static/img/screenshots/SkryteInputyPozdravStranka.png" alt="Předělaná stránka s pozdravem" class="image image-full-width image--with-border u-mb-6">
+        <img src="../../static/img/screenshots/SkryteInputyPozdravStranka.png" alt="Předělaná stránka s pozdravem" class="image image--full-width image--with-border u-mb-6">
         <h2 class="heading-secondary u-mb-2">Parametry v URL</h2>
         <p class="paragraph u-mb-2">Další věcí, kterou si ukážeme, jsou parametry v URL cestě. V tomto případě nebudeme upravovat předchozí projekt, ale vytvoříme si nový. Pro ukázku nám bude stačit vytvořit jen jeden servlet. Parametr předáme přímo v URL, když si budeme stránku otevírat. Můžeme jej pojmenovat třeba jako MujServlet. Bude sloužit jen k tomu, že vypíše URL parametr na stránku. Nejdříve si ale v tomto případě vytvoříme soubor web.xml, kde si servlet namapujeme pro URL pattern. Nastavíme mu url-pattern na "/muj-servlet/*". To znamená, že se zavolá pro všechno, co začíná na "/muj-servlet". Budeme tedy schopni předat URL parametr.</p>
         <%- include("./includes/url-parametry-code-box-1.ejs") %>
         <p class="paragraph u-mb-2">Teď můžeme vytvořit servlet. Ukazuje jej následující ukázka. Pro získání části cesty, která se nachází za částí "/muj-servlet" používáme metodu getPathInfo. Například pro "https://localhost:8080/muj-servlet/neco/aaa" vrátí "/neco/aaa".</p>
         <%- include("./includes/url-parametry-code-box-2.ejs") %>
         <p class="paragraph u-mb-2">Pokud si aplikaci spustíte a navštívíte třeba <a href="http://localhost:8080/url-parametry/muj-servlet/muj-text" target="_blank" class="link">http://localhost:8080/url-parametry/muj-servlet/muj-text</a>, tak uvidíte úplně stejnou stránku, kterou ukazuje následující obrázek.</p>
-        <img src="../../static/img/screenshots/URLParametryStranka.png" alt="Stránka zobrazující URL parametr" class="image image-full-width image--with-border u-mb-6">
+        <img src="../../static/img/screenshots/URLParametryStranka.png" alt="Stránka zobrazující URL parametr" class="image image--full-width image--with-border u-mb-6">
         <h2 class="heading-secondary u-mb-2">Cookies</h2>
         <p class="paragraph u-mb-2">Předchozí techniky, které jsme si ukázali, jsou spíš jen takové mechanismy pro předání informací z jedné stránky na jinou. Pokud ale chceme o uživateli naší webové aplikace uložit nějaká data dlouhodoběji a používat je při každém requestu, který pošle na server, tak existují jiné možnosti (v podstatě asi dvě). Jedna z nich jsou <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies" target="_blank" class="link">cookies</a>.</p>
         <p class="paragraph u-mb-4">Cookies jsou malé textové soubory, které si klient (prohlížeč) ukládá na lokální disk a posílá je na server spolu s requesty, které posílá. Mají hodnoty ve formě klíče a hodnoty. Jsou vytvořeny serverem a posílány jen na server, který je vytvořil. Cookies server u klienta vytváří pomocí headeru "Set-Cookie", který posílá v HTTP odpovědi. Klient si tento header přečte a cookie uloží. Poté jej na server předává při každém requestu pomocí headeru "Cookie".</p>
@@ -69,7 +69,7 @@
         <p class="paragraph u-mb-2">Servlet můžeme v souboru web.xml namapovat třeba opět na "/zadej-jmeno".</p>
         <%- include("./includes/cookies-code-box-2.ejs") %>
         <p class="paragraph u-mb-2">Po spuštění aplikace a navštívení <a href="http://localhost:8080/cookies/zadej-jmeno" target="_blank" class="link">http://localhost:8080/cookies/zadej-jmeno</a> uvidíte stránku, kterou ukazuje následující obrázek.</p>
-        <img src="../../static/img/screenshots/CookiesZadejJmenoStranka.png" alt="Stránka pro zadání jména" class="image image-full-width image--with-border u-mb-2">
+        <img src="../../static/img/screenshots/CookiesZadejJmenoStranka.png" alt="Stránka pro zadání jména" class="image image--full-width image--with-border u-mb-2">
         <p class="paragraph u-mb-2">Teď si vytvoříme servlet, který zpracuje formulář poslaný metodou POST a také pošle stránku, na které jméno zobrazí, když obdrží GET request. Pojmenujeme jej jako JmenoServlet. Následující ukázka ukazuje implementaci metody doPost, která získá z poslaného formuláře jméno a uloží jej do cookie. Poté uživatele přesměruje na stránku, kde se mu uživatelské jméno zobrazí. Používá se metoda <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServletResponse.html#sendRedirect-java.lang.String-" target="_blank" class="link">sendRedirect</a>, která vlastně namísto stránky pošle HTTP response se <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/302" target="_blank" class="link">status kódem 302</a>. Ten prohlížeči říká, že má provést HTTP request na jinou URL.</p>
         <%- include("./includes/cookies-code-box-3.ejs") %>
         <p class="paragraph u-mb-2">V metodě doGet si hodnotu cookie přečteme a pokud existuje, tak ji zobrazíme na stránce. Kromě toho na stránku přidáme odkaz na nastavení nového jména (nové hodnoty cookie). Následující ukázka metodu doGet ukazuje. Pro získání všech cookies se používá metoda <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServletRequest.html#getCookies--" target="_blank" class="link">getCookies</a>, která vrací pole nebo null. V tomto poli poté hledáme příslušnou cookie, která obsahuje hodnotu pro jméno.</p>
@@ -77,7 +77,7 @@
         <p class="paragraph u-mb-2">V souboru web.xml servlet namapujeme na "/jmeno".</p>
         <%- include("./includes/cookies-code-box-5.ejs") %>
         <p class="paragraph u-mb-2">Po vyplnění jména se vám nyní otevře stránka <a href="http://localhost:8080/cookies/jmeno" target="_blank" class="link">http://localhost:8080/cookies/jmeno</a>, na které se vám vaše zadané jméno zobrazí.</p>
-        <img src="../../static/img/screenshots/CookiesZadaneJmenoStranka.png" alt="Stránka se zadaným jménem" class="image image-full-width image--with-border u-mb-2">
+        <img src="../../static/img/screenshots/CookiesZadaneJmenoStranka.png" alt="Stránka se zadaným jménem" class="image image--full-width image--with-border u-mb-2">
         <p class="paragraph u-mb-4">Když to shrneme, tak cookies jsou zjednodušeně hodnoty, které může server klientovi nastavit, aby je při každém requestu na server posílal.</p>
         <h2 class="heading-secondary u-mb-2">Sessions</h2>
         <p class="paragraph u-mb-2">Cookies se ukládají u klienta. Je tedy možné, že si může jejich hodnoty změnit, aniž by k tomu dostal příkaz ze serveru. Alternativa je ukládat data uživatele na serveru, kde je již jen tak modifikovat nemůže. Klient akorát k datům, které mu patří, dostane unikátní identifikátor ve formě hodnoty v cookie. Tuto cookie klient posílá při každém requestu a server podle něj najde data, která s ním jsou spjata.</p>
@@ -159,22 +159,22 @@
         <p class="paragraph u-mb-2">Můžeme si vytvořit soubor web.xml a servlet namapovat třeba na "/polozky".</p>
         <%- include("./includes/sessions-code-box-2.ejs") %>
         <p class="paragraph u-mb-2">Po spuštění aplikace a navštívení <a href="http://localhost:8080/tabulka/polozky" target="_blank" class="link">http://localhost:8080/tabulka/polozky</a>, uvidíte stránku s tabulkou, která zatím neobsahuje žádná data. Tabulka nemá žádné ohraničení, jelikož nepoužíváme žádné CSS styly.</p>
-        <img src="../../static/img/screenshots/SessionsTabulkaStranka.png" alt="Stránka s tabulkou" class="image image-full-width image--with-border u-mb-2">
+        <img src="../../static/img/screenshots/SessionsTabulkaStranka.png" alt="Stránka s tabulkou" class="image image--full-width image--with-border u-mb-2">
         <p class="paragraph u-mb-2">Pokud se po otevření stránky podívate do vývojářských nástrojů na cookies, tak tam uvidíte cookie pro unikátní identifikátor session. Podle tohoto identifikátoru server pozná, jaká session nám patří.</p>
-        <img src="../../static/img/screenshots/SessionID.png" alt="Stránka s tabulkou" class="image image-full-width u-mb-2">
+        <img src="../../static/img/screenshots/SessionID.png" alt="Stránka s tabulkou" class="image image--full-width u-mb-2">
         <p class="paragraph u-mb-2">Pro přidání položky si vytvoříme servlet PridatPolozkuServlet. Následující ukázka ukazuje implementaci doGet metody, která jen vyrenderuje stránku s formulářem.</p>
         <%- include("./includes/sessions-code-box-3.ejs") %>
         <p class="paragraph u-mb-2">Servlet pro přidání položky si namapujeme na "/pridat-polozku, jelikož tam odkazujeme na stránce s tabulkou.</p>
         <%- include("./includes/sessions-code-box-4.ejs") %>
         <p class="paragraph u-mb-2">Pokud teď na stránce s tabulkou kliknete na odkaz "Přidat novou položku", tak se vám zobrazí následující stránka s formulářem pro přidání nové položky.</p>
-        <img src="../../static/img/screenshots/SessionsPridatPolozkuStranka.png" alt="Stránka pro přidání položky" class="image image-full-width image--with-border u-mb-2">
+        <img src="../../static/img/screenshots/SessionsPridatPolozkuStranka.png" alt="Stránka pro přidání položky" class="image image--full-width image--with-border u-mb-2">
         <p class="paragraph u-mb-2">Formulář se posílá na "./pridat-polozku" metodou POST. V servletu PridatPolozkuServlet tedy implementujeme metodu doPost a odeslaný formulář v ní zpracujeme. Přidáme zadanou položku do session a uživatele přesměrujeme na stránku s tabulkou. Následující ukázka implementaci metody doPost ukazuje.</p>
         <%- include("./includes/sessions-code-box-5.ejs") %>
         <p class="paragraph u-mb-2">Naše aplikace je hotová. Můžete si do tabulky zkusit přidat pár položek.</p>
-        <img src="../../static/img/screenshots/SessionsTabulkaSPolozkamiStranka.png" alt="Stránka s tabulkou, která obsahuje vytvořené položky" class="image image-full-width image--with-border u-mb-2">
+        <img src="../../static/img/screenshots/SessionsTabulkaSPolozkamiStranka.png" alt="Stránka s tabulkou, která obsahuje vytvořené položky" class="image image--full-width image--with-border u-mb-2">
         <p class="paragraph u-mb-2">Pokud jste si do tabulky pár položek přidali a otevřete si aplikaci v jiném prohlížeči nebo alespoň v anonymním okně, tak tam přidané položky neuvidíte, jelikož se vytvoří úplně nová session.</p>
         <p class="paragraph u-mb-2">Je nutné si uvědomit, že session neslouží k permanentnímu uložení dat. Pokud totiž server restartujeme, tak se všechny session smažou. Navíc uživatel k session nemá přístup navždy. Po nějaké době se mu unikátní identifikátor pro session uložený jako cookie smaže. Defaultně se smaže, když uživatel zavře prohlížeč, jelikož pro cookie není nastavena Max-Age ani Expires vlastnost.</p>
-        <img src="../../static/img/screenshots/SessionCookie.png" alt="Session cookie" class="image image-full-width u-mb-2">
+        <img src="../../static/img/screenshots/SessionCookie.png" alt="Session cookie" class="image image--full-width u-mb-2">
         <p class="paragraph u-mb-2">Defaultní maximální čas, do kdy session na serveru existuje, pokud klient neposlal na server request spjatý se session, je v Tomcatu 30 minut. U jednotlivých session tento čas můžeme změnit pomocí metody setMaxInactiveInterval. Pokud jej ale chceme změnit pro všechny session, můžeme to udělat pomocí session-config elementu v souboru web.xml, jak ukazuje následující ukázka. Čas se nastavuje v minutách.</p>
         <%- include("./includes/session-config-code-box.ejs") %>
         <p class="paragraph">Pro tuto část je to vše. Nyní již víte, jak můžete uživatele ve své webové aplikaci sledovat. V příští části si ukážeme, jak funguje komunikace mezi servlety.</p>

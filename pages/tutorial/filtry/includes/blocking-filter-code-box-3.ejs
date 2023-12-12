@@ -1,0 +1,21 @@
+<div data-project="8" data-project-extends="7" class="u-mb-2">
+    <pre data-code="BlockingFilter.java" data-java-package data-java-package-opened data-active><code>import java.io.IOException;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletResponse;
+
+public class BlockingFilter implements Filter {
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+        // castnutí ServletResponse na HttpServletResponse
+        HttpServletResponse httpRes = (HttpServletResponse) res;
+        
+        // poslání chyby se status kódem 403
+        httpRes.sendError(HttpServletResponse.SC_FORBIDDEN, "Přístup odepřen");
+    }
+}</code></pre>
+    </div>

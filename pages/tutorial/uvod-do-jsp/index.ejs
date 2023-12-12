@@ -1,0 +1,21 @@
+<%- include("../../includes/page-start.ejs", {pathToRootFolder: "../../"}) %>
+    <%- include("../../includes/header.ejs") %>
+    <%- include("../../includes/tutorial-page-layout-start.ejs") %>
+        <h1 class="heading-primary u-mb-4">Úvod do JSP</h1>
+        <p class="paragraph u-mb-4"></p>
+    <%- include("../../includes/tutorial-page-layout-end.ejs") %>
+    <%- include("../../includes/footer.ejs") %>
+<%- include("../../includes/page-end.ejs") %>
+
+<!-- 
+    - https://www.javatpoint.com/servlet-filter
+        - možná na to přidat odkaz - na celý ten tutoriál
+
+    - Tomcat všemu dává přístup, i když není nastavený mapping (ještě vyzkouším)
+        - tak nedává
+        - dává jen tomu, co je ve složce webapp
+            - vše co je ve složce WEB-INF není dostupné prohlížečům
+            - potom je ještě složka META-INF, na tu se potom také podívám
+    
+    - někde ještě přidat, jak vytvořit custom error pages
+ -->

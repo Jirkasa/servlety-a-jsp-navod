@@ -1,0 +1,29 @@
+<div data-project="2" data-project-extends="1" class="u-mb-2">
+<pre data-code="Servlet2.java" data-java-package data-java-package-opened data-active><code>import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class Servlet2 extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        res.setContentType("text/html; charset=utf-8");
+        try (PrintWriter out = res.getWriter()) {
+            out.println("&lt;!DOCTYPE html&gt;");
+            out.println("&lt;html&gt;");
+            out.println("&lt;head&gt;");
+            out.println("&lt;meta charset=\"UTF-8\"&gt;");
+            out.println("&lt;title&gt;Servlet2&lt;/title&gt;");
+            out.println("&lt;/head&gt;");
+            out.println("&lt;body&gt;");
+            out.println("&lt;h1&gt;Servlet2&lt;/h1&gt;");
+            out.println("&lt;p&gt;Stránka pro Servlet2.&lt;/p&gt;");
+            out.println("&lt;/body&gt;");
+            out.println("&lt;/html&gt;");
+        }
+    }
+}</code></pre>
+</div>
