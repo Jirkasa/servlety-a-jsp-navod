@@ -1,0 +1,15 @@
+<div data-code-box data-no-buttons class="u-mb-2">
+    <pre data-code><code class="language-html">&lt;%
+    // nastavuje atribut pro JSP stránku, který je platný po dobu životního cyklu aktuálního HTTP requestu
+    pageContext.setAttribute("jmeno", "Jiří", PageContext.PAGE_SCOPE);
+
+    // nastavuje atribut pro request (podobné jako page rozsah)
+    pageContext.setAttribute("jmeno", "Jiří", PageContext.REQUEST_SCOPE);
+
+    // nastavuje atribut pro session
+    pageContext.setAttribute("jmeno", "Jiří", PageContext.SESSION_SCOPE);
+
+    // nastavuje atribut pro celou aplikaci (bude dostupný odkudkoliv a společný pro všechny uživatele)
+    pageContext.setAttribute("jmeno", "Jiří", PageContext.APPLICATION_SCOPE);
+%&gt;</code></pre>
+</div>
