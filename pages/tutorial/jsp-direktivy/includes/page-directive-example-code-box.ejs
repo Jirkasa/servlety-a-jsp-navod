@@ -1,0 +1,20 @@
+<div data-code-box data-no-buttons class="u-mb-4">
+    <pre data-code><code class="language-html">&lt;!-- tento řádek je potřeba vkládat do každé JSP stránky
+     pro správné zobrazení českého textu --&gt;
+&lt;%@ page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;!-- naimportování třídy Date z balíčku java.util --&gt;
+&lt;%@ page import="java.util.Date" %&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Page direktiva&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Jelikož máme třídu Date naimportovanou, tak ji
+    můžeme použít bez specifikování balíčku. --&gt;
+    &lt;p&gt;Čas na serveru: &lt;%= new Date() %&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</div>

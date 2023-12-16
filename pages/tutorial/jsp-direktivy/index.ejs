@@ -2,27 +2,110 @@
     <%- include("../../includes/header.ejs") %>
     <%- include("../../includes/tutorial-page-layout-start.ejs") %>
         <h1 class="heading-primary u-mb-4">JSP direktivy</h1>
-        <p class="paragraph u-mb-4"></p>
+        <p class="paragraph u-mb-2">V této části se podíváme na direktivy. Jedná se o elementy, které web containeru (Tomcatu) říkají, jak má JSP stránku převést na servlet. Syntaxe pro direktivu je následující (pokud máme více atributů, tak je můžeme oddělit mezerou):</p>
+        <%- include("./includes/directive-syntax-code-box.ejs") %>
+        <h2 class="heading-secondary u-mb-2">Typy direktiv</h2>
+        <p class="paragraph u-mb-1">Existují tři typy direktiv poskytující různé atributy, které můžeme použít. Následující seznam je popisuje:</p>
+        <ul class="list u-mb-4">
+            <li><b>page</b> - definuje atributy k obecnému nastavení JSP stránky</li>
+            <li><b>include</b> - používá se k vložení obsahu z jiného souboru do JSP stránky</li>
+            <li><b>taglib</b> - používá se k nadefinování knihovny tagů, abychom ji mohli použít</li>
+        </ul>
+        <h2 class="heading-secondary u-mb-2">Page direktiva</h2>
+        <p class="paragraph u-mb-2">Page direktiva definuje atributy, které popisuje následující tabulka. Jedná se o atributy, které slouží k obecnému nastavení JSP stránky.</p>
+        <table class="table u-mb-2">
+            <thead>
+                <tr>
+                    <th>Atribut</th>
+                    <th>Hodnota</th>
+                    <th>Popis</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>import</td>
+                    <td>třída | rozhraní | balíček</td>
+                    <td>Importuje třídu, rozhraní, nebo celý balíček (podobné jako klíčové slovo import v Javě).</td>
+                </tr>
+                <tr>
+                    <td>contentType</td>
+                    <td>MIME type</td>
+                    <td>Definuje jaký obsah se vrací v HTTP response (defaultně je to HTML stránka - text/html)</td>
+                </tr>
+                <tr>
+                    <td>extends</td>
+                    <td>třída</td>
+                    <td>Definuje nadtřídu vygenerovaného servletu (používá se velmi zřídka).</td>
+                </tr>
+                <tr>
+                    <td>info</td>
+                    <td>text</td>
+                    <td>Nastavuje informace o JSP stránce. Tyto informace mohou být v servletu získány pomocí getServletInfo metody.</td>
+                </tr>
+                <tr>
+                    <td>buffer</td>
+                    <td>velikost (např. "16kb")</td>
+                    <td>Nastavuje velikost vyrovnávací paměti pro zpracování výstupu vygenerovaného JSP stránkou (defaultní je 8kb). Popravdě úplně nevím k čemu to slouží.</td>
+                </tr>
+                <tr>
+                    <td>language</td>
+                    <td>skriptovací jazyk</td>
+                    <td>Definuje skriptovací jazyk použitý v JSP stránce (defaultní je "java").</td>
+                </tr>
+                <tr>
+                    <td>isELIgnored</td>
+                    <td>true | false</td>
+                    <td>Nastavuje, zda se má ignorovat expression language (defaultní je "false").</td>
+                </tr>
+                <tr>
+                    <td>isThreadSafe</td>
+                    <td>true | false</td>
+                    <td>Definuje, zda je bezpečné, aby JSP stránka běžela pro více requestů zároveň (mohlo se používat více vláken). Defaultní hodnota je "true". Pokud ji změníme na "false", tak web container vždy počká, než JSP stránka zpracuje request aby jí mohl předat pro zpracování další (Vygeneruje pro ni servlet, který bude implementovat rozhraní <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/SingleThreadModel.html" target="_blank" class="link">SingleThreadModel</a>).</td>
+                </tr>
+                <tr>
+                    <td>autoFlush</td>
+                    <td>true | false</td>
+                    <td>Nastavuje, zda se má vyrovnávací paměť automaticky vyprázdnit, když je plná, nebo se má vyhodit chyba. Nevím k čemu to slouží ale asi to má nějakou spojitost s atributem buffer.</td>
+                </tr>
+                <tr>
+                    <td>session</td>
+                    <td>true | false</td>
+                    <td>Nastavuje, zda JSP stránka používá sessions. Defaultní hodnota je "true". Pokud ji nastavíme na "false", tak v JSP stránce nebude k dispozici implicitní objekt session.</td>
+                </tr>
+                <tr>
+                    <td>pageEncoding</td>
+                    <td>kódování</td>
+                    <td>Nastavuje kódování stránky. Defaultní je "ISO-8859-1". Je vždy potřeba změnit na "UTF-8", aby se nám dobře zobrazoval český text.</td>
+                </tr>
+                <tr>
+                    <td>errorPage</td>
+                    <td>stránka</td>
+                    <td>Nastavuje stránku, která se má zobrazit, když v JSP souboru dojde k chybě.</td>
+                </tr>
+                <tr>
+                    <td>isErrorPage</td>
+                    <td>true | false</td>
+                    <td>Nastavuje, že se jedná o chybovou stránku. Implicitní objekt exception se dá použít jen na chybových stránkách.</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="paragraph u-mb-2">Jak jste si mohli v předchozí tabulce všimnout, tak atribut isELIgnored slouží k ignorování expression language. Co je expression language asi ještě nevíte, jelikož jsme se tím v tutoriálu zatím nezabývali. Je na to vyhrazená samostatná část.</p>
+        <p class="paragraph u-mb-2">Následující ukázka ukazuje příklad použití page direktivy. První řádek je potřeba dávat do každého JSP souboru pro správné zobrazení českého textu.</p>
+        <%- include("./includes/page-directive-example-code-box.ejs") %>
+        <h2 class="heading-secondary u-mb-2">Include direktiva</h2>
+        <p class="paragraph u-mb-2">Pomocí direktivy include můžeme web containeru (Tomcatu) říct, aby při generování servletu přidal kód z jiných souborů. Díky tomu jsme například schopni oddělit části kódu, které by měli být společné pro všechny stránky.</p>
+        <p class="paragraph u-mb-2">Pro ukázku si založíme nový Maven projekt a vytvoříme si soubor header.jsp a footer.jsp. V souboru header.jsp vytvoříme kód pro hlavičku stránky a v souboru footer.jsp kód pro patičku stránky. Následující ukázky obsah pro tyto soubory ukazují. Tady v ukázce představují jen jeden řádek kódu, ale v praxi byste měli hlavičku a patičku stránky samozřejmě komplexnější.</p>
+        <%- include("./includes/include-directive-example-code-box-1.ejs") %>
+        <%- include("./includes/include-directive-example-code-box-2.ejs") %>
+        <p class="paragraph u-mb-2">Teď si vytvoříme JSP stránku, na které kód z vytvořených souborů pomocí direktivy include použijeme. Můžeme ji pojmenovat třeba jako stranka.jsp. Direktiva include má atribut file, kde se předává cesta k souboru, jehož obsah se má vložit. Následující ukázka ukazuje kód pro naši stránku.</p>
+        <%- include("./includes/include-directive-example-code-box-3.ejs") %>
+        <p class="paragraph u-mb-2">Pokud si aplikaci spustíte a stránku si otevřete (<a href="http://localhost:8080/include-direktiva/stranka.jsp" target="_blank" class="link">http://localhost:8080/include-direktiva/stranka.jsp</a>), uvidíte stránku, kterou ukazuje následující obrázek. Kód ze souborů header.jsp a footer.jsp se tedy na stránce použil.</p>
+        <img src="../../static/img/screenshots/StrankaSestavenaPomociIncludeDirektivy.png" alt="vygenerovaná stránka" class="image image--full-width image--with-border u-mb-6">
+        <h2 class="heading-secondary u-mb-2">Taglib direktiva</h2>
+        <p class="paragraph u-mb-2">Taglib direktiva slouží k nadefinování knihovny tagů. Díky tomu potom můžeme tagy z knihovny na stránce použít. V části "JSP Custom tagy" se naučíme vytvářet vlastní knihovny tagů, takže tuto direktivu potom použijeme pro použití tagů z knihovny na stránce.</p>
+        <p class="paragraph u-mb-2">Taglib direktiva má atribut uri, kde předáváme jakou knihovnu chceme použít, a atribut prefix, který značí pod jakým názvem ji chceme na stránce používat. Následující ukázka ukazuje příklad použití taglib direktivy.</p>
+        <%- include("./includes/taglib-directive-example.ejs") %>
+        <p class="paragraph">Pro tuto část je to vše. Prošli jsme si všechny direktivy, které nám JSP nabízí. V příští části se podíváme na action tagy.</p>
     <%- include("../../includes/tutorial-page-layout-end.ejs") %>
     <%- include("../../includes/footer.ejs") %>
 <%- include("../../includes/page-end.ejs") %>
-
-<!-- 
-    
- -->
-
-<!--
-    - https://www.javatpoint.com/servlet-filter
-        - možná na to přidat odkaz - na celý ten tutoriál
-    - https://www.javatpoint.com/jsp-page-directive
-        - tady je na JSP
-            - určitě na tyto tutoriály přidám odkaz, je to dobře napsaný - mnohem lépe než moje
-                - mají tam i tutoriál na Struts2 a Hibernate
-    
-    - ještě existuje META-INF, potom se musím podívat k čemu to slouží
-    - někde ještě přidat, jak vytvořit custom error pages
-        - jo, k tomu se vlastně ještě ten pageContext používá, můžeme s jeho pomocí získat na stránce chybu
-    
-    JEŠTĚ POTŘEBUJU
-        - ještě budu potřebovat část, kde tady to nastavení custom stránek ukážu
- -->

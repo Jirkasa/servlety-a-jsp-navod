@@ -1,0 +1,19 @@
+<div data-code-box data-no-buttons class="u-mb-6">
+    <pre data-code><code class="language-html">&lt;%@ page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;!-- Nadefinování knihovny tagů, kterou chceme používat. --&gt;
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Taglib direktiva&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- Tagy z knihovny můžeme používat pod prefixem, který jsme si definovali. --&gt;
+    &lt;c:forEach var="i" begin="1" end="5"&gt;
+        Řádek ${i}
+    &lt;/c:forEach&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</div>
