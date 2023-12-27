@@ -2,35 +2,152 @@
     <%- include("../../includes/header.ejs") %>
     <%- include("../../includes/tutorial-page-layout-start.ejs") %>
         <h1 class="heading-primary u-mb-4">JSP expression language</h1>
-        <p class="paragraph u-mb-4"></p>
+        <p class="paragraph u-mb-2">V této části se naučíme o expression language (EL). Ta zjednodušuje přístup k datům uložených v Java bean komponentách a ostatních objektech jako je request, session, application a tak podobně.</p>
+        <p class="paragraph u-mb-2">Syntaxe pro expression language je následující:</p>
+        <%- include("./includes/expression-language-syntax-code-box.ejs") %>
+        <p class="paragraph u-mb-4">Expression language obsahuje spoustu implicitních objektů, operátorů a rezervovaných slov. Potom je v této části uvidíte popsané v tabulkách.</p>
+        <h2 class="heading-secondary u-mb-2">Ukázka použití expression language</h2>
+        <p class="paragraph u-mb-2">Pro ukázku si ukážeme použití expression language pro vypsání hodnot java beanu. Založíme si nový projekt a vytvoříme bean třídu Uzivatel (v nějakém Java balíčku, abychom ji mohli použít v JSP). Kód pro ni ukazuje následující ukázka.</p>
+        <%- include("./includes/expression-language-example-code-box-1.ejs") %>
+        <p class="paragraph u-mb-2">Teď můžeme vytvořit JSP stránku, kterou můžeme pojmenovat třeba jako "stranka.jsp". Na této stránce si vytvoříme bean objekt a pomocí expression language poté vypíšeme jeho hodnoty.</p>
+        <%- include("./includes/expression-language-example-code-box-2.ejs") %>
+        <p class="paragraph u-mb-2">Po spuštění aplikace a navštívení <a href="http://localhost:8080/expression-language/stranka.jsp" target="_blank" class="link">http://localhost:8080/expression-language/stranka.jsp</a> byste měli vidět stránku, kterou ukazuje následující obrázek.</p>
+        <img src="../../static/img/screenshots/ExpressionLanguagePrikladStranka.png" alt="vygenerovaná stránka" class="image image--full-width image--with-border u-mb-6">
+        <h2 class="heading-secondary u-mb-2">Implicitní objekty v expression language</h2>
+        <p class="paragraph u-mb-2">Pro expression language existuje několik implicitních objektů. Následující tabulka je popisuje.</p>
+        <table class="table u-mb-2">
+            <thead>
+                <tr>
+                    <th>Objekt</th>
+                    <th>Popis</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>pageScope</td>
+                    <td>obsahuje atributy pro page rozsah</td>
+                </tr>
+                <tr>
+                    <td>requestScope</td>
+                    <td>obsahuje atributy pro request rozsah</td>
+                </tr>
+                <tr>
+                    <td>sessionScope</td>
+                    <td>obsahuje atributy pro session rozsah</td>
+                </tr>
+                <tr>
+                    <td>applicationScope</td>
+                    <td>obsahuje atributy pro application rozsah</td>
+                </tr>
+                <tr>
+                    <td>param</td>
+                    <td>obsahuje request parametry</td>
+                </tr>
+                <tr>
+                    <td>paramValues</td>
+                    <td>obsahuje request parametry jako pole hodnot</td>
+                </tr>
+                <tr>
+                    <td>header</td>
+                    <td>obsahuje hodnoty headerů</td>
+                </tr>
+                <tr>
+                    <td>headerValues</td>
+                    <td>obsahuje pole hodnot headerů</td>
+                </tr>
+                <tr>
+                    <td>cookie</td>
+                    <td>obsahuje cookies</td>
+                </tr>
+                <tr>
+                    <td>initParam</td>
+                    <td>obsahuje inicializační parametry</td>
+                </tr>
+                <tr>
+                    <td>pageContext</td>
+                    <td>poskytuje přístup k různým objektům jako je request, session, atd...</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="paragraph u-mb-2">Následující řádek kódu například vypisuje na stránku parametr "jmeno", poslaný v requestu.</p>
+        <%- include("./includes/expression-language-param-example-code-box.ejs") %>
+        <h2 class="heading-secondary u-mb-2">Rezervovaná slova</h2>
+        <p class="paragraph u-mb-2">Expression language obsahuje různá rezervovaná slova. Hodně z nich jsou aliasy pro operátory, které známe z Javy. Následující tabulka je popisuje.</p>
+        <table class="table u-mb-6">
+            <thead>
+                <tr>
+                    <th>Slovo</th>
+                    <th>Popis</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>lt</td>
+                    <td>Alias pro operátor "&lt;".</td>
+                </tr>
+                <tr>
+                    <td>le</td>
+                    <td>Alias pro operátor "&lt;=".</td>
+                </tr>
+                <tr>
+                    <td>gt</td>
+                    <td>Alias pro operátor "&gt;".</td>
+                </tr>
+                <tr>
+                    <td>ge</td>
+                    <td>Alias pro operátor "&gt;=".</td>
+                </tr>
+                <tr>
+                    <td>eq</td>
+                    <td>Alias pro operátor "==".</td>
+                </tr>
+                <tr>
+                    <td>ne</td>
+                    <td>Alias pro operátor "!=".</td>
+                </tr>
+                <tr>
+                    <td>and</td>
+                    <td>Alias pro operátor "&&".</td>
+                </tr>
+                <tr>
+                    <td>or</td>
+                    <td>Alias pro operátor "||".</td>
+                </tr>
+                <tr>
+                    <td>not</td>
+                    <td>Alias pro negaci ("!").</td>
+                </tr>
+                <tr>
+                    <td>div</td>
+                    <td>Alias pro operátor "/".</td>
+                </tr>
+                <tr>
+                    <td>mod</td>
+                    <td>Alias pro operátor "%".</td>
+                </tr>
+                <tr>
+                    <td>empty</td>
+                    <td>Zjišťuje zda je hodnota null nebo prázdná.</td>
+                </tr>
+                <tr>
+                    <td>instanceof</td>
+                    <td>Zjišťuje zda je objekt instancí nějaké třídy.</td>
+                </tr>
+                <tr>
+                    <td>true</td>
+                    <td>Boolean hodnota true (stejně jako v Javě).</td>
+                </tr>
+                <tr>
+                    <td>false</td>
+                    <td>Boolean hodnota false (stejně jako v Javě).</td>
+                </tr>
+                <tr>
+                    <td>null</td>
+                    <td>Hodnota null (stejně jako v Javě).</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="paragraph">To je pro tuto část vše. Expression language není žádná složitá věc. Hodně věcí nám usnadňuje.</p>
     <%- include("../../includes/tutorial-page-layout-end.ejs") %>
     <%- include("../../includes/footer.ejs") %>
 <%- include("../../includes/page-end.ejs") %>
-
-<!--
-    O knihovně JSTL:
-    c:out - vyhne se cross site scriptingu
-        - potom se musím podívat, co se vyhne cross site scriptingu a co ne
-                - takže je dobré to používat pro vypisování hodnot, aby se tam náhodou nevložili nějaké HTML tagy
-    
-    - ještě existuje META-INF, potom se musím podívat k čemu to slouží
-    - někde ještě přidat, jak vytvořit custom error pages
-        - jo, k tomu se vlastně ještě ten pageContext používá, můžeme s jeho pomocí získat na stránce chybu
-    
-    MVC - popsat co je Model, View a Controller
-    
-    JEŠTĚ POTŘEBUJU
-        - ještě budu potřebovat část, kde tady to nastavení custom stránek ukážu
-
-    VYLEPŠENÍ
-        - U sliderů přidat nějakou lupu (při najetí na obrázek se to zobrazí ve větším měřítku)
-
-    JINÝ TUTORIÁL
-        - https://www.javatpoint.com/servlet-filter
-            - možná na to přidat odkaz - na celý ten tutoriál
-        - https://www.javatpoint.com/jsp-page-directive
-            - tady je na JSP
-                - určitě na tyto tutoriály přidám odkaz, je to dobře napsaný - mnohem lépe než moje
-                    - mají tam i tutoriál na Struts2 a Hibernate
-        - ještě je něco na W3Schools - https://www.w3schools.in/jsp/actions
- -->

@@ -1,0 +1,23 @@
+<div data-project="2" data-project-extends="1" class="u-mb-2">
+    <ul data-project-commands>
+        <li data-command-open-folder-to-root>src/main/webapp</li>
+    </ul>
+    <pre data-code="stranka.jsp" data-folder="src/main/webapp" data-active><code class="language-html">&lt;%@page contentType="text/html" pageEncoding="UTF-8" %&gt;
+
+&lt;!-- vytvoření bean objektu --&gt;
+&lt;jsp:useBean id="uzivatel" class="io.github.jirkasa.Uzivatel" /&gt;
+&lt;jsp:setProperty name="uzivatel" property="jmeno" value="Jiří" /&gt;
+&lt;jsp:setProperty name="uzivatel" property="prijmeni" value="Satora" /&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Expression Language&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- vypsání vlastností bean objektu pomocí expression language --&gt;
+    &lt;p&gt;Uživatel: ${uzivatel.jmeno} ${uzivatel.prijmeni}&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</div>
