@@ -1,0 +1,13 @@
+<div data-code-box data-no-buttons class="u-mb-4">
+    <pre data-code><code class="language-html">&lt;!-- pokud dojde uvnitř c:catch tagu k vyjímce, tak
+se vyjímka uloží do proměnné catchException --&gt;
+&lt;c:catch var="catchException"&gt;
+    &lt;% int x = 10 / 0; %&gt;
+&lt;/c:catch&gt;
+
+&lt;!-- pokud proměnná catchException není null (došlo
+k vyjímce), tak se na stránku vyjímka vypíše --&gt;
+&lt;c:if test="${catchException != null}"&gt;
+    &lt;p&gt;Zachycena vyjímka: ${catchException}&lt;/p&gt;
+&lt;/c:if&gt;</code></pre>
+</div>

@@ -1,0 +1,11 @@
+<div data-code-box data-no-buttons class="u-mb-4">
+    <pre data-code><code class="language-html">&lt;!-- vypsání 5 řádků --&gt;
+&lt;c:forEach var="i" begin="1" end="5"&gt;
+    &lt;p&gt;Řádek ${i}&lt;/p&gt;
+&lt;/c:forEach&gt;
+
+&lt;!-- vypsání jmen všech uživatelů z listu users --&gt;
+&lt;c:forEach var="user" items="${users}"&gt;
+    &lt;p&gt;${user.name}&lt;/p&gt;
+&lt;/c:forEach&gt;</code></pre>
+</div>

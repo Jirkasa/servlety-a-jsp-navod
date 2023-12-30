@@ -1,0 +1,16 @@
+<div data-code-box data-no-buttons class="u-mb-4">
+    <pre data-code><code class="language-html">&lt;c:set var="cislo1" value="${3}"/&gt;
+&lt;c:set var="cislo2" value="${2}"/&gt;
+
+&lt;c:choose&gt;
+    &lt;c:when test="${cislo1 &lt; cislo2}"&gt;
+        &lt;p&gt;cislo1 je menší než cislo2&lt;/p&gt;
+    &lt;/c:when&gt;
+    &lt;c:when test="${cislo1 &gt; cislo2}"&gt;
+        &lt;p&gt;cislo1 je větší než cislo2&lt;/p&gt;
+    &lt;/c:when&gt;
+    &lt;c:otherwise&gt;
+        &lt;p&gt;cislo1 se rovná cislo2&lt;/p&gt;
+    &lt;/c:otherwise&gt;
+&lt;/c:choose&gt;</code></pre>
+</div>

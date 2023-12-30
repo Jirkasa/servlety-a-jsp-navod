@@ -1,0 +1,12 @@
+<div data-code-box data-no-buttons class="u-mb-4">
+    <pre data-code><code class="language-html">&lt;!-- vytvoření proměnné cislo v page rozsahu --&gt;
+&lt;c:set var="cislo" value="${20}"/&gt;
+&lt;!-- vytvoření proměnné cislo v session rozsahu --&gt;
+&lt;c:set var="cislo" scope="session" value="${30}"/&gt;
+
+&lt;!-- vypsání proměnné z page rozsahu --&gt;
+${cislo}
+&lt;!-- vypsání proměnné ze session rozsahu --&gt;
+&lt;!-- (musíme použít sessionScope.cislo, protože máme proměnnou cislo i v page rozsahu) --&gt;
+${sessionScope.cislo}</code></pre>
+</div>

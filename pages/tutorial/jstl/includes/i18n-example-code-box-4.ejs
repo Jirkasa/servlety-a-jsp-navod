@@ -1,0 +1,29 @@
+<div data-project="7" data-project-extends="6" class="u-mb-2">
+    <ul data-project-commands>
+        <li data-command-open-folder>src/main/resources/io</li>
+        <li data-command-open-folder>src/main/resources/io/github</li>
+        <li data-command-open-folder>src/main/resources/io/github/jirkasa</li>
+        <li data-command-open-folder-to-root>src/main/webapp</li>
+    </ul>
+    <pre data-code="stranka.jsp" data-folder="src/main/webapp" data-active><code class="language-html">&lt;%@ page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %&gt;
+
+&lt;fmt:setBundle basename="io.github.jirkasa.labels" /&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;I18N&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;fmt:message key="label.welcome" /&gt;
+    &lt;br&gt;&lt;br&gt;
+    &lt;fmt:message key="label.username" /&gt;: &lt;input type="text" name="username" /&gt;
+    &lt;br&gt;&lt;br&gt;
+    &lt;fmt:message key="label.password" /&gt;: &lt;input type="password" name="password" /&gt;
+    &lt;br&gt;&lt;br&gt;
+    &lt;button&gt;&lt;fmt:message key="label.login" /&gt;&lt;/button&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</div>
