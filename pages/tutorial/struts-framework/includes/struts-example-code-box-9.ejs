@@ -1,0 +1,21 @@
+<div data-project="9" data-project-extends="8" class="u-mb-2">
+    <ul data-project-commands>
+        <li data-command-open-folder-to-root>src/main/resources</li>
+    </ul>
+    <pre data-code="struts.xml" data-folder="src/main/resources" data-active data-code-highlight="12-14"><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+    "http://struts.apache.org/dtds/struts-2.5.dtd"&gt;
+&lt;struts&gt;
+    &lt;constant name="struts.devMode" value="true" /&gt;
+
+    &lt;package name="default" extends="struts-default"&gt;
+        &lt;action name=""&gt;
+            &lt;result&gt;/WEB-INF/jsp/Home.jsp&lt;/result&gt;
+        &lt;/action&gt;
+        &lt;action name="vysledek"&gt;
+            &lt;result name="stranka"&gt;/WEB-INF/jsp/Vysledek.jsp&lt;/result&gt;
+        &lt;/action&gt;
+    &lt;/package&gt;
+&lt;/struts&gt;</code></pre>
+</div>
