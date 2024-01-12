@@ -124,8 +124,10 @@
         <p class="paragraph u-mb-2">Implicitní objekt page je nastaven jako reference na vygenerovaný servlet a je typu Object. Tento objekt se moc nepoužívá, protože je jednodušší používat klíčové slovo this. Objekt page se totiž musí před použitím castovat na HttpServlet, zatímco klíčové slovo this ne. Následující ukázka ukazuje dva řádky kódu, které dělají stejnou věc. První řádek používá objekt page a druhý klíčové slovo this.</p>
         <%- include("./includes/implicit-object-page-code-box.ejs") %>
         <h3 class="heading-tertiary u-mb-1">Objekt exception</h3>
-        <p class="paragraph u-mb-2">Implicitní objekt exception můžeme použít k vypsání chyby na chybové stránce, jak ukazuje následující ukázka. Více se o chybových stránkách naučíme později.</p>
+        <p class="paragraph u-mb-2">Implicitní objekt exception můžeme použít k vypsání chyby na chybové stránce, jak ukazuje následující ukázka. Chybová stránka se označuje pomocí direktivy page, kde se nastavuje atribut isErrorPage na true.</p>
         <%- include("./includes/implicit-object-exception-code-box.ejs") %>
+        <p class="paragraph u-mb-2">Že se má pro jinou JSP stránku chybová stránka použít, se nastavuje pomocí direktivy page atributem errorPage. Pokud potom v JSP stránce dojde k chybě, tak se nastavená chybová stránka zobrazí.</p>
+        <%- include("./includes/errorpage-attribute-code-box.ejs") %>
         <p class="paragraph u-mb-2">To je vše, co jsem chtěl v této části popsat. Dozvěděli jste se jaké tagy a implicitní objekty v JSP existují a k čemu slouží. Direktivy a action elementy jsme do podrobna nerozebírali, protože jsou pro ně vyhrazené následující samostatné části.</p>
     <%- include("../../includes/tutorial-page-layout-end.ejs") %>
     <%- include("../../includes/footer.ejs") %>
