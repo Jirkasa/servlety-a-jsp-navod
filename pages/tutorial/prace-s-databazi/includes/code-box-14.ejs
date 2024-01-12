@@ -1,0 +1,41 @@
+<div data-project="14" data-project-extends="13" class="u-mb-2">
+    <pre data-code="CreateContactServlet.java" data-java-package data-java-package-opened data-active data-code-highlight="11,19-38"><code class="language-java">import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
+
+public class CreateContactServlet extends HttpServlet {
+    private DataSource dataSource;
+    
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/jsp/CreateContact.jsp");
+        dispatcher.forward(req, res);
+    }
+    
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        
+        Kontakt kontakt = new Kontakt();
+        kontakt.setJmeno(req.getParameter("jmeno"));
+        kontakt.setPrijmeni(req.getParameter("prijmeni"));
+        kontakt.setTelefon(req.getParameter("telefon"));
+        
+        System.out.println(dataSource);
+        
+        KontaktDBUtil dbUtil = new KontaktDBUtil(dataSource);
+        dbUtil.add(kontakt);
+        dbUtil.close();
+        
+        req.setAttribute("zprava", "Kontakt byl vytvořen.");
+        req.setAttribute("odkaz", "./");
+        RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/jsp/Message.jsp");
+        dispatcher.forward(req, res);
+    }
+}</code></pre>
+</div>

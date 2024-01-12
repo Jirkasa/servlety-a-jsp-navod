@@ -1,0 +1,29 @@
+<div data-project="24" data-project-extends="23" class="u-mb-2">
+    <ul data-project-commands>
+        <li data-command-open-folder-to-root>src/main/webapp/WEB-INF/jsp</li>
+    </ul>
+    <pre data-code="EditContact.jsp" data-folder="src/main/webapp/WEB-INF/jsp" data-active><code class="language-html">&lt;%@ page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Práce s databází&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;a href="./"&gt;Zpět&lt;/a&gt;
+    &lt;br&gt;&lt;br&gt;
+    &lt;form action="./upravit-kontakt" method="POST"&gt;
+        &lt;input type="hidden" name="id" value="${kontakt.id}" /&gt;
+        &lt;label for="jmeno"&gt;Jméno:&lt;/label&gt; &lt;input type="text" id="jmeno" name="jmeno" value="&lt;c:out value="${kontakt.jmeno}"/&gt;" /&gt;
+        &lt;br&gt;&lt;br&gt;
+        &lt;label for="prijmeni"&gt;Příjmení:&lt;/label&gt; &lt;input type="text" id="prijmeni" name="prijmeni" value="&lt;c:out value="${kontakt.prijmeni}"/&gt;" /&gt;
+        &lt;br&gt;&lt;br&gt;
+        &lt;label for="telefon"&gt;Telefon:&lt;/label&gt; &lt;input type="text" id="telefon" name="telefon" value="&lt;c:out value="${kontakt.telefon}"/&gt;" /&gt;
+        &lt;br&gt;&lt;br&gt;
+        &lt;button&gt;Upravit&lt;/button&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</div>

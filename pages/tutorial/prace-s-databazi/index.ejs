@@ -2,10 +2,109 @@
     <%- include("../../includes/header.ejs") %>
     <%- include("../../includes/tutorial-page-layout-start.ejs", {pathToTutorialFolder: "./", activeLink: "prace-s-databazi"}) %>
         <h1 class="heading-primary u-mb-4">Práce s databází</h1>
-        <p class="paragraph u-mb-4"></p>
+        <p class="paragraph u-mb-2">Naprostá většina webových aplikací potřebuje nějakou databázi. V první části tutoriálu jste si mohli nainstalovat MySQL databázy. V této části se dozvíte, jak se k ní můžete připojit a pracovat s ní. Pokud jste si teda namísto MySQL nenainstalovali nějakou jinou databázi. Práce s jinými relačními databázemi je ale hodně podobná. Takže pokud chcete používat jinou databázi, tak samozřejmě můžete.</p>
+        <p class="paragraph u-mb-4">Nebudeme tu rozebírat databáze do hloubky a ani si vysvětlovat, jak funguje dotazovací jazyk SQL. Pokud je pro vás práce s databázemi úplně nová, tak se budete muset SQL naučit někde jinde. Zde si akorát ukážeme, jak se můžeme k databázi připojit pomocí JDBC a pracovat s ní v servletech.</p>
+        <h2 class="heading-secondary u-mb-2">Co je JDBC</h2>
+        <p class="paragraph u-mb-2">Nejvíce nízkoúrovňová cesta jak přistupovat k databázím v Javě je přes JDBC API (Java Database Connectivity). Výhodou je, že nemusíme stahovat žádné knihovny třetích stran, protože JDBC je k dispozici přímo v JDK/JRE. Jediné co potřebujeme, je JDBC driver pro specifickou databázi, ke které se připojujeme.</p>
+        <p class="paragraph u-mb-4">Kromě JDBC existují také třeba různé ORM (Object Relational Mapping) nástroje (implementace <a href="https://cs.wikipedia.org/wiki/Java_Persistence_API" target="_blank" class="link">JPA</a>, což je technologie z Javy EE), které nám s databází umožňují pracovat na vyšší úrovni a usnadňují nám mapování položek z databáze na objekty. Ty JDBC používají. Příkladem je například <a href="https://hibernate.org/" target="_blank" class="link">Hibernate</a>. Pro reálné projekty určitě nějaký ORM nástroj použít doporučuji. V této části nám jde jen o to, vůbec se k databázi připojit a zkusit si s ní pracovat.</p>
+        <h2 class="heading-secondary u-mb-2">Ukázka práce s databází</h2>
+        <p class="paragraph u-mb-2">Abychom si ukázali, jak v servletech můžeme pracovat s databází, tak si vytvoříme aplikaci, ve které si uživatel bude moci vytvářet, prohlížet, editovat a mazat kontakty.</p>
+        <p class="paragraph u-mb-2">Začneme tím, že si vytvoříme databázi a v ní tabulku "kontakty". Jak to udělat pro MySQL popisuje následující slider.</p>
+        <%- include("./includes/mysql-create-database-for-project-slider.ejs") %>
+        <%- include("./includes/create-kontakty-table-code-box.ejs") %>
+        <p class="paragraph u-mb-2">Vytvořili jsme si databázi s tabulkou, do které budeme ukládat kontakty. Jako sloupce jsme jí nastavili id, což bude jedinečné číslo pro každou položku v tabulce, a sloupce jmeno, prijmeni a telefon. Můžeme se pustit do samotné tvorby aplikace.</p>
+        <p class="paragraph u-mb-2">Založíme si nový Maven projekt, který můžeme pojmenovat třeba jako "kontakty". Kromě závislosti pro servlety si do souboru pom.xml přidáme také závislost pro JSTL, jelikož ji budeme používat.</p>
+        <%- include("./includes/code-box-1.ejs") %>
+        <p class="paragraph u-mb-2">Můžeme začít například tím, že si vytvoříme servlet a JSP stránku pro hlavní stránku aplikace. Následující ukázky je ukazují. Servlet pouze předá příchozí request pro zpracování do JSP stránky a ta jen zobrazí pár odkazů na další stránky aplikace, které později vytvoříme. JSP stránku můžeme pojmenovat třeba jako "Home.jsp" a umístit ji do složky WEB-INF/jsp, kterou vytvoříme, jelikož necheme aby k ní uživatelé měli přímý přístup.</p>
+        <%- include("./includes/code-box-2.ejs") %>
+        <%- include("./includes/code-box-3.ejs") %>
+        <p class="paragraph u-mb-2">Ve složce WEB-INF vytvoříme soubor web.xml a náš vytvořený servlet namapujeme na "/home". Také jej použijeme jako domovskou stránku aplikace.</p>
+        <%- include("./includes/code-box-4.ejs") %>
+        <p class="paragraph u-mb-2">Po spuštění aplikace a navštívení <a href="" class="link"></a> by jste měli vidět stránku, kterou ukazuje následující obrázek.</p>
+        <img src="../../static/img/screenshots/PrikladPraceSDatabaziHlavniStranka.png" alt="hlavní stránka aplikace" class="image image--full-width image--with-border u-mb-2">
+        <p class="paragraph u-mb-2">Teď bude pravděpodobně nejlepší začít s tvorbou stránky pro přidání nového kontaktu, abychom si do databáze vůbec mohli nějaké kontakty přidat. Následující ukázky pro ni ukazují servlet a JSP stránku. JSP stránka se jmenuje "CreateContact.jsp" a nachází se na ní formulář pro vytvoření nového kontaktu. Do servletu pro jeho zpracování potom přidáme metodu doPost.</p>
+        <%- include("./includes/code-box-5.ejs") %>
+        <%- include("./includes/code-box-6.ejs") %>
+        <p class="paragraph u-mb-2">V souboru web.xml servlet namapujeme na "/vytvorit-kontakt".</p>
+        <%- include("./includes/code-box-7.ejs") %>
+        <p class="paragraph u-mb-2">Po restartu aplikace a otevření odkazu "Vytvořit nový kontakt" na hlavní stránce by se vám měla zobrazit stránka s formulářem pro vytvoření nového kontaktu.</p>
+        <img src="../../static/img/screenshots/PrikladPraceSDatabaziVytvoritNovyKontaktStranka.png" alt="stránka pro vytvoření nového kontaktu" class="image image--full-width image--with-border u-mb-2">
+        <p class="paragraph u-mb-2">Abychom mohli stránku pro vytvoření kontaktu dokončit, tak se v naší aplikaci potřebujeme připojit k databázi. Je více cest jak to udělat. My si vyzkoušíme nakonfigurovat připojení k databázi pomocí souboru context.xml. Jedná se o konfigurační soubor používaný v servletových kontejnerech (zejména v Tomcatu), který slouží ke konfiguraci webové aplikace. Můžeme v něm nadefinovat připojení k databází, proměnné prostředí, a tak podobně. Může být užitečný pro nastavení aplikace v různých prostředích (např. vývojovém a produkčním).</p>
+        <p class="paragraph u-mb-2">Soubor context.xml můžeme vytvořit ve složce META-INF, kterou můžeme založit ve složce webapp, stejně jako složku WEB-INF. Kořenovým elementem souboru context.xml je element Context. Do tohoto elementu můžeme přidat element Resource, který slouží ke konfiguraci datového zdroje. Následující ukázka ukazuje soubor context.xml pro náš projekt.</p>
+        <%- include("./includes/code-box-8.ejs") %>
+        <p class="paragraph u-mb-1">Elementu Resource jsme v souboru context.xml nastavili spoustu atributů. Následující seznam popisuje, k čemu tyto atributy slouží:</p>
+        <ul class="list u-mb-2">
+            <li><b>name</b> - nastavuje unikátní jméno datového zdroje v kontejneru servletů (Tomcatu)</li>
+            <li><b>auth</b> - určuje metodu autentizace pro přístup k datovému zdroji</li>
+            <li><b>type</b> - specifikuje typ datového zdroje (v našem případě bude typu javax.sql.DataSource)</li>
+            <li><b>maxActive</b> - určuje maximální počet aktivních připojení k datovému zdroji</li>
+            <li><b>maxIdle</b> - určuje maximální počet nečinných (nevyužívaných) připojení k datovému zdroji</li>
+            <li><b>maxWaitMillis</b> - určuje maximální dobu v milisekundách, po kterou je vlákno ochotno čekat na připojení k databázi</li>
+            <li><b>username</b> - specifikuje uživatelské jméno pro přihlášení k databázi</li>
+            <li><b>password</b> - specifikuje heslo pro přihlášení k databázi (vy zadejte samozřejmě svoje, pokud nemáte heslo "admin")</li>
+            <li><b>driverClassName</b> - specifikuje název třídy JDBC ovladače pro databázi, ke které se připojujeme</li>
+            <li><b>url</b> - nastavuje URL adresu databáze, ke které se připojujeme (obsahuje port a název databáze; port je defaultně 3306, pokud jste jej neměnili)</li>
+        </ul>
+        <p class="paragraph u-mb-2">Pomocí atributu driverClassName jsme nastavili JDBC driver, který se má použít pro přistupování k MySQL databázi. Budeme si jej muset přidat jako závislost do souboru pom.xml. Pokud používate nějakou jinou databázi, tak si musíte najít jiný driver. Soubor pom.xml s přidanou <a href="https://mvnrepository.com/artifact/com.mysql/mysql-connector-j" target="_blank" class="link">závislostí pro JDBC driver k MySQL databázi</a> ukazuje následující ukázka.</p>
+        <%- include("./includes/code-box-9.ejs") %>
+        <p class="paragraph u-mb-2">Teď když máme připojení k databázi přichystané, můžeme začít třeba tím, že si vytvoříme jednoduchou třídu, která bude reprezentovat kontakt. Bude obsahovat jen vlastnosti, které se budou jmenovat stejně jako sloupce tabulky, kterou jsme si vytvořili v databázi, a jejich gettery a settery. Můžeme ji pojmenovat jako "Kontakt". Následující ukázka ukazuje její kód.</p>
+        <%- include("./includes/code-box-10.ejs") %>
+        <p class="paragraph u-mb-2">Pro komunikaci s databází za účelem získání, měnění, mazání a tvorby kontaktů si založíme třídu jménem KontaktDBUtil. Jako parametr bude v konstruktoru přijímat objekt typu javax.sql.DataSource. Z tohoto objektu získáme pomocí metody getConnection připojení k databázi, které potom můžeme používat. Později si přidáme metody, kde jej využijeme. Protože je potřeba po použití připojení k databázi provést jeho uzavření, tak třída bude také obsahovat metodu close, kterou vždy zavoláme, až budeme s její prací hotovi. Připojení k databázi se ve skutečnosti nezavírá, ale vrací se do poolu, kde čeká na další použití. Proto jsme v souboru context.xml definovali maximální počet aktivních a neaktivních připojení.</p>
+        <%- include("./includes/code-box-11.ejs") %>
+        <p class="paragraph u-mb-2">Jako první si do třídy KontaktDBUtil přidáme metodu pro vytvoření nového kontaktu. Bude přijímat instanci třídy Kontakt, podle které v databázi vytvoří novou položku. Následující ukázka tuto metodu ukazuje. Vytváříme v ní objekt typu PreparedStatement, kterému předáváme SQL kód, který chceme spustit. Namísto vkládání hodnot přímo do řetězce se SQL kódem používáme otazníky. Až poté na jednotlivá místa pomocí metody setString nastavujeme hodnoty. To děláme kvůli tomu, abychom zabránili SQL Injection útokům. Uživatel by totiž mohl do SQL kódu vložit hodnotu, která by obsahovala SQL kód a tento kód by se potom spustil. Mohl by například jako hodnotu použít řetězec "; DROP TABLE kontakty;" a tím by nám smazal celou tabulku kontakty. Po vytvoření statement objektu náš SQL kód spustíme zavoláním execute metody a protože je potřeba statement objekt uzavřít, zavoláme také metodu close.</p>
+        <%- include("./includes/code-box-12.ejs") %>
+        <p class="paragraph u-mb-2">Naši nově vytvořenou třídu KontaktDBUtil můžeme použít v servletu CreateContactServlet, kde nám zbývá implementovat metodu doPost. Než to ale uděláme, tak si ještě vytvoříme JSP stránku, která bude sloužit k zobrazování zpráv. V servletu budeme moci nastavit zprávu a na stránce ji poté zobrazit. Můžeme ji pojmenovat třeba jako "Message.jsp". Kód pro ni ukazuje následující ukázka. Kromě zprávy budeme také nastavovat URL pro odkaz "Pokračovat", který se na stránce nachází.</p>
+        <%- include("./includes/code-box-13.ejs") %>
+        <p class="paragraph u-mb-2">Teď přidáme do servletu CreateContactServlet metodu doPost, ve které budeme reagovat na odeslaný formulář a pomocí třídy KontaktDBUtil vytvářet v databázi nový kontakt. Poté pošleme stránku se zprávou, že se kontakt úspěšně vytvořil. V následující ukázce si můžete kód metody doPost prohlédnout. Jelikož k vytvoření instance třídy KontaktDBUtil potřebujeme objekt typu DataSource, tak si jej v servletu definujeme jako vlastnost.</p>
+        <%- include("./includes/code-box-14.ejs") %>
+        <p class="paragraph u-mb-2">Nastavení DataSource objektu necháme na Tomcatu. Použijeme na vlastnost dataSource anotaci @Resource a tím mu řekneme, aby ji nastavil. Abychom ale mohli tuto anotaci použít, potřebujeme si do souboru pom.xml přidat <a href="https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api" class="link">závislost pro anotace</a>. Následující ukázka ukazuje upravený soubor.</p>
+        <%- include("./includes/code-box-15.ejs") %>
+        <p class="paragraph u-mb-2">Teď můžeme anotaci @Resource použít. Jako parametr jí nastavujeme název datového zdroje, který jsme specifikovali v souboru context.xml. Následující ukázka ukazuje dokončený servlet CreateContactServlet.</p>
+        <%- include("./includes/code-box-16.ejs") %>
+        <p class="paragraph u-mb-2">Nyní by formulář na stránce pro vytvoření kontaktu měl fungovat. Po jeho odeslání se vám v databázi vytvoří nová položka a zobrazí se vám stránka se zprávou, že byl kontakt úspěšně vytvořen.</p>
+        <img src="../../static/img/screenshots/PrikladPraceSDatabaziKontaktVytvorenStranka.png" alt="stránka, oznamující že byl kontakt vytvořen" class="image image--full-width image--with-border u-mb-2">
+        <p class="paragraph u-mb-2">V aplikaci si vytvořené kontakty zatím nemáme možnost zobrazit. Pustíme se tedy do tvorby stránky, kde se nám do tabulky vypíší všechny vytvořené kontakty. Nejprve si do třídy KontaktDBUtil přidáme metodu pro získání všech kontaktů z databáze. V následující ukázce si ji můžete prohlédnout. Vytváříme statement objekt, na kterém spouštíme SQL dotaz a získáváme ResultSet. Pomocí něj poté procházíme všechny získané položky a ukládáme je do listu. Poté na Statement a ResultSet objektu voláme metodu close a vytvořený list vracíme.</p>
+        <%- include("./includes/code-box-17.ejs") %>
+        <p class="paragraph u-mb-2">Teď si vytvoříme servlet, který nazveme "ContactServlet" a k němu JSP stránku, kterou pojmenujeme jako "Contacts.jsp". Servlet v metodě doGet pomocí metody add třídy KontaktDBUtil získá list kontaktů a předá je JSP stránce k zobrazení. Ta vytvoří tabulku a pro každý kontakt do ní vloží řádek. Následující ukázky ukazují kód tohoto servletu a JSP stránky. V servletu vlastnost dataSource definujeme úplně stejně jako dříve v servletu CreateContactServlet. Tomcat nám ji tedy automaticky nastaví.</p>
+        <%- include("./includes/code-box-18.ejs") %>
+        <%- include("./includes/code-box-19.ejs") %>
+        <p class="paragraph u-mb-2">Ve web.xml vytvořený servlet namapujeme na "/kontakty".</p>
+        <%- include("./includes/code-box-20.ejs") %>
+        <p class="paragraph u-mb-2">Nyní máme v aplikaci možnost si naše vytvořené kontakty zobrazit. Pokud na hlavní stránce kliknete na "Zobrazit kontakty", tak se vám vypíší do tabulky, jak ukazuje následující obrázek.</p>
+        <img src="../../static/img/screenshots/PrikladPraceSDatabaziKontaktyStranka.png" alt="stránka s kontakty" class="image image--full-width image--with-border u-mb-2">
+        <p class="paragraph u-mb-2">Odkaz "Upravit", který se u jednotlivých kontaktů v tabulce zobrazuje, zatím ještě nefunguje. Nyní jej zprovozníme. Bude odkazovat na stránku "/upravit-kontakt" a jako query parametr se bude předávat ID kontaktu, který se má editovat. Následující ukázka ukazuje upravený řádek kódu JSP stránky s kontakty.</p>
+        <%- include("./includes/code-box-21.ejs") %>
+        <p class="paragraph u-mb-2">Jelikož budeme chtít podle ID získávat kontakt k editaci z databáze, tak si na to ve třídě KontaktDBUtil vytvoříme metodu. Následující ukázka ji ukazuje.</p>
+        <%- include("./includes/code-box-22.ejs") %>
+        <p class="paragraph u-mb-2">Můžeme se pustit do tvorby servletu a JSP stránky. Servlet načte z databáze kontakt a předá jej JSP stránce k zobrazení ve formuláři. V tomto formuláři uživatel bude moci kontakt upravit. Pokud se kontakt nenajde, tak se zobrazí stránka se zprávou, že se nenašel. Následující ukázky ukazují kód tohoto servletu a JSP stránky.</p>
+        <%- include("./includes/code-box-23.ejs") %>
+        <%- include("./includes/code-box-24.ejs") %>
+        <p class="paragraph u-mb-2">Vytvořený servlet namapujeme ve web.xml na "/upravit-kontakt".</p>
+        <%- include("./includes/code-box-25.ejs") %>
+        <p class="paragraph u-mb-2">Pokud nyní na stránce s kontakty u některého vytvořeného kontaktu klikneme na "Upravit", tak se nám zobrazí stránka, na které můžeme kontakt upravit.</p>
+        <img src="../../static/img/screenshots/PrikladPraceSDatabaziEditaceKontaktuStranka.png" alt="stránka pro editaci kontaktu" class="image image--full-width image--with-border u-mb-2">
+        <p class="paragraph u-mb-2">Abychom mohli kontakt upravit, tak v servletu EditContact servlet implementujeme metodu doPost. Ta bude sloužit pro zpracování formuláře a editaci kontaktu v databázi. Formulář obsahuje skrytý input, který obsahuje ID kontaktu. Podle toho zjistíme, který kontakt se má upravit. Nejdříve si ale ve třídě KontaktDBUtil potřebujeme vytvořit metodu pro editaci kontaktu. Ukazuje ji následující ukázka. Jako parametr bere ID kontaktu, který se má změnit a hodnoty pro jméno, příjmení a telefon. Jako navrátový typ má boolean hodnotu, která signalizuje, zda byl kontakt nalezen nebo ne.</p>
+        <%- include("./includes/code-box-26.ejs") %>
+        <p class="paragraph u-mb-2">Teď můžeme tuto nově vytvořenou metodu použít v metodě doPost, kterou vytvoříme v servletu EditContact. V následující ukázka si ji můžete prohlédnout.</p>
+        <%- include("./includes/code-box-27.ejs") %>
+        <p class="paragraph u-mb-2">Můžete si nějaký kontakt zkusit upravit. Mělo by to fungovat a zobrazit se zpráva, že kontakt byl úspěšně upraven.</p>
+        <img src="../../static/img/screenshots/PrikladPraceSDatabaziKontaktUpravenStranka.png" alt="stránka, oznamující že byl kontakt upraven" class="image image--full-width image--with-border u-mb-2">
+        <p class="paragraph u-mb-2">Poslední věc, která nám zbývá udělat, je přidání možnosti smazat kontakt. U toho jsem se rozhodl, že na to uděláme samostatnou stránku, kde uživatel zadá ID kontaktu, který chce smazat. Začneme s přidáním metody pro odstranění kontaktu z databáze do třídy KontaktDBUtil. Ukazuje ji následující ukázka.</p>
+        <%- include("./includes/code-box-28.ejs") %>
+        <p class="paragraph u-mb-2">Teď vytvoříme servlet a JSP stránku. Ukazují je následující ukázky.</p>
+        <%- include("./includes/code-box-29.ejs") %>
+        <%- include("./includes/code-box-30.ejs") %>
+        <p class="paragraph u-mb-2">Servlet v souboru web.xml namapujeme na "/odstranit-kontakt".</p>
+        <%- include("./includes/code-box-31.ejs") %>
+        <p class="paragraph u-mb-2">Po otevření odkazu "Odstranit kontakt" na hlavní stránce se nám nyní zobrazí formulář, do kterého můžeme zadat ID kontaktu a smazat jej.</p>
+        <img src="../../static/img/screenshots/PrikladPraceSDatabaziOdstraneniKontaktuStranka.png" alt="stránka pro odstranění kontaktu" class="image image--full-width image--with-border u-mb-2">
+        <p class="paragraph u-mb-6">Naše aplikace je hotová. Není to samozřejmě úplně reálná aplikace, protože v ní například chybí validace a tak podobně. Její tvorbou jsme si hlavně chtěli jen vyzkoušet práci s databází, což bylo cílem této části.</p>
+        <p class="paragraph">Touto částí celý tutoriál o servletech a JSP končí. Po jeho absolvování máte základ, na kterém teď můžete stavět. Pokud si někdy budete chtít něco připomenout, tak se sem můžete vrátit a třeba si najít nějakou specifickou část tutoriálu v <a href="#" class="link">obsahu</a>.</p>
     <%- include("../../includes/tutorial-page-layout-end.ejs") %>
     <%- include("../../includes/footer.ejs") %>
 <%- include("../../includes/page-end.ejs") %>
+
+<!-- todo - odkaz na obsah; dopsat poslední odstavec, protože přidám ještě sekci "Další tutoriály" -->
 
 <!--
     - ještě existuje META-INF, potom se musím podívat k čemu to slouží
@@ -13,8 +112,10 @@
         - jo, k tomu se vlastně ještě ten pageContext používá, můžeme s jeho pomocí získat na stránce chybu
         - welcome-file-list (to jsem už použil)
     
+    - ještě .properties soubory - mám to v chatu s ChatGPT 
+    
     JEŠTĚ POTŘEBUJU
-        - ještě budu potřebovat část, kde tady to nastavení custom stránek ukážu - možná to ukážu tam, kde ukazuju ty implicitní objekty - asi ne
+        - ještě budu potřebovat část, kde tady to nastavení custom stránek ukážu - možná to ukážu tam, kde ukazuju ty implicitní objekty - asi ne - nebo bych tam nemusel ukazovat celý příklad
 
     VYLEPŠENÍ
         - U sliderů přidat nějakou lupu (při najetí na obrázek se to zobrazí ve větším měřítku)
