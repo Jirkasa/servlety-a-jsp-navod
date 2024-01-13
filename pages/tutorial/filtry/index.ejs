@@ -3,13 +3,13 @@
     <%- include("../../includes/tutorial-page-layout-start.ejs", {pathToTutorialFolder: "./", activeLink: "filtry"}) %>
         <h1 class="heading-primary u-mb-4">Filtry</h1>
         <p class="paragraph u-mb-4">V této části si ukážeme, jak můžeme omezit přístup k servletům pomocí filtrů. A nejen to, jedná se jen o jednu z věcí, které můžeme pomocí filtrů udělat.</p>
-        <h2 class="heading-secondary u-mb-2">Co je Filtr</h2>
+        <h2 id="co-je-filtr" class="heading-secondary u-mb-2">Co je Filtr</h2>
         <p class="paragraph u-mb-2">Filtr je objekt, který se spouští před zpracováním a po zpracování requestu. Používá se třeba k implementaci autentizace a autorizace, k logování, a tak podobně. Výhoda filtru je ta, že jej můžeme použít na více servletů. Není nijak závislý na specifickém servletu. Díky tomu je pro nás i jednodušší jeho správa.</p>
         <p class="paragraph u-mb-4">Následující diagram ukazuje, kdy se filter spouští.</p>
         <img src="../../static/img/illustrations/SpusteniFilteru.svg" alt="Diagram, ukazující kdy se filtr spouští" class="image u-mb-4">
         <p class="paragraph u-mb-4">Filtrů může být pro servlet nastavených klidně i více. Filtry se potom budou volat jeden po druhém až k servletu.</p>
         <img src="../../static/img/illustrations/SpusteniViceFilteru.svg" alt="Diagram, ukazující kdy se spouští řetězec filtrů" class="image u-mb-6">
-        <h2 class="heading-secondary u-mb-2">Rozhraní Filter</h2>
+        <h2 id="rozhrani-filter" class="heading-secondary u-mb-2">Rozhraní Filter</h2>
         <p class="paragraph u-mb-2">Filtr můžeme vytvořit implementací <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/Filter.html" target="_blank" class="link">Filter</a> rozhraní. Toto rozhraní definuje tři metody, které popisuje následující tabulka.</p>
         <table class="table u-mb-2">
             <thead>
@@ -39,9 +39,9 @@
         </table>
         <p class="paragraph u-mb-2">Metody init a destroy mají defaultní implementaci. Pokud je tedy nepotřebujeme, nemusíme je implementovat. Následující ukázka ukazuje příklad, jak může filtr vypadat.</p>
         <%- include("./includes/filter-example-code-box.ejs") %>
-        <h2 class="heading-secondary u-mb-2">Filter chain</h2>
+        <h2 id="filter-chain" class="heading-secondary u-mb-2">Filter chain</h2>
         <p class="paragraph u-mb-4">V metodě doFilter se jako poslední parametr předává objekt typu <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/FilterChain.html" target="_blank" class="link">FilterChain</a>. Jedná se o rozhraní, které definuje jen jednu metodu jménem doFilter. Tu ve filtru používáme k tomu, abychom předali request ke zpracování servletu nebo dalšímu filtru v řetězci. Slovo chain v češtině vlastně znamená řetězec. FilterChain tedy představuje takový řetězec filtrů směřující k servletu. Pokud v nějakém filtru metodu doFilter objektu FilterChain nezavoláme, tak se řetězec přeruší a request do servletu nedoputuje.</p>
-        <h2 class="heading-secondary u-mb-2">Vytvoření filtru</h2>
+        <h2 id="vytvoreni-filtru" class="heading-secondary u-mb-2">Vytvoření filtru</h2>
         <p class="paragraph u-mb-2">Pro ukázku si vytvoříme projekt, ve kterém budeme mít dva servlety, které jen vyrenderují stránku. Poté vytvoříme filtr, který na tyto servlety aplikujeme. Bude sloužit k tomu, že nám bude na serveru do konzole vypisovat, kdy proběhl request a na jaký servlet. Založíme tedy nový Maven projekt a vytvoříme první servlet. Ukazuje jej následující ukázka.</p>
         <%- include("./includes/logging-filter-code-box-1.ejs") %>
         <p class="paragraph u-mb-2">Druhý servlet bude v podstatě stejný.</p>
@@ -54,7 +54,7 @@
         <%- include("./includes/logging-filter-code-box-5.ejs") %>
         <p class="paragraph u-mb-2">Pokud si nyní zkusíte jeden ze servletů otevřít, tak se vám v konzoli ve vašem IDE vypíše, že proběhl request.</p>
         <%- include("./includes/logging-filter-console-log.ejs") %>
-        <h2 class="heading-secondary u-mb-2">Zablokování přístupu k vybraným servletům</h2>
+        <h2 id="zablokovani-pristupu-k-vybranym-servletum" class="heading-secondary u-mb-2">Zablokování přístupu k vybraným servletům</h2>
         <p class="paragraph u-mb-2">Pokud ve filtru nezavoláme metodu doFilter FilterChain objektu, tak se request nedostane k cílovému servletu a nebude jím tedy zpracován. Tímto způsobem bychom tedy mohli vyřešit problém, se kterým jsme se setkali v minulé části.</p>
         <p class="paragraph u-mb-2">Pro ukázku si vytvoříme projekt, kde budeme mít servlet renderující stránku. Přístup k tomuto servletu poté zamezíme pomocí filtru. Založíme tedy nový Maven projekt a vytvoříme servlet, který můžeme pojmenovat třeba jako MujServlet. Ukazuje jej následující ukázka.</p>
         <%- include("./includes/blocking-filter-code-box-1.ejs") %>
@@ -68,7 +68,7 @@
         <%- include("./includes/blocking-filter-code-box-4.ejs") %>
         <p class="paragraph u-mb-2">Pokud si aplikaci restartujete a zkusíte znovu navštívit <a href="http://localhost:8080/blocking-filter/stranka" target="_blank" class="link">http://localhost:8080/blocking-filter/stranka</a>, tak se vám již nezobrazí stránka jako předtím, ale zobrazí se vám chybová stránka.</p>
         <img src="../../static/img/screenshots/ZablokovaniStrankyFiltrem.png" alt="Chybová stránka" class="image image--full-width image--with-border u-mb-6">
-        <h2 class="heading-secondary u-mb-2">Filter Config</h2>
+        <h2 id="filter-config" class="heading-secondary u-mb-2">Filter Config</h2>
         <p class="paragraph u-mb-2">Podobně jako si můžeme v souboru web.xml nadefinovat inicializační parametry pro servlety, můžeme si je nadefinovat i pro filtry. Jedná se o hodnoty, které Tomcat předá do filtru když jej inicializuje prostřednictvím init metody. Metoda init přijímá jako parametr objekt typu <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/FilterConfig.html" target="_blank" class="link">FilterConfig</a>, ze kterého můžeme inicializační parametry dostat. Jedná se o rozhraní, které definuje čtyři metody, které popisuje následující tabulka.</p>
         <table class="table u-mb-2">
             <thead>

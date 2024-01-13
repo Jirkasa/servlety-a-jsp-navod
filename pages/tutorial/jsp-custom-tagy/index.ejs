@@ -3,12 +3,12 @@
     <%- include("../../includes/tutorial-page-layout-start.ejs", {pathToTutorialFolder: "./", activeLink: "jsp-custom-tagy"}) %>
         <h1 class="heading-primary u-mb-4">JSP custom tagy</h1>
         <p class="paragraph u-mb-4">V této části se naučíme vytvářet vlastní tagy. Jejich tvorbou můžeme eliminovat použití scripletů a oddělit business logiku od JSP stránky.</p>
-        <h2 class="heading-secondary u-mb-2">Balíček javax.servlet.jsp.tagext</h2>
+        <h2 id="balicek-javax-servlet-jsp-tagext" class="heading-secondary u-mb-2">Balíček javax.servlet.jsp.tagext</h2>
         <p class="paragraph u-mb-4">Třídy a rozhraní pro custom tagy obsahuje balíček <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/jsp/tagext/package-summary.html" target="_blank" class="link">javax.servlet.jsp.tagext</a>. Jak můžete vidět v následujícím obrázku, kořenové rozhraní je <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/jsp/tagext/JspTag.html" target="_blank" class="link">JspTag</a>. Od tohoto rozhraní dále dědí rozhraní <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/jsp/tagext/Tag.html" target="_blank" class="link">Tag</a>, <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/jsp/tagext/IterationTag.html" target="_blank" class="link">IterationTag</a> a <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/jsp/tagext/BodyTag.html" target="_blank" class="link">BodyTag</a>. Balíček také obsahuje třídu <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/jsp/tagext/TagSupport.html" target="_blank" class="link">TagSupport</a> a <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/jsp/tagext/BodyTagSupport.html" target="_blank" class="link">BodyTagSupport</a>. Třída TagSupport slouží pro tvorbu tagů, u kterých nemusíme přímo pracovat s tělem tagu a třída BodyTagSupport pro tvorbu tagů, kde s tělem tagu pracovat musíme. Třída TagSupport implementuje rozhraní IterationTag a třída BodyTagSupport implementuje rozhraní BodyTag a dědí od třídy TagSupport.</p>
         <img src="../../static/img/illustrations/CustomTagApi.svg" alt="Životní cyklus servletu" class="image u-mb-6">
-        <h3 class="heading-tertiary u-mb-1">Rozhraní JspTag</h3>
+        <h3 id="rozhrani-jsptag" class="heading-tertiary u-mb-1">Rozhraní JspTag</h3>
         <p class="paragraph u-mb-4">Rozhraní JspTag slouží jako základní rozhraní. Je to hlavně kvůli organizaci a typové bezpečnosti.</p>
-        <h3 class="heading-tertiary u-mb-1">Rozhraní Tag</h3>
+        <h3 id="rozhrani-tag" class="heading-tertiary u-mb-1">Rozhraní Tag</h3>
         <p class="paragraph u-mb-2">Rozhraní Tag je podrozhraním třídy JspTag. Poskytuje metody pro provedení akce na začátku a konci tagu.</p>
         <p class="paragraph u-mb-2">Následující tabulka popisuje statické vlastnosti rozhraní Tag.</p>
         <table class="table u-mb-2">
@@ -79,7 +79,7 @@
                 </tr>
             </tbody>
         </table>
-        <h3 class="heading-tertiary u-mb-1">Rozhraní IterationTag</h3>
+        <h3 id="rozhrani-iterationtag" class="heading-tertiary u-mb-1">Rozhraní IterationTag</h3>
         <p class="paragraph u-mb-2">Rozhraní IterationTag rozšiřuje rozhraní Tag a přidává metodu doAfterBody. Také přidává jednu statickou vlastnost, kterou popisuje následující tabulka.</p>
         <table class="table u-mb-2">
             <thead>
@@ -112,7 +112,7 @@
                 </tr>
             </tbody>
         </table>
-        <h3 class="heading-tertiary u-mb-1">Třída TagSupport</h3>
+        <h3 id="trida-tagsupport" class="heading-tertiary u-mb-1">Třída TagSupport</h3>
         <p class="paragraph u-mb-2">Třída TagSupport implementuje rozhraní IterationTag. Implementuje tedy jeho metody a metody jeho nadrozhraní. Jako vlastnosti má id a instanci třídy PageContext, které jsou nastaveny jako protected (můžeme je tedy používat uvnitř podtříd). Popisuje je následující tabulka.</p>
         <table class="table u-mb-2">
             <thead>
@@ -183,7 +183,7 @@
             </tbody>
         </table>
         <p class="paragraph u-mb-4">Rozšířením třídy TagSupport můžeme vytvořit tag handler. Co to znamená si později vysvětlíme.</p>
-        <h3 class="heading-tertiary u-mb-1">Rozhraní BodyTag</h3>
+        <h3 id="rozhrani-bodytag" class="heading-tertiary u-mb-1">Rozhraní BodyTag</h3>
         <p class="paragraph u-mb-2">Rozhraní BodyTag rozšiřuje rozhraní IterationTag. Přidává následující statickou vlastnost.</p>
         <table class="table u-mb-2">
             <thead>
@@ -221,7 +221,7 @@
                 </tr>
             </tbody>
         </table>
-        <h3 class="heading-tertiary u-mb-1">Třída BodyTagSupport</h3>
+        <h3 id="trida-bodytagsupport" class="heading-tertiary u-mb-1">Třída BodyTagSupport</h3>
         <p class="paragraph u-mb-2">Třída BodyTagSupport dědí od třídy TagSupport a implementuje rozhraní BodyTag. Kromě metod implementovaných podle rozhraní a zděděných z nadtřídy obsahuje také dvě vlastní, které jsou popsány v následující tabulce.</p>
         <table class="table u-mb-2">
             <thead>
@@ -245,14 +245,14 @@
             </tbody>
         </table>
         <p class="paragraph u-mb-4">Rozšířením třídy BodyTagSupport můžeme vytvořit tag handler pro tagy, které potřebují pracovat s tělem.</p>
-        <h2 class="heading-secondary u-mb-2">Co je potřeba k vytvoření custom tagu</h2>
+        <h2 id="co-je-potreba-k-vytvoreni-custom-tagu" class="heading-secondary u-mb-2">Co je potřeba k vytvoření custom tagu</h2>
         <p class="paragraph u-mb-1">K vytvoření custom tagu je potřeba provést následující kroky:</p>
         <ol class="list u-mb-4">
             <li>Vytvoření tag handleru pro provedení akce tagu.</li>
             <li>Vytvoření TLD (Tag Library Descriptor) souboru a nadefinování tagu.</li>
             <li>Naimportování TLD souboru (knihovny tagů) do JSP stránky pomocí direktivy taglib.</li>
         </ol>
-        <h2 class="heading-secondary u-mb-2">Tvorba custom tagu</h2>
+        <h2 id="tvorba-custom-tagu" class="heading-secondary u-mb-2">Tvorba custom tagu</h2>
         <p class="paragraph u-mb-2">Pro ukázku si vytvoříme custom tag, pomocí kterého budeme moci na stránce vypsat aktuální datum a čas. Založíme si nový projekt a začneme tím, že si v souboru pom.xml kromě závislosti javax.servlet nadefinujeme také závislost <a href="https://mvnrepository.com/artifact/javax.servlet.jsp/jsp-api" target="_blank" class="link">javax.servlet.jsp</a>. Předtím jsme to nepotřebovali, protože jsme používali jen JSP soubory. Teď již ale budeme JSP API používat i v Java třídách.</p>
         <%- include("./includes/custom-tag-code-box-1.ejs") %>
         <p class="paragraph u-mb-2">Po přidání JSP závislosti se můžeme pustit do tvorby našeho custom tagu. Začneme s tvorbou tag handleru. Vytvoříme třídu, kterou pojmenujeme jako AktualniDatumACasTagHandler a nastavíme jí, že dědí od třídy TagSupport. Jako vlastnost jí můžeme zatím nastavit instanci třídy DateTimeFormatter z balíčku java.time.format, který budeme používat při formátování aktuálního datumu a času. Třídu umístěte do nějakého Java balíčku. Tady v ukázce používáme balíček "io.github.jirkasa.taghandlers".</p>
@@ -268,7 +268,7 @@
         <%- include("./includes/custom-tag-code-box-6.ejs") %>
         <p class="paragraph u-mb-2">Pokud si aplikaci spustíte a navštívíte <a href="http://localhost:8080/tvorba-custom-tagu/stranka.jsp" target="_blank" class="link">http://localhost:8080/tvorba-custom-tagu/stranka.jsp</a>, tak se vám zobrazí stránka zobrazující aktuální datum a čas.</p>
         <img src="../../static/img/screenshots/CustomTagAktualniDatumACasStranka.png" alt="stránka zobrazující aktuálním datum a čas" class="image image--full-width image--with-border u-mb-6">
-        <h2 class="heading-secondary u-mb-2">Atributy</h2>
+        <h2 id="atributy" class="heading-secondary u-mb-2">Atributy</h2>
         <p class="paragraph u-mb-2">Teď si zkusíme náš custom tag upravit tak, aby se jako atribut dal předat formát, ve kterém se má aktuální datum a čas zobrazit. K nadefinování atributu pro custom tag je potřeba provést následující kroky:</p>
         <ol class="list u-mb-2">
             <li>nadefinování vlastnosti a jejího setteru v tag handler třídě</li>
@@ -282,13 +282,13 @@
         <%- include("./includes/custom-tag-code-box-9.ejs") %>
         <p class="paragraph u-mb-2">Při otevření stránky se vám teď aktuální datum a čas zobrazí v jiném formátu.</p>
         <img src="../../static/img/screenshots/CustomTagAktualniDatumACasVJinemFormatuStranka.png" alt="stránka zobrazující aktuálním datum a čas v jiném formátu" class="image image--full-width image--with-border u-mb-6">
-        <h2 class="heading-secondary u-mb-2">Vlastní uri pro knihovnu tagů</h2>
+        <h2 id="vlastni-uri-pro-knihovnu-tagu" class="heading-secondary u-mb-2">Vlastní uri pro knihovnu tagů</h2>
         <p class="paragraph u-mb-2">Při definování knihovny tagů pomocí direktivy taglib je doporučeno namísto cesty použít vlastní uri. V takovém případě je ale potřeba knihovnu tagů nadefinovat v souboru web.xml.</p>
         <p class="paragraph u-mb-2">V našem projektu ještě soubor web.xml vytvořený nemáme. Vytvoříme jej tedy a přidáme element jsp-config, který slouží ke konfiguraci JSP. Do tohoto elementu ještě přidáme element taglib, který se používá k nadefinování knihovny tagů. Jeho podelementem taglib-uri nastavíme vlastní uri, pod kterém chceme mít ke knihovně přístup a pomocí podelementu taglib-location cestu k TLD souboru. Následující ukázka obsah souboru web.xml ukazuje.</p>
         <%- include("./includes/custom-tag-code-box-10.ejs") %>
         <p class="paragraph u-mb-2">Nyní můžeme při definování knihovny tagů pomocí taglib direktivy použít uri, které jsme si nastavili v souboru web.xml. Následující ukázka ukazuje upravený soubor "stranka.jsp".</p>
         <%- include("./includes/custom-tag-code-box-11.ejs") %>
-        <h2 class="heading-secondary u-mb-2">Iterace</h2>
+        <h2 id="iterace" class="heading-secondary u-mb-2">Iterace</h2>
         <p class="paragraph u-mb-2">Rozhraní IterationTag definuje metodu doAfterBody, s jejíž pomocí můžeme provádět iteraci. Můžeme si například vytvořit custom tag pro provedení for cyklu. To si teď zkusíme. Vytvoříme novou tag handler třídu, kterou můžeme pojmenovat jako ForTagHandler. Jako atributy (vlastnosti) bude mít "start", "end" a "step". Pomocí atributu start si budeme moci určit od jakého čísla se má začít, pomocí atributu end kdy se má skončit a pomocí atributu step hodnotu, o kterou se bude číslo zvyšovat (defaultní bude 1). V metodě doAfterBody se vždy zeptáme, zda je "start" menší než "end". Pokud ano, tak "start" zvýšíme a vrátíme hodnotu EVAL_BODY_AGAIN, čímž signalizujeme, aby se tělo tagu zpracovalo ještě jednou. Jinak vrátíme SKIP_BODY, což zapříčiní že se tělo tagu již znovu nezpracuje. Následující ukázka kód třídy ForTagHandler ukazuje.</p>
         <%- include("./includes/custom-tag-code-box-12.ejs") %>
         <p class="paragraph u-mb-2">Teď si můžeme náš tag nadefinovat v souboru "MojeTagy.tld", jak ukazuje následující ukázka.</p>

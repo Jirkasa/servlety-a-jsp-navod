@@ -3,7 +3,7 @@
     <%- include("../../includes/tutorial-page-layout-start.ejs", {pathToTutorialFolder: "./", activeLink: "priprava-pro-vyvoj"}) %>
         <h1 class="heading-primary u-mb-4">Příprava pro vývoj</h1>
         <p class="paragraph u-mb-4">Vítejte v tutoriálu o tvorbě webových aplikací pomocí servletů a JSP. Jedná se o technologie z Java Enterprise Edition. Tato první část se věnuje instalaci věcí, které pro to budeme potřebovat. Instalace je ukázána pouze pro operační systém Windows, takže pokud máte jiný operační systém, budete si pro instalaci jednotlivých věcí muset najít jiný návod.</p>
-        <h2 class="heading-secondary u-mb-2">Co pro vývoj potřebujeme</h2>
+        <h2 id="co-pro-vyvoj-potrebujeme" class="heading-secondary u-mb-2">Co pro vývoj potřebujeme</h2>
         <p class="paragraph u-mb-1">Abychom mohli začít s vývojem, potřebujeme si nainstalovat následující věci:</p>
         <ul class="list u-mb-4">
             <li><strong>JDK</strong> - budeme programovat v Javě, takže potřebujeme Java Development Kit</li>
@@ -11,22 +11,22 @@
             <li><strong>IDE</strong> - aplikace, ve které budeme programovat</li>
             <li><strong>Databáze</strong> - pokud budeme chtít v naší aplikaci pracovat s databází</li>
         </ul>
-        <h2 class="heading-secondary u-mb-2">Instalace JDK</h2>
+        <h2 id="instalace-jdk" class="heading-secondary u-mb-2">Instalace JDK</h2>
         <p class="paragraph u-mb-2">Začneme s instalací JDK. Pokud programujete v Javě, tak jej již určitě máte nainstalovaný a můžete tuto část přeskočit. Já jsem se instalaci JDK do tohoto tutoriálu rozhodl přidat jen pro úplnost.</p>
         <p class="paragraph u-mb-2">Jak JDK nainstalovat ukazuje následující slider s popsanými obrázky, který si můžete projít.</p>
         <%- include("./includes/jdk-installation-slider.ejs") %>
         <p class="paragraph u-mb-2">Po instalaci JDK bychom také měli nastavit systémovou proměnnou JAVA_HOME, protože některé programy by bez ní neběželi správně. Eclipse IDE to třeba nepotřebuje, ale například Tomcat (webový server, který budeme používat) ano. Následující slider ukazuje, jak systémovou proměnnou JAVA_HOME nastavit.</p>
         <%- include("./includes/java-home-setup-slider.ejs") %>
-        <h2 class="heading-secondary u-mb-2">Instalace Tomcatu</h2>
+        <h2 id="instalace-tomcatu" class="heading-secondary u-mb-2">Instalace Tomcatu</h2>
         <p class="paragraph u-mb-2">Jako webový server budeme používat Tomcat. Jak jsem již psal na začátku, tak servlety a JSP jsou součástí Java Enterprise Edition (Java EE). Co za technologie do Javy EE patří, si můžete prohlédnout v <a href="https://www.oracle.com/java/technologies/javaee/javaeetechnologies.html" target="_blank" class="link">tomto listu</a>. Java EE je ale v podstatě jen taková abstraktní kolekce specifikací. Potřebujeme její implementaci - to znamená nějaký aplikační server. Na tomto serveru budeme své aplikace spouštět.</p>
         <p class="paragraph u-mb-2">Tomcat se liší od jiných aplikačních serverů jako je třeba GlassFish nebo WildFly tím, že podporuje jen malé množství technologií, které Java EE nabízí. Co podporuje za technologie si můžete přečíst třeba v <a href="https://stackoverflow.com/questions/2857077/which-technologies-does-tomcat-support" target="_blank" class="link">této StackOverflow otázce</a>, která obsahuje velmi dobrou odpověď. Pokud bychom ale chtěli, tak jak se můžete v odpovědi této otázky dočíst, můžeme si nějaké technologie z Javy EE přidat sami poskytnutím JAR souborů.</p>
         <p class="paragraph u-mb-2">V následujícím slideru se dozvíte, jak Tomcat nainstalovat.</p>
         <%- include("./includes/tomcat-installation-slider.ejs") %>
-        <h2 class="heading-secondary u-mb-2">Instalace Eclipse IDE</h2>
+        <h2 id="instalace-eclipse-ide" class="heading-secondary u-mb-2">Instalace Eclipse IDE</h2>
         <p class="paragraph u-mb-2">K programování potřebujeme nějaké vývojové prostředí (IDE), abychom mohli komfortně psát kód a snadněji se nám vyvíjeli aplikace. Pokud programujete v Javě, tak již pravděpodobně nějaké nainstalované máte. Můžete jej tedy klidně použít, akorát budete muset přijít na to, jak jej nakonfigurovat pro použití s Tomcatem. V tomto tutoriálu si ale ukážeme, jak nainstalovat a nakonfigurovat IDE jménem Eclipse. Instalaci ukazuje následující slider.</p>
         <%- include("./includes/eclipse-installation-slider.ejs") %>
         <p class="paragraph u-mb-4">Jak Eclipse používat tu popisovat nebudu. Jen jsem vám ukázal jak jej stáhnout a na to jak jej používat si můžete najít nějaký jiný tutoriál.</p>
-        <h2 class="heading-secondary u-mb-2">Vytvoření projektu</h2>
+        <h2 id="vytvoreni-projektu" class="heading-secondary u-mb-2">Vytvoření projektu</h2>
         <p class="paragraph u-mb-2">Teď již máme nainstalováno vše, co je potřebné pro vytvoření jednoduchého projektu. Pustíme se tedy do toho a vytvoříme si jednoduchou "Hello World" aplikaci. Až ji budeme mít hotovou, tak si ukážeme, jak do Eclipse přidat Tomcat server a aplikaci si spustíme.</p>
         <p class="paragraph u-mb-2">Budeme vytvářet Maven projekt. Pokud nevíte co to Maven je nebo s ním nemáte žádné zkušenosti, tak nevadí. Já na něj v době psaní tohoto tutoriálu také nejsem žádný expert. Nebudeme jej nijak složitě konfigurovat. Jen si ukážeme jak si vytvořit projekt a dozvíte se co to je. Jak Maven projekt vytvořit v Eclipse ukazuje následující slider.</p>
         <%- include("./includes/create-maven-project-slider.ejs") %>
@@ -64,12 +64,12 @@
         <p class="paragraph u-mb-2">Poté můžeme nastavit, kdy se má servlet použít. K tomu slouží element servlet-mapping, kde pomocí elementu servlet-name nastavíme servlet a pomocí elementu url-pattern URL, pro které se má servlet zavolat.</p>
         <%- include("./includes/code-box-8.ejs") %>
         <p class="paragraph u-mb-4">Naše první aplikace je hotová a připravena na spuštění v Tomcat serveru.</p>
-        <h2 class="heading-secondary u-mb-2">Přidání Tomcat serveru do Eclipse</h2>
+        <h2 id="pridani-tomcat-serveru-do-eclipse" class="heading-secondary u-mb-2">Přidání Tomcat serveru do Eclipse</h2>
         <p class="paragraph u-mb-2">Abychom si naši aplikaci mohli spustit, tak si musíme do Eclipse přidat Tomcat server a aplikaci na něj nasadit. Postup pro přidání Tomcat serveru do Eclipse ukazuje následující slider.</p>
         <%- include("./includes/eclipse-add-tomcat-server-slider.ejs") %>
         <p class="paragraph u-mb-2">Poté co jsme si do Eclipse Tomcat server přidali, tak si na něm můžeme naši aplikaci spustit. Následující slider ukazuje, jak to můžeme udělat.</p>
         <%- include("./includes/eclipse-run-tomcat-server-slider.ejs") %>
-        <h2 class="heading-secondary u-mb-2">Instalace MySQL</h2>
+        <h2 id="instalace-mysql" class="heading-secondary u-mb-2">Instalace MySQL</h2>
         <p class="paragraph u-mb-2">V části o práci s databází budeme pracovat s databází. Budeme si tedy muset nějakou nainstalovat. V tutoriálu použijeme MySQL, ale pokud chcete použít něco jiného (třeba PostgreSQL), tak samozřejmě můžete. Následující slider ukazuje, jak můžeme MySQL nainstalovat.</p>
         <%- include("./includes/mysql-installation-slider.ejs") %>
         <p class="paragraph u-mb-2">Pokud si chceme ověřit, že se nám MySQL server nainstaloval, tak si můžeme třeba zkusit spustit klienta příkazového řádku MySQL. Jedná se o aplikaci, pomocí které můžeme s MySQL serverem komunikovat prostřednictvím příkazového řádku. Jiná možnost je použít nějakou GUI aplikaci, jako je třeba MySQL Workbench, kterou jsme si nainstalovali společně s MySQL serverem. Následující slider ukazuje, jak můžeme klienta příkazového řádku spustit.</p>

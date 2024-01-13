@@ -3,7 +3,7 @@
     <%- include("../../includes/tutorial-page-layout-start.ejs", {pathToTutorialFolder: "./", activeLink: "jstl"}) %>
         <h1 class="heading-primary u-mb-4">JSTL</h1>
         <p class="paragraph u-mb-4">V této části se podíváme na JSTL (JSP Standard Tag Library). Jedná se o knihovnu (nebo spíš knihovny) custom tagů, která poskytuje tagy, které jsou v JSP aplikacích často potřeba.</p>
-        <h2 class="heading-secondary u-mb-2">Typy JSTL tagů</h2>
+        <h2 id="typy-jstl-tagu" class="heading-secondary u-mb-2">Typy JSTL tagů</h2>
         <p class="paragraph u-mb-2">JSTL tagy se dělí do pěti kategorií (knihoven). Následující tabulka je popisuje.</p>
         <table class="table u-mb-4">
             <thead>
@@ -47,7 +47,7 @@
                 </tr>
             </tbody>
         </table>
-        <h2 class="heading-secondary u-mb-2">Použití JSTL</h2>
+        <h2 id="pouziti-jstl" class="heading-secondary u-mb-2">Použití JSTL</h2>
         <p class="paragraph u-mb-2">Předtím než začneme se zkoumáním různých tagů, které nám JSTL nabízí, tak si zkusíme vytvořit projekt, ve kterém JSTL použijeme. Založíme si tedy nový projekt a začneme s tím, že si v souboru pom.xml kromě závislosti pro servlety přidáme i <a href="https://mvnrepository.com/artifact/javax.servlet/jstl/1.2" target="_blank" class="link">závislost pro JSTL</a>.</p>
         <%- include("./includes/add-jstl-to-project-code-box-1.ejs") %>
         <p class="paragraph u-mb-2">Teď si můžeme vytvořit JSP stránku (třeba "stranka.jsp"), ve které JSTL použijeme. Následující ukázka ukazuje její základní kód.</p>
@@ -57,7 +57,7 @@
         <p class="paragraph u-mb-2">Pokud si aplikaci spustíte a navštívíte <a href="http://localhost:8080/jstl/stranka.jsp" target="_blank" class="link">http://localhost:8080/jstl/stranka.jsp</a>, tak se vám zobrazí stránka, kterou ukazuje následující obrázek.</p>
         <img src="../../static/img/screenshots/JSTLPrikladStranka.png" alt="vygenerovaná stránka" class="image image--full-width image--with-border u-mb-2">
         <p class="paragraph u-mb-4">JSTL knihovnu jsme si zkusili přidat do projektu a použít. Ve zbytku této části si můžeme jednotlivé tagy, které nám JSTL nabízí, projít.</p>
-        <h2 class="heading-secondary u-mb-2">Core tagy</h2>
+        <h2 id="core-tagy" class="heading-secondary u-mb-2">Core tagy</h2>
         <p class="paragraph u-mb-2">Do core kategorie patří tagy, které poskytují podporu pro proměnné, podmínky, cykly, a tak podobně. Jednoduše se jedná o takové základní tagy. Následující tabulka popisuje, které tagy do této kategorie patří.</p>
         <table class="table u-mb-4">
             <thead>
@@ -125,43 +125,43 @@
                 </tr>
             </tbody>
         </table>
-        <h3 class="heading-tertiary u-mb-1">c:out</h3>
+        <h3 id="c-out" class="heading-tertiary u-mb-1">c:out</h3>
         <p class="paragraph u-mb-2">Tag c:out se používá k vypsání obsahu na stránku. Je podobný jako expression tag. Rozdíl je, že c:out automaticky escapne HTML tagy, takže jeho použitím zamezíme XSS (Cross Site Scripting) útokům. Potenciální tagy, které se na stránku vypíší, se zobrazí jen jako text, ne jako tagy.</p>
         <%- include("./includes/c-out-tag-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">c:import</h3>
+        <h3 id="c-import" class="heading-tertiary u-mb-1">c:import</h3>
         <p class="paragraph u-mb-2">Tag c:import slouží k načtení jakéhokoliv zdroje (klidně i mimo server). Následující ukázka ukazuje, jak můžeme například obsah stránky z URL "https://jirkasa.github.io/" načíst do proměnné "data".</p>
         <%- include("./includes/c-import-tag-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">c:set</h3>
+        <h3 id="c-set" class="heading-tertiary u-mb-1">c:set</h3>
         <p class="paragraph u-mb-2">Pomocí tagu c:set můžeme nastavit proměnnou v nějakém rozsahu. Defaultně v page rozsahu, nebo můžeme rozsah definovat prostřednictvím scope atributu.</p>
         <%- include("./includes/c-set-tag-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">c:remove</h3>
+        <h3 id="c-remove" class="heading-tertiary u-mb-1">c:remove</h3>
         <p class="paragraph u-mb-2">Pomocí tagu c:remove můžeme odstranit proměnnou ze všech rozsahů nebo specifického rozsahu. Pokud nenastavíme atribut scope, tak se proměnná odstraní ze všech rozsahů. Pokud jej nastavíme, tak se odstraní jen z rozsahu, který specifikujeme.</p>
         <%- include("./includes/c-remove-tag-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">c:catch</h3>
+        <h3 id="c-catch" class="heading-tertiary u-mb-1">c:catch</h3>
         <p class="paragraph u-mb-2">Tag c:catch slouží k zachycení vyjímky, kterou vyhodí kód, který obaluje. Následující kód by na stránku vypsal "Zachycena vyjímka: java.lang.ArithmeticException: / by zero".</p>
         <%- include("./includes/c-catch-tag-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">c:if</h3>
+        <h3 id="c-if" class="heading-tertiary u-mb-1">c:if</h3>
         <p class="paragraph u-mb-2">Pomocí tagu c:if můžeme v JSP stránce vytvořit podmínku.</p>
         <%- include("./includes/c-if-tag-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-">c:choose</h3>
+        <h3 id="c-choose" class="heading-tertiary u-mb-">c:choose</h3>
         <p class="paragraph u-mb-2">Tag c:choose slouží k vytvoření série podmínek. Uvnitř něj můžeme použít tagy c:when a c:otherwise. Pomocí tagu c:when můžeme vytvořit podmínku a tag c:otherwise slouží k tomu, že se kód uvnitř něj zavolá, pokud ani jedna podmínka nastavená v c:when tagu neplatí. V následující ukázce to určitě pochopíte lépe.</p>
         <%- include("./includes/c-choose-tag-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">c:forEach</h3>
+        <h3 id="c-foreach" class="heading-tertiary u-mb-1">c:forEach</h3>
         <p class="paragraph u-mb-2">Pomocí tagu c:forEach můžeme vytvořit cyklus. Můžeme provádět nějaký kód několikrát za sebou nebo procházet položky v kolekci.</p>
         <%- include("./includes/c-foreach-tag-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">c:forTokens</h3>
+        <h3 id="c-fortokens" class="heading-tertiary u-mb-1">c:forTokens</h3>
         <p class="paragraph u-mb-2">Pomocí tagu c:forTokens můžeme rozdělit řetězec na části a provádět pro každou část nějaký kód.</p>
         <%- include("./includes/c-fortokens-tag-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">c:redirect</h3>
+        <h3 id="c-redirect" class="heading-tertiary u-mb-1">c:redirect</h3>
         <p class="paragraph u-mb-2">Tag c:redirect umožňuje provádět přesměrování na jinou URL.</p>
         <%- include("./includes/c-redirect-tag-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">c:url</h3>
+        <h3 id="c-url" class="heading-tertiary u-mb-1">c:url</h3>
         <p class="paragraph u-mb-2">Pomocí tagu c:url můžeme vytvořit URL. Je to alternativa k <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServletResponse.html#encodeURL-java.lang.String-" target="_blank" class="link">response.encodeURL()</a> metodě. Pokud tag c:url zavoláme bez atributu var, tak se výsledek vypíše na stránku, jinak se uloží do proměnné.</p>
         <%- include("./includes/c-url-tag-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">c:param</h3>
+        <h3 id="c-param" class="heading-tertiary u-mb-1">c:param</h3>
         <p class="paragraph u-mb-2">Tag c:param se používá uvnitř tagu c:url ke specifikování query parametrů.</p>
         <%- include("./includes/c-param-tag-code-box.ejs") %>
-        <h2 class="heading-secondary u-mb-2">Funkční tagy</h2>
+        <h2 id="funkcni-tagy" class="heading-secondary u-mb-2">Funkční tagy</h2>
         <p class="paragraph u-mb-2">V kategorii funkčních tagů se nacházejí funkce, které nám umožňují různě pracovat s řetězci (většinou). Následující tabulka je ukazuje.</p>
         <table class="table u-mb-4">
             <thead>
@@ -237,55 +237,55 @@
                 </tr>
             </tbody>
         </table>
-        <h3 class="heading-tertiary u-mb-1">fn:contains</h3>
+        <h3 id="fn-contains" class="heading-tertiary u-mb-1">fn:contains</h3>
         <p class="paragraph u-mb-2">Funkce fn:contains se používá ke zjištění, zda řetězec obsahuje předaný podřetězec.</p>
         <%- include("./includes/fn-contains-function-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">fn:containsIgnoreCase</h3>
+        <h3 id="fn-containsignorecase" class="heading-tertiary u-mb-1">fn:containsIgnoreCase</h3>
         <p class="paragraph u-mb-2">Funkce fn:containsIgnoreCase se používá ke zjištění, zda řetězec obsahuje předaný podřetězec bez rozlišení malých a velkých písmen.</p>
         <%- include("./includes/fn-containsignorecase-function-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">fn:startsWith</h3>
+        <h3 id="fn-startswith" class="heading-tertiary u-mb-1">fn:startsWith</h3>
         <p class="paragraph u-mb-2">Funkce fn:startsWith se používá ke zjištění, zda řetězec začíná na předaný podřetězec.</p>
         <%- include("./includes/fn-startswith-function-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">fn:endsWith</h3>
+        <h3 id="fn-endswith" class="heading-tertiary u-mb-1">fn:endsWith</h3>
         <p class="paragraph u-mb-2">Funkce fn:endsWith se používá ke zjištění, zda řetězec končí na předaný podřetězec.</p>
         <%- include("./includes/fn-endswith-function-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">fn:escapeXml</h3>
+        <h3 id="fn-escapexml" class="heading-tertiary u-mb-1">fn:escapeXml</h3>
         <p class="paragraph u-mb-2">Funkce fn:escapeXml se používá k escapnutí znáků, které by jinak byly interpretovány jako XML/HTML tagy.</p>
         <%- include("./includes/fn-escapexml-function-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">fn:indexOf</h3>
+        <h3 id="fn-indexof" class="heading-tertiary u-mb-1">fn:indexOf</h3>
         <p class="paragraph u-mb-2">Funkce fn:indexOf se používá k nalezení indexu (pozice) prvního výskytu podřetězce v řetězci.</p>
         <%- include("./includes/fn-indexof-function-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">fn:trim</h3>
+        <h3 if="fn-trim" class="heading-tertiary u-mb-1">fn:trim</h3>
         <p class="paragraph u-mb-2">Funkce fn:trim se používá k odstranění bílých znaků ze začátku a konce řetězce.</p>
         <%- include("./includes/fn-trim-function-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">fn:split</h3>
+        <h3 id="fn-split" class="heading-tertiary u-mb-1">fn:split</h3>
         <p class="paragraph u-mb-2">Funkce fn:split se používá k rozdělení řetězce do pole podřetězců podle předaného oddělovače.</p>
         <%- include("./includes/fn-split-function-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">fn:join</h3>
+        <h3 id="fn-join" class="heading-tertiary u-mb-1">fn:join</h3>
         <p class="paragraph u-mb-2">Funkce fn:join se používá ke spojení pole řetězců do jednoho řetězce.</p>
         <%- include("./includes/fn-join-function-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">fn:toLowerCase</h3>
+        <h3 id="fn-tolowercase" class="heading-tertiary u-mb-1">fn:toLowerCase</h3>
         <p class="paragraph u-mb-2">Funkce fn:toLowerCase se používá k převedení řetězce na malá písmena.</p>
         <%- include("./includes/fn-tolowercase-function-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">fn:toUpperCase</h3>
+        <h3 id="fn-touppercase" class="heading-tertiary u-mb-1">fn:toUpperCase</h3>
         <p class="paragraph u-mb-2">Funkce fn:toUpperCase se používá k převedení řetězce na velká písmena.</p>
         <%- include("./includes/fn-touppercase-function-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">fn:substring</h3>
+        <h3 id="fn-substring" class="heading-tertiary u-mb-1">fn:substring</h3>
         <p class="paragraph u-mb-2">Funkce fn:substring slouží k získání podřetězce z řetězce.</p>
         <%- include("./includes/fn-substring-function-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">fn:substringAfter</h3>
+        <h3 id="fn-substringafter" class="heading-tertiary u-mb-1">fn:substringAfter</h3>
         <p class="paragraph u-mb-2">Funkce fn:substringAfter se používá k získání podřetězce z řetězce, nacházejícím se za předaným podřetězcem.</p>
         <%- include("./includes/fn-substringafter-function-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">fn:substringBefore</h3>
+        <h3 id="fn-substringbefore" class="heading-tertiary u-mb-1">fn:substringBefore</h3>
         <p class="paragraph u-mb-2">Funkce fn:substringBefore se používá k získání podřetězce z řetězce, nacházejícím se před předaným podřetězcem.</p>
         <%- include("./includes/fn-substringbefore-function-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">fn:length</h3>
+        <h3 id="fn-length" class="heading-tertiary u-mb-1">fn:length</h3>
         <p class="paragraph u-mb-2">Funkce fn:length slouží k získání délky řetězce nebo počtu položek v kolekci.</p>
         <%- include("./includes/fn-length-function-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">fn:replace</h3>
+        <h3 id="fn-replace" class="heading-tertiary u-mb-1">fn:replace</h3>
         <p class="paragraph u-mb-2">Funkce fn:replace slouží k nahrazení veškerého výskytu předaného podřetězce v řetězci za jiný řetězec.</p>
         <%- include("./includes/fn-replace-function-code-box.ejs") %>
-        <h2 class="heading-secondary u-mb-2">Formátovací tagy</h2>
+        <h2 id="formatovaci-tagy" class="heading-secondary u-mb-2">Formátovací tagy</h2>
         <p class="paragraph u-mb-2">Do kategorie formátovacích tagů patří tagy, které nám umožňují provádět formátování a internacionalizaci. Následující tabulka popisuje, které tagy do této kategorie patří.</p>
         <table class="table u-mb-4">
             <thead>
@@ -341,7 +341,7 @@
                 </tr>
             </tbody>
         </table>
-        <h3 class="heading-tertiary u-mb-1">fmt:formatNumber</h3>
+        <h3 id="fmt-formatnumber" class="heading-tertiary u-mb-1">fmt:formatNumber</h3>
         <p class="paragraph u-mb-2">Tag fmt:formatNumber slouží k formátování čísel. Následující tabulka ukazuje atributy, které můžeme pro tento atribut nastavit.</p>
         <table class="table u-mb-2">
             <thead>
@@ -429,7 +429,7 @@
         </table>
         <p class="paragraph u-mb-2">Následující ukázka ukazuje pár příkladů formátování čísel.</p>
         <%- include("./includes/fmt-formatnumber-tag-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">fmt:parseNumber</h3>
+        <h3 id="fmt-parsenumber" class="heading-tertiary u-mb-1">fmt:parseNumber</h3>
         <p class="paragraph u-mb-2">Tag fmt:parseNumber slouží k parsování řetězcové reprezentace čísel, měn nebo procent. Následující tabulka ukazuje atributy, které můžeme pro tento atribut nastavit.</p>
         <table class="table u-mb-2">
             <thead>
@@ -487,7 +487,7 @@
         </table>
         <p class="paragraph u-mb-2">Následující ukázka ukazuje dva příklady parsování čísla.</p>
         <%- include("./includes/fmt-parsenumber-tag-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">fmt:formatDate</h3>
+        <h3 id="fmt-formatdate" class="heading-tertiary u-mb-1">fmt:formatDate</h3>
         <p class="paragraph u-mb-2">Tag fmt:formatDate slouží k formátování datumu a/nebo času. Následující tabulka ukazuje atributy, které můžeme pro tento atribut nastavit.</p>
         <table class="table u-mb-2">
             <thead>
@@ -551,7 +551,7 @@
         </table>
         <p class="paragraph u-mb-2">Následující ukázka ukazuje pár příkladů formátování datumu.</p>
         <%- include("./includes/fmt-formatdate-tag-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">fmt:parseDate</h3>
+        <h3 id="fmt-parsedate" class="heading-tertiary u-mb-1">fmt:parseDate</h3>
         <p class="paragraph u-mb-2">Tag fmt:parseDate slouží k parsování řetězcové reprezentace datumů na java.util.Date objekt. Následující tabulka ukazuje atributy, které můžeme pro tento atribut nastavit.</p>
         <table class="table u-mb-2">
             <thead>
@@ -621,7 +621,7 @@
         </table>
         <p class="paragraph u-mb-2">Následující ukázka ukazuje příklad parsnutí datumu.</p>
         <%- include("./includes/fmt-parsedate-tag-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">I18N tagy</h3>
+        <h3 id="i18n-tagy" class="heading-tertiary u-mb-1">I18N tagy</h3>
         <p class="paragraph u-mb-2">Na tagy fmt:setBundle, fmt:setMessage a fmt:setLocale bude lepší se podívat dohromady. S jejich pomocí můžeme provádět internacionalizaci (I18N). Jde o to, že namísto toho, abychom do stránky vkládali text natvrdo, načítáme jej odjinud. Díky tomu můžeme naši webovou aplikaci přeložit do více jazyků.</p>
         <p class="paragraph u-mb-2">Pro ukázku si založíme nový projekt, ve kterém si internacionalizaci ukážeme. Začneme tím, že si do souboru pom.xml kromě závislosti pro servlety přidáme závislost i pro JSTL.</p>
         <%- include("./includes/i18n-example-code-box-1.ejs") %>
@@ -682,15 +682,15 @@
         <img src="../../static/img/screenshots/I18NPrikladVyberJazykuStranka.png" alt="vygenerovaná stránka s možností výběru jazyka" class="image image--full-width image--with-border u-mb-2">
         <p class="paragraph u-mb-2">Kromě tagu fmt:setBundle existuje ještě tag fmt:bundle. Ten má podobnou funkcionalitu, akorát poskytuje lokalizovaný text jen pro tagy fmt:message, které se nacházejí uvnitř jeho těla.</p>
         <%- include("./includes/fmt-bundle-tag-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">fmt:setTimeZone</h3>
+        <h3 id="fmt-settimezone" class="heading-tertiary u-mb-1">fmt:setTimeZone</h3>
         <p class="paragraph u-mb-2">Tag fmt:setTimeZone slouží k nastavení <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="_blank" class="link">časové zóny</a>, která se poté použije třeba na formátování datumů.</p>
         <%- include("./includes/fmt-settimezone-tag-code-box.ejs") %>
         <p class="paragraph u-mb-2">Pokud si chcete vypsat datum ve všech dostupných časových zónách, můžete to udělat způsobem, který ukazuje následující ukázka.</p>
         <%- include("./includes/format-date-in-all-available-time-zones-example-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">fmt:timeZone</h3>
+        <h3 id="fmt-timezone" class="heading-tertiary u-mb-1">fmt:timeZone</h3>
         <p class="paragraph u-mb-2">Tag fmt:timeZone poskytuje podobnou funkcionalitu jako tag fmt:setTimeZone. Rozdíl je v tom, že má vliv jen na formátování, které se děje uvnitř jeho těla.</p>
         <%- include("./includes/fmt-timezone-tag-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">fmt:requestEncoding</h3>
+        <h3 id="fmt-requestencoding" class="heading-tertiary u-mb-1">fmt:requestEncoding</h3>
         <p class="paragraph u-mb-2">Tag fmt:requestEncoding slouží pro nastavení kódování na requestu, stejně jako metoda setCharacterEncoding z rozhraní ServletRequest.</p>
         <%- include("./includes/fmt-requestencoding-tag-code-box.ejs") %>
         <p class="paragraph">Pro tuto část je to vše. Prošli jsme si různé tagy ze třech kategorií JSTL knihovny. Spíš jsme si je jen představili, takže pokud byste se o nich potřebovali dozvědět více informací, tak si pro ně budete muset najít jiný zdroj. Tagy v kategorii XML a SQL si tu procházet nebudeme. Tagy z kategorie XML totiž slouží pro práci s XML a tagy z kategorie SQL pro práci s relačními databázemi. Není podle mě dobré něco takového v JSP dělat. V příští části, která je o MVC vzoru, zjistíte proč. Pokud používáme JSP zároveň se servlety, tak bychom měli JSP stránky používat jen k zobrazování dat, ne k jejich zpracování.</p>

@@ -5,7 +5,7 @@
         <p class="paragraph u-mb-2">V této části si ukážeme JSP action tagy. Jedná se o tagy, které slouží k provedení nějakého specifického úkolu. Můžeme je brát jako již předdefinované custom tagy, jelikož v podstatě fungují stejně. Akorát si je nemusíme v JSP souboru definovat prostřednictvím taglib direktivy a mají vždy prefix "jsp". Custom tagy jsou uživatelsky definované tagy o kterých se dozvíte v další části. Tato část se zaměřuje na action tagy (takové již předdefinované custom tagy), takže si je tu postupně projdeme.</p>
         <p class="paragraph u-mb-2">Syntaxy pro action tagy ukazuje následující ukázka. Pokud máme více atributů, tak je můžeme oddělit mezerou. Pokud má nějaký tag obsah, tak je potřeba jej uzavřít použitím uzavíracího tagu.</p>
         <%- include("./includes/action-tags-syntax-code-box.ejs") %>
-        <h2 class="heading-secondary u-mb-2">jsp:forward</h2>
+        <h2 id="jsp-forward" class="heading-secondary u-mb-2">jsp:forward</h2>
         <p class="paragraph u-mb-2">Action tag jsp:forward slouží k předání requestu do jiné JSP stránky nebo servletu. Je to podobné jako metoda forward request dispatcheru. Můžeme pro request provést nějakou akci a předat request dále ke zpracování do jiné stránky.</p>
         <p class="paragraph u-mb-2">Pro ukázku si založíme nový projekt a vytvoříme si dvě JSP stránky. První můžeme pojmenovat jako stranka1.jsp. V této stránce použijeme jsp:forward tag a přesměrujeme na stránku stranka2.jsp, kterou potom vytvoříme. Následující ukázka ukazuje kód stránky. Kromě použití jsp:forward tagu na stránce vypisujeme i text, abychom viděli, že se vůbec nezobrazí. Akorát se spustí Java kód, který je umístěný před použitím jsp:forward tagu. Kód umístěný za jsp:forward tagem se již vůbec nespustí.</p>
         <%- include("./includes/forward-action-tag-code-box-1.ejs") %>
@@ -15,13 +15,13 @@
         <img src="../../static/img/screenshots/ZobrazeniJineJSPStrankyPouzitimForwardActionTagu.png" alt="Stránka stranka2.jsp" class="image image--full-width image--with-border u-mb-2">
         <p class="paragraph u-mb-2">Abychom si ukázali, že kód umístěný před jsp:forward tagem se spouští ale ten za ním již ne, vypisujeme text do konzole. První text se do konzole vypíše, ale ten druhý již ne.</p>
         <%- include("./includes/forward-action-tag-console-code-box.ejs") %>
-        <h2 class="heading-secondary u-mb-2">jsp:include</h2>
+        <h2 id="jsp-include" class="heading-secondary u-mb-2">jsp:include</h2>
         <p class="paragraph u-mb-2">Pomocí jsp:include tagu můžeme do stránky přidat obsah z jiného souboru. Je to stejné jako direktiva include, až na to že jsp:include tag nepřidává obsah ze souboru při překladu na servlet, ale pokaždé když přijde request.</p>
         <p class="paragraph u-mb-2">Následující ukázka kódu ukazuje, jak bychom mohli jsp:include tag použít. Jedná se o přepsaný kód z minulé části, kde jsme namísto action tagu používali include direktivu.</p>
         <%- include("./includes/include-action-tag-code-box.ejs") %>
-        <h2 class="heading-secondary u-mb-2">jsp:useBean</h2>
+        <h2 id="jsp-usebean" class="heading-secondary u-mb-2">jsp:useBean</h2>
         <p class="paragraph u-mb-2">Action tag jsp:useBean slouží k nalezení nebo vytvoření instance bean třídy. Pokud je bean objekt bean třídy již vytvořený, tak se nevytvoří nová instance. Pokud ale bean objekt ještě není vytvořen, tak se vytvoří nová instance.</p>
-        <h3 class="heading-tertiary u-mb-1">Co je Java Bean</h3>
+        <h3 id="co-je-java-bean" class="heading-tertiary u-mb-1">Co je Java Bean</h3>
         <p class="paragraph u-mb-1">Možná si říkáte co je to bean. Není to nic složitého. Pouze se jedná o třídu, která dodržuje následující pravidla:</p>
         <ul class="list u-mb-2">
             <li>má konstruktor bez parametrů</li>
@@ -30,7 +30,7 @@
         </ul>
         <p class="paragraph u-mb-2">Následují ukázka ukazuje příklad bean třídy.</p>
         <%- include("./includes/java-bean-example-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">Atributy jsp:useBean tagu</h3>
+        <h3 id="atributy-jsp-usebean-tagu" class="heading-tertiary u-mb-1">Atributy jsp:useBean tagu</h3>
         <p class="paragraph u-mb-2">Následující tabulka popisuje atributy, které můžeme v jsp:useBean tagu použít.</p>
         <table class="table u-mb-2">
             <thead>
@@ -68,18 +68,18 @@
             </tbody>
         </table>
         <p class="paragraph u-mb-4">Beany se vytváří v určitém rozsahu definovaném prostřednictvím scope atributu. Může platit pro aktuální stránku (page), pro aktuální request (request), pro session, nebo celou aplikaci - všechny uživatele (application). Klidně tedy můžeme mít beany se stejnými identifikátory ale v jiném rozsahu. Defaultní scope je page.</p>
-        <h3 class="heading-tertiary u-mb-1">Ukázka použití jsp:useBean tagu</h3>
+        <h3 id="ukazka-pouziti-jsp-usebean-tagu" class="heading-tertiary u-mb-1">Ukázka použití jsp:useBean tagu</h3>
         <p class="paragraph u-mb-2">Pro ukázku použití jsp:useBean tagu si založíme nový projekt a poté Java třídu, kterou můžeme pojmenovat jako Uzivatel. Bude představovat bean třídu, kterou si zkusíme v jsp:useBean tagu použít. Pro třídu si vytvořte nějaký java balíček a umístěte ji do něj, jelikož k defaultnímu balíčku bychom neměli z JSP souboru přístup. Následující ukázka ukazuje kód třídy. Aby se jednalo o bean třídu, tak implementuje Serializable rozhraní a obsahuje vlastnosti, pro které má gettery a settery.</p>
         <%- include("./includes/use-bean-action-tag-example-code-box-1.ejs") %>
         <p class="paragraph u-mb-2">Teď si vytvoříme JSP stránku, kterou můžeme pojmenovat třeba jako "stranka.jsp". Na této stránce naši vytvořenou bean třídu použijeme a pomocí jsp:useBean tagu si vytvoříme její instanci (bean objekt). Pouze si bean objekt vytvoříme, nastavíme do něj data a na stránce si je poté vypíšeme. Následující ukázka ukazuje kód stránky.</p>
         <%- include("./includes/use-bean-action-tag-example-code-box-2.ejs") %>
         <p class="paragraph u-mb-2">Po spuštění aplikace a navštívení <a href="http://localhost:8080/use-bean-action-tag/stranka.jsp" target="_blank" class="link">http://localhost:8080/use-bean-action-tag/stranka.jsp</a> uvidíte stránku, kterou ukazuje následující obrázek.</p>
         <img src="../../static/img/screenshots/UseBeanTagPrikladVyslednaStranka.png" alt="vygenerovaná stránka" class="image image--full-width image--with-border u-mb-4">
-        <h3 class="heading-tertiary u-mb-1">Proč se beany používají</h3>
+        <h3 id="proc-se-beany-pouzivaji" class="heading-tertiary u-mb-1">Proč se beany používají</h3>
         <p class="paragraph u-mb-4">Ve webovém vývoji se beany používají hlavně proto, že se jedná o znovupoužitelnou softwarovou komponentu, která reprezentuje data. V části o MVC vzoru se naučíme něco o tom, jak strukturovat naše webové aplikace. Zjistíte, že populární vzor pro strukturování webových aplikací se skládá ze tří částí: model, view a controller. Beany by v tomto případě představovali modely.</p>
-        <h2 class="heading-secondary u-mb-2">jsp:setProperty</h2>
+        <h2 id="jsp-setproperty" class="heading-secondary u-mb-2">jsp:setProperty</h2>
         <p class="paragraph u-mb-4">Pomocí jsp:setProperty tagu můžeme nastavovat vlastnosti beanu.</p>
-        <h3 class="heading-tertiary u-mb-1">Atributy jsp:setProperty tagu</h3>
+        <h3 id="atributy-jsp-setproperty-tagu" class="heading-tertiary u-mb-1">Atributy jsp:setProperty tagu</h3>
         <p class="paragraph u-mb-2">Následující tabulka ukazuje atributy jsp:setProperty tagu.</p>
         <table class="table u-mb-2">
             <thead>
@@ -114,7 +114,7 @@
         </table>
         <p class="paragraph u-mb-2">Podle toho zda nastavíme atribut value se budou nebo nebudou vlastnosti beanu nastavovat podle parametrů předávaných v HTTP requestu. Následující ukázka ukazuje pár příkladů použití jsp:setProperty tagu.</p>
         <%- include("./includes/set-property-action-tag-examples-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">Ukázka použití jsp:setProperty tagu</h3>
+        <h3 id="ukazka-pouziti-jspsetproperty-tagu" class="heading-tertiary u-mb-1">Ukázka použití jsp:setProperty tagu</h3>
         <p class="paragraph u-mb-2">Pro ukázku použití jsp:setProperty tagu si založíme nový projekt a pro začátek si vytvoříme bean třídu, kterou budeme používat. Je to stejná třída jako z ukázky použití jsp:useBean tagu, takže si ji můžete zkopírovat. Abyste ji mohli v JSP používat, tak ji vložte do nějakého Java balíčku.</p>
         <%- include("./includes/set-property-action-tag-example-code-box-1.ejs") %>
         <p class="paragraph u-mb-2">V našem projektu budeme mít dvě JSP stránky. Na jedné stránce se bude nacházet formulář, kde uživatel zadá jméno a příjmení a formulář odešle na druhou stránku. Na té se vytvoří bean třídy Uzivatel a pomocí tagu jsp:setProperty se do něj nastaví hodnoty.</p>
@@ -126,12 +126,12 @@
         <%- include("./includes/set-property-action-tag-example-code-box-3.ejs") %>
         <p class="paragraph u-mb-2">Naše ukázka je hotová. Když teď formulář vyplníte a odešlete, tak se vám zobrazí stránka se jménem a příjmením, které jste zadali.</p>
         <img src="../../static/img/screenshots/SetPropertyTagVyslednaStranka.png" alt="vygenerovaná stránka" class="image image--full-width image--with-border u-mb-6">
-        <h2 class="heading-secondary u-mb-2">jsp:getProperty</h2>
+        <h2 id="jsp-getproperty" class="heading-secondary u-mb-2">jsp:getProperty</h2>
         <p class="paragraph u-mb-2">Action tag jsp:getProperty se používá k získání vlastnosti z beanu.</p>
         <p class="paragraph u-mb-2">Pro ukázku si upravíme předchozí projekt, kde přepíšeme vypisování vlastností beanu přes expression tagy na použití jsp:getProperty tagů. Následující ukázka ukazuje upravený kód souboru "vysledek.jsp".</p>
         <%- include("./includes/get-property-action-tag-example-code-box.ejs") %>
         <p class="paragraph u-mb-4">Pokud si stránku zkusíte otevřít, tak se zobrazí stejně jako předtím.</p>
-        <h2 class="heading-secondary u-mb-2">jsp:param</h2>
+        <h2 id="jsp-param" class="heading-secondary u-mb-2">jsp:param</h2>
         <p class="paragraph u-mb-2">Action tag jsp:param se většinou používá v kombinaci s tagy jako je jsp:forward nebo jsp:include. Slouží pro předání parametru. Je to jen alternativa k metodě request.setParameter.</p>
         <p class="paragraph u-mb-2">Pro vyzkoušení si upravíme náš ukázkový projekt pro jsp:forward tag. Na stránce "stranka1.jsp" předáme parametr pomocí jsp:param tagu, který vložíme do jsp:forward tagu. Vlastně předáme text, který následně na stránce "stranka2.jsp" zobrazíme. Upravený kód souboru "stranka1.jsp" ukazuje následující ukázka. Tag jsp:param má atribut name, přes který nastavujeme název parametru, a atribut value, přes který nastavujeme hodnotu parametru.</p>
         <%- include("./includes/param-action-tag-example-code-box-1.ejs") %>
@@ -139,7 +139,7 @@
         <%- include("./includes/param-action-tag-example-code-box-2.ejs") %>
         <p class="paragraph u-mb-2">Po otevření stránky "stranka1.jsp" (<a href="http://localhost:8080/forward-action-tag/stranka1.jsp" target="_blank" class="link">http://localhost:8080/forward-action-tag/stranka1.jsp</a>) můžete vidět, že se parametr předal a zobrazil se na stránce.</p>
         <img src="../../static/img/screenshots/ParamTagVyslednaStranka.png" alt="vygenerovaná stránka" class="image image--full-width image--with-border u-mb-6">
-        <h2 class="heading-secondary u-mb-2">Ostatní action tagy</h2>
+        <h2 id="ostatni-action-tagy" class="heading-secondary u-mb-2">Ostatní action tagy</h2>
         <p class="paragraph u-mb-2">Kromě tagů, které jsme si v této části ukázali, existuje ještě pár dalších action tagů, u kterých popravdě ani nevím k čemu slouží. Proto jsem se rozhodl je tu jen vypsat. Pokud by vás zajímali, tak si o nich budete muset vyhledat informace někde jinde.</p>
         <ul class="list u-mb-4">
             <li>jsp:body</li>

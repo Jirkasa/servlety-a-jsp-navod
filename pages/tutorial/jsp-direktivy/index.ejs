@@ -4,14 +4,14 @@
         <h1 class="heading-primary u-mb-4">JSP direktivy</h1>
         <p class="paragraph u-mb-2">V této části se podíváme na direktivy. Jedná se o elementy, které web containeru (Tomcatu) říkají, jak má JSP stránku převést na servlet. Syntaxe pro direktivu je následující (pokud máme více atributů, tak je můžeme oddělit mezerou):</p>
         <%- include("./includes/directive-syntax-code-box.ejs") %>
-        <h2 class="heading-secondary u-mb-2">Typy direktiv</h2>
+        <h2 id="typy-direktiv" class="heading-secondary u-mb-2">Typy direktiv</h2>
         <p class="paragraph u-mb-1">Existují tři typy direktiv poskytující různé atributy, které můžeme použít. Následující seznam je popisuje:</p>
         <ul class="list u-mb-4">
             <li><b>page</b> - definuje atributy k obecnému nastavení JSP stránky</li>
             <li><b>include</b> - používá se k vložení obsahu z jiného souboru do JSP stránky</li>
             <li><b>taglib</b> - používá se k nadefinování knihovny tagů, abychom ji mohli použít</li>
         </ul>
-        <h2 class="heading-secondary u-mb-2">Page direktiva</h2>
+        <h2 id="page-direktiva" class="heading-secondary u-mb-2">Page direktiva</h2>
         <p class="paragraph u-mb-2">Page direktiva definuje atributy, které popisuje následující tabulka. Jedná se o atributy, které slouží k obecnému nastavení JSP stránky.</p>
         <table class="table u-mb-2">
             <thead>
@@ -92,7 +92,7 @@
         <p class="paragraph u-mb-2">Jak jste si mohli v předchozí tabulce všimnout, tak atribut isELIgnored slouží k ignorování expression language. Co je expression language asi ještě nevíte, jelikož jsme se tím v tutoriálu zatím nezabývali. Je na to vyhrazená samostatná část.</p>
         <p class="paragraph u-mb-2">Následující ukázka ukazuje příklad použití page direktivy. První řádek je potřeba dávat do každého JSP souboru pro správné zobrazení českého textu.</p>
         <%- include("./includes/page-directive-example-code-box.ejs") %>
-        <h2 class="heading-secondary u-mb-2">Include direktiva</h2>
+        <h2 id="include-direktiva" class="heading-secondary u-mb-2">Include direktiva</h2>
         <p class="paragraph u-mb-2">Pomocí direktivy include můžeme web containeru (Tomcatu) říct, aby při generování servletu přidal kód z jiných souborů. Díky tomu jsme například schopni oddělit části kódu, které by měli být společné pro všechny stránky.</p>
         <p class="paragraph u-mb-2">Pro ukázku si založíme nový Maven projekt a vytvoříme si soubor header.jsp a footer.jsp. V souboru header.jsp vytvoříme kód pro hlavičku stránky a v souboru footer.jsp kód pro patičku stránky. Následující ukázky obsah pro tyto soubory ukazují. Tady v ukázce představují jen jeden řádek kódu, ale v praxi byste měli hlavičku a patičku stránky samozřejmě komplexnější.</p>
         <%- include("./includes/include-directive-example-code-box-1.ejs") %>
@@ -101,7 +101,7 @@
         <%- include("./includes/include-directive-example-code-box-3.ejs") %>
         <p class="paragraph u-mb-2">Pokud si aplikaci spustíte a stránku si otevřete (<a href="http://localhost:8080/include-direktiva/stranka.jsp" target="_blank" class="link">http://localhost:8080/include-direktiva/stranka.jsp</a>), uvidíte stránku, kterou ukazuje následující obrázek. Kód ze souborů header.jsp a footer.jsp se tedy na stránce použil.</p>
         <img src="../../static/img/screenshots/StrankaSestavenaPomociIncludeDirektivy.png" alt="vygenerovaná stránka" class="image image--full-width image--with-border u-mb-6">
-        <h2 class="heading-secondary u-mb-2">Taglib direktiva</h2>
+        <h2 id="taglib-direktiva" class="heading-secondary u-mb-2">Taglib direktiva</h2>
         <p class="paragraph u-mb-2">Taglib direktiva slouží k nadefinování knihovny tagů. Díky tomu potom můžeme tagy z knihovny na stránce použít. V části "JSP Custom tagy" se naučíme vytvářet vlastní knihovny tagů, takže tuto direktivu potom použijeme pro použití tagů z knihovny na stránce.</p>
         <p class="paragraph u-mb-2">Taglib direktiva má atribut uri, kde předáváme jakou knihovnu chceme použít, a atribut prefix, který značí pod jakým názvem ji chceme na stránce používat. Následující ukázka ukazuje příklad použití taglib direktivy.</p>
         <%- include("./includes/taglib-directive-example.ejs") %>

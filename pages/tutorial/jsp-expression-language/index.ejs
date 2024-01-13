@@ -6,14 +6,14 @@
         <p class="paragraph u-mb-2">Syntaxe pro expression language je následující:</p>
         <%- include("./includes/expression-language-syntax-code-box.ejs") %>
         <p class="paragraph u-mb-4">Expression language obsahuje spoustu implicitních objektů, operátorů a rezervovaných slov. Potom je v této části uvidíte popsané v tabulkách.</p>
-        <h2 class="heading-secondary u-mb-2">Ukázka použití expression language</h2>
+        <h2 id="ukazka-pouziti-expression-language" class="heading-secondary u-mb-2">Ukázka použití expression language</h2>
         <p class="paragraph u-mb-2">Pro ukázku si ukážeme použití expression language pro vypsání hodnot java beanu. Založíme si nový projekt a vytvoříme bean třídu Uzivatel (v nějakém Java balíčku, abychom ji mohli použít v JSP). Kód pro ni ukazuje následující ukázka.</p>
         <%- include("./includes/expression-language-example-code-box-1.ejs") %>
         <p class="paragraph u-mb-2">Teď můžeme vytvořit JSP stránku, kterou můžeme pojmenovat třeba jako "stranka.jsp". Na této stránce si vytvoříme bean objekt a pomocí expression language poté vypíšeme jeho hodnoty.</p>
         <%- include("./includes/expression-language-example-code-box-2.ejs") %>
         <p class="paragraph u-mb-2">Po spuštění aplikace a navštívení <a href="http://localhost:8080/expression-language/stranka.jsp" target="_blank" class="link">http://localhost:8080/expression-language/stranka.jsp</a> byste měli vidět stránku, kterou ukazuje následující obrázek.</p>
         <img src="../../static/img/screenshots/ExpressionLanguagePrikladStranka.png" alt="vygenerovaná stránka" class="image image--full-width image--with-border u-mb-6">
-        <h2 class="heading-secondary u-mb-2">Implicitní objekty v expression language</h2>
+        <h2 id="implicitni-objekty-v-expression-language" class="heading-secondary u-mb-2">Implicitní objekty v expression language</h2>
         <p class="paragraph u-mb-2">Pro expression language existuje několik implicitních objektů. Následující tabulka je popisuje.</p>
         <table class="table u-mb-2">
             <thead>
@@ -71,7 +71,7 @@
         </table>
         <p class="paragraph u-mb-2">Následující řádek kódu například vypisuje na stránku parametr "jmeno", poslaný v requestu.</p>
         <%- include("./includes/expression-language-param-example-code-box.ejs") %>
-        <h2 class="heading-secondary u-mb-2">Rezervovaná slova</h2>
+        <h2 id="rezervovana-slova" class="heading-secondary u-mb-2">Rezervovaná slova</h2>
         <p class="paragraph u-mb-2">Expression language obsahuje různá rezervovaná slova. Hodně z nich jsou aliasy pro operátory, které známe z Javy. Následující tabulka je popisuje.</p>
         <table class="table u-mb-6">
             <thead>

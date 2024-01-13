@@ -3,7 +3,7 @@
     <%- include("../../includes/tutorial-page-layout-start.ejs", {pathToTutorialFolder: "./", activeLink: "sledovani-relace"}) %>
         <h1 class="heading-primary u-mb-4">Sledování relace</h1>
         <p class="paragraph u-mb-4">V této části si ukážeme různé způsoby, jak můžeme sledovat stav uživatelské relace ve webové aplikaci. HTTP je stateless protokol. To znamená, že každý request od klienta je nezávislý a server nemá automaticky informace o předchozím stavu. Možná to moc nechápete, ale neumím to lépe popsat. Prostě chceme ukládat nějaká data o uživateli, když naši webovou aplikaci používá. Chceme třeba ukládat, co má uživatel v nákupním košíku a tak podobně. HTTP protokol funguje tak, že se jen pošle request a ze serveru se vrátí response. Nikde se žádná data neukládají. Proto musíme použít různé způsoby, jak uživatele sledovat, když naši webovou aplikaci používá a prochází více webových stránek.</p>
-        <h2 class="heading-secondary u-mb-2">Techniky sledování relace</h2>
+        <h2 id="techniky-sledovani-relace" class="heading-secondary u-mb-2">Techniky sledování relace</h2>
         <p class="paragraph u-mb-1">Pro sledování relace (session tracking) existují různé techniky. Zde jsou vypsané:</p>
         <ul class="list u-mb-4">
             <li><b>Cookies</b> - můžeme nastavit hodnoty, které si prohlížeč uloží a bude je automaticky posílat při každém requestu</li>
@@ -12,7 +12,7 @@
             <li><b>Parametry v URL</b> - můžeme posílat parametry jako součást URL cesty (např. https://localhost:8080/produkty/[parametr])</li>
             <li><b>Sessions</b> - můžeme ukládat informace o uživateli na serveru a klientovi pošleme cookie s identifikátorem, přes který se k nim dostane</li>
         </ul>
-        <h2 class="heading-secondary u-mb-2">URL rewriting</h2>
+        <h2 id="url-rewriting" class="heading-secondary u-mb-2">URL rewriting</h2>
         <p class="paragraph u-mb-2">Jako první si ukážeme URL rewriting. Naprogramujeme si aplikaci, ve které uživatel na úvodní stránce zadá ve formuláři jméno. Když jej pošle, tak se mu zobrazí stránka, která jej pozdraví. Na této stránce bude navíc ještě odkaz na jinou stránku, která uživateli vypíše, jaké je jeho jméno. Jde o to, abychom si zkusili pomocí URL rewritingu uživatelovo jméno pamatovat napříč stránkami.</p>
         <p class="paragraph u-mb-2">Vytvoříme si Maven projekt (jak to udělat v Eclipse je popsáno v první části tutoriálu) a servlet ZadejJmenoServlet, který uživateli pošle stránku s formulářem. Generování stránek pro nás zatím není moc komfortní. To se zlepší, až začneme používat JSP.</p>
         <%- include("./includes/url-rewriting-code-box-1.ejs") %>
@@ -33,22 +33,22 @@
         <p class="paragraph u-mb-2">Pokud teď kliknete na odkaz na stránce s pozdravem, tak se vám otevře stránka, kterou ukazuje následující obrázek, a zobrazí se vám zadané jméno.</p>
         <img src="../../static/img/screenshots/URLRewritingJakeJeJmenoStranka.png" alt="Stránka zobrazující jméno" class="image image--full-width image--with-border u-mb-2">
         <p class="paragraph u-mb-4">O čemu URL rewriting je, vám je teď už asi jasné. Je to o tom, že do odkazů nastavujeme query parametry a ukládáme tím tedy informace mezi stránkami.</p>
-        <h2 class="heading-secondary u-mb-2">Skryté inputy</h2>
+        <h2 id="skryte-inputy" class="heading-secondary u-mb-2">Skryté inputy</h2>
         <p class="paragraph u-mb-2">Jako další techniku pro sledování relace si ukážeme použití skrytých inputů ve formulářích. Pro jeho vyzkoušení nám stačí upravit třídu PozdravServlet z ukázky pro url-rewriting. Namísto odkazu na stránku přidáme formulář se skrytým inputem (nastavíme mu atribut type na hidden) a tlačítkem pro jeho odeslání. Formulář se bude posílat metodou GET abychom nemuseli upravovat i třídu JakeJeJmenoServlet. To znamená, že se hodnoty formuláře budou posílat jako query string v URL (výsledné URL requestu bude stejné jako u odkazu).</p>
         <%- include("./includes/skryte-inputy-code-box-1.ejs") %>
         <p class="paragraph u-mb-2">Následující obrázek ukazuje, jak teď bude stránka s pozdravem vypadat. Tlačítko se chová úplně stejně jako předtím odkaz.</p>
         <img src="../../static/img/screenshots/SkryteInputyPozdravStranka.png" alt="Předělaná stránka s pozdravem" class="image image--full-width image--with-border u-mb-6">
-        <h2 class="heading-secondary u-mb-2">Parametry v URL</h2>
+        <h2 id="parametry-v-url" class="heading-secondary u-mb-2">Parametry v URL</h2>
         <p class="paragraph u-mb-2">Další věcí, kterou si ukážeme, jsou parametry v URL cestě. V tomto případě nebudeme upravovat předchozí projekt, ale vytvoříme si nový. Pro ukázku nám bude stačit vytvořit jen jeden servlet. Parametr předáme přímo v URL, když si budeme stránku otevírat. Můžeme jej pojmenovat třeba jako MujServlet. Bude sloužit jen k tomu, že vypíše URL parametr na stránku. Nejdříve si ale v tomto případě vytvoříme soubor web.xml, kde si servlet namapujeme pro URL pattern. Nastavíme mu url-pattern na "/muj-servlet/*". To znamená, že se zavolá pro všechno, co začíná na "/muj-servlet". Budeme tedy schopni předat URL parametr.</p>
         <%- include("./includes/url-parametry-code-box-1.ejs") %>
         <p class="paragraph u-mb-2">Teď můžeme vytvořit servlet. Ukazuje jej následující ukázka. Pro získání části cesty, která se nachází za částí "/muj-servlet" používáme metodu getPathInfo. Například pro "https://localhost:8080/muj-servlet/neco/aaa" vrátí "/neco/aaa".</p>
         <%- include("./includes/url-parametry-code-box-2.ejs") %>
         <p class="paragraph u-mb-2">Pokud si aplikaci spustíte a navštívíte třeba <a href="http://localhost:8080/url-parametry/muj-servlet/muj-text" target="_blank" class="link">http://localhost:8080/url-parametry/muj-servlet/muj-text</a>, tak uvidíte úplně stejnou stránku, kterou ukazuje následující obrázek.</p>
         <img src="../../static/img/screenshots/URLParametryStranka.png" alt="Stránka zobrazující URL parametr" class="image image--full-width image--with-border u-mb-6">
-        <h2 class="heading-secondary u-mb-2">Cookies</h2>
+        <h2 id="cookies" class="heading-secondary u-mb-2">Cookies</h2>
         <p class="paragraph u-mb-2">Předchozí techniky, které jsme si ukázali, jsou spíš jen takové mechanismy pro předání informací z jedné stránky na jinou. Pokud ale chceme o uživateli naší webové aplikace uložit nějaká data dlouhodoběji a používat je při každém requestu, který pošle na server, tak existují jiné možnosti (v podstatě asi dvě). Jedna z nich jsou <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies" target="_blank" class="link">cookies</a>.</p>
         <p class="paragraph u-mb-4">Cookies jsou malé textové soubory, které si klient (prohlížeč) ukládá na lokální disk a posílá je na server spolu s requesty, které posílá. Mají hodnoty ve formě klíče a hodnoty. Jsou vytvořeny serverem a posílány jen na server, který je vytvořil. Cookies server u klienta vytváří pomocí headeru "Set-Cookie", který posílá v HTTP odpovědi. Klient si tento header přečte a cookie uloží. Poté jej na server předává při každém requestu pomocí headeru "Cookie".</p>
-        <h3 class="heading-tertiary u-mb-1">Co můžeme u cookie nastavit</h3>
+        <h3 id="co-muzeme-u-cookie-nastavit" class="heading-tertiary u-mb-1">Co můžeme u cookie nastavit</h3>
         <p class="paragraph u-mb-1">Kromě hodnoty můžeme pro cookie nastavit i další vlastnosti. Co všechno můžeme nastavit, popisuje následující seznam:</p>
         <ul class="list u-mb-2">
             <li><b><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#domaindomain-value" target="_blank" class="link">Domain</a></b> - určuje doménu, pro kterou se má cookie nastavit (jde použít jen aktuální doména, nebo doména vyššího řádu)</li>
@@ -62,7 +62,7 @@
         </ul>
         <p class="paragraph u-mb-2">Jak může "Set-Cookie" header vypadat, ukazuje následující ukázka:</p>
         <%- include("./includes/set-cookie-header-code-box.ejs") %>
-        <h3 class="heading-tertiary u-mb-1">Práce s cookies v servletech</h3>
+        <h3 id="prace-s-cookies-v-servletech" class="heading-tertiary u-mb-1">Práce s cookies v servletech</h3>
         <p class="paragraph u-mb-2">V servletech máme pro vytváření cookies třídu <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/Cookie.html" target="_blank" class="link">Cookie</a>. Nemusíme tedy header "Set-Cookie" nastavovat ručně sami. Stačí vytvořit instanci této třídy a zavolat metodu <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServletResponse.html#addCookie-javax.servlet.http.Cookie-" target="_blank" class="link">addCookie</a> HttpServletResponse objektu, které vytvořenou cookie předáme.</p>
         <p class="paragraph u-mb-2">Pro ukázku práce s cookies si vytvoříme podobnou aplikaci, kterou jsme si vytvořili pro ukázku URL rewritingu. V tomto případě ale nebudeme jméno předávat nikde v URL, ale pomocí cookie. Vytvoříme nový Maven projekt a servlet pro stránku na zadání jména, který můžeme pojmenovat třeba jako ZadejJmenoServlet. Bude v podstatě stejný jako servlet z předchozí aplikace, jen atribut action formuláře bude nastaven na "./jmeno". Ukazuje jej následující ukázka.</p>
         <%- include("./includes/cookies-code-box-1.ejs") %>
@@ -79,7 +79,7 @@
         <p class="paragraph u-mb-2">Po vyplnění jména se vám nyní otevře stránka <a href="http://localhost:8080/cookies/jmeno" target="_blank" class="link">http://localhost:8080/cookies/jmeno</a>, na které se vám vaše zadané jméno zobrazí.</p>
         <img src="../../static/img/screenshots/CookiesZadaneJmenoStranka.png" alt="Stránka se zadaným jménem" class="image image--full-width image--with-border u-mb-2">
         <p class="paragraph u-mb-4">Když to shrneme, tak cookies jsou zjednodušeně hodnoty, které může server klientovi nastavit, aby je při každém requestu na server posílal.</p>
-        <h2 class="heading-secondary u-mb-2">Sessions</h2>
+        <h2 id="sessions" class="heading-secondary u-mb-2">Sessions</h2>
         <p class="paragraph u-mb-2">Cookies se ukládají u klienta. Je tedy možné, že si může jejich hodnoty změnit, aniž by k tomu dostal příkaz ze serveru. Alternativa je ukládat data uživatele na serveru, kde je již jen tak modifikovat nemůže. Klient akorát k datům, které mu patří, dostane unikátní identifikátor ve formě hodnoty v cookie. Tuto cookie klient posílá při každém requestu a server podle něj najde data, která s ním jsou spjata.</p>
         <p class="paragraph u-mb-2">Pro ukládání dat uživatele na serveru (v session) se používá objekt typu <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpSession.html" target="_blank" class="link">HttpSession</a>. Můžeme jej získat na HttpServletRequest objektu zavoláním metody <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServletRequest.html#getSession--" target="_blank" class="link">getSession</a>. Tato metoda vrací session, která je spjata s klientem, který poslal request. Pokud session ještě není vytvořena (metoda getSession se volá poprvé), tak se nejprve vytvoří a až poté vrátí. Následující tabulka popisuje metody, které u HttpSession objektu můžeme použít.</p>
         <table class="table u-mb-4">
@@ -153,7 +153,7 @@
                 </tr>
             </tbody>
         </table>
-        <h3 class="heading-tertiary u-mb-2">Ukázka použití session</h3>
+        <h3 id="ukazka-pouziti-session" class="heading-tertiary u-mb-2">Ukázka použití session</h3>
         <p class="paragraph u-mb-2">Pro ukázku práce se session si vytvoříme aplikaci, ve které bude mít uživatel tabulku, do které si bude moci přidávat nové řádky. Vytvoříme si nový Maven projekt, který můžeme pojmenovat třeba jako tabulka. Pro stránku s tabulkou si poté vytvoříme servlet TabulkaServlet. Ukazuje jej následující ukázka. Tento servlet jen získá položky ze session a zobrazí je na stránce v tabulce. Položky se ukládají v LinkedListu. Do session můžeme uložit v podstatě cokoliv, jelikož všechny třídy v Javě implicitně dědí od třídy Object. Při získávání objektu ze session za použití getAttribute metody jej ale musíme castnout, jelikož vrací instanci třídy Object.</p>
         <%- include("./includes/sessions-code-box-1.ejs") %>
         <p class="paragraph u-mb-2">Můžeme si vytvořit soubor web.xml a servlet namapovat třeba na "/polozky".</p>

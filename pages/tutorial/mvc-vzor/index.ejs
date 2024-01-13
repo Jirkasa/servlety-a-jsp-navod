@@ -3,7 +3,7 @@
     <%- include("../../includes/tutorial-page-layout-start.ejs", {pathToTutorialFolder: "./", activeLink: "mvc-vzor"}) %>
         <h1 class="heading-primary u-mb-4">MVC vzor</h1>
         <p class="paragraph u-mb-4">Tato část je o MVC. Jedná se o návrhový vzor, který odděluje data, prezentační logiku a business logiku. Jeho použití má spoustu výhod, jako je třeba lepší čitelnost kódu, údržba, testovatelost, snadnější práce v týmu, a tak podobně.</p>
-        <h2 class="heading-secondary u-mb-2">Komponenty MVC vzoru</h2>
+        <h2 id="komponenty-mvc-vzoru" class="heading-secondary u-mb-2">Komponenty MVC vzoru</h2>
         <p class="paragraph u-mb-2">MVC vzor se skládá ze tří komponent: Model, View a Controller. Následující tabulka je popisuje.</p>
         <table class="table u-mb-2">
             <thead>
@@ -30,7 +30,7 @@
         <p class="paragraph u-mb-2">V kontextu servletů a JSP je většinou controller reprezentován servletem, view JSP stránkou a model může představovat třeba Java bean třída. Pokud například používáme nějaký framework, ORM nástroj, a tak podobně, tak to samozřejmě může být trochu jinak.</p>
         <p class="paragraph u-mb-4">Funguje to tak, že servlety (controllery) přijímají ke zpracování requesty. Pokud například klient pošle request pro nějakou stránku, na které se mu mají v tabulce vypsat všechny položky z databáze, tak servlet, který je k tomu určený, získá položky z modelu (zavolá metodu nějaké třídy, která mu je vrátí) a předá je do JSP stránky (view) k zobrazení v tabulce.</p>
         <img src="../../static/img/illustrations/MVCVzor.svg" alt="MVC vzor" class="image image--full-width u-mb-6">
-        <h2 class="heading-secondary u-mb-2">Ukázka použití MVC</h2>
+        <h2 id="ukazka-pouziti-mvc" class="heading-secondary u-mb-2">Ukázka použití MVC</h2>
         <p class="paragraph u-mb-2">Pro ukázku MVC vzoru si vytvoříme aplikaci, ve které bude mít uživatel možnost vytvářet, mazat a zobrazovat položky (textové poznámky). Aplikace bude obsahovat dvě stránky. Úvodní stránku, která uživatele v aplikaci jen přivítá, a stránku s položkami, na které si uživatel bude moci své položky prohlížet, mazat, nebo si případně vytvářet nové.</p>
         <p class="paragraph u-mb-2">Založíme si nový Maven projekt a začneme tím, že si do souboru pom.xml kromě závislosti pro servlety přidáme také závislost pro JSTL. Budeme jej totiž v JSP stránkách používat.</p>
         <%- include("./includes/mvc-example-code-box-1.ejs") %>

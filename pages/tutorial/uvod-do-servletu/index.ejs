@@ -3,15 +3,15 @@
     <%- include("../../includes/tutorial-page-layout-start.ejs", {pathToTutorialFolder: "./", activeLink: "uvod-do-servletu"}) %>
         <h1 class="heading-primary u-mb-4">Úvod do Servletů</h1>
         <p class="paragraph u-mb-4">Tato část představuje úvod do servletů. Dozvíte se co to servlety jsou, k čemu slouží a jak fungují. Také si zkusíme dva jednoduché vytvořit.</p>
-        <h2 class="heading-secondary u-mb-2">Co je webový server</h2>
+        <h2 id="co-je-webovy-server" class="heading-secondary u-mb-2">Co je webový server</h2>
         <p class="paragraph u-mb-4">V první části tutoriálu jsme si nainstalovali webový server jménem Tomcat. Na tomto serveru budeme spouštět naše webové aplikace. Krátce bych tu chtěl jen popsat, k čemu webový server vlastně slouží. Většina z vás to již určitě ví. Webový server bere požadavky od klientů a něco jim vrací (HTML stránku, obrázek, atd.). Server zjišťuje, jaký obsah má klientovi poslat podle URL (např. https://www.udemy.com/, https://jirkasa.github.io/threejs-navod/...). Pokud pro request nic nenajde, tak vyhodí chybu 404 (nenalezeno). Webový server se skládá z hardwaru a softwaru. Hardware je nějaké fyzické zařízení (počítač) a software představuje nějakou aplikaci (např. Tomcat).</p>
         <img src="../../static/img/illustrations/WebServer.svg" alt="Webový server" class="image image--full-width u-mb-6">
-        <h2 class="heading-secondary u-mb-2">Co jsou Servlety</h2>
+        <h2 id="co-jsou-servlety" class="heading-secondary u-mb-2">Co jsou Servlety</h2>
         <p class="paragraph u-mb-2">Servlety jsou Java programy, které běží na webovém serveru (např. Tomcatu). Používají se ke zpracování požadavku, který webový server obdržel, a k vytvoření odpovědi, která je odeslána zpět klientovi.</p>
         <p class="paragraph u-mb-2">Použitím servletů můžeme vytvářet dynamické webové stránky. To znamená, že obsah HTML stránek, které klient ze serveru obdrží není statický (není v kódu vložený napevno). HTML stránka se generuje v servletu, když na server přijde od klienta požadavek. Díky tomu můžeme na stránce například zobrazovat nějaká data z databáze.</p>
         <p class="paragraph u-mb-4">Jak servlety zjednodušeně fungují, můžete vidět v následujícím obrázku. Když na server dorazí požadavek, tak se vybere servlet, který jej zpracuje a vytvoří odpověď (HTML stránku). HTML stránka se poté pošle klientovi.</p>
         <img src="../../static/img/illustrations/JakServletyFunguji.svg" alt="Jak fungují servlety" class="image image--full-width u-mb-6">
-        <h2 class="heading-secondary u-mb-2">Komponenty URL adresy</h2>
+        <h2 id="komponenty-url-adresy" class="heading-secondary u-mb-2">Komponenty URL adresy</h2>
         <p class="paragraph u-mb-2">Když klient vytváří požadavek, který chce poslat na server, používá k tomu komponenty URL adresy. Příklad URL adresy můžete vidět v následující ukázce:</p>
         <%- include("./includes/url-example-code-box.ejs") %>
         <p class="paragraph u-mb-2">Komponenty URL jsou zkombinovány a odděleny následujícím způsobem:</p>
@@ -24,9 +24,9 @@
             <li><b>cesta</b> - specifikuje cestu ke zdroji na hostiteli (většinou je to hierarchická struktura oddělená lomítky)</li>
             <li><b>query</b> - na konci URL může být query řetězec (jedná se o parametry, které jsou odděleny znakem "&" a jsou ve tvaru "název=hodnota")</li>
         </ul>
-        <h2 class="heading-secondary u-mb-2">HTTP protokol</h2>
+        <h2 id="http-protokol" class="heading-secondary u-mb-2">HTTP protokol</h2>
         <p class="paragraph u-mb-4">V případě webových stránek klient se serverem komunikuje pomocí <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP" target="_blank" class="link">HTTP protokolu</a>. Pokud klient chce navštívit webovou stránku, tak na server pošle HTTP request. Server mu nazpět pošle HTTP response s HTML stránkou. Pro programování servletů je dobré vědět, z čeho se HTTP request a HTTP response skládá.</p>
-        <h3 class="heading-tertiary u-mb-1">Z čeho se skládá HTTP request</h3>
+        <h3 id="z-ceho-se-sklada-http-request" class="heading-tertiary u-mb-1">Z čeho se skládá HTTP request</h3>
         <p class="paragraph u-mb-1">HTTP request se skládá z následujících prvků:</p>
         <ul class="list u-mb-2">
             <li><b>request line</b></li>
@@ -61,7 +61,7 @@
         <%- include("./includes/http-request-headers-example-code-box.ejs") %>
         <p class="paragraph u-mb-2">Header "Host" například značí, na jaký server se má request poslat. Pomocí headeru "User-Agent" zase můžeme na serveru zjistit informace o tom, jaký má klient prohlížeč a operačním systém. Přehled standardních headerů si můžete prohlédnout například <a href="https://en.wikipedia.org/wiki/List_of_HTTP_header_fields" target="_blank" class="link">zde</a>.</p>
         <p class="paragraph u-mb-4">Body představuje samotný obsah HTTP requestu. Je nepovinné. HTTP request poslaný metodou GET body například nemá a pokud se potřebují nějaká data poslat, tak se pošlou jako query řetězec (popsáno výše v části Komponenty URL adresy). HTTP request poslaný metodou POST naopak body má, protože slouží k poslání dat na server. Pokud tedy odešleme HTML formulář metodou POST, tak se data formuláře na server pošlou v body.</p>
-        <h3 class="heading-tertiary u-mb-1">Z čeho se skládá HTTP response</h3>
+        <h3 id="z-ceho-se-sklada-http-response" class="heading-tertiary u-mb-1">Z čeho se skládá HTTP response</h3>
         <p class="paragraph u-mb-1">HTTP response se skládá z následujících prvků:</p>
         <ul class="list u-mb-2">
             <li><b>status line</b></li>
@@ -86,11 +86,11 @@
         </ul>
         <p class="paragraph u-mb-2">Pokud si chcete prohlédnout všechny HTTP status kódy, tak se můžete podívat třeba na <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status" target="_blank" class="link">tuto stránku</a>. Určitě se je ale neučte nazpaměť. Pokud někdy nebudete vědět jaký status kód použít, tak si jej můžete vyhledat. U klasických serverem renderovaných webových stránek se to stejně podle mě podobně jako u HTTP metod taky moc neřeší. Ale to si jen myslím. Víc se to podle mě řeší u REST API, které se programuje pomocí JAX-RS, což je jiná technologie z Javy EE, stejně jako servlety. O tom se v tomto tutoriálu učit nebudeme. Tento tutoriál je o servletech.</p>
         <p class="paragraph u-mb-4">Co jsou headery a body jsem popsal již u HTTP requestu, takže to tu nebudu znovu vysvětlovat. V body se posílá obsah HTTP response (např. HTML stránka, obrázek...).</p>
-        <h2 class="heading-secondary u-mb-2">Balíčky javax.servlet a javax.servlet.http</h2>
+        <h2 id="balicky-javax-servlet-a-javax-servlet-http" class="heading-secondary u-mb-2">Balíčky javax.servlet a javax.servlet.http</h2>
         <p class="paragraph u-mb-2">Pro servlety existují dva balíčky: <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/package-summary.html" target="_blank" class="link">javax.servlet</a> a <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/package-summary.html" target="_blank" class="link">javax.servlet.http</a>. V balíčku javax.servlet můžeme najít rozhraní <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/Servlet.html" target="_blank" class="link">Servlet</a> a třídu <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/GenericServlet.html" target="_blank" class="link">GenericServlet</a>, která jej implementuje (a nejen to). V balíčku javax.servlet.http se nachází třída <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServlet.html" target="_blank" class="link">HttpServlet</a>. Rozhraní Servlet poskytuje obecný framework pro vytvoření servletu. Servlet může toto rozhraní implementovat, nebo jej implementovat nepřímo rozšířením třídy GenericServlet nebo HttpServlet. Třída GenericServlet se používá k vytváření servletů, kteří mohou pracovat s jakýmkoliv protokolem. Třída HttpServlet se používá k vytváření HTTP servletů. Tyto servlety mají výstup ve formě HTML stránek.</p>
         <p class="paragraph u-mb-4">Následující diagram ukazuje, že třída HttpServlet dědí od třídy GenericServlet, která implementuje rozhraní Servlet. Dále také implementuje rozhraní <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/ServletConfig.html" target="_blank" class="link">ServletConfig</a> a <a href="https://docs.oracle.com/javase/8/docs/api/java/io/Serializable.html?is-external=true" target="_blank" class="link">Serializable</a>.</p>
         <img src="../../static/img/illustrations/HierarchyOfServletClasses.svg" alt="Hierarchie Java tříd pro servlety" class="image u-mb-6">
-        <h2 class="heading-secondary u-mb-2">Rozhraní Servlet</h2>
+        <h2 id="rozhrani-servlet" class="heading-secondary u-mb-2">Rozhraní Servlet</h2>
         <p class="paragraph u-mb-2">Každý servlet musí implementovat rozhraní <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/Servlet.html" target="_blank" class="link">Servlet</a>. Toto rozhraní definuje metody, které musí třída, která jej implementuje, implementovat. Následující tabulka je popisuje:</p>
         <table class="table u-mb-6">
             <thead>
@@ -128,12 +128,12 @@
                 </tr>
             </tbody>
         </table>
-        <h2 class="heading-secondary u-mb-2">Životní cyklus servletu</h2>
+        <h2 id="zivotni-cyklus-servletu" class="heading-secondary u-mb-2">Životní cyklus servletu</h2>
         <p class="paragraph u-mb-4">V předchozí tabulce, která popisuje metody Servlet rozhraní, můžete vidět, že metody init, service a destroy jsou volány v různých chvílích servlet containerem (Tomcatem). Na začátku servlet container vytvoří instanci servlet třídy a vytvořený servlet inicializuje zavoláním init metody. Poté je servlet připraven zpracovávat klientské requesty pomocí metody service. Až se potom servlet container rozhodne servlet vyřadit z provozu, tak se zavolá metoda destroy. Následující diagram tento životní cyklus servletu ukazuje:</p>
         <img src="../../static/img/illustrations/ZivotniCyklusServletu.svg" alt="Životní cyklus servletu" class="image u-mb-6">
-        <h2 class="heading-secondary u-mb-2">Servlet request a servlet response</h2>
+        <h2 id="servlet-request-a-servlet-response" class="heading-secondary u-mb-2">Servlet request a servlet response</h2>
         <p class="paragraph u-mb-4">Do metody service, kterou definuje rozhraní Servlet, se jako parametr předávají objekty typu <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/ServletRequest.html" target="_blank" class="link">ServletRequest</a> a <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/ServletResponse.html" target="_blank" class="link">ServletResponse</a>. Objekt typu ServletRequest můžeme použít k získání informací o requestu, který nám klient poslal. Objekt typu ServletResponse můžeme použít k poslání odpovědi klientovi. Oba tyto objekty vytváří servlet container a volá s nimi service metodu servletu. Co všechno rozhraní ServletRequest a ServletResponse definují za metody si můžete prohlédnout v dokumentaci.</p>
-        <h2 class="heading-secondary u-mb-2">Vytvoření servletu implementací Servlet rozhraní</h2>
+        <h2 id="vytvoreni-servletu-implementi-servlet-rozhrani" class="heading-secondary u-mb-2">Vytvoření servletu implementací Servlet rozhraní</h2>
         <p class="paragraph u-mb-1">Vytvořit servlet můžeme třemi cestami:</p>
         <ul class="list u-mb-2">
             <li>implementací Servlet rozhraní</li>
@@ -152,7 +152,7 @@
         <p class="paragraph u-mb-2">Následující ukázka ukazuje, jak můžeme HTML stránku poslat. Nejdříve nastavíme header "Content-Type", který může klient použít ke zjištění, co server posílá za obsah. To se dělá pomocí metody setContentType, kde předáme MIME type. Tabulku s různými MIME typy pro soubory webových stránek si můžete prohlédnout třeba <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types" target="_blank" class="link">zde</a>. Poté v bloku <a href="https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html" target="_blank" class="link">try-with-resources</a> získáme ze ServletResponse objektu <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/PrintWriter.html" target="_blank" class="link">PrintWriter</a>, který použijeme k vytvoření HTML stránky. Jak blok try-with-resources funguje tu popisovat nebudu, to se týká Javy obecně. Jednoduše potřebujeme na print writeru po jeho použití zavolat metodu close. Blok try-with-resources je pro tuto operaci takový syntaktický cukřík.</p>
         <%- include("./includes/code-box-5.ejs") %>
         <p class="paragraph u-mb-4">To je vše, co jsme k vytvoření jednoduchého servletu implementací Servlet rozhraní potřebovali udělat. Teď již jen musíme Tomcatu dát vědět, kdy má náš servlet zavolat.</p>
-        <h2 class="heading-secondary u-mb-2">Deployment descriptor (web.xml)</h2>
+        <h2 id="deployment-descriptor" class="heading-secondary u-mb-2">Deployment descriptor (web.xml)</h2>
         <p class="paragraph u-mb-2">Kdy má náš servlet Tomcat zavolat, můžeme nastavit pomocí souboru web.xml umístěného ve složce WEB-INF nacházející se ve složce webapp. Jedná se o deployment descriptor. Je to XML soubor, který slouží ke konfiguraci webových aplikací. Můžeme s jeho pomocí nastavit, jaké URL má zpracovávat jaký servlet a tak podobně. Přidáme si tedy soubor web.xml do příslušné složky a vložíme pro něj základní kód. Ukazuje jej následující ukázka, nebo jej můžete zkopírovat třeba <a href="https://docs.oracle.com/cd/E24329_01/web.1211/e21049/web_xml.htm#WBAPP503" target="_blank" class="link">odsud</a>. Popravdě netuším k čemu jednotlivé atributy kořenového elementu web-app slouží. Prostě to jen zkopíruju, když potřebuji soubor web.xml vytvořit.</p>
         <%- include("./includes/code-box-6.ejs") %>
         <p class="paragraph u-mb-2">Než můžeme v deployment descriptoru náš servlet namapovat na nějaké URL, tak si jej musíme nadefinovat pomocí elementu servlet. Následující ukázka ukazuje, jak to můžeme udělat. Element servlet má podelementy servlet-name a servlet-class. Elementem servlet-name nastavujeme název servletu a elementem servlet-class nastavujeme třídu pro servlet.</p>
@@ -161,7 +161,7 @@
         <%- include("./includes/code-box-8.ejs") %>
         <p class="paragraph u-mb-2">Pokud si teď naši aplikaci spustíte a navštívíte <a href="http://localhost:8080/uvod-do-servletu/servlet-implementaci-servlet-rozhrani" target="_blank" class="link">http://localhost:8080/uvod-do-servletu/servlet-implementaci-servlet-rozhrani</a>, tak uvidíte stejnou stránku, kterou ukazuje následující obrázek.</p>
         <img src="../../static/img/screenshots/StrankaProServletVytvorenyImplementaciServletRozhrani.png" alt="Stránka pro servlet vytvořený implementací Servlet rozhraní" class="image image--full-width image--with-border u-mb-6">
-        <h2 class="heading-secondary u-mb-2">Vytvoření servletu zděděním třídy GenericServlet</h2>
+        <h2 id="vytvoreni-servletu-zdedenim-tridy-genericservlet" class="heading-secondary u-mb-2">Vytvoření servletu zděděním třídy GenericServlet</h2>
         <p class="paragraph u-mb-2">Lepší cesta jak vytvořit servlet, je vytvořit podtřídu abstraktní třídy GenericServlet. Ta implementuje rozhraní Servlet a má až na metodu service všechny jeho metody implementované. Tvorba servletu je pro nás tedy tímto způsobem jednodušší než implementací Servlet rozhraní napřímo. Můžeme implementovat jen metodu service.</p>
         <p class="paragraph u-mb-2">Pro ukázku si v našem projektu vytvoříme třídu, kterou můžeme pojmenovat jako Servlet2 a nastavíme, že dědí od třídy GenericServlet.</p>
         <%- include("./includes/code-box-9.ejs") %>
@@ -171,7 +171,7 @@
         <%- include("./includes/code-box-11.ejs") %>
         <p class="paragraph u-mb-2">Po restartu Tomcatu a navštívení <a href="http://localhost:8080/uvod-do-servletu/servlet-zdedenim-tridy-generic-servlet" target="_blank" class="link">http://localhost:8080/uvod-do-servletu/servlet-zdedenim-tridy-generic-servlet</a> by jste měli vidět stránku, kterou ukazuje následující obrázek.</p>
         <img src="../../static/img/screenshots/StrankaProServletVytvorenyZdedenimGenericServletTridy.png" alt="Stránka pro servlet vytvořený zděděním třídy GenericServlet" class="image image--full-width image--with-border u-mb-6">
-        <h2 class="heading-secondary u-mb-2">Inicializační parametry servletů</h2>
+        <h2 id="inicializacni-parametry-servletu" class="heading-secondary u-mb-2">Inicializační parametry servletů</h2>
         <p class="paragraph u-mb-2">V souboru web.xml si pro naše servlety můžeme definovat inicializační parametry. Jedná se o hodnoty, které Tomcat předá do servletu když jej inicializuje prostřednictvím init metody. Inicializační parametry se vytváří prostřednictvím init-param elementů uvnitř servlet elementu. Pomocí jeho podelementu param-name specifikujeme název parametru a pomocí podelementu param-value hodnotu parametru.</p>
         <p class="paragraph u-mb-2">V našem projektu si třeba pro náš druhý servlet vytvoříme inicializační parametr, pomocí kterého budeme moci měnit nadpis stránky. Následující ukázka ukazuje, jak to můžeme v souboru web.xml udělat.</p>
         <%- include("./includes/code-box-12.ejs") %>
