@@ -2,10 +2,232 @@
     <%- include("../includes/header.ejs") %>
     <%- include("../includes/tutorial-page-layout-start.ejs", {pathToTutorialFolder: "../tutorial/"}) %>
         <h1 class="heading-primary u-mb-4">Popis zdrojového kódu projektu</h1>
-        <p class="paragraph u-mb-4">Tabulka atributů pro code boxy:</p>
-        <h2 class="heading-secondary u-mb-2">Code Box</h2>
-        <p class="paragraph u-mb-2">Popsat a vysvětlit to i s ukázkami. Vytvořit na to tady tutoriál - na začátku zobrazit tyto tabulky, které si mohou přečíst, ale poté vytvořím tutoriál.</p>
-        <h3 class="heading-tertiary u-mb-2">Atributy pro container</h3>
+        <p class="paragraph u-mb-4">Na této stránce si můžete přečíst o <a href="https://github.com/Jirkasa/servlety-a-jsp-navod" target="_blank" class="link">zdrojovém kódu</a> pro tento web, který je volně dostupný na GitHubu. Je mi úplně jedno zda se v tomto projektu něčím inspirujete nebo něco zkopírujete a použijete pro svůj vlastní projekt. Klidně si můžete zkopírovat i celý tento web (nemusíte ani upravovat design pokud nechcete) a přetvořit jej na web o něčem jiném. Byl bych spíš rád, že můj kód používáte, takže se nebojte úplně cokoliv z tohoto projektu vzít a případně si to upravit nebo vylepšit.</p>
+        <h2 class="heading-secondary u-mb-2">Jaké technologie jsou použity</h2>
+        <p class="paragraph u-mb-2">V projektu jsou použity technologie, které popisuje následující tabulka.</p>
+        <table class="table u-mb-2">
+            <thead>
+                <tr>
+                    <th>Technologie</th>
+                    <th>Popis</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>EJS</td>
+                    <td>Aby se nemusel do každé HTML stránky ručně kopírovat kód, který je společný pro více stránek, tak se namísto klasických HTML souborů používá šablonovací jazyk jménem EJS.</td>
+                </tr>
+                <tr>
+                    <td>Less</td>
+                    <td>Pro tvorbu CSS stylů se používá preprocesor Less. Díky němu je psaní CSS stylů jednodušší a kód je mnohem přehlednější.</td>
+                </tr>
+                <tr>
+                    <td>TypeScript</td>
+                    <td>Namísto JavaScriptu je použit TypeScript, který z JavaScriptu dělá mnohem sofistikovanější programovací jazyk.</td>
+                </tr>
+                <tr>
+                    <td>Webpack</td>
+                    <td>K sestavení webu je použit Webpack.</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="paragraph u-mb-4">Pokud tady na webu budete vytvářet tutoriál nebo článek, tak o TypeScriptu a Webpacku vůbec nemusíte vědět. V TypeScriptu je naprogramovaný systém pro ukázky kódu, který upravovat nebudete, a Webpack je již nakonfigurovaný. Pokud nebudete psát CSS styly, tak ani preprocesor Less nemusíte znát.</p>
+        <h2 class="heading-secondary u-mb-2">Souborová struktura projektu</h2>
+        <p class="paragraph u-mb-2">V následující tabulce je popsáno, k čemu slouží kořenové složky projekty.</p>
+        <table class="table u-mb-2">
+            <thead>
+                <tr>
+                    <th>Složka</th>
+                    <th>Popis</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>icons</td>
+                    <td>V této složce jsou umístěny SVG ikony spolu se souborem "main.js", do kterého se importují. Webpack ikony, které jsou v tomto souboru naimportované, bere a vytváří z nich SVG sprite.</td>
+                </tr>
+                <tr>
+                    <td>less</td>
+                    <td>V této složce jsou umístěny soubory pro CSS styly. Struktura této složky je popsána níže.</td>
+                </tr>
+                <tr>
+                    <td>pages</td>
+                    <td>V této složce jsou umístěny HTML stránky (přesněji EJS soubory). Struktura této složky je popsána níže.</td>
+                </tr>
+                <tr>
+                    <td>static</td>
+                    <td>Tato složka obsahuje soubory jako jsou obrázky a tak podobně. Obsah této složky Webpack jednoduše jen kopíruje. Nachází se tam třeba také JavaScript soubor pro knihovnu highlight.js, která se používá pro zvýrazňování ukázek kódu, jelikož jsem tuto knihovnu neinstaloval přes NPM.</td>
+                </tr>
+                <tr>
+                    <td>ts</td>
+                    <td>V této složce jsou umístěny TypeScript soubory. Struktura této složky je popsána níže.</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="paragraph u-mb-2">Kromě složek se v kořenové složce projektu nachází také pár souborů. Popisuje je následující ukázka.</p>
+        <table class="table u-mb-4">
+            <thead>
+                <tr>
+                    <th>Soubor</th>
+                    <th>Popis</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>.gitignore</td>
+                    <td>Tento soubor informuje Git o tom, které složky mají být ignorovány. Ignoruje se složka /node_modules a složka /dist, kterou vytváří Webpack a nachází se v ní sestavený web.</td>
+                </tr>
+                <tr>
+                    <td>README.md</td>
+                    <td>Readme pro GitHub repozitář.</td>
+                </tr>
+                <tr>
+                    <td>package.json</td>
+                    <td>Tento soubor obsahuje NPM balíčky, které je potřeba pro projekt nainstalovat, a také definuje příkazy pro sestavení webu a jeho spuštění pro vývoj.</td>
+                </tr>
+                <tr>
+                    <td>tsconfig.json</td>
+                    <td>V tomto souboru je nakonfigurovaný TypeScript.</td>
+                </tr>
+                <tr>
+                    <td>webpack.common.js</td>
+                    <td>Tento soubor obsahuje společnou konfiguraci Webpacku pro vývoj a produkci.</td>
+                </tr>
+                <tr>
+                    <td>webpack.dev.js</td>
+                    <td>Tento soubor obsahuje konfiguraci Webpacku specifickou pro vývoj.</td>
+                </tr>
+                <tr>
+                    <td>webpack.prod.js</td>
+                    <td>Tento soubor obsahuje konfiguraci Webpacku pro produkci.</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3 class="heading-tertiary u-mb-1">Složka pages</h3>
+        <p class="paragraph u-mb-2">Kořenová složka pages slouží k ukládání HTML stránek ve formě EJS souborů. Šablonovací jazyk EJS je použit, aby se nemusel kód, který se používá na více stránkách pracně ručně kopírovat. EJS totiž umožňuje do stránky vkládat obsah jiných souborů. Díky tomu nemusíme upravovat kód na desítkách různých místech, pokud chceme upravit nějaký kód, který je použit na více stránkách.</p>
+        <p class="paragraph u-mb-2">Následující tabulka popisuje složky a soubor, které složka pages obsahuje.</p>
+        <table class="table u-mb-2">
+            <thead>
+                <tr>
+                    <th>Složka/Soubor</th>
+                    <th>Popis</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>index.ejs</td>
+                    <td>Představuje domovskou stránku webu.</td>
+                </tr>
+                <tr>
+                    <td>includes</td>
+                    <td>Tato složka obsahuje soubory s kódem, který se používá na více stránkách.</td>
+                </tr>
+                <tr>
+                    <td>tutorial</td>
+                    <td>Tato složka obsahuje stránky pro tutoriál.</td>
+                </tr>
+                <tr>
+                    <td>dalsi-tutorialy</td>
+                    <td>Tato složka obsahuje stránky s tutoriály/články v sekci "Další tutoriály".</td>
+                </tr>
+                <tr>
+                    <td>obsah</td>
+                    <td>Tato složka obsahuje stránku, která obsahuje obsah tutoriálu.</td>
+                </tr>
+                <tr>
+                    <td>popis-zdrojoveho-kodu-projektu</td>
+                    <td>Tato složka obsahuje stránku, která popisuje zdrojový kód projektu.</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="paragraph u-mb-4">Každá stránka má EJS soubor pojmenovaný jako "index.ejs". Složka tutorial například obsahuje složky pro jednotlivé části tutoriálu a každá tento soubor obsahuje. Kromě toho se ještě ve většině složek (vlastně ve všech) nachází složka includes, kde se pro čistší HTML kód nachází kód pro různé ukázky kódu a slidery, které stránka používá. Díky tomu je samotný index.ejs soubor pro stránku relativně přehledný.</p>
+        <h3 class="heading-tertiary u-mb-1">Složka less</h3>
+        <p class="paragraph u-mb-2">Složka less obsahuje less soubory pro CSS styly. Obsahuje pár složek a hlavní soubor main.less, do kterého se importují všechny ostatní less soubory. Webpack tento soubor bere a generuje podle něj CSS soubor. Ostatní less soubory jsou rozděleny do složek podle 7-1 vzoru, o kterém si můžete více informací přečíst třeba <a href="https://strukturovani-css-kodu.4fan.cz/rozdeleni-kodu-do-slozek/" target="_blank" class="link">zde</a>. Také je dobré zmínit, že se pro psaní CSS stylů používá metodika BEM (Block Element Modifier). O té si můžete přečíst <a href="https://strukturovani-css-kodu.4fan.cz/metodiky-pro-organizaci-css-kodu/" target="_blank" class="link">zde</a>.</p>
+        <p class="paragraph u-mb-2">Následující tabulka alespoň krátce popisuje, co jednotlivé podsložky složky less uchovávají za soubory.</p>
+        <table class="table u-mb-4">
+            <thead>
+                <tr>
+                    <th>Složka</th>
+                    <th>Popis</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>abstracts</td>
+                    <td>Obsahuje věci, které nejsou obsaženy ve vygenerovaném CSS souboru.</td>
+                </tr>
+                <tr>
+                    <td>base</td>
+                    <td>Obsahuje základní styly, jako je třeba nějaký reset CSS stylů, nastavení REM jednotky nebo třeba typografii.</td>
+                </tr>
+                <tr>
+                    <td>components</td>
+                    <td>Obsahuje různé komponenty (třeba box pro ukázku kódu, atp.).</td>
+                </tr>
+                <tr>
+                    <td>layout</td>
+                    <td>Obsahuje komponenty pro tvorbu layoutu.</td>
+                </tr>
+                <tr>
+                    <td>pages</td>
+                    <td>Obsahuje styly, které jsou specifické pro různé stránky.</td>
+                </tr>
+                <tr>
+                    <td>vendors</td>
+                    <td>Obsahuje CSS styly třetích stran.</td>
+                </tr>
+            </tbody>
+        </table>
+        <h3 class="heading-tertiary u-mb-1">Složka ts</h3>
+        <p class="paragraph u-mb-2">Složka ts obsahuje TypeScript soubory. Nachází se v ní dvě složky, které popisuje následující tabulka. Obě složky obsahují soubor main.ts, který je takovým hlavním souborem, který je zpracováván Webpackem a vytváří se podle něj JavaScript soubor.</p>
+        <table class="table u-mb-6">
+            <thead>
+                <tr>
+                    <th>Složka</th>
+                    <th>Popis</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>common</td>
+                    <td>Tato složka obsahuje TypeScript soubory, které se používají pro tvorbu scriptu, který se automaticky přidává na každou stránku webu.</td>
+                </tr>
+                <tr>
+                    <td>tutorial-page</td>
+                    <td>Tato složka obsahuje TypeScript soubory, které se používají pro tvorbu scriptu, který se automaticky přidává na každou stránku s tutoriálem/článkem.</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2 class="heading-secondary u-mb-2">Jak je nakonfigurován Webpack</h2>
+        <p class="paragraph u-mb-2">Webpack je nastavený tak, že pomocí příkazu "npm run dev", si můžete web spustit pro vývoj (v prohlížeči se vám automaticky otevře stránka, nebo můžete navštívit <a href="http://localhost:3000/" target="_blank" class="link">http://localhost:3000/</a>), nebo si web můžete sestavit pro produkci do složky "dist" spuštěním příkazu "npm run build". Pokud rozumíte Webpacku, tak se můžete podívat do souborů webpack.common.js, webpack.dev.js a webpack.prod.js, jak je pro projekt nakonfigurovaný. Pokud ale ne, tak bych to tu chtěl jen krátce popsat.</p>
+        <p class="paragraph u-mb-1">Webpack po spuštění příkazu "npm run build" dělá následující věci:</p>
+        <ul class="list u-mb-2">
+            <li>V kořenové složce vytvoří složku dist, ve které bude sestavený web pro produkci.</li>
+            <li>Vytvoří HTML stránku pro domovskou stránku webu.</li>
+            <li>Vytvoří HTML stránky pro stránky tutoriálu.</li>
+            <li>Vytvoří HTML stránky pro stránky v sekci "Další tutoriály".</li>
+            <li>Vytvoří HTML stránku popisující zdrojový kód projektu.</li>
+            <li>Vytvoří CSS soubor podle less souborů (tento soubor je automaticky připojen na každou HTML stránku).</li>
+            <li>Vytvoří JavaScript soubor podle souboru main.ts, který se nachází ve složce ts/common. Tento soubor se automaticky připojuje na každou HTML stránku.</li>
+            <li>Vytvoří JavaScript soubor podle soubor main.ts, který se nachází ve složce ts/tutorial-page. Tento soubor se automaticky připojuje na každou HTML stránku s tutoriálem.</li>
+            <li>Zkopíruje složku static do složky dist.</li>
+            <li>Podle souboru main.js, který se nachází ve složce icons vytvoří SVG sprite, který umístí do složky static.</li>
+        </ul>
+        <p class="paragraph u-mb-2">Chtěl bych jen upozornit, že pro spuštění webu na svém PC budete potřebovat mít nainstalovaný Node.js. Před spuštěním příkazu "npm run dev" nebo "npm run build" je také potřeba nejdříve nainstalovat NPM balíčky specifikované v souboru package.json příkazem "npm install".</p>
+        <p class="paragraph u-mb-4">Další věc, na kterou bych chtěl upozornit je ta, že pokud přidáváte do složky dalsi-tutorialy (nebo složky tutorial) novou stránku a máte spuštěný Webpack pro vývoj, tak je potřeba Webpack restartovat, aby se stránka přidala. Také bych chtěl zmínit, že občas Webpack může vypisovat chybu ohledně less souborů. V takovém případě je nutné nějaký less soubor přeuložit. Nepodařilo se mi přijít na to, proč se to děje.</p>
+        <h2 class="heading-secondary u-mb-2">Jak fungují ukázky kódu</h2>
+        <p class="paragraph u-mb-2">Na webu se nachází spousta ukázek kódu. Některé se zobrazují jen v jednoduchém boxu, jiné mohou být zase zobrazené jako součást nějakého projektu. Pokud jste si tutoriál četli, nebo si jej jen letmo prohlédli, tak asi víte co tím myslím. Tyto ukázky se mohou skládat z následujících komponent (ne všechny se pro každou ukázku používají):</p>
+        <ul class="list u-mb-2">
+            <li><b>Code box</b> - Element, který představuje celou ukázku.</li>
+            <li><b>Elementy s kódy</b> - Code box může obsahovat jeden či více elementů s kódy (ukázky kódu).</li>
+            <li><b>Složky projektu</b> - Pokud je code box (ukázka) zobrazen jako projekt, tak může obsahovat element, který definuje složky projektu.</li>
+            <li><b>Container s příkazy</b> - Pokud je code box (ukázka) zobrazen jako projekt, tak může obsahovat příkazy, které se mají pro ukázku vykonat (například smazání souboru, atp.).</li>
+        </ul>
+        <p class="paragraph u-mb-4">Nejprve si projdeme jednotlivé komponenty ukázky, popíšeme si různé atributy, které jim můžeme nastavit, a tak podobně. Až poté si ukážeme příklady vytvoření ukázky.</p>
+        <h3 class="heading-tertiary u-mb-1">Code box</h3>
+        <p class="paragraph u-mb-2">Code box je element, který vlastně představuje celou ukázku. Pokud elementu nastavíme atribut "data-code-box" nebo "data-project", tak tím nastavujeme, že se jedná o ukázku.</p>
+        <%- include("./includes/code-box-component.ejs") %>
+        <p class="paragraph u-mb-2">Následující tabulka popisuje také další atributy, které můžeme pro code box nastavit.</p>
         <table class="table u-mb-4">
             <thead>
                 <tr>
@@ -33,7 +255,7 @@
                 <tr>
                     <td>data-project</td>
                     <td>ID projektu</td>
-                    <td>Nastavuje, že se jedná o code box, který se zobrazí jak projekt (bočním vysouvacím panelem). Pokud je tento atribut nastavený, tak není potřeba nastavovat data-code-box atribut.</td>
+                    <td>Nastavuje, že se jedná o code box, který se zobrazí jako projekt (bočním vysouvacím panelem). Pokud je tento atribut nastavený, tak není potřeba nastavovat data-code-box atribut.</td>
                 </tr>
                 <tr>
                     <td>data-project-name</td>
@@ -47,9 +269,11 @@
                 </tr>
             </tbody>
         </table>
-        <h3 class="heading-tertiary u-mb-2">Elementy s kódy</h3>
-        <p class="paragraph u-mb-2">pre element, který má code element</p>
-        <table class="table u-mb-4">
+        <h3 class="heading-tertiary u-mb-1">Elementy s kódy</h3>
+        <p class="paragraph u-mb-2">Uvnitř code boxu se může nacházet jedna nebo více ukázek kódu (elementů s kódy). Ukázku představuje pre element, který má jako podelement element code a nastavený atribut data-code.</p>
+        <%- include("./includes/element-with-code-component.ejs") %>
+        <p class="paragraph u-mb-2">Následující tabulka popisuje, co všechno můžeme pro ukázku kódu nastavit.</p>
+        <table class="table u-mb-2">
             <thead>
                 <tr>
                     <th>Atribut</th>
@@ -81,17 +305,29 @@
                 <tr>
                     <td>data-java-package</td>
                     <td>název Java balíčku (např. io.github.jirkasa) - pokud název není specifikován, použije se defaultní balíček</td>
-                    <td>Nastavuje, do jakého Java balíčku ukázka kódu patří (mělo by se používat pro Java soubory).</td>
+                    <td>Nastavuje, do jakého Java balíčku ukázka kódu patří (mělo by se používat pro Java soubory). Má smysl jen pokud má code box nastaven atribut data-project.</td>
                 </tr>
                 <tr>
                     <td>data-java-package-opened</td>
                     <td></td>
-                    <td>Nastavuje, že se má Java balíček, do kterého ukázka kódu patří, v bočním panelu code boxu otevřít.</td>
+                    <td>Nastavuje, že se má Java balíček, do kterého ukázka kódu patří, v bočním panelu code boxu otevřít. Má smysl jen pokud má code box nastaven atribut data-project.</td>
                 </tr>
             </tbody>
         </table>
-        <h3 class="heading-tertiary u-mb-2">Složky projektu</h3>
-        <p class="paragraph u-mb-2">konfigurační ul element v code boxu</p>
+        <p class="paragraph u-mb-1">Podle toho, co za kód zobrazujeme, musíme v code elementu specifikovat CSS třídu, aby se nám kód správně zvýrazňoval. V současné době je podporován jazyk HTML, XML, Java, JavaScript, CSS a SQL. Podporu pro více jazyků je ale možno přidat změněním souboru highlight.min.js ve složce static/js. Následující seznam popisuje CSS třídy, které můžeme code elementu nastavit:</p>
+        <ul class="list u-mb-4">
+            <li><b>language-html</b> - HTML</li>
+            <li><b>language-xml</b> - XML</li>
+            <li><b>language-java</b> - Java</li>
+            <li><b>language-javascript</b> - JavaScript</li>
+            <li><b>language-css</b> - CSS</li>
+            <li><b>language-sql</b> - SQL</li>
+            <li><b>no-highlight</b> - vypne zvýrazňování kódu</li>
+        </ul>
+        <h3 class="heading-tertiary u-mb-1">Složky projektu</h3>
+        <p class="paragraph u-mb-2">Pokud je code box zobrazen jako projekt, tak může obsahovat ul element, který definuje adresářovou strukturu projektu. Tento element musí obsahovat atribut data-project-folders. Následující ukázka ukazuje příklad takového elementu.</p>
+        <%- include("./includes/project-folders-component.ejs") %>
+        <p class="paragraph u-mb-2">Následující tabulka popisuje kromě atributu data-project-folders ještě dva další atributy, které se nastavují na li elementy představující složky.</p>
         <table class="table u-mb-4">
             <thead>
                 <tr>
@@ -122,10 +358,10 @@
                 </tr>
             </tbody>
         </table>
-        <h3 class="heading-tertiary u-mb-2">Container pro příkazy projektu</h3>
-        <p class="paragraph u-mb-4">container, který slouží k uchování příkazů pro projekt (data-project-commands)</p>
-        <h3 class="heading-tertiary u-mb-2">Příkazy</h3>
-        <p class="paragraph u-mb-2">elementy s příkazy</p>
+        <h3 class="heading-tertiary u-mb-1">Container s příkazy</h3>
+        <p class="paragraph u-mb-2">Pokud je code box zobrazen jako projekt, tak může obsahovat různé příkazy, které se mají vykonat. Můžeme například nastavit, aby se smazal nějaký soubor, otevřela se nějaká složka, a tak podobně. Příkazy se definují v ul elementu, který má nastavený data-project-commands atribut. Následující ukázka ukazuje, jak to může vypadat.</p>
+        <%- include("./includes/commands-container-components.ejs") %>
+        <p class="paragraph u-mb-2">Co všechno můžeme použít za příkazy popisuje následující tabulka.</p>
         <table class="table u-mb-4">
             <thead>
                 <tr>
@@ -204,8 +440,30 @@
                 </tr>
             </tbody>
         </table>
-        <!-- todo - není to neprůstřelný, rozhodně to obsahuje chyby, ale pokud to budou používat normálně, neměl by být problém -->
-        <!-- todo - není vyloučeno že z toho udělám potom knihovnu - ale to bych to musel trochu přepsat, trochu víc promyslet a taky na to napsat testy -->
+        <h3 class="heading-tertiary u-mb-1">Příklady tvorby ukázky</h3>
+        <p class="paragraph u-mb-2">V předchozích tabulkách jste si mohli prohlédnout, co se dá různým komponentám ukázky nastavovat za atributy. Teď si pár ukázek zkusíme vytvořit.</p>
+        <p class="paragraph u-mb-2">Začneme tím, že si zkusíme vytvořit úplně jednoduchou ukázku, která zobrazuje jen nějaký kód bez žádných tlačítek ani postranního panelu. Jak to můžeme udělat ukazuje následující ukázka. Elementu, který chceme použít jako ukázku nastavujeme atribut data-code-box a také mu nastavujeme atribut data-no-buttons, aby se nezobrazili žádná tlačítka.</p>
+        <%- include("./includes/ultra-simple-code-box.ejs") %>
+        <p class="paragraph u-mb-2">Následující ukázka je výsledkem kódu v předchozí ukázce.</p>
+        <%- include("./includes/ultra-simple-code-box-result.ejs") %>
+        <p class="paragraph u-mb-2">Teď si zkusíme vytvořit ukázku, ve které bude více ukázek kódu a uživatel se mezi nimi bude moci přepínat pomocí tlačítek. Následující ukázka ukazuje, jak takovou ukázku můžeme vytvořit.</p>
+        <%- include("./includes/simple-code-box.ejs") %>
+        <p class="paragraph u-mb-2">Následující ukázka je výsledkem kódu v předchozí ukázce.</p>
+        <%- include("./includes/simple-code-box-result.ejs") %>
+        <p class="paragraph u-mb-2">Nyní si zkusíme vytvořit ukázku ve formě projektu. Následující ukázka pro ni ukazuje kód.</p>
+        <%- include("./includes/project-code-box.ejs") %>
+        <p class="paragraph u-mb-2">Následující ukázka je výsledkem kódu v předchozí ukázce.</p>
+        <%- include("./includes/project-code-box-result.ejs") %>
+        <p class="paragraph u-mb-2">Na závěr si vyzkoušíme vytvořit ukázku ve formě projektu, rozšířením jiné ukázky ve formě projektu. To uděláme pomocí atributu data-project-extends, kde specifikujeme ID ukázky, kterou chceme rozšířit. Rozšíříme si předchozí ukázku a přidáme do ní nový CSS soubor. Následující ukázka ukazuje, jak na to.</p>
+        <%- include("./includes/extended-project-code-box.ejs") %>
+        <p class="paragraph u-mb-2">Následující ukázka je výsledkem kódu v předchozí ukázce.</p>
+        <%- include("./includes/extended-project-code-box-result.ejs") %>
+        <p class="paragraph u-mb-4">Pro pochopení jak ukázky kódu fungují to pravděpodobně stačilo. Klidně se ještě můžete podívat na kód ukázek přímo ve <a href="https://github.com/Jirkasa/servlety-a-jsp-navod/" target="_blank" class="link">zdrojovém kódu projektu</a>.</p>
+        <h2 class="heading-secondary u-mb-2">Jak fungují slidery</h2>
+        <p class="paragraph u-mb-2">Slidery jsou vytvářeny za použití knihovny <a href="https://splidejs.com/" target="_blank" class="link">Splide</a>. Následující ukázka ukazuje příklad tvorby slideru. Používá se lazy loading. Pro první dva obrázky se nastavuje atribut src, ale pro další už atribut data-splide-lazy.</p>
+        <%- include("./includes/slider-example-code-box.ejs") %>
+        <p class="paragraph u-mb-2">Kód z předchozí ukázky vytváří následující slider.</p>
+        <%- include("./includes/slider-example.ejs") %>
     <%- include("../includes/tutorial-page-layout-end.ejs") %>
     <%- include("../includes/footer.ejs") %>
 <%- include("../includes/page-end.ejs") %>

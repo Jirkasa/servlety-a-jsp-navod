@@ -5,12 +5,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 
-function createHtmlWebpackPluginsForTutorialPages() {
+function createHtmlWebpackPluginsForTutorialPages(folderName) {
     const htmlPlugins = [];
-    fs.readdirSync("./pages/tutorial").forEach(pageName => {
+    fs.readdirSync(`./pages/${folderName}`).forEach(pageName => {
         const htmlPlugin = new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, "pages", "tutorial", pageName, "index.ejs"),
-            filename: `tutorial/${pageName}/index.html`,
+            template: path.resolve(__dirname, "pages", folderName, pageName, "index.ejs"),
+            filename: `${folderName}/${pageName}/index.html`,
             chunks: ["style", "common", "tutorial"],
             inject: true
         });
@@ -20,7 +20,8 @@ function createHtmlWebpackPluginsForTutorialPages() {
     return htmlPlugins;
 }
 
-const tutorialPages = createHtmlWebpackPluginsForTutorialPages();
+const tutorialPages = createHtmlWebpackPluginsForTutorialPages("tutorial");
+const otherTutorialPages = createHtmlWebpackPluginsForTutorialPages("dalsi-tutorialy");
 
 module.exports = {
     entry: {
@@ -95,7 +96,14 @@ module.exports = {
             chunks: ["style", "common", "tutorial"],
             inject: true
         }),
+        new HtmlWebpackPlugin({
+            template: path.resolve(__dirname, "pages", "obsah", "index.ejs"),
+            filename: "obsah/index.html",
+            chunks: ["style", "common"],
+            inject: true
+        }),
         ...tutorialPages,
+        ...otherTutorialPages,
         new CopyPlugin({
             patterns: [
                 {
