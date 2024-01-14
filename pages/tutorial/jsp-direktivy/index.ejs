@@ -1,5 +1,5 @@
-<%- include("../../includes/page-start.ejs", {pathToRootFolder: "../../"}) %>
-    <%- include("../../includes/header.ejs") %>
+<%- include("../../includes/page-start.ejs", {pathToRootFolder: "../../", title: "JSP direktivy", metaDescription: "V této části tutoriálu se podíváme na JSP direktivy.", useHighlightJS: true}) %>
+    <%- include("../../includes/header.ejs", {pathToRootFolder: "../../", activeLink: "tutorial"}) %>
     <%- include("../../includes/tutorial-page-layout-start.ejs", {pathToTutorialFolder: "./", activeLink: "jsp-direktivy"}) %>
         <h1 class="heading-primary u-mb-4">JSP direktivy</h1>
         <p class="paragraph u-mb-2">V této části se podíváme na direktivy. Jedná se o elementy, které web containeru (Tomcatu) říkají, jak má JSP stránku převést na servlet. Syntaxe pro direktivu je následující (pokud máme více atributů, tak je můžeme oddělit mezerou):</p>

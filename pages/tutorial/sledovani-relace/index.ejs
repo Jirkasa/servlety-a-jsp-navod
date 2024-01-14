@@ -1,5 +1,5 @@
-<%- include("../../includes/page-start.ejs", {pathToRootFolder: "../../"}) %>
-    <%- include("../../includes/header.ejs") %>
+<%- include("../../includes/page-start.ejs", {pathToRootFolder: "../../", title: "Sledování relace", metaDescription: "V této části tutoriálu si ukážeme různé způsoby, jak můžeme sledovat stav uživatelské relace ve webové aplikace.", useHighlightJS: true}) %>
+    <%- include("../../includes/header.ejs", {pathToRootFolder: "../../", activeLink: "tutorial"}) %>
     <%- include("../../includes/tutorial-page-layout-start.ejs", {pathToTutorialFolder: "./", activeLink: "sledovani-relace"}) %>
         <h1 class="heading-primary u-mb-4">Sledování relace</h1>
         <p class="paragraph u-mb-4">V této části si ukážeme různé způsoby, jak můžeme sledovat stav uživatelské relace ve webové aplikaci. HTTP je stateless protokol. To znamená, že každý request od klienta je nezávislý a server nemá automaticky informace o předchozím stavu. Možná to moc nechápete, ale neumím to lépe popsat. Prostě chceme ukládat nějaká data o uživateli, když naši webovou aplikaci používá. Chceme třeba ukládat, co má uživatel v nákupním košíku a tak podobně. HTTP protokol funguje tak, že se jen pošle request a ze serveru se vrátí response. Nikde se žádná data neukládají. Proto musíme použít různé způsoby, jak uživatele sledovat, když naši webovou aplikaci používá a prochází více webových stránek.</p>

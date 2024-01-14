@@ -1,0 +1,11 @@
+<div data-code-box data-no-buttons class="u-mb-2">
+    <pre data-code><code class="language-html">&lt;%- include("../../includes/page-start.ejs", {pathToRootFolder: "../../", title: "Titulek (můžete použít nadpis)", metaAuthor: "Vaše jméno (pro meta author tag)", metaDescription: "Popis stránky (pro meta description tag)", useHighlightJS: true}) %&gt;
+    &lt;%- include("../../includes/header.ejs", {pathToRootFolder: "../../", activeLink: "dalsi-tutorialy"}) %&gt;
+    &lt;%- include("../../includes/other-tutorial-page-layout-start.ejs", {pathToOtherTutorialsFolder: "./", activeLink: "aktivni-link-v-navigaci"}) %&gt;
+        &lt;h1 class="heading-primary u-mb-2"&gt;Nadpis&lt;/h1&gt;
+        &lt;p class="article-author u-mb-4"&gt;&lt;span class="article-author__label"&gt;Autor:&lt;/span&gt; &lt;a rel="author" href="odkaz na váš web, linkedIn nebo něco jiného" target="_blank" class="link"&gt;Vaše jméno&lt;/a&gt;&lt;/p&gt;
+        
+    &lt;%- include("../../includes/other-tutorial-page-layout-end.ejs") %&gt;
+    &lt;%- include("../../includes/footer.ejs") %&gt;
+&lt;%- include("../../includes/page-end.ejs") %&gt;</code></pre>
+</div>

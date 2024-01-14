@@ -3,17 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=2.2, minimum-scale=1.0">
-    <title>Servlety a JSP - Návod</title>
-    <!-- todo - přidat argumenty, které se předají...
-        - metaAuthor
-        - metaDescription
-        - title
-        - asi i relativní cestu k domovské stránce
-    -->
+    <% if (locals.metaAuthor) { %>
+        <meta name="author" content="<%= locals.metaAuthor %>">
+    <% } else { %>
+        <meta name="author" content="Jiří Satora">
+    <% } %>
+    <% if (locals.metaDescription) { %>
+        <meta name="description" content="<%= locals.metaDescription %>">
+    <% } else { %>
+        <meta name="description" content="Tutoriály o servletech a JSP.">
+    <% } %>
 
-    <!-- podle podmínky -->
-    <script src="<%= pathToRootFolder %>static/js/highlight.min.js"></script>
-    <script>hljs.highlightAll();</script>
+    <title><% if (locals.title) { %><%= locals.title %> | <% } %>Servlety a JSP - Návod</title>
+
+    <% if (locals.useHighlightJS) { %>
+        <script src="<%= pathToRootFolder %>static/js/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script>
+    <% } %>
 </head>
 <body>
     <input type="hidden" id="PATH_TO_ROOT" value="<%= pathToRootFolder %>">
