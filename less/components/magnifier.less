@@ -11,9 +11,13 @@
     top: -10rem;
     left: -10rem;
 
-    transition: opacity .2s;
+    transition: opacity .2s, width .2s, height .2s, top .2s, left .2s;
 
     &--hidden {
         opacity: 0;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 0;
     }
 }
