@@ -20,7 +20,6 @@ class Magnifier {
         this.magnifiedImage.classList.add(Magnifier.CSS_CLASS);
         this.magnifiedImage.classList.add(Magnifier.CSS_HIDDEN_CLASS);
         this.magnifiedImage.style.background = `url(${this.originalImage.src}) no-repeat #fff`;
-        this.magnifiedImage.style.backgroundSize = `${this.originalImage.offsetWidth * zoom}px ${this.originalImage.offsetHeight * zoom}px`
         this.originalImageContainer.appendChild(this.magnifiedImage);
 
         this.originalImage.addEventListener("mousemove", e => this.onMouseMove(e));
@@ -47,7 +46,7 @@ class Magnifier {
 
     private onMouseEnter() {
         this.magnifiedImage.classList.remove(Magnifier.CSS_HIDDEN_CLASS);
-        this.magnifiedImage.style.background = `url(${this.originalImage.src}) no-repeat #fff`;
+        this.magnifiedImage.style.backgroundSize = `${this.originalImage.offsetWidth * this.zoom}px ${this.originalImage.offsetHeight * this.zoom}px`
         this.originalImageContainerRect = this.originalImageContainer.getBoundingClientRect();
     }
 
