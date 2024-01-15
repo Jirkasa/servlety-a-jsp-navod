@@ -51,6 +51,7 @@ module.exports = {
             },
             {
                 test: /\.svg$/,
+                exclude: /css-images/,
                 use: [
                     {
                         loader: 'svg-sprite-loader',
