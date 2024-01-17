@@ -1,0 +1,120 @@
+.home-intro-section {
+    height: ~"calc(100vh - @{header-height})";
+
+    background-color: @colors[grey-20];
+    background-image: linear-gradient(0deg, rgba(@colors[black], 0.60) 0%, rgba(@colors[black], 0.60) 100%), url("../../css-images/IntroBackgroundImage.jpg");
+    background-size: cover;
+    background-position: center;
+
+    padding: @grid-padding;
+
+    position: relative;
+
+    &::before, &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 100%;
+
+        background-image: url("../../css-images/IntroSectionPattern.svg");
+        background-repeat: no-repeat;
+        background-size: auto 100%;
+        background-position: right;
+    }
+    &::before {
+        transform: rotate(180deg);
+    }
+
+    &__content {
+        display: flex;
+        max-width: @grid-width;
+        margin: 0 auto;
+        height: 100%;
+
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 3.2rem;
+
+        position: relative;
+        z-index: 10;
+    }
+
+    &__horizontal-rule {
+        width: 16rem;
+        height: .4rem;
+        margin: 0 auto;
+        
+        border-radius: .2rem;
+        border: none;
+        background-color: @colors[analogic-2-light];
+    }
+
+    &__intro-text-container {
+        #display-12-grid();
+    }
+
+    &__intro-text {
+        font-size: 2rem;
+        line-height: 2.8rem;
+
+        color: @colors[white];
+        text-align: center;
+
+        grid-column: 4 / span 6;
+    }
+
+    &__buttons-container {
+        display: flex;
+        gap: 1.6rem;
+    }
+}
+
+.home-section {
+    padding: @grid-padding;
+
+    &--grey-background {
+        background-color: @colors[grey-20];
+    }
+
+    &__container {
+        max-width: @grid-width;
+        margin: 0 auto;
+    }
+
+    &__intro-text {
+        #display-12-grid();
+        text-align: center;
+
+        > * {
+            grid-column: 3 / span 8;
+        }
+    }
+}
+
+.home-about-layout {
+    #display-12-grid();
+
+    &__content {
+        grid-column: span 7;
+    }
+
+    &__image {
+        grid-column: span 5;
+
+        img {
+            width: 100%;
+        }
+    }
+}
+
+.home-other-tutorials-layout {
+    #display-12-grid;
+
+    > * {
+        grid-column: span 6;
+    }
+}

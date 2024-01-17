@@ -1,0 +1,26 @@
+.button-secondary {
+    &, &:link, &:visited {
+        font-family: inherit;
+        font-size: 1.6rem;
+        font-weight: 500;
+        line-height: 2rem;
+
+        display: inline-block;
+        text-transform: uppercase;
+        text-decoration: none;
+        color: @colors[grey-80];
+        background-color: transparent;
+        border: .2rem solid @colors[grey-80];
+        border-radius: .4rem;
+
+        padding: 1.2rem 1.6rem;
+
+        cursor: pointer;
+
+        transition: all .2s;
+    }
+
+    &:hover {
+        background-color: @colors[analogic-2];
+    }
+}
