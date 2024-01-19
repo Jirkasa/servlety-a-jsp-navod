@@ -6,27 +6,29 @@
         <h2 id="request-dispatcher" class="heading-secondary u-mb-2">Request Dispatcher</h2>
         <p class="paragraph u-mb-2">Komunikace mezi servlety je možná díky <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/RequestDispatcher.html" target="_blank" class="link">RequestDispatcher</a> rozraní. Používá se k delegování requestů ze servletu do jiných zdrojů (např. servlet, HTML soubor, JSP soubor...). Servlet může pro request provést nějakou akci a poslat jej dál na jiný servlet pro další zpracování.</p>
         <p class="paragraph u-mb-2">RequestDispatcher můžeme získat z HttpServletRequest objektu pomocí metody <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/ServletRequest.html#getRequestDispatcher-java.lang.String-" target="_blank" class="link">getRequestDispatcher</a> a použít jej. Rozhraní RequestDispatcher definuje dvě metody, které můžeme pro komunikaci mezi servlety použít. Následující tabulka je popisuje.</p>
-        <table class="table u-mb-2">
-            <thead>
-                <tr>
-                    <th>Metoda</th>
-                    <th>Návratový typ</th>
-                    <th>Popis</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>forward(ServletRequest request, ServletResponse response)</td>
-                    <td>void</td>
-                    <td>Předá request ze servletu do jiného zdroje (např. servletu, JSP stránky...).</td>
-                </tr>
-                <tr>
-                    <td>include(ServletRequest request, ServletResponse response)</td>
-                    <td>void</td>
-                    <td>Přidá obsah jiného zdroje (např. servletu, JSP stránky...) do response.</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-wrapper u-mb-2">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Metoda</th>
+                        <th>Návratový typ</th>
+                        <th>Popis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>forward(ServletRequest request, ServletResponse response)</td>
+                        <td>void</td>
+                        <td>Předá request ze servletu do jiného zdroje (např. servletu, JSP stránky...).</td>
+                    </tr>
+                    <tr>
+                        <td>include(ServletRequest request, ServletResponse response)</td>
+                        <td>void</td>
+                        <td>Přidá obsah jiného zdroje (např. servletu, JSP stránky...) do response.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <p class="paragraph u-mb-4">Rozdíl mezi metodou forward a include je ten, že když používáme metodu forward, tak v serveletu pro request nejdříve provedeme nějakou akci a poté request předáme pro zpracování do jiného servletu. Metodu include můžeme použít k tomu, že můžeme request předat ke zpracování do jiného servletu, který nám může třeba něco nastavit do response, a poté pokračovat ve zpracování requestu.</p>
         <h2 id="servlet-context" class="heading-secondary u-mb-2">Servlet Context</h2>
         <p class="paragraph u-mb-2">Kromě toho, že můžeme RequestDispatcher objekt získat z HttpServletRequest objektu, tak jej můžeme získat i ze <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/ServletContext.html" target="_blank" class="link">ServletContextu</a>. Servlet context je v podstatě adresář, ve kterém jsou na serveru servlety umístěny. Servlety, které máme v jednom projektu vlastně patří do stejného servlet contextu. Můžeme mít na serveru více aplikací a tedy i více servlet contextů.</p>

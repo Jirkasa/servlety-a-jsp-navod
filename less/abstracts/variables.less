@@ -24,10 +24,19 @@
 @grid-gutter: 3.2rem;
 @grid-column-width: 6.4rem;
 @grid-padding: 3.2rem;
+@grid-padding-small: 2.4rem;
+@grid-padding-small-breakpoint: #pxToEm(600)[];
+@grid-no-gutter-breakpoint: #pxToEm(600)[];
 
 // OTHER
 @header-height: 4.8rem;
 @slider-arrow-button-size: 4rem;
+@slider-arrow-button-size-small: 3.2rem;
+@slider-arrow-button-size-breakpoint: #pxToEm(600)[];
 @code-box-project-button-size: 3.2rem;
 @code-box-project-panel-border-width: .2rem;
 @code-box-code-padding: .8rem;
+@navigation-breakpoint: #pxToEm(900)[]; // this has to also be changed in TypeScript (ts/common/main.ts)
+@header-navigation-height: 4.8rem; // (height of navigation up to @navigation-breakpoint)
+@navigation-small-breakpoint: #pxToEm(380)[];
+@header-navigation-height-small: 8rem;

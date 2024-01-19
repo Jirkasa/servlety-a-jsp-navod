@@ -3,6 +3,11 @@
 
     background-color: @colors[grey-80];
 
+    @media (max-width: @grid-padding-small-breakpoint) {
+        padding-left: @grid-padding-small;
+        padding-right: @grid-padding-small;
+    }
+
     &__content {
         max-width: @grid-width;
         margin: 0 auto;

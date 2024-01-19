@@ -5,11 +5,15 @@
     right: 100%;
     transform: translateX(@code-box-project-button-size + @code-box-project-panel-border-width);
     height: 100%;
-    max-width: 50%;
+    max-width: 75%;
 
     display: flex;
 
     transition: all .2s;
+
+    @media (max-width: #pxToEm(500)[]) {
+        max-width: 100%;
+    }
 
     &--opened {
         transform: translateX(100%);
@@ -23,6 +27,31 @@
         white-space: nowrap;
 
         overflow: auto;
+
+        // width
+        &::-webkit-scrollbar {
+            width: 1.2rem;
+            height: 1.2rem;
+        }
+
+        // track
+        &::-webkit-scrollbar-track {
+            background: @colors[grey-30];
+        }
+
+        // corner
+        &::-webkit-scrollbar-corner {
+            background-color: darken(@colors[grey-30], 5%);
+        }
+
+        // handle
+        &::-webkit-scrollbar-thumb {
+            background: @colors[grey-40];
+
+            &:hover {
+                background: darken(@colors[grey-40], 5%);
+            }
+        }
     }
     &__toggle-button {
         flex-shrink: 0;
@@ -128,7 +157,6 @@
         }
 
         &--file {
-            // margin-left: 1.4rem;
             margin-right: .6rem;
             svg {
                 fill: @colors[analogic-2-dark];

@@ -13,8 +13,15 @@
     overflow-y: auto;
     max-height: ~"calc(100vh - @{header-height})";
 
-     // width
-     &::-webkit-scrollbar {
+    @media (max-width: @navigation-breakpoint) {
+        max-height: ~"calc(100vh - @{header-height} - @{header-navigation-height})";
+    }
+    @media (max-width: @navigation-small-breakpoint) {
+        max-height: ~"calc(100vh - @{header-height} - @{header-navigation-height-small})";
+    }
+
+    // width
+    &::-webkit-scrollbar {
         width: 1.2rem;
     }
 

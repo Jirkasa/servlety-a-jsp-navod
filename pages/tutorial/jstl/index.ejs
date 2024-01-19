@@ -5,48 +5,50 @@
         <p class="paragraph u-mb-4">V této části se podíváme na JSTL (JSP Standard Tag Library). Jedná se o knihovnu (nebo spíš knihovny) custom tagů, která poskytuje tagy, které jsou v JSP aplikacích často potřeba.</p>
         <h2 id="typy-jstl-tagu" class="heading-secondary u-mb-2">Typy JSTL tagů</h2>
         <p class="paragraph u-mb-2">JSTL tagy se dělí do pěti kategorií (knihoven). Následující tabulka je popisuje.</p>
-        <table class="table u-mb-4">
-            <thead>
-                <tr>
-                    <th>Kategorie</th>
-                    <th>URI</th>
-                    <th>Často používaný prefix</th>
-                    <th>Popis</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Core tagy</td>
-                    <td style="word-break: break-all;">http://java.sun.com/jsp/jstl/core</td>
-                    <td>c</td>
-                    <td>Tagy v této kategorii poskytují podporu pro proměnné, podmínky, cykly a tak podobně.</td>
-                </tr>
-                <tr>
-                    <td>Funkční tagy</td>
-                    <td style="word-break: break-all;">http://java.sun.com/jsp/jstl/functions</td>
-                    <td>fn</td>
-                    <td>Tagy v této kategorii poskytují podporu pro práci s řetězci (většinou).</td>
-                </tr>
-                <tr>
-                    <td>Formátovací tagy</td>
-                    <td style="word-break: break-all;">http://java.sun.com/jsp/jstl/fmt</td>
-                    <td>fmt</td>
-                    <td>Tagy v této kategorii poskytují podporu pro formátování.</td>
-                </tr>
-                <tr>
-                    <td>XML tagy</td>
-                    <td style="word-break: break-all;">http://java.sun.com/jsp/jstl/xml</td>
-                    <td>x</td>
-                    <td>Tagy v této kategorii poskytují podporu pro práci s XML.</td>
-                </tr>
-                <tr>
-                    <td>SQL tagy</td>
-                    <td style="word-break: break-all;">http://java.sun.com/jsp/jstl/sql</td>
-                    <td>sql</td>
-                    <td>Tagy v této kategorii poskytují podporu pro práci s relačními databázemi.</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-wrapper u-mb-4">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Kategorie</th>
+                        <th>URI</th>
+                        <th>Často používaný prefix</th>
+                        <th>Popis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Core tagy</td>
+                        <td style="word-break: break-all;">http://java.sun.com/jsp/jstl/core</td>
+                        <td>c</td>
+                        <td>Tagy v této kategorii poskytují podporu pro proměnné, podmínky, cykly a tak podobně.</td>
+                    </tr>
+                    <tr>
+                        <td>Funkční tagy</td>
+                        <td style="word-break: break-all;">http://java.sun.com/jsp/jstl/functions</td>
+                        <td>fn</td>
+                        <td>Tagy v této kategorii poskytují podporu pro práci s řetězci (většinou).</td>
+                    </tr>
+                    <tr>
+                        <td>Formátovací tagy</td>
+                        <td style="word-break: break-all;">http://java.sun.com/jsp/jstl/fmt</td>
+                        <td>fmt</td>
+                        <td>Tagy v této kategorii poskytují podporu pro formátování.</td>
+                    </tr>
+                    <tr>
+                        <td>XML tagy</td>
+                        <td style="word-break: break-all;">http://java.sun.com/jsp/jstl/xml</td>
+                        <td>x</td>
+                        <td>Tagy v této kategorii poskytují podporu pro práci s XML.</td>
+                    </tr>
+                    <tr>
+                        <td>SQL tagy</td>
+                        <td style="word-break: break-all;">http://java.sun.com/jsp/jstl/sql</td>
+                        <td>sql</td>
+                        <td>Tagy v této kategorii poskytují podporu pro práci s relačními databázemi.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <h2 id="pouziti-jstl" class="heading-secondary u-mb-2">Použití JSTL</h2>
         <p class="paragraph u-mb-2">Předtím než začneme se zkoumáním různých tagů, které nám JSTL nabízí, tak si zkusíme vytvořit projekt, ve kterém JSTL použijeme. Založíme si tedy nový projekt a začneme s tím, že si v souboru pom.xml kromě závislosti pro servlety přidáme i <a href="https://mvnrepository.com/artifact/javax.servlet/jstl/1.2" target="_blank" class="link">závislost pro JSTL</a>.</p>
         <%- include("./includes/add-jstl-to-project-code-box-1.ejs") %>
@@ -59,72 +61,74 @@
         <p class="paragraph u-mb-4">JSTL knihovnu jsme si zkusili přidat do projektu a použít. Ve zbytku této části si můžeme jednotlivé tagy, které nám JSTL nabízí, projít.</p>
         <h2 id="core-tagy" class="heading-secondary u-mb-2">Core tagy</h2>
         <p class="paragraph u-mb-2">Do core kategorie patří tagy, které poskytují podporu pro proměnné, podmínky, cykly, a tak podobně. Jednoduše se jedná o takové základní tagy. Následující tabulka popisuje, které tagy do této kategorie patří.</p>
-        <table class="table u-mb-4">
-            <thead>
-                <tr>
-                    <th>Tag</th>
-                    <th>Popis</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>c:out</td>
-                    <td>Vypisuje výsledek pro expression, podobně jako expression tag (&lt;%= ... %&gt;).</td>
-                </tr>
-                <tr>
-                    <td>c:import</td>
-                    <td>Poskytuje podobnou funkcionalitu jako jsp:include action tag. Umožňuje ale přidat obsah jakéhokoliv zdroje (klidně i mimo server).</td>
-                </tr>
-                <tr>
-                    <td>c:set</td>
-                    <td>Umožňuje nastavit výsledek expression jako proměnnou.</td>
-                </tr>
-                <tr>
-                    <td>c:remove</td>
-                    <td>Umožňuje odstranit proměnnou.</td>
-                </tr>
-                <tr>
-                    <td>c:catch</td>
-                    <td>Umožňuje zachytit vyjímky.</td>
-                </tr>
-                <tr>
-                    <td>c:if</td>
-                    <td>Umožňuje vytvořit podmínku.</td>
-                </tr>
-                <tr>
-                    <td>c:choose</td>
-                    <td>Umožňuje vytvořit sérii podmínek.</td>
-                </tr>
-                <tr>
-                    <td>c:when</td>
-                    <td>Používá se s tagem c:choose.</td>
-                </tr>
-                <tr>
-                    <td>c:otherwise</td>
-                    <td>Používá se s tagem c:choose.</td>
-                </tr>
-                <tr>
-                    <td>c:forEach</td>
-                    <td>Umožňuje provádět nějaký kód několikrát nebo pro každou položku v kolekci.</td>
-                </tr>
-                <tr>
-                    <td>c:forTokens</td>
-                    <td>Umožňuje rozdělit řetězec na části a provádět pro každou část nějaký kód.</td>
-                </tr>
-                <tr>
-                    <td>c:redirect</td>
-                    <td>Umožňuje provést přesměrování na jinou URL.</td>
-                </tr>
-                <tr>
-                    <td>c:url</td>
-                    <td>Umožňuje vytvořit URL.</td>
-                </tr>
-                <tr>
-                    <td>c:param</td>
-                    <td>Používá se s tagem c:url.</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-wrapper u-mb-4">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Tag</th>
+                        <th>Popis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>c:out</td>
+                        <td>Vypisuje výsledek pro expression, podobně jako expression tag (&lt;%= ... %&gt;).</td>
+                    </tr>
+                    <tr>
+                        <td>c:import</td>
+                        <td>Poskytuje podobnou funkcionalitu jako jsp:include action tag. Umožňuje ale přidat obsah jakéhokoliv zdroje (klidně i mimo server).</td>
+                    </tr>
+                    <tr>
+                        <td>c:set</td>
+                        <td>Umožňuje nastavit výsledek expression jako proměnnou.</td>
+                    </tr>
+                    <tr>
+                        <td>c:remove</td>
+                        <td>Umožňuje odstranit proměnnou.</td>
+                    </tr>
+                    <tr>
+                        <td>c:catch</td>
+                        <td>Umožňuje zachytit vyjímky.</td>
+                    </tr>
+                    <tr>
+                        <td>c:if</td>
+                        <td>Umožňuje vytvořit podmínku.</td>
+                    </tr>
+                    <tr>
+                        <td>c:choose</td>
+                        <td>Umožňuje vytvořit sérii podmínek.</td>
+                    </tr>
+                    <tr>
+                        <td>c:when</td>
+                        <td>Používá se s tagem c:choose.</td>
+                    </tr>
+                    <tr>
+                        <td>c:otherwise</td>
+                        <td>Používá se s tagem c:choose.</td>
+                    </tr>
+                    <tr>
+                        <td>c:forEach</td>
+                        <td>Umožňuje provádět nějaký kód několikrát nebo pro každou položku v kolekci.</td>
+                    </tr>
+                    <tr>
+                        <td>c:forTokens</td>
+                        <td>Umožňuje rozdělit řetězec na části a provádět pro každou část nějaký kód.</td>
+                    </tr>
+                    <tr>
+                        <td>c:redirect</td>
+                        <td>Umožňuje provést přesměrování na jinou URL.</td>
+                    </tr>
+                    <tr>
+                        <td>c:url</td>
+                        <td>Umožňuje vytvořit URL.</td>
+                    </tr>
+                    <tr>
+                        <td>c:param</td>
+                        <td>Používá se s tagem c:url.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <h3 id="c-out" class="heading-tertiary u-mb-1">c:out</h3>
         <p class="paragraph u-mb-2">Tag c:out se používá k vypsání obsahu na stránku. Je podobný jako expression tag. Rozdíl je, že c:out automaticky escapne HTML tagy, takže jeho použitím zamezíme XSS (Cross Site Scripting) útokům. Potenciální tagy, které se na stránku vypíší, se zobrazí jen jako text, ne jako tagy.</p>
         <%- include("./includes/c-out-tag-code-box.ejs") %>
@@ -163,80 +167,82 @@
         <%- include("./includes/c-param-tag-code-box.ejs") %>
         <h2 id="funkcni-tagy" class="heading-secondary u-mb-2">Funkční tagy</h2>
         <p class="paragraph u-mb-2">V kategorii funkčních tagů se nacházejí funkce, které nám umožňují různě pracovat s řetězci (většinou). Následující tabulka je ukazuje.</p>
-        <table class="table u-mb-4">
-            <thead>
-                <tr>
-                    <th>Funkce</th>
-                    <th>Popis</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>fn:contains</td>
-                    <td>Zjišťuje, zda řetězec obsahuje předaný podřetězec.</td>
-                </tr>
-                <tr>
-                    <td>fn:containsIgnoreCase</td>
-                    <td>Zjišťuje, zda řetězec obsahuje předaný podřetězec bez rozlišení malých a velkých písmen.</td>
-                </tr>
-                <tr>
-                    <td>fn:startsWith</td>
-                    <td>Zjišťuje, zda řetězec začíná na předaný podřetězec.</td>
-                </tr>
-                <tr>
-                    <td>fn:endsWith</td>
-                    <td>Zjišťuje, zda řetězec končí na předaný podřetězec.</td>
-                </tr>
-                <tr>
-                    <td>fn:escapeXml</td>
-                    <td>Escapuje znaky, které by jinak byly interpretovány jako XML/HTML tagy.</td>
-                </tr>
-                <tr>
-                    <td>fn:indexOf</td>
-                    <td>Vrací index prvního výskytu podřetězce v řetězci.</td>
-                </tr>
-                <tr>
-                    <td>fn:trim</td>
-                    <td>Odstraňuje bílé znaky ze začátku a konce řetězce.</td>
-                </tr>
-                <tr>
-                    <td>fn:split</td>
-                    <td>Rozděluje řetězec do pole podřetězců.</td>
-                </tr>
-                <tr>
-                    <td>fn:join</td>
-                    <td>Spojuje pole řetězců do jednoho řetězce.</td>
-                </tr>
-                <tr>
-                    <td>fn:toLowerCase</td>
-                    <td>Převádí řetězec na malá písmena.</td>
-                </tr>
-                <tr>
-                    <td>fn:toUpperCase</td>
-                    <td>Převádí řetězec na velká písmena.</td>
-                </tr>
-                <tr>
-                    <td>fn:substring</td>
-                    <td>Vytváří podřetězec z řetězce.</td>
-                </tr>
-                <tr>
-                    <td>fn:substringAfter</td>
-                    <td>Vrací část řetězce nacházející se za předaným podřetězcem.</td>
-                </tr>
-                <tr>
-                    <td>fn:substringBefore</td>
-                    <td>Vrací část řetězce nacházející se před předaným podřetězcem.</td>
-                </tr>
-                <tr>
-                    <td>fn:length</td>
-                    <td>Zjišťuje délku řetězce nebo počet položek v kolekci.</td>
-                </tr>
-                <tr>
-                    <td>fn:replace</td>
-                    <td>Nahrazuje veškerý výskyt předaného podřetězce v řetězci za jiný řetězec.</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-wrapper u-mb-4">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Funkce</th>
+                        <th>Popis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>fn:contains</td>
+                        <td>Zjišťuje, zda řetězec obsahuje předaný podřetězec.</td>
+                    </tr>
+                    <tr>
+                        <td>fn:containsIgnoreCase</td>
+                        <td>Zjišťuje, zda řetězec obsahuje předaný podřetězec bez rozlišení malých a velkých písmen.</td>
+                    </tr>
+                    <tr>
+                        <td>fn:startsWith</td>
+                        <td>Zjišťuje, zda řetězec začíná na předaný podřetězec.</td>
+                    </tr>
+                    <tr>
+                        <td>fn:endsWith</td>
+                        <td>Zjišťuje, zda řetězec končí na předaný podřetězec.</td>
+                    </tr>
+                    <tr>
+                        <td>fn:escapeXml</td>
+                        <td>Escapuje znaky, které by jinak byly interpretovány jako XML/HTML tagy.</td>
+                    </tr>
+                    <tr>
+                        <td>fn:indexOf</td>
+                        <td>Vrací index prvního výskytu podřetězce v řetězci.</td>
+                    </tr>
+                    <tr>
+                        <td>fn:trim</td>
+                        <td>Odstraňuje bílé znaky ze začátku a konce řetězce.</td>
+                    </tr>
+                    <tr>
+                        <td>fn:split</td>
+                        <td>Rozděluje řetězec do pole podřetězců.</td>
+                    </tr>
+                    <tr>
+                        <td>fn:join</td>
+                        <td>Spojuje pole řetězců do jednoho řetězce.</td>
+                    </tr>
+                    <tr>
+                        <td>fn:toLowerCase</td>
+                        <td>Převádí řetězec na malá písmena.</td>
+                    </tr>
+                    <tr>
+                        <td>fn:toUpperCase</td>
+                        <td>Převádí řetězec na velká písmena.</td>
+                    </tr>
+                    <tr>
+                        <td>fn:substring</td>
+                        <td>Vytváří podřetězec z řetězce.</td>
+                    </tr>
+                    <tr>
+                        <td>fn:substringAfter</td>
+                        <td>Vrací část řetězce nacházející se za předaným podřetězcem.</td>
+                    </tr>
+                    <tr>
+                        <td>fn:substringBefore</td>
+                        <td>Vrací část řetězce nacházející se před předaným podřetězcem.</td>
+                    </tr>
+                    <tr>
+                        <td>fn:length</td>
+                        <td>Zjišťuje délku řetězce nebo počet položek v kolekci.</td>
+                    </tr>
+                    <tr>
+                        <td>fn:replace</td>
+                        <td>Nahrazuje veškerý výskyt předaného podřetězce v řetězci za jiný řetězec.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <h3 id="fn-contains" class="heading-tertiary u-mb-1">fn:contains</h3>
         <p class="paragraph u-mb-2">Funkce fn:contains se používá ke zjištění, zda řetězec obsahuje předaný podřetězec.</p>
         <%- include("./includes/fn-contains-function-code-box.ejs") %>
@@ -287,338 +293,348 @@
         <%- include("./includes/fn-replace-function-code-box.ejs") %>
         <h2 id="formatovaci-tagy" class="heading-secondary u-mb-2">Formátovací tagy</h2>
         <p class="paragraph u-mb-2">Do kategorie formátovacích tagů patří tagy, které nám umožňují provádět formátování a internacionalizaci. Následující tabulka popisuje, které tagy do této kategorie patří.</p>
-        <table class="table u-mb-4">
-            <thead>
-                <tr>
-                    <th>Tag</th>
-                    <th>Popis</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>fmt:formatNumber</td>
-                    <td>Formátuje číslo se specifickou přesností nebo formátem.</td>
-                </tr>
-                <tr>
-                    <td>fmt:parseNumber</td>
-                    <td>Parsuje řetězcovou reprezentaci čísla, měny nebo procenta.</td>
-                </tr>
-                <tr>
-                    <td>fmt:formatDate</td>
-                    <td>Formátuje datum a/nebo čas.</td>
-                </tr>
-                <tr>
-                    <td>fmt:parseDate</td>
-                    <td>Parsuje řetězcovou reprezentaci datumu a/nebo času.</td>
-                </tr>
-                <tr>
-                    <td>fmt:bundle</td>
-                    <td>Používá se pro internacionalizaci k načtení souboru hodnot.</td>
-                </tr>
-                <tr>
-                    <td>fmt:setLocale</td>
-                    <td>Nastavuje locale.</td>
-                </tr>
-                <tr>
-                    <td>fmt:setBundle</td>
-                    <td>Používá se pro internacionalizaci k načtení souboru hodnot.</td>
-                </tr>
-                <tr>
-                    <td>fmt:timeZone</td>
-                    <td>Nastavuje časovou zónu, která má vliv na formátování uvnitř těla tagu.</td>
-                </tr>
-                <tr>
-                    <td>fmt:setTimeZone</td>
-                    <td>Nastavuje časovou zónu, která má vliv na formátování.</td>
-                </tr>
-                <tr>
-                    <td>fmt:message</td>
-                    <td>Používá se k vypisování hodnot ve více jazycích.</td>
-                </tr>
-                <tr>
-                    <td>fmt:requestEncoding</td>
-                    <td>Nastavuje kódování requestu.</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-wrapper u-mb-4">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Tag</th>
+                        <th>Popis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>fmt:formatNumber</td>
+                        <td>Formátuje číslo se specifickou přesností nebo formátem.</td>
+                    </tr>
+                    <tr>
+                        <td>fmt:parseNumber</td>
+                        <td>Parsuje řetězcovou reprezentaci čísla, měny nebo procenta.</td>
+                    </tr>
+                    <tr>
+                        <td>fmt:formatDate</td>
+                        <td>Formátuje datum a/nebo čas.</td>
+                    </tr>
+                    <tr>
+                        <td>fmt:parseDate</td>
+                        <td>Parsuje řetězcovou reprezentaci datumu a/nebo času.</td>
+                    </tr>
+                    <tr>
+                        <td>fmt:bundle</td>
+                        <td>Používá se pro internacionalizaci k načtení souboru hodnot.</td>
+                    </tr>
+                    <tr>
+                        <td>fmt:setLocale</td>
+                        <td>Nastavuje locale.</td>
+                    </tr>
+                    <tr>
+                        <td>fmt:setBundle</td>
+                        <td>Používá se pro internacionalizaci k načtení souboru hodnot.</td>
+                    </tr>
+                    <tr>
+                        <td>fmt:timeZone</td>
+                        <td>Nastavuje časovou zónu, která má vliv na formátování uvnitř těla tagu.</td>
+                    </tr>
+                    <tr>
+                        <td>fmt:setTimeZone</td>
+                        <td>Nastavuje časovou zónu, která má vliv na formátování.</td>
+                    </tr>
+                    <tr>
+                        <td>fmt:message</td>
+                        <td>Používá se k vypisování hodnot ve více jazycích.</td>
+                    </tr>
+                    <tr>
+                        <td>fmt:requestEncoding</td>
+                        <td>Nastavuje kódování requestu.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <h3 id="fmt-formatnumber" class="heading-tertiary u-mb-1">fmt:formatNumber</h3>
         <p class="paragraph u-mb-2">Tag fmt:formatNumber slouží k formátování čísel. Následující tabulka ukazuje atributy, které můžeme pro tento atribut nastavit.</p>
-        <table class="table u-mb-2">
-            <thead>
-                <tr>
-                    <th>Atribut</th>
-                    <th>Povinné</th>
-                    <th>Defaultní hodnota</th>
-                    <th>Popis</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>value</td>
-                    <td>ano</td>
-                    <td>žádná</td>
-                    <td>Numerická hodnota ke zformátování.</td>
-                </tr>
-                <tr>
-                    <td>type</td>
-                    <td>ne</td>
-                    <td>NUMBER</td>
-                    <td>NUMBER, CURRENCY nebo PERCENT</td>
-                </tr>
-                <tr>
-                    <td>pattern</td>
-                    <td>ne</td>
-                    <td>žádná</td>
-                    <td>Vlastní formátovací vzor.</td>
-                </tr>
-                <tr>
-                    <td>currencyCode</td>
-                    <td>ne</td>
-                    <td>z defaultního locale</td>
-                    <td><a href="https://www.iban.com/currency-codes" target="_blank" class="link">Kód měny</a></td>
-                </tr>
-                <tr>
-                    <td>currencySymbol</td>
-                    <td>ne</td>
-                    <td>z defaultního locale</td>
-                    <td>Symbol měny</td>
-                </tr>
-                <tr>
-                    <td>groupingUsed</td>
-                    <td>ne</td>
-                    <td>true</td>
-                    <td>Určuje, zda se mají čísla seskupovat (true/false).</td>
-                </tr>
-                <tr>
-                    <td>maxIntegerDigits</td>
-                    <td>ne</td>
-                    <td>žádná</td>
-                    <td>Určuje maximální počet číslic, které mohou být zobrazeny v celočíselné části. Pokud jich má číslo více, tak se oříznou.</td>
-                </tr>
-                <tr>
-                    <td>minIntegerDigits</td>
-                    <td>ne</td>
-                    <td>žádná</td>
-                    <td>Určuje minimální počet číslic, které musejí být zobrazeny v celočíselné části. Pokud jich má číslo méně, tak se tam umístí nuly.</td>
-                </tr>
-                <tr>
-                    <td>maxFractionDigits</td>
-                    <td>ne</td>
-                    <td>žádná</td>
-                    <td>Určuje maximální počet číslic, které mohou být zobrazeny v desetinné části. Pokud jich má číslo více, tak se oříznou.</td>
-                </tr>
-                <tr>
-                    <td>minFractionDigits</td>
-                    <td>ne</td>
-                    <td>žádná</td>
-                    <td>Určuje minimální počet číslic, které musejí být zobrazeny v desetinné části. Pokud jich má číslo méně, tak se tam umístí nuly.</td>
-                </tr>
-                <tr>
-                    <td>var</td>
-                    <td>ne</td>
-                    <td>bez specifikování var atributu se výsledek vypíše na stránku</td>
-                    <td>Jméno proměnné, do které se má uložit zformátované číslo.</td>
-                </tr>
-                <tr>
-                    <td>scope</td>
-                    <td>ne</td>
-                    <td>page</td>
-                    <td>Rozsah proměnné, do které se ukládá zformátované číslo.</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-wrapper u-mb-2">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Atribut</th>
+                        <th>Povinné</th>
+                        <th>Defaultní hodnota</th>
+                        <th>Popis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>value</td>
+                        <td>ano</td>
+                        <td>žádná</td>
+                        <td>Numerická hodnota ke zformátování.</td>
+                    </tr>
+                    <tr>
+                        <td>type</td>
+                        <td>ne</td>
+                        <td>NUMBER</td>
+                        <td>NUMBER, CURRENCY nebo PERCENT</td>
+                    </tr>
+                    <tr>
+                        <td>pattern</td>
+                        <td>ne</td>
+                        <td>žádná</td>
+                        <td>Vlastní formátovací vzor.</td>
+                    </tr>
+                    <tr>
+                        <td>currencyCode</td>
+                        <td>ne</td>
+                        <td>z defaultního locale</td>
+                        <td><a href="https://www.iban.com/currency-codes" target="_blank" class="link">Kód měny</a></td>
+                    </tr>
+                    <tr>
+                        <td>currencySymbol</td>
+                        <td>ne</td>
+                        <td>z defaultního locale</td>
+                        <td>Symbol měny</td>
+                    </tr>
+                    <tr>
+                        <td>groupingUsed</td>
+                        <td>ne</td>
+                        <td>true</td>
+                        <td>Určuje, zda se mají čísla seskupovat (true/false).</td>
+                    </tr>
+                    <tr>
+                        <td>maxIntegerDigits</td>
+                        <td>ne</td>
+                        <td>žádná</td>
+                        <td>Určuje maximální počet číslic, které mohou být zobrazeny v celočíselné části. Pokud jich má číslo více, tak se oříznou.</td>
+                    </tr>
+                    <tr>
+                        <td>minIntegerDigits</td>
+                        <td>ne</td>
+                        <td>žádná</td>
+                        <td>Určuje minimální počet číslic, které musejí být zobrazeny v celočíselné části. Pokud jich má číslo méně, tak se tam umístí nuly.</td>
+                    </tr>
+                    <tr>
+                        <td>maxFractionDigits</td>
+                        <td>ne</td>
+                        <td>žádná</td>
+                        <td>Určuje maximální počet číslic, které mohou být zobrazeny v desetinné části. Pokud jich má číslo více, tak se oříznou.</td>
+                    </tr>
+                    <tr>
+                        <td>minFractionDigits</td>
+                        <td>ne</td>
+                        <td>žádná</td>
+                        <td>Určuje minimální počet číslic, které musejí být zobrazeny v desetinné části. Pokud jich má číslo méně, tak se tam umístí nuly.</td>
+                    </tr>
+                    <tr>
+                        <td>var</td>
+                        <td>ne</td>
+                        <td>bez specifikování var atributu se výsledek vypíše na stránku</td>
+                        <td>Jméno proměnné, do které se má uložit zformátované číslo.</td>
+                    </tr>
+                    <tr>
+                        <td>scope</td>
+                        <td>ne</td>
+                        <td>page</td>
+                        <td>Rozsah proměnné, do které se ukládá zformátované číslo.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <p class="paragraph u-mb-2">Následující ukázka ukazuje pár příkladů formátování čísel.</p>
         <%- include("./includes/fmt-formatnumber-tag-code-box.ejs") %>
         <h3 id="fmt-parsenumber" class="heading-tertiary u-mb-1">fmt:parseNumber</h3>
         <p class="paragraph u-mb-2">Tag fmt:parseNumber slouží k parsování řetězcové reprezentace čísel, měn nebo procent. Následující tabulka ukazuje atributy, které můžeme pro tento atribut nastavit.</p>
-        <table class="table u-mb-2">
-            <thead>
-                <tr>
-                    <th>Atribut</th>
-                    <th>Povinné</th>
-                    <th>Defaultní hodnota</th>
-                    <th>Popis</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>value</td>
-                    <td>ano</td>
-                    <td>žádná</td>
-                    <td>Hodnota k parsnutí.</td>
-                </tr>
-                <tr>
-                    <td>type</td>
-                    <td>ne</td>
-                    <td>NUMBER</td>
-                    <td>NUMBER, CURRENCY nebo PERCENT</td>
-                </tr>
-                <tr>
-                    <td>parseLocale</td>
-                    <td>ne</td>
-                    <td>defaultní locale</td>
-                    <td>Locale, který se má při parsování použít.</td>
-                </tr>
-                <tr>
-                    <td>integerOnly</td>
-                    <td>ne</td>
-                    <td>false</td>
-                    <td>Určuje, zda se má číslo parsnout jen jako celé číslo nebo se má ponechat desetinná část.</td>
-                </tr>
-                <tr>
-                    <td>pattern</td>
-                    <td>ne</td>
-                    <td>žádná</td>
-                    <td>Vlastní vzor pro parsování.</td>
-                </tr>
-                <tr>
-                    <td>var</td>
-                    <td>ne</td>
-                    <td>bez specifikování var atributu se výsledek vypíše na stránku</td>
-                    <td>Jméno proměnné, do které se má uložit parsnuté číslo.</td>
-                </tr>
-                <tr>
-                    <td>scope</td>
-                    <td>ne</td>
-                    <td>page</td>
-                    <td>Rozsah proměnné, do které se ukládá parsnuté číslo.</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-wrapper u-mb-2">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Atribut</th>
+                        <th>Povinné</th>
+                        <th>Defaultní hodnota</th>
+                        <th>Popis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>value</td>
+                        <td>ano</td>
+                        <td>žádná</td>
+                        <td>Hodnota k parsnutí.</td>
+                    </tr>
+                    <tr>
+                        <td>type</td>
+                        <td>ne</td>
+                        <td>NUMBER</td>
+                        <td>NUMBER, CURRENCY nebo PERCENT</td>
+                    </tr>
+                    <tr>
+                        <td>parseLocale</td>
+                        <td>ne</td>
+                        <td>defaultní locale</td>
+                        <td>Locale, který se má při parsování použít.</td>
+                    </tr>
+                    <tr>
+                        <td>integerOnly</td>
+                        <td>ne</td>
+                        <td>false</td>
+                        <td>Určuje, zda se má číslo parsnout jen jako celé číslo nebo se má ponechat desetinná část.</td>
+                    </tr>
+                    <tr>
+                        <td>pattern</td>
+                        <td>ne</td>
+                        <td>žádná</td>
+                        <td>Vlastní vzor pro parsování.</td>
+                    </tr>
+                    <tr>
+                        <td>var</td>
+                        <td>ne</td>
+                        <td>bez specifikování var atributu se výsledek vypíše na stránku</td>
+                        <td>Jméno proměnné, do které se má uložit parsnuté číslo.</td>
+                    </tr>
+                    <tr>
+                        <td>scope</td>
+                        <td>ne</td>
+                        <td>page</td>
+                        <td>Rozsah proměnné, do které se ukládá parsnuté číslo.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <p class="paragraph u-mb-2">Následující ukázka ukazuje dva příklady parsování čísla.</p>
         <%- include("./includes/fmt-parsenumber-tag-code-box.ejs") %>
         <h3 id="fmt-formatdate" class="heading-tertiary u-mb-1">fmt:formatDate</h3>
         <p class="paragraph u-mb-2">Tag fmt:formatDate slouží k formátování datumu a/nebo času. Následující tabulka ukazuje atributy, které můžeme pro tento atribut nastavit.</p>
-        <table class="table u-mb-2">
-            <thead>
-                <tr>
-                    <th>Atribut</th>
-                    <th>Povinné</th>
-                    <th>Defaultní hodnota</th>
-                    <th>Popis</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>value</td>
-                    <td>ano</td>
-                    <td>žádná</td>
-                    <td>Datum ke zformátování.</td>
-                </tr>
-                <tr>
-                    <td>type</td>
-                    <td>ne</td>
-                    <td>DATE</td>
-                    <td>DATE, TIME nebo BOTH</td>
-                </tr>
-                <tr>
-                    <td>dataStyle</td>
-                    <td>ne</td>
-                    <td>DEFAULT</td>
-                    <td>FULL, LONG, MEDIUM, SHORT nebo DEFAULT</td>
-                </tr>
-                <tr>
-                    <td>timeStyle</td>
-                    <td>ne</td>
-                    <td>DEFAULT</td>
-                    <td>FULL, LONG, MEDIUM, SHORT nebo DEFAULT</td>
-                </tr>
-                <tr>
-                    <td>pattern</td>
-                    <td>ne</td>
-                    <td>žádná</td>
-                    <td>Vlastní formátovací vzor.</td>
-                </tr>
-                <tr>
-                    <td>timeZone</td>
-                    <td>ne</td>
-                    <td>defaultní časová zóna</td>
-                    <td>Časová zóna formátovaného datumu.</td>
-                </tr>
-                <tr>
-                    <td>var</td>
-                    <td>ne</td>
-                    <td>bez specifikování var atributu se výsledek vypíše na stránku</td>
-                    <td>Jméno proměnné, do které se má uložit zformátovaný datum.</td>
-                </tr>
-                <tr>
-                    <td>scope</td>
-                    <td>ne</td>
-                    <td>page</td>
-                    <td>Rozsah proměnné, do které se ukládá zformátovaný datum.</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-wrapper u-mb-2">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Atribut</th>
+                        <th>Povinné</th>
+                        <th>Defaultní hodnota</th>
+                        <th>Popis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>value</td>
+                        <td>ano</td>
+                        <td>žádná</td>
+                        <td>Datum ke zformátování.</td>
+                    </tr>
+                    <tr>
+                        <td>type</td>
+                        <td>ne</td>
+                        <td>DATE</td>
+                        <td>DATE, TIME nebo BOTH</td>
+                    </tr>
+                    <tr>
+                        <td>dataStyle</td>
+                        <td>ne</td>
+                        <td>DEFAULT</td>
+                        <td>FULL, LONG, MEDIUM, SHORT nebo DEFAULT</td>
+                    </tr>
+                    <tr>
+                        <td>timeStyle</td>
+                        <td>ne</td>
+                        <td>DEFAULT</td>
+                        <td>FULL, LONG, MEDIUM, SHORT nebo DEFAULT</td>
+                    </tr>
+                    <tr>
+                        <td>pattern</td>
+                        <td>ne</td>
+                        <td>žádná</td>
+                        <td>Vlastní formátovací vzor.</td>
+                    </tr>
+                    <tr>
+                        <td>timeZone</td>
+                        <td>ne</td>
+                        <td>defaultní časová zóna</td>
+                        <td>Časová zóna formátovaného datumu.</td>
+                    </tr>
+                    <tr>
+                        <td>var</td>
+                        <td>ne</td>
+                        <td>bez specifikování var atributu se výsledek vypíše na stránku</td>
+                        <td>Jméno proměnné, do které se má uložit zformátovaný datum.</td>
+                    </tr>
+                    <tr>
+                        <td>scope</td>
+                        <td>ne</td>
+                        <td>page</td>
+                        <td>Rozsah proměnné, do které se ukládá zformátovaný datum.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <p class="paragraph u-mb-2">Následující ukázka ukazuje pár příkladů formátování datumu.</p>
         <%- include("./includes/fmt-formatdate-tag-code-box.ejs") %>
         <h3 id="fmt-parsedate" class="heading-tertiary u-mb-1">fmt:parseDate</h3>
         <p class="paragraph u-mb-2">Tag fmt:parseDate slouží k parsování řetězcové reprezentace datumů na java.util.Date objekt. Následující tabulka ukazuje atributy, které můžeme pro tento atribut nastavit.</p>
-        <table class="table u-mb-2">
-            <thead>
-                <tr>
-                    <th>Atribut</th>
-                    <th>Povinné</th>
-                    <th>Defaultní hodnota</th>
-                    <th>Popis</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>value</td>
-                    <td>ano</td>
-                    <td>žádná</td>
-                    <td>Datum k parsnutí.</td>
-                </tr>
-                <tr>
-                    <td>type</td>
-                    <td>ne</td>
-                    <td>DATE</td>
-                    <td>DATE, TIME nebo BOTH</td>
-                </tr>
-                <tr>
-                    <td>dataStyle</td>
-                    <td>ne</td>
-                    <td>DEFAULT</td>
-                    <td>FULL, LONG, MEDIUM, SHORT nebo DEFAULT</td>
-                </tr>
-                <tr>
-                    <td>timeStyle</td>
-                    <td>ne</td>
-                    <td>DEFAULT</td>
-                    <td>FULL, LONG, MEDIUM, SHORT nebo DEFAULT</td>
-                </tr>
-                <tr>
-                    <td>parseLocale</td>
-                    <td>ne</td>
-                    <td>defaultní locale</td>
-                    <td>Locale, který se má při parsování použít.</td>
-                </tr>
-                <tr>
-                    <td>pattern</td>
-                    <td>ne</td>
-                    <td>žádná</td>
-                    <td>Vlastní vzor pro parsování.</td>
-                </tr>
-                <tr>
-                    <td>timeZone</td>
-                    <td>ne</td>
-                    <td>defaultní časová zóna</td>
-                    <td>Časová zóna parsovaného datumu.</td>
-                </tr>
-                <tr>
-                    <td>var</td>
-                    <td>ne</td>
-                    <td>bez specifikování var atributu se výsledek vypíše na stránku</td>
-                    <td>Jméno proměnné, do které se má uložit zformátovaný datum.</td>
-                </tr>
-                <tr>
-                    <td>scope</td>
-                    <td>ne</td>
-                    <td>page</td>
-                    <td>Rozsah proměnné, do které se ukládá zformátovaný datum.</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-wrapper u-mb-2">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Atribut</th>
+                        <th>Povinné</th>
+                        <th>Defaultní hodnota</th>
+                        <th>Popis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>value</td>
+                        <td>ano</td>
+                        <td>žádná</td>
+                        <td>Datum k parsnutí.</td>
+                    </tr>
+                    <tr>
+                        <td>type</td>
+                        <td>ne</td>
+                        <td>DATE</td>
+                        <td>DATE, TIME nebo BOTH</td>
+                    </tr>
+                    <tr>
+                        <td>dataStyle</td>
+                        <td>ne</td>
+                        <td>DEFAULT</td>
+                        <td>FULL, LONG, MEDIUM, SHORT nebo DEFAULT</td>
+                    </tr>
+                    <tr>
+                        <td>timeStyle</td>
+                        <td>ne</td>
+                        <td>DEFAULT</td>
+                        <td>FULL, LONG, MEDIUM, SHORT nebo DEFAULT</td>
+                    </tr>
+                    <tr>
+                        <td>parseLocale</td>
+                        <td>ne</td>
+                        <td>defaultní locale</td>
+                        <td>Locale, který se má při parsování použít.</td>
+                    </tr>
+                    <tr>
+                        <td>pattern</td>
+                        <td>ne</td>
+                        <td>žádná</td>
+                        <td>Vlastní vzor pro parsování.</td>
+                    </tr>
+                    <tr>
+                        <td>timeZone</td>
+                        <td>ne</td>
+                        <td>defaultní časová zóna</td>
+                        <td>Časová zóna parsovaného datumu.</td>
+                    </tr>
+                    <tr>
+                        <td>var</td>
+                        <td>ne</td>
+                        <td>bez specifikování var atributu se výsledek vypíše na stránku</td>
+                        <td>Jméno proměnné, do které se má uložit zformátovaný datum.</td>
+                    </tr>
+                    <tr>
+                        <td>scope</td>
+                        <td>ne</td>
+                        <td>page</td>
+                        <td>Rozsah proměnné, do které se ukládá zformátovaný datum.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <p class="paragraph u-mb-2">Následující ukázka ukazuje příklad parsnutí datumu.</p>
         <%- include("./includes/fmt-parsedate-tag-code-box.ejs") %>
         <h3 id="i18n-tagy" class="heading-tertiary u-mb-1">I18N tagy</h3>
@@ -628,36 +644,38 @@
         <p class="paragraph u-mb-2">Jelikož chceme vytvářet aplikaci pro více jazyků, tak nebudeme text natvrdo psát do JSP stránky ale budeme jej načítat z .properties souborů, které uložíme do složky "src/main/resources". Tyto soubory slouží k ukládání textu ve specifickém jazyce a musejí mít název ve specifickém formátu. Ukazuje jej následující ukázka. Na začátku je nějaký název, který je následován localem (kombinací <a href="https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes" target="_blank" class="link">kódu jazyka</a> a <a href="https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes" target="_blank" class="link">kódu země</a>).</p>
         <%- include("./includes/properties-file-format-code-box.ejs") %>
         <p class="paragraph u-mb-2">Následující tabulka ukazuje pár příkladů názvu .properties souboru. Pokud locale nespecifikujeme (specifikujeme jen název), tak se jedná o soubor s defaultním jazykem, který se použije, pokud se pro jazyk nenajde vlastní soubor.</p>
-        <table class="table u-mb-2">
-            <thead>
-                <tr>
-                    <th>Název souboru</th>
-                    <th>Jazyk</th>
-                    <th>Země</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>labels.properties</td>
-                    <td colspan="2">defaultní jazyk</td>
-                </tr>
-                <tr>
-                    <td>labels_en_GB.properties</td>
-                    <td>Angličtina</td>
-                    <td>Spojené Království</td>
-                </tr>
-                <tr>
-                    <td>labels_de_DE.properties</td>
-                    <td>Němčina</td>
-                    <td>Německo</td>
-                </tr>
-                <tr>
-                    <td>labels_cs_CZ.properties</td>
-                    <td>Čeština</td>
-                    <td>Česko</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-wrapper u-mb-2">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Název souboru</th>
+                        <th>Jazyk</th>
+                        <th>Země</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>labels.properties</td>
+                        <td colspan="2">defaultní jazyk</td>
+                    </tr>
+                    <tr>
+                        <td>labels_en_GB.properties</td>
+                        <td>Angličtina</td>
+                        <td>Spojené Království</td>
+                    </tr>
+                    <tr>
+                        <td>labels_de_DE.properties</td>
+                        <td>Němčina</td>
+                        <td>Německo</td>
+                    </tr>
+                    <tr>
+                        <td>labels_cs_CZ.properties</td>
+                        <td>Čeština</td>
+                        <td>Česko</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <p class="paragraph u-mb-2">Pro začátek si v našem projektu vytvoříme soubor "labels.properties", který bude obsahovat text v defaultním jazyce. V našem případě to bude angličtina. Soubor uložíme do složky "src/main/resources", ve kterém vytvoříme nějaký balíček (hierarchii složek, která se pro Java balíčky tvoří i ve složce "src/main/java"). Složka resources vlastně slouží pro ukládání všech věcí, které nejsou Java třídy. Properties soubory obsahují data ve formě klíčů a hodnot. Každý řádek souboru je ve formátu "klíč=hodnota". Následující ukázka ukazuje obsah pro náš vytvořený soubor "labels.properties".</p>
         <%- include("./includes/i18n-example-code-box-2.ejs") %>
         <p class="paragraph u-mb-2">Teď můžeme text z našeho properties souboru použít v JSP stránce. Vytvoříme si tedy novou JSP stránku, kterou můžeme pojmenovat třeba jako "stranka.jsp". Na této stránce si nadefinujeme JSTL knihovnu s formátovacími tagy a na začátku stránky použijeme tag fmt:setBundle, pomocí kterého použijeme properties soubor, který jsme si vytvořili. Atributem basename specifikujeme jen balíček a název bez localu a koncovky souboru.</p>

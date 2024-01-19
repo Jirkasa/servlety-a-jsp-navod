@@ -1,14 +1,21 @@
 .home-intro-section {
     height: ~"calc(100vh - @{header-height})";
+    max-height: 90rem;
+    min-height: 47rem;
 
     background-color: @colors[grey-20];
     background-image: linear-gradient(0deg, rgba(@colors[black], 0.60) 0%, rgba(@colors[black], 0.60) 100%), url("../../css-images/IntroBackgroundImage.jpg");
     background-size: cover;
     background-position: center;
 
-    padding: @grid-padding;
+    padding: 3.2rem @grid-padding;
 
     position: relative;
+
+    @media (max-width: @grid-padding-small-breakpoint) {
+        padding-left: @grid-padding-small;
+        padding-right: @grid-padding-small;
+    }
 
     &::before, &::after {
         content: "";
@@ -23,6 +30,10 @@
         background-repeat: no-repeat;
         background-size: auto 100%;
         background-position: right;
+
+        @media (max-width: #pxToEm(1350)[]) {
+            display: none;
+        }
     }
     &::before {
         transform: rotate(180deg);
@@ -38,6 +49,8 @@
         justify-content: center;
         align-items: center;
         gap: 3.2rem;
+
+        text-align: center;
 
         position: relative;
         z-index: 10;
@@ -55,6 +68,10 @@
 
     &__intro-text-container {
         #display-12-grid();
+
+        @media (max-width: @grid-no-gutter-breakpoint) {
+            column-gap: 0;
+        }
     }
 
     &__intro-text {
@@ -65,6 +82,16 @@
         text-align: center;
 
         grid-column: 4 / span 6;
+
+        @media (max-width: #pxToEm(1150)[]) {
+            grid-column: 3 / span 8;
+        }
+        @media (max-width: #pxToEm(750)[]) {
+            grid-column: 2 / span 10;
+        }
+        @media (max-width: #pxToEm(750)[]) {
+            grid-column: span 12;
+        }
     }
 
     &__buttons-container {
@@ -74,7 +101,12 @@
 }
 
 .home-section {
-    padding: @grid-padding;
+    padding: 3.2rem @grid-padding;
+
+    @media (max-width: @grid-padding-small-breakpoint) {
+        padding-left: @grid-padding-small;
+        padding-right: @grid-padding-small;
+    }
 
     &--grey-background {
         background-color: @colors[grey-20];
@@ -89,8 +121,19 @@
         #display-12-grid();
         text-align: center;
 
+        @media (max-width: @grid-no-gutter-breakpoint) {
+            column-gap: 0;
+        }
+
         > * {
             grid-column: 3 / span 8;
+
+            @media (max-width: #pxToEm(1130)[]) {
+                grid-column: 2 / span 10;
+            }
+            @media (max-width: #pxToEm(750)[]) {
+                grid-column: span 12;
+            }
         }
     }
 }
@@ -98,12 +141,24 @@
 .home-about-layout {
     #display-12-grid();
 
+    @media (max-width: @grid-no-gutter-breakpoint) {
+        column-gap: 0;
+    }
+
     &__content {
         grid-column: span 7;
+
+        @media (max-width: #pxToEm(800)[]) {
+            grid-column: span 12;
+        }
     }
 
     &__image {
         grid-column: span 5;
+
+        @media (max-width: #pxToEm(800)[]) {
+            display: none;
+        }
 
         img {
             width: 100%;
@@ -112,9 +167,17 @@
 }
 
 .home-other-tutorials-layout {
-    #display-12-grid;
+    #display-12-grid();
+
+    @media (max-width: @grid-no-gutter-breakpoint) {
+        column-gap: 0;
+    }
 
     > * {
         grid-column: span 6;
+
+        @media (max-width: #pxToEm(1100)[]) {
+            grid-column: span 12;
+        }
     }
 }

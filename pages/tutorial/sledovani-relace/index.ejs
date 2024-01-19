@@ -82,77 +82,79 @@
         <h2 id="sessions" class="heading-secondary u-mb-2">Sessions</h2>
         <p class="paragraph u-mb-2">Cookies se ukládají u klienta. Je tedy možné, že si může jejich hodnoty změnit, aniž by k tomu dostal příkaz ze serveru. Alternativa je ukládat data uživatele na serveru, kde je již jen tak modifikovat nemůže. Klient akorát k datům, které mu patří, dostane unikátní identifikátor ve formě hodnoty v cookie. Tuto cookie klient posílá při každém requestu a server podle něj najde data, která s ním jsou spjata.</p>
         <p class="paragraph u-mb-2">Pro ukládání dat uživatele na serveru (v session) se používá objekt typu <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpSession.html" target="_blank" class="link">HttpSession</a>. Můžeme jej získat na HttpServletRequest objektu zavoláním metody <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServletRequest.html#getSession--" target="_blank" class="link">getSession</a>. Tato metoda vrací session, která je spjata s klientem, který poslal request. Pokud session ještě není vytvořena (metoda getSession se volá poprvé), tak se nejprve vytvoří a až poté vrátí. Následující tabulka popisuje metody, které u HttpSession objektu můžeme použít.</p>
-        <table class="table u-mb-4">
-            <thead>
-                <tr>
-                    <th>Metoda</th>
-                    <th>Návratový typ</th>
-                    <th>Popis</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>getAttribute(String name)</td>
-                    <td>Object</td>
-                    <td>Vrací objekt uložený v session podle předaného jména.</td>
-                </tr>
-                <tr>
-                    <td>getAttributeNames()</td>
-                    <td>Enumeration&lt;String&gt;</td>
-                    <td>Vrací enumeraci všech jmen, pod kterými jsou v session uloženy objekty.</td>
-                </tr>
-                <tr>
-                    <td>getCreationTime()</td>
-                    <td>long</td>
-                    <td>Vrací čas, kdy byla session vytvořena, v milisekundách od půlnoci 1. ledna 1970 GMT.</td>
-                </tr>
-                <tr>
-                    <td>getId()</td>
-                    <td>String</td>
-                    <td>Vrací unikátní identifikátor, vytvořený pro tuto session.</td>
-                </tr>
-                <tr>
-                    <td>getLastAccessedTime()</td>
-                    <td>long</td>
-                    <td>Vrací čas, kdy naposled klient poslal na server request spjatý s touto session, v milisekundách od půlnoci 1. ledna 1970 GMT.</td>
-                </tr>
-                <tr>
-                    <td>getMaxInactiveInterval()</td>
-                    <td>int</td>
-                    <td>Vrací maximální časový interval v sekundách, po který session existuje, pokud klient do té doby neposlal na server žádný request.</td>
-                </tr>
-                <tr>
-                    <td>getServletContext()</td>
-                    <td>ServletContext</td>
-                    <td>Vrací <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/ServletContext.html" target="_blank" class="link">ServletContext</a>, do kterého session patří.</td>
-                </tr>
-                <tr>
-                    <td>invalidate()</td>
-                    <td>void</td>
-                    <td>Zruší session.</td>
-                </tr>
-                <tr>
-                    <td>isNew()</td>
-                    <td>boolean</td>
-                    <td>Vrací true, pokud je session nově vytvořená a klient o ní ještě neví.</td>
-                </tr>
-                <tr>
-                    <td>removeAttribute(String name)</td>
-                    <td>void</td>
-                    <td>Odstraní objekt, uložený v session, podle předaného jména.</td>
-                </tr>
-                <tr>
-                    <td>setAttribute(String name, Object value)</td>
-                    <td>void</td>
-                    <td>Ukládá objekt do session pod předaným jménem.</td>
-                </tr>
-                <tr>
-                    <td>setMaxInactiveInterval(int interval)</td>
-                    <td>void</td>
-                    <td>Nastavuje maximální časový interval v sekundách, po který session existuje, pokud klient do té doby neposlal na server žádný request.</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-wrapper u-mb-4">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Metoda</th>
+                        <th>Návratový typ</th>
+                        <th>Popis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>getAttribute(String name)</td>
+                        <td>Object</td>
+                        <td>Vrací objekt uložený v session podle předaného jména.</td>
+                    </tr>
+                    <tr>
+                        <td>getAttributeNames()</td>
+                        <td>Enumeration&lt;String&gt;</td>
+                        <td>Vrací enumeraci všech jmen, pod kterými jsou v session uloženy objekty.</td>
+                    </tr>
+                    <tr>
+                        <td>getCreationTime()</td>
+                        <td>long</td>
+                        <td>Vrací čas, kdy byla session vytvořena, v milisekundách od půlnoci 1. ledna 1970 GMT.</td>
+                    </tr>
+                    <tr>
+                        <td>getId()</td>
+                        <td>String</td>
+                        <td>Vrací unikátní identifikátor, vytvořený pro tuto session.</td>
+                    </tr>
+                    <tr>
+                        <td>getLastAccessedTime()</td>
+                        <td>long</td>
+                        <td>Vrací čas, kdy naposled klient poslal na server request spjatý s touto session, v milisekundách od půlnoci 1. ledna 1970 GMT.</td>
+                    </tr>
+                    <tr>
+                        <td>getMaxInactiveInterval()</td>
+                        <td>int</td>
+                        <td>Vrací maximální časový interval v sekundách, po který session existuje, pokud klient do té doby neposlal na server žádný request.</td>
+                    </tr>
+                    <tr>
+                        <td>getServletContext()</td>
+                        <td>ServletContext</td>
+                        <td>Vrací <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/ServletContext.html" target="_blank" class="link">ServletContext</a>, do kterého session patří.</td>
+                    </tr>
+                    <tr>
+                        <td>invalidate()</td>
+                        <td>void</td>
+                        <td>Zruší session.</td>
+                    </tr>
+                    <tr>
+                        <td>isNew()</td>
+                        <td>boolean</td>
+                        <td>Vrací true, pokud je session nově vytvořená a klient o ní ještě neví.</td>
+                    </tr>
+                    <tr>
+                        <td>removeAttribute(String name)</td>
+                        <td>void</td>
+                        <td>Odstraní objekt, uložený v session, podle předaného jména.</td>
+                    </tr>
+                    <tr>
+                        <td>setAttribute(String name, Object value)</td>
+                        <td>void</td>
+                        <td>Ukládá objekt do session pod předaným jménem.</td>
+                    </tr>
+                    <tr>
+                        <td>setMaxInactiveInterval(int interval)</td>
+                        <td>void</td>
+                        <td>Nastavuje maximální časový interval v sekundách, po který session existuje, pokud klient do té doby neposlal na server žádný request.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <h3 id="ukazka-pouziti-session" class="heading-tertiary u-mb-2">Ukázka použití session</h3>
         <p class="paragraph u-mb-2">Pro ukázku práce se session si vytvoříme aplikaci, ve které bude mít uživatel tabulku, do které si bude moci přidávat nové řádky. Vytvoříme si nový Maven projekt, který můžeme pojmenovat třeba jako tabulka. Pro stránku s tabulkou si poté vytvoříme servlet TabulkaServlet. Ukazuje jej následující ukázka. Tento servlet jen získá položky ze session a zobrazí je na stránce v tabulce. Položky se ukládají v LinkedListu. Do session můžeme uložit v podstatě cokoliv, jelikož všechny třídy v Javě implicitně dědí od třídy Object. Při získávání objektu ze session za použití getAttribute metody jej ale musíme castnout, jelikož vrací instanci třídy Object.</p>
         <%- include("./includes/sessions-code-box-1.ejs") %>

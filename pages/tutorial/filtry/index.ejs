@@ -11,32 +11,34 @@
         <img src="../../static/img/illustrations/SpusteniViceFilteru.svg" alt="Diagram, ukazující kdy se spouští řetězec filtrů" class="image u-mb-6">
         <h2 id="rozhrani-filter" class="heading-secondary u-mb-2">Rozhraní Filter</h2>
         <p class="paragraph u-mb-2">Filtr můžeme vytvořit implementací <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/Filter.html" target="_blank" class="link">Filter</a> rozhraní. Toto rozhraní definuje tři metody, které popisuje následující tabulka.</p>
-        <table class="table u-mb-2">
-            <thead>
-                <tr>
-                    <th>Metoda</th>
-                    <th>Návratový typ</th>
-                    <th>Popis</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>init(FilterConfig filterConfig)</td>
-                    <td>void</td>
-                    <td>Volána servlet containerem (Tomcatem) při vytvoření filtru. Slouží k inicializaci (můžeme třeba načíst nějakou konfiguraci atp.).</td>
-                </tr>
-                <tr>
-                    <td>doFilter(ServletRequest request, ServletResponse response, FilterChain chain)</td>
-                    <td>void</td>
-                    <td>Volána pro provedení filteru (když na server přijde request, nebo je filter další na řadě v řetězci filterů).</td>
-                </tr>
-                <tr>
-                    <td>destroy()</td>
-                    <td>void</td>
-                    <td>Volána servlet containerem (Tomcatem), když se filtr chystá vyřadit z provozu.</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-wrapper u-mb-2">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Metoda</th>
+                        <th>Návratový typ</th>
+                        <th>Popis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>init(FilterConfig filterConfig)</td>
+                        <td>void</td>
+                        <td>Volána servlet containerem (Tomcatem) při vytvoření filtru. Slouží k inicializaci (můžeme třeba načíst nějakou konfiguraci atp.).</td>
+                    </tr>
+                    <tr>
+                        <td>doFilter(ServletRequest request, ServletResponse response, FilterChain chain)</td>
+                        <td>void</td>
+                        <td>Volána pro provedení filteru (když na server přijde request, nebo je filter další na řadě v řetězci filterů).</td>
+                    </tr>
+                    <tr>
+                        <td>destroy()</td>
+                        <td>void</td>
+                        <td>Volána servlet containerem (Tomcatem), když se filtr chystá vyřadit z provozu.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <p class="paragraph u-mb-2">Metody init a destroy mají defaultní implementaci. Pokud je tedy nepotřebujeme, nemusíme je implementovat. Následující ukázka ukazuje příklad, jak může filtr vypadat.</p>
         <%- include("./includes/filter-example-code-box.ejs") %>
         <h2 id="filter-chain" class="heading-secondary u-mb-2">Filter chain</h2>
@@ -70,37 +72,39 @@
         <img src="../../static/img/screenshots/ZablokovaniStrankyFiltrem.png" alt="Chybová stránka" class="image image--full-width image--with-border u-mb-6">
         <h2 id="filter-config" class="heading-secondary u-mb-2">Filter Config</h2>
         <p class="paragraph u-mb-2">Podobně jako si můžeme v souboru web.xml nadefinovat inicializační parametry pro servlety, můžeme si je nadefinovat i pro filtry. Jedná se o hodnoty, které Tomcat předá do filtru když jej inicializuje prostřednictvím init metody. Metoda init přijímá jako parametr objekt typu <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/FilterConfig.html" target="_blank" class="link">FilterConfig</a>, ze kterého můžeme inicializační parametry dostat. Jedná se o rozhraní, které definuje čtyři metody, které popisuje následující tabulka.</p>
-        <table class="table u-mb-2">
-            <thead>
-                <tr>
-                    <th>Metoda</th>
-                    <th>Návratový typ</th>
-                    <th>Popis</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>getFilterName()</td>
-                    <td>String</td>
-                    <td>Vrací název filtru, který je specifikován v souboru web.xml.</td>
-                </tr>
-                <tr>
-                    <td>getInitParameter(String name)</td>
-                    <td>String</td>
-                    <td>Vrací hodnotu inicializačního parametru.</td>
-                </tr>
-                <tr>
-                    <td>getInitParameterNames()</td>
-                    <td>Enumeration&lt;String&gt;</td>
-                    <td>Vrací enumeraci všech jmen inicializačních parametrů pro filtr.</td>
-                </tr>
-                <tr>
-                    <td>getServletContext()</td>
-                    <td>ServletContext</td>
-                    <td>Vrací referenci k servlet contextu, ve kterém se filtr spouští.</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-wrapper u-mb-2">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Metoda</th>
+                        <th>Návratový typ</th>
+                        <th>Popis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>getFilterName()</td>
+                        <td>String</td>
+                        <td>Vrací název filtru, který je specifikován v souboru web.xml.</td>
+                    </tr>
+                    <tr>
+                        <td>getInitParameter(String name)</td>
+                        <td>String</td>
+                        <td>Vrací hodnotu inicializačního parametru.</td>
+                    </tr>
+                    <tr>
+                        <td>getInitParameterNames()</td>
+                        <td>Enumeration&lt;String&gt;</td>
+                        <td>Vrací enumeraci všech jmen inicializačních parametrů pro filtr.</td>
+                    </tr>
+                    <tr>
+                        <td>getServletContext()</td>
+                        <td>ServletContext</td>
+                        <td>Vrací referenci k servlet contextu, ve kterém se filtr spouští.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <p class="paragraph u-mb-2">Pro ukázku použití inicializačních parametrů si uprávíme projekt, který jsme si vytvořili pro ukázku zablokování přístupu k servletu. V souboru web.xml si budeme moci nastavit, jaká chybová zpráva se pro zablokovaný servlet vypíše. K definování inicializačních parametrů pro filtry se stejně jako u servletů používá element init-param. Následující ukázka ukazuje náš upravený web.xml soubor.</p>
         <%- include("./includes/filter-config-code-box-1.ejs") %>
         <p class="paragraph u-mb-2">Teď můžeme nadefinovaný inicializační parametr ve filtru získat a použít. Implementujeme metodu init, ve které z FilterConfig objektu parametr získáme a uložíme si jej. Poté jej budeme používat v metodě doFilter. Následující ukázka ukazuje upravený kód.</p>

@@ -32,41 +32,43 @@
         <%- include("./includes/java-bean-example-code-box.ejs") %>
         <h3 id="atributy-jsp-usebean-tagu" class="heading-tertiary u-mb-1">Atributy jsp:useBean tagu</h3>
         <p class="paragraph u-mb-2">Následující tabulka popisuje atributy, které můžeme v jsp:useBean tagu použít.</p>
-        <table class="table u-mb-2">
-            <thead>
-                <tr>
-                    <th>Atribut</th>
-                    <th>Hodnota</th>
-                    <th>Popis</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>id</td>
-                    <td>identifikátor (název) beanu</td>
-                    <td>Nastavuje jedinečný identifikátor beanu v určitém rozsahu nastaveného prostřednictvím scope atributu.</td>
-                </tr>
-                <tr>
-                    <td>scope</td>
-                    <td>page | request | session | application</td>
-                    <td>Nastavuje do jakého rozsahu bean patří (defaultní je page).</td>
-                </tr>
-                <tr>
-                    <td>class</td>
-                    <td>bean třída</td>
-                    <td>Nastavuje třídu, podle které se má bean vytvořit.</td>
-                </tr>
-                <tr>
-                    <td>type</td>
-                    <td>datový typ</td>
-                    <td>Nastavuje datový typ pro vytvořenou instanci bean třídy. Měl by být kompatibilní s třídou definovanou v atributu class. Pokud type atribut není specifikovaný, tak se automaticky odvodí podle atributu class.</td>
-                </tr>
-                <tr>
-                    <td>beanName</td>
-                    <td colspan="2">Omlouvám se, ale toto je nad moje chápání. Pokud vás zajímá k čemu to slouží, tak si to budete muset zjistit někde jinde.</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-wrapper u-mb-2">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Atribut</th>
+                        <th>Hodnota</th>
+                        <th>Popis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>id</td>
+                        <td>identifikátor (název) beanu</td>
+                        <td>Nastavuje jedinečný identifikátor beanu v určitém rozsahu nastaveného prostřednictvím scope atributu.</td>
+                    </tr>
+                    <tr>
+                        <td>scope</td>
+                        <td>page | request | session | application</td>
+                        <td>Nastavuje do jakého rozsahu bean patří (defaultní je page).</td>
+                    </tr>
+                    <tr>
+                        <td>class</td>
+                        <td>bean třída</td>
+                        <td>Nastavuje třídu, podle které se má bean vytvořit.</td>
+                    </tr>
+                    <tr>
+                        <td>type</td>
+                        <td>datový typ</td>
+                        <td>Nastavuje datový typ pro vytvořenou instanci bean třídy. Měl by být kompatibilní s třídou definovanou v atributu class. Pokud type atribut není specifikovaný, tak se automaticky odvodí podle atributu class.</td>
+                    </tr>
+                    <tr>
+                        <td>beanName</td>
+                        <td colspan="2">Omlouvám se, ale toto je nad moje chápání. Pokud vás zajímá k čemu to slouží, tak si to budete muset zjistit někde jinde.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <p class="paragraph u-mb-4">Beany se vytváří v určitém rozsahu definovaném prostřednictvím scope atributu. Může platit pro aktuální stránku (page), pro aktuální request (request), pro session, nebo celou aplikaci - všechny uživatele (application). Klidně tedy můžeme mít beany se stejnými identifikátory ale v jiném rozsahu. Defaultní scope je page.</p>
         <h3 id="ukazka-pouziti-jsp-usebean-tagu" class="heading-tertiary u-mb-1">Ukázka použití jsp:useBean tagu</h3>
         <p class="paragraph u-mb-2">Pro ukázku použití jsp:useBean tagu si založíme nový projekt a poté Java třídu, kterou můžeme pojmenovat jako Uzivatel. Bude představovat bean třídu, kterou si zkusíme v jsp:useBean tagu použít. Pro třídu si vytvořte nějaký java balíček a umístěte ji do něj, jelikož k defaultnímu balíčku bychom neměli z JSP souboru přístup. Následující ukázka ukazuje kód třídy. Aby se jednalo o bean třídu, tak implementuje Serializable rozhraní a obsahuje vlastnosti, pro které má gettery a settery.</p>
@@ -81,37 +83,39 @@
         <p class="paragraph u-mb-4">Pomocí jsp:setProperty tagu můžeme nastavovat vlastnosti beanu.</p>
         <h3 id="atributy-jsp-setproperty-tagu" class="heading-tertiary u-mb-1">Atributy jsp:setProperty tagu</h3>
         <p class="paragraph u-mb-2">Následující tabulka ukazuje atributy jsp:setProperty tagu.</p>
-        <table class="table u-mb-2">
-            <thead>
-                <tr>
-                    <th>Atribut</th>
-                    <th>Hodnota</th>
-                    <th>Popis</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>name</td>
-                    <td>identifikátor beanu</td>
-                    <td>Nastavuje identifikátor beanu, pro který chceme nastavovat vlastnost(i).</td>
-                </tr>
-                <tr>
-                    <td>property</td>
-                    <td>jméno vlastnosti nebo "*" pro nastavení všech vlastností</td>
-                    <td>Nastavuje, která vlastnost se má nastavit.</td>
-                </tr>
-                <tr>
-                    <td>param</td>
-                    <td>jméno parametru v HTTP requestu</td>
-                    <td>Nastavuje parametr z HTTP requestu, který se má použít pro nastavení vlastnosti.</td>
-                </tr>
-                <tr>
-                    <td>value</td>
-                    <td>hodnota</td>
-                    <td>Nastavuje hodnotu, která se má vlastnosti nastavit.</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-wrapper u-mb-2">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Atribut</th>
+                        <th>Hodnota</th>
+                        <th>Popis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>name</td>
+                        <td>identifikátor beanu</td>
+                        <td>Nastavuje identifikátor beanu, pro který chceme nastavovat vlastnost(i).</td>
+                    </tr>
+                    <tr>
+                        <td>property</td>
+                        <td>jméno vlastnosti nebo "*" pro nastavení všech vlastností</td>
+                        <td>Nastavuje, která vlastnost se má nastavit.</td>
+                    </tr>
+                    <tr>
+                        <td>param</td>
+                        <td>jméno parametru v HTTP requestu</td>
+                        <td>Nastavuje parametr z HTTP requestu, který se má použít pro nastavení vlastnosti.</td>
+                    </tr>
+                    <tr>
+                        <td>value</td>
+                        <td>hodnota</td>
+                        <td>Nastavuje hodnotu, která se má vlastnosti nastavit.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <p class="paragraph u-mb-2">Podle toho zda nastavíme atribut value se budou nebo nebudou vlastnosti beanu nastavovat podle parametrů předávaných v HTTP requestu. Následující ukázka ukazuje pár příkladů použití jsp:setProperty tagu.</p>
         <%- include("./includes/set-property-action-tag-examples-code-box.ejs") %>
         <h3 id="ukazka-pouziti-jspsetproperty-tagu" class="heading-tertiary u-mb-1">Ukázka použití jsp:setProperty tagu</h3>

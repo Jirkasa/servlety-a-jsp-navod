@@ -15,138 +15,142 @@
         <img src="../../static/img/screenshots/ExpressionLanguagePrikladStranka.png" alt="vygenerovaná stránka" class="image image--full-width image--with-border u-mb-6">
         <h2 id="implicitni-objekty-v-expression-language" class="heading-secondary u-mb-2">Implicitní objekty v expression language</h2>
         <p class="paragraph u-mb-2">Pro expression language existuje několik implicitních objektů. Následující tabulka je popisuje.</p>
-        <table class="table u-mb-2">
-            <thead>
-                <tr>
-                    <th>Objekt</th>
-                    <th>Popis</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>pageScope</td>
-                    <td>obsahuje atributy pro page rozsah</td>
-                </tr>
-                <tr>
-                    <td>requestScope</td>
-                    <td>obsahuje atributy pro request rozsah</td>
-                </tr>
-                <tr>
-                    <td>sessionScope</td>
-                    <td>obsahuje atributy pro session rozsah</td>
-                </tr>
-                <tr>
-                    <td>applicationScope</td>
-                    <td>obsahuje atributy pro application rozsah</td>
-                </tr>
-                <tr>
-                    <td>param</td>
-                    <td>obsahuje request parametry</td>
-                </tr>
-                <tr>
-                    <td>paramValues</td>
-                    <td>obsahuje request parametry jako pole hodnot</td>
-                </tr>
-                <tr>
-                    <td>header</td>
-                    <td>obsahuje hodnoty headerů</td>
-                </tr>
-                <tr>
-                    <td>headerValues</td>
-                    <td>obsahuje pole hodnot headerů</td>
-                </tr>
-                <tr>
-                    <td>cookie</td>
-                    <td>obsahuje cookies</td>
-                </tr>
-                <tr>
-                    <td>initParam</td>
-                    <td>obsahuje inicializační parametry</td>
-                </tr>
-                <tr>
-                    <td>pageContext</td>
-                    <td>poskytuje přístup k různým objektům jako je request, session, atd...</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-wrapper u-mb-2">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Objekt</th>
+                        <th>Popis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>pageScope</td>
+                        <td>obsahuje atributy pro page rozsah</td>
+                    </tr>
+                    <tr>
+                        <td>requestScope</td>
+                        <td>obsahuje atributy pro request rozsah</td>
+                    </tr>
+                    <tr>
+                        <td>sessionScope</td>
+                        <td>obsahuje atributy pro session rozsah</td>
+                    </tr>
+                    <tr>
+                        <td>applicationScope</td>
+                        <td>obsahuje atributy pro application rozsah</td>
+                    </tr>
+                    <tr>
+                        <td>param</td>
+                        <td>obsahuje request parametry</td>
+                    </tr>
+                    <tr>
+                        <td>paramValues</td>
+                        <td>obsahuje request parametry jako pole hodnot</td>
+                    </tr>
+                    <tr>
+                        <td>header</td>
+                        <td>obsahuje hodnoty headerů</td>
+                    </tr>
+                    <tr>
+                        <td>headerValues</td>
+                        <td>obsahuje pole hodnot headerů</td>
+                    </tr>
+                    <tr>
+                        <td>cookie</td>
+                        <td>obsahuje cookies</td>
+                    </tr>
+                    <tr>
+                        <td>initParam</td>
+                        <td>obsahuje inicializační parametry</td>
+                    </tr>
+                    <tr>
+                        <td>pageContext</td>
+                        <td>poskytuje přístup k různým objektům jako je request, session, atd...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <p class="paragraph u-mb-2">Následující řádek kódu například vypisuje na stránku parametr "jmeno", poslaný v requestu.</p>
         <%- include("./includes/expression-language-param-example-code-box.ejs") %>
         <h2 id="rezervovana-slova" class="heading-secondary u-mb-2">Rezervovaná slova</h2>
         <p class="paragraph u-mb-2">Expression language obsahuje různá rezervovaná slova. Hodně z nich jsou aliasy pro operátory, které známe z Javy. Následující tabulka je popisuje.</p>
-        <table class="table u-mb-6">
-            <thead>
-                <tr>
-                    <th>Slovo</th>
-                    <th>Popis</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>lt</td>
-                    <td>Alias pro operátor "&lt;".</td>
-                </tr>
-                <tr>
-                    <td>le</td>
-                    <td>Alias pro operátor "&lt;=".</td>
-                </tr>
-                <tr>
-                    <td>gt</td>
-                    <td>Alias pro operátor "&gt;".</td>
-                </tr>
-                <tr>
-                    <td>ge</td>
-                    <td>Alias pro operátor "&gt;=".</td>
-                </tr>
-                <tr>
-                    <td>eq</td>
-                    <td>Alias pro operátor "==".</td>
-                </tr>
-                <tr>
-                    <td>ne</td>
-                    <td>Alias pro operátor "!=".</td>
-                </tr>
-                <tr>
-                    <td>and</td>
-                    <td>Alias pro operátor "&&".</td>
-                </tr>
-                <tr>
-                    <td>or</td>
-                    <td>Alias pro operátor "||".</td>
-                </tr>
-                <tr>
-                    <td>not</td>
-                    <td>Alias pro negaci ("!").</td>
-                </tr>
-                <tr>
-                    <td>div</td>
-                    <td>Alias pro operátor "/".</td>
-                </tr>
-                <tr>
-                    <td>mod</td>
-                    <td>Alias pro operátor "%".</td>
-                </tr>
-                <tr>
-                    <td>empty</td>
-                    <td>Zjišťuje zda je hodnota null nebo prázdná.</td>
-                </tr>
-                <tr>
-                    <td>instanceof</td>
-                    <td>Zjišťuje zda je objekt instancí nějaké třídy.</td>
-                </tr>
-                <tr>
-                    <td>true</td>
-                    <td>Boolean hodnota true (stejně jako v Javě).</td>
-                </tr>
-                <tr>
-                    <td>false</td>
-                    <td>Boolean hodnota false (stejně jako v Javě).</td>
-                </tr>
-                <tr>
-                    <td>null</td>
-                    <td>Hodnota null (stejně jako v Javě).</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-wrapper u-mb-6">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Slovo</th>
+                        <th>Popis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>lt</td>
+                        <td>Alias pro operátor "&lt;".</td>
+                    </tr>
+                    <tr>
+                        <td>le</td>
+                        <td>Alias pro operátor "&lt;=".</td>
+                    </tr>
+                    <tr>
+                        <td>gt</td>
+                        <td>Alias pro operátor "&gt;".</td>
+                    </tr>
+                    <tr>
+                        <td>ge</td>
+                        <td>Alias pro operátor "&gt;=".</td>
+                    </tr>
+                    <tr>
+                        <td>eq</td>
+                        <td>Alias pro operátor "==".</td>
+                    </tr>
+                    <tr>
+                        <td>ne</td>
+                        <td>Alias pro operátor "!=".</td>
+                    </tr>
+                    <tr>
+                        <td>and</td>
+                        <td>Alias pro operátor "&&".</td>
+                    </tr>
+                    <tr>
+                        <td>or</td>
+                        <td>Alias pro operátor "||".</td>
+                    </tr>
+                    <tr>
+                        <td>not</td>
+                        <td>Alias pro negaci ("!").</td>
+                    </tr>
+                    <tr>
+                        <td>div</td>
+                        <td>Alias pro operátor "/".</td>
+                    </tr>
+                    <tr>
+                        <td>mod</td>
+                        <td>Alias pro operátor "%".</td>
+                    </tr>
+                    <tr>
+                        <td>empty</td>
+                        <td>Zjišťuje zda je hodnota null nebo prázdná.</td>
+                    </tr>
+                    <tr>
+                        <td>instanceof</td>
+                        <td>Zjišťuje zda je objekt instancí nějaké třídy.</td>
+                    </tr>
+                    <tr>
+                        <td>true</td>
+                        <td>Boolean hodnota true (stejně jako v Javě).</td>
+                    </tr>
+                    <tr>
+                        <td>false</td>
+                        <td>Boolean hodnota false (stejně jako v Javě).</td>
+                    </tr>
+                    <tr>
+                        <td>null</td>
+                        <td>Hodnota null (stejně jako v Javě).</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <p class="paragraph">To je pro tuto část vše. Expression language není žádná složitá věc. Hodně věcí nám usnadňuje.</p>
     <%- include("../../includes/tutorial-page-layout-end.ejs") %>
     <%- include("../../includes/footer.ejs") %>

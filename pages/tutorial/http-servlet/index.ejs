@@ -5,44 +5,46 @@
         <p class="paragraph u-mb-4">V minulé části jste se dozvěděli co to jsou servlety a k čemu slouží. Také jste se mohli dozvědět, že existují v podstatě tři cesty jak vytvořit servlet. První dvě jsme si ukázali v minulé části. V této části si ukážeme vytvoření servletu zděděním třídy HttpServlet.</p>
         <h2 id="trida-httpservlet" class="heading-secondary u-mb-2">Třída HttpServlet</h2>
         <p class="paragraph u-mb-2">Pokud chceme vytvořit servlet, který pracuje pouze s protokolem HTTP, tak je nejlepší jej vytvořit zděděním třídy <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServlet.html" target="_blank" class="link">HttpServlet</a>. Předchozí dvě možnosti tvorby servletů, které jsme si ukázali v minulé části, se hodí hlavně pro tvorbu servletů využívající jiné protokoly než HTTP. Třída HttpServlet nám totiž poskytuje kromě metody service i metody, které můžeme použít pro reakci na requesty poslané pomocí specifických HTTP metod. Tyto metody ukazuje následující tabulka. Volají se z metody service, kterou za nás implementuje HttpServlet. Nemusíme tedy v metodě service sami zjišťovat, o jaký typ requestu se jedná.</p>
-        <table class="table u-mb-2">
-            <thead>
-                <tr>
-                    <th>Metoda</th>
-                    <th>Popis</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>doGet(HttpServletRequest req, HttpServletResponse res)</td>
-                    <td>Volá se pro GET requesty.</td>
-                </tr>
-                <tr>
-                    <td>doHead(HttpServletRequest req, HttpServletResponse res)</td>
-                    <td>Volá se pro HEAD requesty.</td>
-                </tr>
-                <tr>
-                    <td>doPost(HttpServletRequest req, HttpServletResponse res)</td>
-                    <td>Volá se pro POST requesty.</td>
-                </tr>
-                <tr>
-                    <td>doPut(HttpServletRequest req, HttpServletResponse res)</td>
-                    <td>Volá se pro PUT requesty.</td>
-                </tr>
-                <tr>
-                    <td>doDelete(HttpServletRequest req, HttpServletResponse res)</td>
-                    <td>Volá se pro DELETE requesty.</td>
-                </tr>
-                <tr>
-                    <td>doOptions(HttpServletRequest req, HttpServletResponse res)</td>
-                    <td>Volá se pro OPTIONS requesty (pravděpodobně nepoužijete).</td>
-                </tr>
-                <tr>
-                    <td>doTrace(HttpServletRequest req, HttpServletResponse res)</td>
-                    <td>Volá se pro TRACE requesty (pravděpodobně nepoužijete).</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-wrapper u-mb-2">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Metoda</th>
+                        <th>Popis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>doGet(HttpServletRequest req, HttpServletResponse res)</td>
+                        <td>Volá se pro GET requesty.</td>
+                    </tr>
+                    <tr>
+                        <td>doHead(HttpServletRequest req, HttpServletResponse res)</td>
+                        <td>Volá se pro HEAD requesty.</td>
+                    </tr>
+                    <tr>
+                        <td>doPost(HttpServletRequest req, HttpServletResponse res)</td>
+                        <td>Volá se pro POST requesty.</td>
+                    </tr>
+                    <tr>
+                        <td>doPut(HttpServletRequest req, HttpServletResponse res)</td>
+                        <td>Volá se pro PUT requesty.</td>
+                    </tr>
+                    <tr>
+                        <td>doDelete(HttpServletRequest req, HttpServletResponse res)</td>
+                        <td>Volá se pro DELETE requesty.</td>
+                    </tr>
+                    <tr>
+                        <td>doOptions(HttpServletRequest req, HttpServletResponse res)</td>
+                        <td>Volá se pro OPTIONS requesty (pravděpodobně nepoužijete).</td>
+                    </tr>
+                    <tr>
+                        <td>doTrace(HttpServletRequest req, HttpServletResponse res)</td>
+                        <td>Volá se pro TRACE requesty (pravděpodobně nepoužijete).</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <p class="paragraph u-mb-4">Možná jste si všimli, že pro metodu PATCH bohužel neexistuje v HttpServlet třídě metoda doPatch. Můžeme si pro ni ale podporu přidat, pokud bychom ji potřebovali. Později si v této části ukážeme, jak to udělat.</p>
         <h2 id="http-servlet-request-a-http-servlet-response" class="heading-secondary u-mb-2">HTTP Servlet Request a HTTP Servlet Response</h2>
         <p class="paragraph u-mb-4">Ve třídě HttpServlet se nepoužívají objekty typu <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/ServletRequest.html" target="_blank" class="link">ServletRequest</a> a <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/ServletResponse.html" target="_blank" class="link">ServletResponse</a>, jako tomu je u třídy GenericServlet, ale používají se objekty typu <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServletRequest.html" target="_blank" class="link">HttpServletRequest</a> a <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServletResponse.html" target="_blank" class="link">HttpServletResponse</a>. Jedná se o rozhraní, která rozhraní ServletRequest a ServletResponse rozšiřují a přidávají pár dalších metod, které můžeme použít. Tyto metody si můžete prohlédnout v dokumentaci.</p>

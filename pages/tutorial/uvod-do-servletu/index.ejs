@@ -92,42 +92,44 @@
         <img src="../../static/img/illustrations/HierarchyOfServletClasses.svg" alt="Hierarchie Java tříd pro servlety" class="image u-mb-6">
         <h2 id="rozhrani-servlet" class="heading-secondary u-mb-2">Rozhraní Servlet</h2>
         <p class="paragraph u-mb-2">Každý servlet musí implementovat rozhraní <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/Servlet.html" target="_blank" class="link">Servlet</a>. Toto rozhraní definuje metody, které musí třída, která jej implementuje, implementovat. Následující tabulka je popisuje:</p>
-        <table class="table u-mb-6">
-            <thead>
-                <tr>
-                    <th>Metoda</th>
-                    <th>Návratový typ</th>
-                    <th>Popis</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>init(ServletConfig config)</td>
-                    <td>void</td>
-                    <td>Volána servlet containerem (Tomcatem) při vytvoření servletu. Slouží k inicializaci (můžeme třeba načíst nějakou konfiguraci, připojit se k databázi, atp.)</td>
-                </tr>
-                <tr>
-                    <td>service(ServletRequest req, ServletResponse res)</td>
-                    <td>void</td>
-                    <td>Volána servlet containerem (Tomcatem), když na server přijde request aby na něj mohl servlet reagovat.</td>
-                </tr>
-                <tr>
-                    <td>destroy()</td>
-                    <td>void</td>
-                    <td>Volána servlet containerem (Tomcatem), když se servlet chystá vyřadit z provozu. Slouží k provedení různých čistících úkonů a tak podobně.</td>
-                </tr>
-                <tr>
-                    <td>getServletConfig()</td>
-                    <td>ServletConfig</td>
-                    <td>Vrací ServletConfig objekt, který obsahuje inicializační a spouštěcí parametry pro servlet.</td>
-                </tr>
-                <tr>
-                    <td>getServletInfo()</td>
-                    <td>String</td>
-                    <td>Vrací informace o servletu (např. autor, verze, copyright...).</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-wrapper u-mb-6">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Metoda</th>
+                        <th>Návratový typ</th>
+                        <th>Popis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>init(ServletConfig config)</td>
+                        <td>void</td>
+                        <td>Volána servlet containerem (Tomcatem) při vytvoření servletu. Slouží k inicializaci (můžeme třeba načíst nějakou konfiguraci, připojit se k databázi, atp.)</td>
+                    </tr>
+                    <tr>
+                        <td>service(ServletRequest req, ServletResponse res)</td>
+                        <td>void</td>
+                        <td>Volána servlet containerem (Tomcatem), když na server přijde request aby na něj mohl servlet reagovat.</td>
+                    </tr>
+                    <tr>
+                        <td>destroy()</td>
+                        <td>void</td>
+                        <td>Volána servlet containerem (Tomcatem), když se servlet chystá vyřadit z provozu. Slouží k provedení různých čistících úkonů a tak podobně.</td>
+                    </tr>
+                    <tr>
+                        <td>getServletConfig()</td>
+                        <td>ServletConfig</td>
+                        <td>Vrací ServletConfig objekt, který obsahuje inicializační a spouštěcí parametry pro servlet.</td>
+                    </tr>
+                    <tr>
+                        <td>getServletInfo()</td>
+                        <td>String</td>
+                        <td>Vrací informace o servletu (např. autor, verze, copyright...).</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <h2 id="zivotni-cyklus-servletu" class="heading-secondary u-mb-2">Životní cyklus servletu</h2>
         <p class="paragraph u-mb-4">V předchozí tabulce, která popisuje metody Servlet rozhraní, můžete vidět, že metody init, service a destroy jsou volány v různých chvílích servlet containerem (Tomcatem). Na začátku servlet container vytvoří instanci servlet třídy a vytvořený servlet inicializuje zavoláním init metody. Poté je servlet připraven zpracovávat klientské requesty pomocí metody service. Až se potom servlet container rozhodne servlet vyřadit z provozu, tak se zavolá metoda destroy. Následující diagram tento životní cyklus servletu ukazuje:</p>
         <img src="../../static/img/illustrations/ZivotniCyklusServletu.svg" alt="Životní cyklus servletu" class="image u-mb-6">
