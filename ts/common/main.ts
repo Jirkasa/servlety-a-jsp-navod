@@ -22,13 +22,15 @@ function createNavigationToggle() {
     const headerNavigation = document.getElementById("HeaderNavigation") as HTMLElement;
     const tutorialNavigation = document.getElementById("TutorialNavigation") as HTMLElement;
 
-    const navigations : Array<Navigation> = [new Navigation(headerNavigation, CSS_HEADER_NAVIGATION_OPENED_CLASS)];
+    const mql = window.matchMedia(`(max-width: ${NAVIGATION_BREAKPOINT})`);
+
+    const navigations : Array<Navigation> = [new Navigation(headerNavigation, CSS_HEADER_NAVIGATION_OPENED_CLASS, mql)];
     if (tutorialNavigation) {
-        navigations.push(new Navigation(tutorialNavigation, CSS_TUTORIAL_NAVIGATION_OPENED_CLASS));
+        navigations.push(new Navigation(tutorialNavigation, CSS_TUTORIAL_NAVIGATION_OPENED_CLASS, mql));
     }
 
     if (headerNavigation && navigationToggleButton) {
-        new NavigationToggle(NAVIGATION_BREAKPOINT, navigationToggleButton, CSS_NAVIGATION_TOGGLE_BUTTON_CHECKED_CLASS, navigations);
+        new NavigationToggle(navigationToggleButton, CSS_NAVIGATION_TOGGLE_BUTTON_CHECKED_CLASS, navigations);
     }
 }
 

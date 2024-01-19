@@ -6,7 +6,7 @@ class NavigationToggle {
     private toggleButton : HTMLElement;
     private toggleButtonCheckedCSSClass : string;
 
-    constructor(breakpoint: string, toggleButton : HTMLElement, toggleButtonCheckedCSSClass : string, navigations : Array<Navigation>) {
+    constructor(toggleButton : HTMLElement, toggleButtonCheckedCSSClass : string, navigations : Array<Navigation>) {
         this.opened = false;
         this.navigations = [];
         this.toggleButton = toggleButton;
