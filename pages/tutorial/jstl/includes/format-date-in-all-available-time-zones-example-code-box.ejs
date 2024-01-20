@@ -1,8 +1,0 @@
-<div data-code-box data-no-buttons class="u-mb-4">
-    <pre data-code><code class="language-html">&lt;c:set var="date" value="&lt;%= new java.util.Date(123, 11, 30, 21, 0) %&gt;" /&gt;
-&lt;c:forEach var="zone" items="&lt;%= java.util.TimeZone.getAvailableIDs()%&gt;"&gt;
-    &lt;fmt:setTimeZone value="${zone}"/&gt;
-    ${zone} - &lt;fmt:formatDate value="${date}" dateStyle="FULL" /&gt;
-    &lt;br&gt;
-&lt;/c:forEach&gt;</code></pre>
-</div>

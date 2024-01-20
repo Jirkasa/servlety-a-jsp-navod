@@ -1,0 +1,63 @@
+<!doctype html><html lang="cs"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes,maximum-scale=2.2,minimum-scale=1"><link rel="icon" type="image/svg+xml" href="../../static/img/favicon.svg"><meta name="author" content="Jiří Satora"><meta name="description" content="V této části tutoriálu se naučíme o expression language (EL)."><title>JSP expresssion language | Servlety a JSP - Návod</title><script src="../../static/js/highlight.min.js"></script><script>hljs.highlightAll()</script><script defer="defer" src="../../common.094d85ce485e92e2c2cb.js"></script><script defer="defer" src="../../618.274f04aa314232891610.js"></script><script defer="defer" src="../../tutorial.eb9162178c9dddad389b.js"></script><link href="../../css/style.dc6eaf064d238b949478.css" rel="stylesheet"></head><body><input type="hidden" id="PATH_TO_ROOT" value="../../"><header id="HeaderContainer" class="header"><div id="Header" class="header__container"><div class="header__content"><a href="../../" class="header__home-link">Servlety a JSP<span class="header__home-link-unimportant-part"> - Návod</span></a> <button id="NavigationToggleButton" class="menu-toggle-button">Otevřít/Zavřít menu<span class="menu-toggle-button__icon"></span></button><nav id="HeaderNavigation" class="header__navigation"><ul><li><a href="../../tutorial/priprava-pro-vyvoj/" class="header__navigation-link header__navigation-link--active">Tutoriál</a></li><li><a href="../../obsah/" class="header__navigation-link">Obsah</a></li><li><a href="../../dalsi-tutorialy/k-cemu-tato-sekce-slouzi/" class="header__navigation-link">Další tutoriály</a></li><li><a href="https://github.com/Jirkasa/servlety-a-jsp-navod" target="_blank" class="header__navigation-link">GitHub</a></li></ul></nav></div></div></header><div class="tutorial-page-layout"><div class="tutorial-page-layout__container"><nav id="TutorialNavigation" class="tutorial-page-layout__navigation-side"><ul class="navigation"><li><a href="../priprava-pro-vyvoj/" class="navigation__link">Příprava pro vývoj</a></li><li><a href="../uvod-do-servletu/" class="navigation__link">Úvod do Servletů</a></li><li><a href="../http-servlet/" class="navigation__link">HTTP Servlet</a></li><li><a href="../sledovani-relace/" class="navigation__link">Sledování relace</a></li><li><a href="../komunikace-mezi-servlety/" class="navigation__link">Komunikace mezi Servlety</a></li><li><a href="../filtry/" class="navigation__link">Filtry</a></li><li><a href="../uvod-do-jsp/" class="navigation__link">Úvod do JSP</a></li><li><a href="../jsp-tagy-a-implicitni-objekty/" class="navigation__link">JSP tagy a implicitní objekty</a></li><li><a href="../jsp-direktivy/" class="navigation__link">JSP direktivy</a></li><li><a href="../jsp-action-tagy/" class="navigation__link">JSP action tagy</a></li><li><a href="../jsp-custom-tagy/" class="navigation__link">JSP custom tagy</a></li><li><a href="../jsp-expression-language/" class="navigation__link navigation__link--active">JSP expression language</a></li><li><a href="../jstl/" class="navigation__link">JSTL</a></li><li><a href="../mvc-vzor/" class="navigation__link">MVC vzor</a></li><li><a href="../struts-framework/" class="navigation__link">Struts framework</a></li><li><a href="../prace-s-databazi/" class="navigation__link">Práce s databází</a></li></ul></nav><main class="tutorial-page-layout__content"><h1 class="heading-primary u-mb-4">JSP expression language</h1><p class="paragraph u-mb-2">V této části se naučíme o expression language (EL). Ta zjednodušuje přístup k datům uložených v Java bean komponentách a ostatních objektech jako je request, session, application a tak podobně.</p><p class="paragraph u-mb-2">Syntaxe pro expression language je následující:</p><div data-code-box data-no-buttons class="u-mb-2"><pre data-code><code class="language-html">${ expression }</code></pre></div><p class="paragraph u-mb-4">Expression language obsahuje spoustu implicitních objektů, operátorů a rezervovaných slov. Potom je v této části uvidíte popsané v tabulkách.</p><h2 id="ukazka-pouziti-expression-language" class="heading-secondary u-mb-2">Ukázka použití expression language</h2><p class="paragraph u-mb-2">Pro ukázku si ukážeme použití expression language pro vypsání hodnot java beanu. Založíme si nový projekt a vytvoříme bean třídu Uzivatel (v nějakém Java balíčku, abychom ji mohli použít v JSP). Kód pro ni ukazuje následující ukázka.</p><div data-project="1" data-project-name="expression-language" class="u-mb-2"><ul data-project-folders><li>src<ul><li>main<ul><li data-java-packages-folder>java</li><li>resources</li><li>webapp</li></ul></li><li>test<ul><li>java</li><li>resources</li></ul></li></ul></li><li>target</li></ul><pre data-code="pom.xml"><code class="language-xml">&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;io.github.jirkasa&lt;/groupId&gt;
+    &lt;artifactId&gt;expression-language&lt;/artifactId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;name&gt;expression-language&lt;/name&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+        &lt;maven.compiler.source&gt;${java.version}&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;${java.version}&lt;/maven.compiler.target&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;4.0.1&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;</code></pre><pre data-code="Uzivatel.java" data-java-package="io.github.jirkasa" data-java-package-opened data-active><code class="language-java">package io.github.jirkasa;
+
+import java.io.Serializable;
+
+public class Uzivatel implements Serializable {
+    private String jmeno;
+    private String prijmeni;
+    
+    public void setJmeno(String jmeno) {
+        this.jmeno = jmeno;
+    }
+    public String getJmeno() {
+        return jmeno;
+    }
+    
+    public void setPrijmeni(String prijmeni) {
+        this.prijmeni = prijmeni;
+    }
+    public String getPrijmeni() {
+        return prijmeni;
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Teď můžeme vytvořit JSP stránku, kterou můžeme pojmenovat třeba jako "stranka.jsp". Na této stránce si vytvoříme bean objekt a pomocí expression language poté vypíšeme jeho hodnoty.</p><div data-project="2" data-project-extends="1" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp</li></ul><pre data-code="stranka.jsp" data-folder="src/main/webapp" data-active><code class="language-html">&lt;%@page contentType="text/html" pageEncoding="UTF-8" %&gt;
+
+&lt;!-- vytvoření bean objektu --&gt;
+&lt;jsp:useBean id="uzivatel" class="io.github.jirkasa.Uzivatel" /&gt;
+&lt;jsp:setProperty name="uzivatel" property="jmeno" value="Jiří" /&gt;
+&lt;jsp:setProperty name="uzivatel" property="prijmeni" value="Satora" /&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Expression Language&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;!-- vypsání vlastností bean objektu pomocí expression language --&gt;
+    &lt;p&gt;Uživatel: ${uzivatel.jmeno} ${uzivatel.prijmeni}&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div><p class="paragraph u-mb-2">Po spuštění aplikace a navštívení <a href="http://localhost:8080/expression-language/stranka.jsp" target="_blank" class="link">http://localhost:8080/expression-language/stranka.jsp</a> byste měli vidět stránku, kterou ukazuje následující obrázek.</p><img src="../../static/img/screenshots/ExpressionLanguagePrikladStranka.png" alt="vygenerovaná stránka" class="image image--full-width image--with-border u-mb-6"><h2 id="implicitni-objekty-v-expression-language" class="heading-secondary u-mb-2">Implicitní objekty v expression language</h2><p class="paragraph u-mb-2">Pro expression language existuje několik implicitních objektů. Následující tabulka je popisuje.</p><div class="table-wrapper u-mb-2"><table class="table"><thead><tr><th>Objekt</th><th>Popis</th></tr></thead><tbody><tr><td>pageScope</td><td>obsahuje atributy pro page rozsah</td></tr><tr><td>requestScope</td><td>obsahuje atributy pro request rozsah</td></tr><tr><td>sessionScope</td><td>obsahuje atributy pro session rozsah</td></tr><tr><td>applicationScope</td><td>obsahuje atributy pro application rozsah</td></tr><tr><td>param</td><td>obsahuje request parametry</td></tr><tr><td>paramValues</td><td>obsahuje request parametry jako pole hodnot</td></tr><tr><td>header</td><td>obsahuje hodnoty headerů</td></tr><tr><td>headerValues</td><td>obsahuje pole hodnot headerů</td></tr><tr><td>cookie</td><td>obsahuje cookies</td></tr><tr><td>initParam</td><td>obsahuje inicializační parametry</td></tr><tr><td>pageContext</td><td>poskytuje přístup k různým objektům jako je request, session, atd...</td></tr></tbody></table></div><p class="paragraph u-mb-2">Následující řádek kódu například vypisuje na stránku parametr "jmeno", poslaný v requestu.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">${ param.jmeno }</code></pre></div><h2 id="rezervovana-slova" class="heading-secondary u-mb-2">Rezervovaná slova</h2><p class="paragraph u-mb-2">Expression language obsahuje různá rezervovaná slova. Hodně z nich jsou aliasy pro operátory, které známe z Javy. Následující tabulka je popisuje.</p><div class="table-wrapper u-mb-6"><table class="table"><thead><tr><th>Slovo</th><th>Popis</th></tr></thead><tbody><tr><td>lt</td><td>Alias pro operátor "&lt;".</td></tr><tr><td>le</td><td>Alias pro operátor "&lt;=".</td></tr><tr><td>gt</td><td>Alias pro operátor "&gt;".</td></tr><tr><td>ge</td><td>Alias pro operátor "&gt;=".</td></tr><tr><td>eq</td><td>Alias pro operátor "==".</td></tr><tr><td>ne</td><td>Alias pro operátor "!=".</td></tr><tr><td>and</td><td>Alias pro operátor "&&".</td></tr><tr><td>or</td><td>Alias pro operátor "||".</td></tr><tr><td>not</td><td>Alias pro negaci ("!").</td></tr><tr><td>div</td><td>Alias pro operátor "/".</td></tr><tr><td>mod</td><td>Alias pro operátor "%".</td></tr><tr><td>empty</td><td>Zjišťuje zda je hodnota null nebo prázdná.</td></tr><tr><td>instanceof</td><td>Zjišťuje zda je objekt instancí nějaké třídy.</td></tr><tr><td>true</td><td>Boolean hodnota true (stejně jako v Javě).</td></tr><tr><td>false</td><td>Boolean hodnota false (stejně jako v Javě).</td></tr><tr><td>null</td><td>Hodnota null (stejně jako v Javě).</td></tr></tbody></table></div><p class="paragraph u-mb-4">To je pro tuto část vše. Expression language není žádná složitá věc. Hodně věcí nám usnadňuje.</p><div class="u-text-center"><a href="../jstl/" class="button-primary">Pokračovat na další část</a></div></main></div></div><footer class="footer"><div class="footer__content"><p class="footer__text">Tento web vytvořil <a href="https://jirkasa.github.io/" target="_blank" class="footer__link">Jiří Satora</a></p></div></footer></body></html>

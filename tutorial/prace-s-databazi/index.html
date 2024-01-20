@@ -1,0 +1,1230 @@
+<!doctype html><html lang="cs"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes,maximum-scale=2.2,minimum-scale=1"><link rel="icon" type="image/svg+xml" href="../../static/img/favicon.svg"><meta name="author" content="Jiří Satora"><meta name="description" content="V této části se zkusíme připojit k databázi a pracovat s ní v servletech."><title>Práce s databází | Servlety a JSP - Návod</title><script src="../../static/js/highlight.min.js"></script><script>hljs.highlightAll()</script><script defer="defer" src="../../common.094d85ce485e92e2c2cb.js"></script><script defer="defer" src="../../618.274f04aa314232891610.js"></script><script defer="defer" src="../../tutorial.eb9162178c9dddad389b.js"></script><link href="../../css/style.dc6eaf064d238b949478.css" rel="stylesheet"></head><body><input type="hidden" id="PATH_TO_ROOT" value="../../"><header id="HeaderContainer" class="header"><div id="Header" class="header__container"><div class="header__content"><a href="../../" class="header__home-link">Servlety a JSP<span class="header__home-link-unimportant-part"> - Návod</span></a> <button id="NavigationToggleButton" class="menu-toggle-button">Otevřít/Zavřít menu<span class="menu-toggle-button__icon"></span></button><nav id="HeaderNavigation" class="header__navigation"><ul><li><a href="../../tutorial/priprava-pro-vyvoj/" class="header__navigation-link header__navigation-link--active">Tutoriál</a></li><li><a href="../../obsah/" class="header__navigation-link">Obsah</a></li><li><a href="../../dalsi-tutorialy/k-cemu-tato-sekce-slouzi/" class="header__navigation-link">Další tutoriály</a></li><li><a href="https://github.com/Jirkasa/servlety-a-jsp-navod" target="_blank" class="header__navigation-link">GitHub</a></li></ul></nav></div></div></header><div class="tutorial-page-layout"><div class="tutorial-page-layout__container"><nav id="TutorialNavigation" class="tutorial-page-layout__navigation-side"><ul class="navigation"><li><a href="../priprava-pro-vyvoj/" class="navigation__link">Příprava pro vývoj</a></li><li><a href="../uvod-do-servletu/" class="navigation__link">Úvod do Servletů</a></li><li><a href="../http-servlet/" class="navigation__link">HTTP Servlet</a></li><li><a href="../sledovani-relace/" class="navigation__link">Sledování relace</a></li><li><a href="../komunikace-mezi-servlety/" class="navigation__link">Komunikace mezi Servlety</a></li><li><a href="../filtry/" class="navigation__link">Filtry</a></li><li><a href="../uvod-do-jsp/" class="navigation__link">Úvod do JSP</a></li><li><a href="../jsp-tagy-a-implicitni-objekty/" class="navigation__link">JSP tagy a implicitní objekty</a></li><li><a href="../jsp-direktivy/" class="navigation__link">JSP direktivy</a></li><li><a href="../jsp-action-tagy/" class="navigation__link">JSP action tagy</a></li><li><a href="../jsp-custom-tagy/" class="navigation__link">JSP custom tagy</a></li><li><a href="../jsp-expression-language/" class="navigation__link">JSP expression language</a></li><li><a href="../jstl/" class="navigation__link">JSTL</a></li><li><a href="../mvc-vzor/" class="navigation__link">MVC vzor</a></li><li><a href="../struts-framework/" class="navigation__link">Struts framework</a></li><li><a href="../prace-s-databazi/" class="navigation__link navigation__link--active">Práce s databází</a></li></ul></nav><main class="tutorial-page-layout__content"><h1 class="heading-primary u-mb-4">Práce s databází</h1><p class="paragraph u-mb-2">Naprostá většina webových aplikací potřebuje nějakou databázi. V první části tutoriálu jste si mohli nainstalovat MySQL databázy. V této části se dozvíte, jak se k ní můžete připojit a pracovat s ní. Pokud jste si teda namísto MySQL nenainstalovali nějakou jinou databázi. Práce s jinými relačními databázemi je ale hodně podobná. Takže pokud chcete používat jinou databázi, tak samozřejmě můžete.</p><p class="paragraph u-mb-4">Nebudeme tu rozebírat databáze do hloubky a ani si vysvětlovat, jak funguje dotazovací jazyk SQL. Pokud je pro vás práce s databázemi úplně nová, tak se budete muset SQL naučit někde jinde. Zde si akorát ukážeme, jak se můžeme k databázi připojit pomocí JDBC a pracovat s ní v servletech.</p><h2 id="co-je-jdbc" class="heading-secondary u-mb-2">Co je JDBC</h2><p class="paragraph u-mb-2">Nejvíce nízkoúrovňová cesta jak přistupovat k databázím v Javě je přes JDBC API (Java Database Connectivity). Výhodou je, že nemusíme stahovat žádné knihovny třetích stran, protože JDBC je k dispozici přímo v JDK/JRE. Jediné co potřebujeme, je JDBC driver pro specifickou databázi, ke které se připojujeme.</p><p class="paragraph u-mb-4">Kromě JDBC existují také třeba různé ORM (Object Relational Mapping) nástroje (implementace <a href="https://cs.wikipedia.org/wiki/Java_Persistence_API" target="_blank" class="link">JPA</a>, což je technologie z Javy EE), které nám s databází umožňují pracovat na vyšší úrovni a usnadňují nám mapování položek z databáze na objekty. Ty JDBC používají. Příkladem je například <a href="https://hibernate.org/" target="_blank" class="link">Hibernate</a>. Pro reálné projekty určitě nějaký ORM nástroj použít doporučuji. V této části nám jde jen o to, vůbec se k databázi připojit a zkusit si s ní pracovat.</p><h2 id="ukazka-prace-s-databazi" class="heading-secondary u-mb-2">Ukázka práce s databází</h2><p class="paragraph u-mb-2">Abychom si ukázali, jak v servletech můžeme pracovat s databází, tak si vytvoříme aplikaci, ve které si uživatel bude moci vytvářet, prohlížet, editovat a mazat kontakty.</p><p class="paragraph u-mb-2">Začneme tím, že si vytvoříme databázi a v ní tabulku "kontakty". Jak to udělat pro MySQL popisuje následující slider.</p><div data-slider class="splide u-mb-4" role="group" aria-label="Vytvoření databáze s tabulkou kontakty v MySQL"><div class="splide__track"><ul class="splide__list"><li class="splide__slide"><div class="slider-page"><img src="../../static/img/sliders/mysql-create-database-for-project/mysql-create-database-for-project-part1.png" alt="Vytvoření databáze s tabulkou kontakty v MySQL - část 1" class="slider-page__image"><div class="slider-page__description"><p class="paragraph">Spustíme si MySQL klienta příkazového řádku.</p></div></div></li><li class="splide__slide"><div class="slider-page"><img src="../../static/img/sliders/mysql-create-database-for-project/mysql-create-database-for-project-part2.png" alt="Vytvoření databáze s tabulkou kontakty v MySQL - část 2" class="slider-page__image"><div class="slider-page__description"><p class="paragraph">Po spuštění zadáme heslo, které jsme při instalaci MySQL serveru nastavili.</p></div></div></li><li class="splide__slide"><div class="slider-page"><img data-splide-lazy="../../static/img/sliders/mysql-create-database-for-project/mysql-create-database-for-project-part3.png" alt="Vytvoření databáze s tabulkou kontakty v MySQL - část 3" class="slider-page__image"><div class="slider-page__description"><p class="paragraph">Pokud bylo heslo správné, tak jsme se úspěšně přihlásili.</p></div></div></li><li class="splide__slide"><div class="slider-page"><img data-splide-lazy="../../static/img/sliders/mysql-create-database-for-project/mysql-create-database-for-project-part4.png" alt="Vytvoření databáze s tabulkou kontakty v MySQL - část 4" class="slider-page__image"><div class="slider-page__description"><p class="paragraph">Vytvoříme databázi, kterou můžeme pojmenovat jako "kontakty_app" příkazem "CREATE DATABASE kontakty_app;".</p></div></div></li><li class="splide__slide"><div class="slider-page"><img data-splide-lazy="../../static/img/sliders/mysql-create-database-for-project/mysql-create-database-for-project-part5.png" alt="Vytvoření databáze s tabulkou kontakty v MySQL - část 5" class="slider-page__image"><div class="slider-page__description"><p class="paragraph">Vytvořenou databázi začneme používat příkazem "USE kontakty_app;".</p></div></div></li><li class="splide__slide"><div class="slider-page"><img data-splide-lazy="../../static/img/sliders/mysql-create-database-for-project/mysql-create-database-for-project-part6.png" alt="Vytvoření databáze s tabulkou kontakty v MySQL - část 6" class="slider-page__image"><div class="slider-page__description"><p class="paragraph">Vytvoříme tabulku "kontakty" příkazem, který si můžete zkopírovat z ukázky níže (pro vložení můžete použít pravé tlačítko myši).</p></div></div></li><li class="splide__slide"><div class="slider-page"><img data-splide-lazy="../../static/img/sliders/mysql-create-database-for-project/mysql-create-database-for-project-part7.png" alt="Vytvoření databáze s tabulkou kontakty v MySQL - část 7" class="slider-page__image"><div class="slider-page__description"><p class="paragraph">Pokud se nám tabulka úspěšně vytvořila, tak si můžeme zobrazit její popis příkazem "DESC kontakty".</p></div></div></li></ul></div></div><div data-code-box data-no-buttons class="u-mb-2"><pre data-code><code class="language-sql">CREATE TABLE kontakty
+(
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    jmeno VARCHAR(255) NOT NULL,
+    prijmeni VARCHAR(255) NOT NULL,
+    telefon VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
+);</code></pre></div><p class="paragraph u-mb-2">Vytvořili jsme si databázi s tabulkou, do které budeme ukládat kontakty. Jako sloupce jsme jí nastavili id, což bude jedinečné číslo pro každou položku v tabulce, a sloupce jmeno, prijmeni a telefon. Můžeme se pustit do samotné tvorby aplikace.</p><p class="paragraph u-mb-2">Založíme si nový Maven projekt, který můžeme pojmenovat třeba jako "kontakty". Kromě závislosti pro servlety si do souboru pom.xml přidáme také závislost pro JSTL, jelikož ji budeme používat.</p><div data-project="1" data-project-name="kontakty" class="u-mb-2"><ul data-project-folders><li>src<ul><li>main<ul><li data-java-packages-folder>java</li><li>resources</li><li>webapp</li></ul></li><li>test<ul><li>java</li><li>resources</li></ul></li></ul></li><li>target</li></ul><pre data-code="pom.xml" data-active data-code-highlight="24-28"><code class="language-xml">&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;io.github.jirkasa&lt;/groupId&gt;
+    &lt;artifactId&gt;kontakty&lt;/artifactId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;name&gt;kontakty&lt;/name&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+        &lt;maven.compiler.source&gt;${java.version}&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;${java.version}&lt;/maven.compiler.target&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;4.0.1&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;jstl&lt;/artifactId&gt;
+            &lt;version&gt;1.2&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;</code></pre></div><p class="paragraph u-mb-2">Můžeme začít například tím, že si vytvoříme servlet a JSP stránku pro hlavní stránku aplikace. Následující ukázky je ukazují. Servlet pouze předá příchozí request pro zpracování do JSP stránky a ta jen zobrazí pár odkazů na další stránky aplikace, které později vytvoříme. JSP stránku můžeme pojmenovat třeba jako "Home.jsp" a umístit ji do složky WEB-INF/jsp, kterou vytvoříme, jelikož necheme aby k ní uživatelé měli přímý přístup.</p><div data-project="2" data-project-extends="1" class="u-mb-4"><pre data-code="HomeServlet.java" data-java-package data-java-package-opened data-active><code class="language-java">import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class HomeServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/jsp/Home.jsp");
+        dispatcher.forward(req, res);
+    }
+}</code></pre></div><div data-project="3" data-project-extends="2" class="u-mb-2"><ul data-project-commands><li data-command-create-folder>src/main/webapp/WEB-INF/jsp</li><li data-command-open-folder-to-root>src/main/webapp/WEB-INF/jsp</li></ul><pre data-code="Home.jsp" data-folder="src/main/webapp/WEB-INF/jsp" data-active><code class="language-html">&lt;%@ page contentType="text/html" pageEncoding="UTF-8"%&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Práce s databází&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;p&gt;Vítej v aplikaci. Co chceš udělat?&lt;/p&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&lt;a href="./kontakty"&gt;Zobrazit kontakty&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="./vytvorit-kontakt"&gt;Vytvořit nový kontakt&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="./odstranit-kontakt"&gt;Odstranit kontakt&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div><p class="paragraph u-mb-2">Ve složce WEB-INF vytvoříme soubor web.xml a náš vytvořený servlet namapujeme na "/home". Také jej použijeme jako domovskou stránku aplikace.</p><div data-project="4" data-project-extends="3" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp/WEB-INF</li></ul><pre data-code="web.xml" data-folder="src/main/webapp/WEB-INF" data-active><code class="language-xml">&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://Java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+id="WebApp_ID" version="3.0"&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;HomeServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;HomeServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;HomeServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/home&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    
+    &lt;welcome-file-list&gt;
+        &lt;welcome-file&gt;home&lt;/welcome-file&gt;
+    &lt;/welcome-file-list&gt;
+&lt;/web-app&gt;</code></pre></div><p class="paragraph u-mb-2">Po spuštění aplikace a navštívení <a href="http://localhost:8080/kontakty/" target="_blank" class="link">http://localhost:8080/kontakty/</a> by jste měli vidět stránku, kterou ukazuje následující obrázek.</p><img src="../../static/img/screenshots/PrikladPraceSDatabaziHlavniStranka.png" alt="hlavní stránka aplikace" class="image image--full-width image--with-border u-mb-2"><p class="paragraph u-mb-2">Teď bude pravděpodobně nejlepší začít s tvorbou stránky pro přidání nového kontaktu, abychom si do databáze vůbec mohli nějaké kontakty přidat. Následující ukázky pro ni ukazují servlet a JSP stránku. JSP stránka se jmenuje "CreateContact.jsp" a nachází se na ní formulář pro vytvoření nového kontaktu. Do servletu pro jeho zpracování potom přidáme metodu doPost.</p><div data-project="5" data-project-extends="4" class="u-mb-4"><pre data-code="CreateContactServlet.java" data-java-package data-java-package-opened data-active><code class="language-java">import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class CreateContactServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/jsp/CreateContact.jsp");
+        dispatcher.forward(req, res);
+    }
+}</code></pre></div><div data-project="6" data-project-extends="5" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp/WEB-INF/jsp</li></ul><pre data-code="CreateContact.jsp" data-folder="src/main/webapp/WEB-INF/jsp" data-active><code class="language-html">&lt;%@ page contentType="text/html" pageEncoding="UTF-8"%&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Práce s databází&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;a href="./"&gt;Zpět&lt;/a&gt;
+    &lt;br&gt;&lt;br&gt;
+    &lt;form action="./vytvorit-kontakt" method="POST"&gt;
+        &lt;label for="jmeno"&gt;Jméno:&lt;/label&gt; &lt;input type="text" id="jmeno" name="jmeno" /&gt;
+        &lt;br&gt;&lt;br&gt;
+        &lt;label for="prijmeni"&gt;Příjmení:&lt;/label&gt; &lt;input type="text" id="prijmeni" name="prijmeni" /&gt;
+        &lt;br&gt;&lt;br&gt;
+        &lt;label for="telefon"&gt;Telefon:&lt;/label&gt; &lt;input type="text" id="telefon" name="telefon" /&gt;
+        &lt;br&gt;&lt;br&gt;
+        &lt;button&gt;Vytvořit&lt;/button&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div><p class="paragraph u-mb-2">V souboru web.xml servlet namapujeme na "/vytvorit-kontakt".</p><div data-project="7" data-project-extends="6" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp/WEB-INF</li></ul><pre data-code="web.xml" data-folder="src/main/webapp/WEB-INF" data-active><code class="language-xml">&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://Java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+id="WebApp_ID" version="3.0"&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;HomeServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;HomeServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;HomeServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/home&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;CreateContactServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;CreateContactServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;CreateContactServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/vytvorit-kontakt&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    
+    &lt;welcome-file-list&gt;
+        &lt;welcome-file&gt;home&lt;/welcome-file&gt;
+    &lt;/welcome-file-list&gt;
+&lt;/web-app&gt;</code></pre></div><p class="paragraph u-mb-2">Po restartu aplikace a otevření odkazu "Vytvořit nový kontakt" na hlavní stránce by se vám měla zobrazit stránka s formulářem pro vytvoření nového kontaktu.</p><img src="../../static/img/screenshots/PrikladPraceSDatabaziVytvoritNovyKontaktStranka.png" alt="stránka pro vytvoření nového kontaktu" class="image image--full-width image--with-border u-mb-2"><p class="paragraph u-mb-2">Abychom mohli stránku pro vytvoření kontaktu dokončit, tak se v naší aplikaci potřebujeme připojit k databázi. Je více cest jak to udělat. My si vyzkoušíme nakonfigurovat připojení k databázi pomocí souboru context.xml. Jedná se o konfigurační soubor používaný v servletových kontejnerech (zejména v Tomcatu), který slouží ke konfiguraci webové aplikace. Můžeme v něm nadefinovat připojení k databází, proměnné prostředí, a tak podobně. Může být užitečný pro nastavení aplikace v různých prostředích (např. vývojovém a produkčním).</p><p class="paragraph u-mb-2">Soubor context.xml můžeme vytvořit ve složce META-INF, kterou můžeme založit ve složce webapp, stejně jako složku WEB-INF. Kořenovým elementem souboru context.xml je element Context. Do tohoto elementu můžeme přidat element Resource, který slouží ke konfiguraci datového zdroje. Následující ukázka ukazuje soubor context.xml pro náš projekt.</p><div data-project="8" data-project-extends="7" class="u-mb-2"><ul data-project-commands><li data-command-create-folder>src/main/webapp/META-INF</li><li data-command-open-folder-to-root>src/main/webapp/META-INF</li></ul><pre data-code="context.xml" data-folder="src/main/webapp/META-INF" data-active><code class="language-xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;Context&gt;
+    &lt;Resource name="jdbc/kontakty" auth="Container" type="javax.sql.DataSource"
+        maxActive="20" maxIdle="5" maxWaitMillis="10000"
+        username="root" password="admin"
+        driverClassName="com.mysql.cj.jdbc.Driver"
+        url="jdbc:mysql://localhost:3306/kontakty_app"/&gt;
+&lt;/Context&gt;</code></pre></div><p class="paragraph u-mb-1">Elementu Resource jsme v souboru context.xml nastavili spoustu atributů. Následující seznam popisuje, k čemu tyto atributy slouží:</p><ul class="list u-mb-2"><li><b>name</b> - nastavuje unikátní jméno datového zdroje v kontejneru servletů (Tomcatu)</li><li><b>auth</b> - určuje metodu autentizace pro přístup k datovému zdroji</li><li><b>type</b> - specifikuje typ datového zdroje (v našem případě bude typu javax.sql.DataSource)</li><li><b>maxActive</b> - určuje maximální počet aktivních připojení k datovému zdroji</li><li><b>maxIdle</b> - určuje maximální počet nečinných (nevyužívaných) připojení k datovému zdroji</li><li><b>maxWaitMillis</b> - určuje maximální dobu v milisekundách, po kterou je vlákno ochotno čekat na připojení k databázi</li><li><b>username</b> - specifikuje uživatelské jméno pro přihlášení k databázi</li><li><b>password</b> - specifikuje heslo pro přihlášení k databázi (vy zadejte samozřejmě svoje, pokud nemáte heslo "admin")</li><li><b>driverClassName</b> - specifikuje název třídy JDBC ovladače pro databázi, ke které se připojujeme</li><li><b>url</b> - nastavuje URL adresu databáze, ke které se připojujeme (obsahuje port a název databáze; port je defaultně 3306, pokud jste jej neměnili)</li></ul><p class="paragraph u-mb-2">Pomocí atributu driverClassName jsme nastavili JDBC driver, který se má použít pro přistupování k MySQL databázi. Budeme si jej muset přidat jako závislost do souboru pom.xml. Pokud používate nějakou jinou databázi, tak si musíte najít jiný driver. Soubor pom.xml s přidanou <a href="https://mvnrepository.com/artifact/com.mysql/mysql-connector-j" target="_blank" class="link">závislostí pro JDBC driver k MySQL databázi</a> ukazuje následující ukázka.</p><div data-project="9" data-project-extends="8" class="u-mb-2"><pre data-code="pom.xml" data-active data-code-highlight="29-33"><code class="language-xml">&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;io.github.jirkasa&lt;/groupId&gt;
+    &lt;artifactId&gt;kontakty&lt;/artifactId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;name&gt;kontakty&lt;/name&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+        &lt;maven.compiler.source&gt;${java.version}&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;${java.version}&lt;/maven.compiler.target&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;4.0.1&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;jstl&lt;/artifactId&gt;
+            &lt;version&gt;1.2&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.mysql&lt;/groupId&gt;
+            &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+            &lt;version&gt;8.2.0&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;</code></pre></div><p class="paragraph u-mb-2">Teď když máme připojení k databázi přichystané, můžeme začít třeba tím, že si vytvoříme jednoduchou třídu, která bude reprezentovat kontakt. Bude obsahovat jen vlastnosti, které se budou jmenovat stejně jako sloupce tabulky, kterou jsme si vytvořili v databázi, a jejich gettery a settery. Můžeme ji pojmenovat jako "Kontakt". Následující ukázka ukazuje její kód.</p><div data-project="10" data-project-extends="9" class="u-mb-2"><pre data-code="Kontakt.java" data-java-package data-java-package-opened data-active><code class="language-java">public class Kontakt {
+    private int id;
+    private String jmeno;
+    private String prijmeni;
+    private String telefon;
+    
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+    public String getJmeno() {
+        return jmeno;
+    }
+    public void setJmeno(String jmeno) {
+        this.jmeno = jmeno;
+    }
+    public String getPrijmeni() {
+        return prijmeni;
+    }
+    public void setPrijmeni(String prijmeni) {
+        this.prijmeni = prijmeni;
+    }
+    public String getTelefon() {
+        return telefon;
+    }
+    public void setTelefon(String telefon) {
+        this.telefon = telefon;
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Pro komunikaci s databází za účelem získání, měnění, mazání a tvorby kontaktů si založíme třídu jménem KontaktDBUtil. Jako parametr bude v konstruktoru přijímat objekt typu javax.sql.DataSource. Z tohoto objektu získáme pomocí metody getConnection připojení k databázi, které potom můžeme používat. Později si přidáme metody, kde jej využijeme. Protože je potřeba po použití připojení k databázi provést jeho uzavření, tak třída bude také obsahovat metodu close, kterou vždy zavoláme, až budeme s její prací hotovi. Připojení k databázi se ve skutečnosti nezavírá, ale vrací se do poolu, kde čeká na další použití. Proto jsme v souboru context.xml definovali maximální počet aktivních a neaktivních připojení.</p><div data-project="11" data-project-extends="10" class="u-mb-2"><pre data-code="KontaktDBUtil.java" data-java-package data-java-package-opened data-active><code class="language-java">import java.sql.Connection;
+import java.sql.SQLException;
+
+import javax.sql.DataSource;
+
+public class KontaktDBUtil {
+    private Connection conn;
+    
+    public KontaktDBUtil(DataSource dataSource) {
+        try {
+            conn = dataSource.getConnection();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
+    public void close() {
+        try {
+            conn.close();
+        } catch(SQLException e) {
+            System.out.println(e);
+        }
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Jako první si do třídy KontaktDBUtil přidáme metodu pro vytvoření nového kontaktu. Bude přijímat instanci třídy Kontakt, podle které v databázi vytvoří novou položku. Následující ukázka tuto metodu ukazuje. Vytváříme v ní objekt typu PreparedStatement, kterému předáváme SQL kód, který chceme spustit. Namísto vkládání hodnot přímo do řetězce se SQL kódem používáme otazníky. Až poté na jednotlivá místa pomocí metody setString nastavujeme hodnoty. To děláme kvůli tomu, abychom zabránili SQL Injection útokům. Uživatel by totiž mohl do SQL kódu vložit hodnotu, která by obsahovala SQL kód a tento kód by se potom spustil. Mohl by například jako hodnotu použít řetězec "; DROP TABLE kontakty;" a tím by nám smazal celou tabulku kontakty. Po vytvoření statement objektu náš SQL kód spustíme zavoláním execute metody a protože je potřeba statement objekt uzavřít, zavoláme také metodu close.</p><div data-project="12" data-project-extends="11" class="u-mb-2"><pre data-code="KontaktDBUtil.java" data-java-package data-java-package-opened data-active data-code-highlight="18-32"><code class="language-java">import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import javax.sql.DataSource;
+
+public class KontaktDBUtil {
+    private Connection conn;
+    
+    public KontaktDBUtil(DataSource dataSource) {
+        try {
+            conn = dataSource.getConnection();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
+    public void add(Kontakt kontakt) {
+        try {
+            PreparedStatement statement = conn.prepareStatement("INSERT INTO kontakty (jmeno, prijmeni, telefon) VALUES (?, ?, ?)");
+            
+            statement.setString(1, kontakt.getJmeno());
+            statement.setString(2, kontakt.getPrijmeni());
+            statement.setString(3, kontakt.getTelefon());
+            
+            statement.execute();
+            
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
+    public void close() {
+        try {
+            conn.close();
+        } catch(SQLException e) {
+            System.out.println(e);
+        }
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Naši nově vytvořenou třídu KontaktDBUtil můžeme použít v servletu CreateContactServlet, kde nám zbývá implementovat metodu doPost. Než to ale uděláme, tak si ještě vytvoříme JSP stránku, která bude sloužit k zobrazování zpráv. V servletu budeme moci nastavit zprávu a na stránce ji poté zobrazit. Můžeme ji pojmenovat třeba jako "Message.jsp". Kód pro ni ukazuje následující ukázka. Kromě zprávy budeme také nastavovat URL pro odkaz "Pokračovat", který se na stránce nachází.</p><div data-project="13" data-project-extends="12" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp/WEB-INF/jsp</li></ul><pre data-code="Message.jsp" data-folder="src/main/webapp/WEB-INF/jsp" data-active><code class="language-html">&lt;%@ page contentType="text/html" pageEncoding="UTF-8"%&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Práce s databází&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;p&gt;${zprava}&lt;/p&gt;
+    &lt;br&gt;
+    &lt;a href="${odkaz}"&gt;Pokračovat&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div><p class="paragraph u-mb-2">Teď přidáme do servletu CreateContactServlet metodu doPost, ve které budeme reagovat na odeslaný formulář a pomocí třídy KontaktDBUtil vytvářet v databázi nový kontakt. Poté pošleme stránku se zprávou, že se kontakt úspěšně vytvořil. V následující ukázce si můžete kód metody doPost prohlédnout. Jelikož k vytvoření instance třídy KontaktDBUtil potřebujeme objekt typu DataSource, tak si jej v servletu definujeme jako vlastnost.</p><div data-project="14" data-project-extends="13" class="u-mb-2"><pre data-code="CreateContactServlet.java" data-java-package data-java-package-opened data-active data-code-highlight="11,19-38"><code class="language-java">import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
+
+public class CreateContactServlet extends HttpServlet {
+    private DataSource dataSource;
+    
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/jsp/CreateContact.jsp");
+        dispatcher.forward(req, res);
+    }
+    
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        
+        Kontakt kontakt = new Kontakt();
+        kontakt.setJmeno(req.getParameter("jmeno"));
+        kontakt.setPrijmeni(req.getParameter("prijmeni"));
+        kontakt.setTelefon(req.getParameter("telefon"));
+        
+        System.out.println(dataSource);
+        
+        KontaktDBUtil dbUtil = new KontaktDBUtil(dataSource);
+        dbUtil.add(kontakt);
+        dbUtil.close();
+        
+        req.setAttribute("zprava", "Kontakt byl vytvořen.");
+        req.setAttribute("odkaz", "./");
+        RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/jsp/Message.jsp");
+        dispatcher.forward(req, res);
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Nastavení DataSource objektu necháme na Tomcatu. Použijeme na vlastnost dataSource anotaci @Resource a tím mu řekneme, aby ji nastavil. Abychom ale mohli tuto anotaci použít, potřebujeme si do souboru pom.xml přidat <a href="https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api" class="link">závislost pro anotace</a>. Následující ukázka ukazuje upravený soubor.</p><div data-project="15" data-project-extends="14" class="u-mb-2"><pre data-code="pom.xml" data-active data-code-highlight="34-38"><code class="language-xml">&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;io.github.jirkasa&lt;/groupId&gt;
+    &lt;artifactId&gt;kontakty&lt;/artifactId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;name&gt;kontakty&lt;/name&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+        &lt;maven.compiler.source&gt;${java.version}&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;${java.version}&lt;/maven.compiler.target&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;4.0.1&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;jstl&lt;/artifactId&gt;
+            &lt;version&gt;1.2&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.mysql&lt;/groupId&gt;
+            &lt;artifactId&gt;mysql-connector-j&lt;/artifactId&gt;
+            &lt;version&gt;8.2.0&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.annotation&lt;/groupId&gt;
+            &lt;artifactId&gt;javax.annotation-api&lt;/artifactId&gt;
+            &lt;version&gt;1.3.2&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;</code></pre></div><p class="paragraph u-mb-2">Teď můžeme anotaci @Resource použít. Jako parametr jí nastavujeme název datového zdroje, který jsme specifikovali v souboru context.xml. Následující ukázka ukazuje dokončený servlet CreateContactServlet.</p><div data-project="16" data-project-extends="15" class="u-mb-2"><pre data-code="CreateContactServlet.java" data-java-package data-java-package-opened data-active data-code-highlight="3,12"><code class="language-java">import java.io.IOException;
+
+import javax.annotation.Resource;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
+
+public class CreateContactServlet extends HttpServlet {
+    @Resource(name="jdbc/kontakty")
+    private DataSource dataSource;
+    
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/jsp/CreateContact.jsp");
+        dispatcher.forward(req, res);
+    }
+    
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        
+        Kontakt kontakt = new Kontakt();
+        kontakt.setJmeno(req.getParameter("jmeno"));
+        kontakt.setPrijmeni(req.getParameter("prijmeni"));
+        kontakt.setTelefon(req.getParameter("telefon"));
+        
+        System.out.println(dataSource);
+        
+        KontaktDBUtil dbUtil = new KontaktDBUtil(dataSource);
+        dbUtil.add(kontakt);
+        dbUtil.close();
+        
+        req.setAttribute("zprava", "Kontakt byl vytvořen.");
+        req.setAttribute("odkaz", "./");
+        RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/jsp/Message.jsp");
+        dispatcher.forward(req, res);
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Nyní by formulář na stránce pro vytvoření kontaktu měl fungovat. Po jeho odeslání se vám v databázi vytvoří nová položka a zobrazí se vám stránka se zprávou, že byl kontakt úspěšně vytvořen.</p><img src="../../static/img/screenshots/PrikladPraceSDatabaziKontaktVytvorenStranka.png" alt="stránka, oznamující že byl kontakt vytvořen" class="image image--full-width image--with-border u-mb-2"><p class="paragraph u-mb-2">V aplikaci si vytvořené kontakty zatím nemáme možnost zobrazit. Pustíme se tedy do tvorby stránky, kde se nám do tabulky vypíší všechny vytvořené kontakty. Nejprve si do třídy KontaktDBUtil přidáme metodu pro získání všech kontaktů z databáze. V následující ukázce si ji můžete prohlédnout. Vytváříme statement objekt, na kterém spouštíme SQL dotaz a získáváme ResultSet. Pomocí něj poté procházíme všechny získané položky a ukládáme je do listu. Poté na Statement a ResultSet objektu voláme metodu close a vytvořený list vracíme.</p><div data-project="17" data-project-extends="16" class="u-mb-2"><pre data-code="KontaktDBUtil.java" data-java-package data-java-package-opened data-active data-code-highlight="22-43"><code class="language-java">import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.sql.DataSource;
+
+public class KontaktDBUtil {
+    private Connection conn;
+    
+    public KontaktDBUtil(DataSource dataSource) {
+        try {
+            conn = dataSource.getConnection();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
+    public List&lt;Kontakt&gt; getAll() {
+        ArrayList&lt;Kontakt&gt; kontakty = new ArrayList&lt;Kontakt&gt;();
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM kontakty");
+            
+            while (rs.next()) {
+                Kontakt kontakt = new Kontakt();
+                kontakt.setId(rs.getInt("id"));
+                kontakt.setJmeno(rs.getString("jmeno"));
+                kontakt.setPrijmeni(rs.getString("prijmeni"));
+                kontakt.setTelefon(rs.getString("telefon"));
+                kontakty.add(kontakt);
+            }
+            
+            statement.close();
+            rs.close();
+        } catch(SQLException e) {
+            System.out.println(e);
+        }
+        return kontakty;
+    }
+    
+    public void add(Kontakt kontakt) {
+        try {
+            PreparedStatement statement = conn.prepareStatement("INSERT INTO kontakty (jmeno, prijmeni, telefon) VALUES (?, ?, ?)");
+            
+            statement.setString(1, kontakt.getJmeno());
+            statement.setString(2, kontakt.getPrijmeni());
+            statement.setString(3, kontakt.getTelefon());
+            
+            statement.execute();
+            
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
+    public void close() {
+        try {
+            conn.close();
+        } catch(SQLException e) {
+            System.out.println(e);
+        }
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Teď si vytvoříme servlet, který nazveme "ContactServlet" a k němu JSP stránku, kterou pojmenujeme jako "Contacts.jsp". Servlet v metodě doGet pomocí metody add třídy KontaktDBUtil získá list kontaktů a předá je JSP stránce k zobrazení. Ta vytvoří tabulku a pro každý kontakt do ní vloží řádek. Následující ukázky ukazují kód tohoto servletu a JSP stránky. V servletu vlastnost dataSource definujeme úplně stejně jako dříve v servletu CreateContactServlet. Tomcat nám ji tedy automaticky nastaví.</p><div data-project="18" data-project-extends="17" class="u-mb-4"><pre data-code="ContactsServlet.java" data-java-package data-java-package-opened data-active><code class="language-java">import java.io.IOException;
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
+
+public class ContactsServlet extends HttpServlet {
+    @Resource(name="jdbc/kontakty")
+    private DataSource dataSource;
+    
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        KontaktDBUtil dbUtil = new KontaktDBUtil(dataSource);
+        List&lt;Kontakt&gt; kontakty = dbUtil.getAll();
+        dbUtil.close();
+        
+        req.setAttribute("kontakty", kontakty);
+        RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/jsp/Contacts.jsp");
+        dispatcher.forward(req, res);
+    }
+}</code></pre></div><div data-project="19" data-project-extends="18" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp/WEB-INF/jsp</li></ul><pre data-code="Contacts.jsp" data-folder="src/main/webapp/WEB-INF/jsp" data-active><code class="language-html">&lt;%@ page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %&gt;
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Práce s databází&lt;/title&gt;
+    
+    &lt;style&gt;
+        table, tr, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;a href="./"&gt;Zpět&lt;/a&gt;
+    &lt;br&gt;&lt;br&gt;
+    &lt;table&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;ID&lt;/th&gt;
+                &lt;th&gt;Jméno&lt;/th&gt;
+                &lt;th&gt;Příjmení&lt;/th&gt;
+                &lt;th&gt;Telefon&lt;/th&gt;
+                &lt;th&gt;&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;c:choose&gt;
+                &lt;c:when test="${fn:length(kontakty) &gt; 0}"&gt;
+                    &lt;c:forEach var="kontakt" items="${kontakty}"&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;&lt;c:out value="${kontakt.id}" /&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;c:out value="${kontakt.jmeno}" /&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;c:out value="${kontakt.prijmeni}" /&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;c:out value="${kontakt.telefon}" /&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href="#"&gt;Upravit&lt;/a&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                    &lt;/c:forEach&gt;
+                &lt;/c:when&gt;
+                &lt;c:otherwise&gt;
+                    &lt;tr&gt;
+                        &lt;td colspan="5"&gt;Momentálně nemáš vytvořené žádné kontakty.&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/c:otherwise&gt;
+            &lt;/c:choose&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div><p class="paragraph u-mb-2">Ve web.xml vytvořený servlet namapujeme na "/kontakty".</p><div data-project="20" data-project-extends="19" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp/WEB-INF</li></ul><pre data-code="web.xml" data-folder="src/main/webapp/WEB-INF" data-active data-code-highlight="25-32"><code class="language-xml">&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://Java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+id="WebApp_ID" version="3.0"&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;HomeServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;HomeServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;HomeServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/home&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;CreateContactServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;CreateContactServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;CreateContactServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/vytvorit-kontakt&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;ContactsServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;ContactsServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;ContactsServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/kontakty&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    
+    &lt;welcome-file-list&gt;
+        &lt;welcome-file&gt;home&lt;/welcome-file&gt;
+    &lt;/welcome-file-list&gt;
+&lt;/web-app&gt;</code></pre></div><p class="paragraph u-mb-2">Nyní máme v aplikaci možnost si naše vytvořené kontakty zobrazit. Pokud na hlavní stránce kliknete na "Zobrazit kontakty", tak se vám vypíší do tabulky, jak ukazuje následující obrázek.</p><img src="../../static/img/screenshots/PrikladPraceSDatabaziKontaktyStranka.png" alt="stránka s kontakty" class="image image--full-width image--with-border u-mb-2"><p class="paragraph u-mb-2">Odkaz "Upravit", který se u jednotlivých kontaktů v tabulce zobrazuje, zatím ještě nefunguje. Nyní jej zprovozníme. Bude odkazovat na stránku "/upravit-kontakt" a jako query parametr se bude předávat ID kontaktu, který se má editovat. Následující ukázka ukazuje upravený řádek kódu JSP stránky s kontakty.</p><div data-project="21" data-project-extends="20" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp/WEB-INF/jsp</li></ul><pre data-code="Contacts.jsp" data-folder="src/main/webapp/WEB-INF/jsp" data-active data-code-highlight="40"><code class="language-html">&lt;%@ page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %&gt;
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Práce s databází&lt;/title&gt;
+    
+    &lt;style&gt;
+        table, tr, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;a href="./"&gt;Zpět&lt;/a&gt;
+    &lt;br&gt;&lt;br&gt;
+    &lt;table&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;ID&lt;/th&gt;
+                &lt;th&gt;Jméno&lt;/th&gt;
+                &lt;th&gt;Příjmení&lt;/th&gt;
+                &lt;th&gt;Telefon&lt;/th&gt;
+                &lt;th&gt;&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;c:choose&gt;
+                &lt;c:when test="${fn:length(kontakty) &gt; 0}"&gt;
+                    &lt;c:forEach var="kontakt" items="${kontakty}"&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;&lt;c:out value="${kontakt.id}" /&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;c:out value="${kontakt.jmeno}" /&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;c:out value="${kontakt.prijmeni}" /&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;c:out value="${kontakt.telefon}" /&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;a href="./upravit-kontakt?id=${kontakt.id}"&gt;Upravit&lt;/a&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                    &lt;/c:forEach&gt;
+                &lt;/c:when&gt;
+                &lt;c:otherwise&gt;
+                    &lt;tr&gt;
+                        &lt;td colspan="5"&gt;Momentálně nemáš vytvořené žádné kontakty.&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/c:otherwise&gt;
+            &lt;/c:choose&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div><p class="paragraph u-mb-2">Jelikož budeme chtít podle ID získávat kontakt k editaci z databáze, tak si na to ve třídě KontaktDBUtil vytvoříme metodu. Následující ukázka ji ukazuje.</p><div data-project="22" data-project-extends="21" class="u-mb-2"><pre data-code="KontaktDBUtil.java" data-java-package data-java-package-opened data-active data-code-highlight="45-68"><code class="language-java">import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.sql.DataSource;
+
+public class KontaktDBUtil {
+    private Connection conn;
+    
+    public KontaktDBUtil(DataSource dataSource) {
+        try {
+            conn = dataSource.getConnection();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
+    public List&lt;Kontakt&gt; getAll() {
+        ArrayList&lt;Kontakt&gt; kontakty = new ArrayList&lt;Kontakt&gt;();
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM kontakty");
+            
+            while (rs.next()) {
+                Kontakt kontakt = new Kontakt();
+                kontakt.setId(rs.getInt("id"));
+                kontakt.setJmeno(rs.getString("jmeno"));
+                kontakt.setPrijmeni(rs.getString("prijmeni"));
+                kontakt.setTelefon(rs.getString("telefon"));
+                kontakty.add(kontakt);
+            }
+            
+            statement.close();
+            rs.close();
+        } catch(SQLException e) {
+            System.out.println(e);
+        }
+        return kontakty;
+    }
+    
+    public Kontakt get(int id) {
+        try {
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM kontakty WHERE id = ?");
+            
+            statement.setInt(1, id);
+            
+            ResultSet rs = statement.executeQuery();
+            
+            if (rs.next()) {
+                Kontakt kontakt = new Kontakt();
+                kontakt.setId(rs.getInt("id"));
+                kontakt.setJmeno(rs.getString("jmeno"));
+                kontakt.setPrijmeni(rs.getString("prijmeni"));
+                kontakt.setTelefon(rs.getString("telefon"));
+                return kontakt;
+            }
+            
+            statement.close();
+            rs.close();
+        } catch(SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+    
+    public void add(Kontakt kontakt) {
+        try {
+            PreparedStatement statement = conn.prepareStatement("INSERT INTO kontakty (jmeno, prijmeni, telefon) VALUES (?, ?, ?)");
+            
+            statement.setString(1, kontakt.getJmeno());
+            statement.setString(2, kontakt.getPrijmeni());
+            statement.setString(3, kontakt.getTelefon());
+            
+            statement.execute();
+            
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
+    public void close() {
+        try {
+            conn.close();
+        } catch(SQLException e) {
+            System.out.println(e);
+        }
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Můžeme se pustit do tvorby servletu a JSP stránky. Servlet načte z databáze kontakt a předá jej JSP stránce k zobrazení ve formuláři. V tomto formuláři uživatel bude moci kontakt upravit. Pokud se kontakt nenajde, tak se zobrazí stránka se zprávou, že se nenašel. Následující ukázky ukazují kód tohoto servletu a JSP stránky.</p><div data-project="23" data-project-extends="22" class="u-mb-4"><pre data-code="EditContactServlet.java" data-java-package data-java-package-opened data-active><code class="language-java">import java.io.IOException;
+
+import javax.annotation.Resource;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
+
+public class EditContactServlet extends HttpServlet {
+    @Resource(name="jdbc/kontakty")
+    private DataSource dataSource;
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        int id = Integer.parseInt(req.getParameter("id"));
+        
+        KontaktDBUtil dbUtil = new KontaktDBUtil(dataSource);
+        Kontakt kontakt = dbUtil.get(id);
+        dbUtil.close();
+        
+        if (kontakt != null) {
+            req.setAttribute("kontakt", kontakt);
+            RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/jsp/EditContact.jsp");
+            dispatcher.forward(req, res);			
+        } else {
+            req.setAttribute("zprava", "Kontakt nebyl nalezen.");
+            req.setAttribute("odkaz", "./");
+            RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/jsp/Message.jsp");
+            dispatcher.forward(req, res);
+        }
+    }
+}</code></pre></div><div data-project="24" data-project-extends="23" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp/WEB-INF/jsp</li></ul><pre data-code="EditContact.jsp" data-folder="src/main/webapp/WEB-INF/jsp" data-active><code class="language-html">&lt;%@ page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Práce s databází&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;a href="./"&gt;Zpět&lt;/a&gt;
+    &lt;br&gt;&lt;br&gt;
+    &lt;form action="./upravit-kontakt" method="POST"&gt;
+        &lt;input type="hidden" name="id" value="${kontakt.id}" /&gt;
+        &lt;label for="jmeno"&gt;Jméno:&lt;/label&gt; &lt;input type="text" id="jmeno" name="jmeno" value="&lt;c:out value="${kontakt.jmeno}"/&gt;" /&gt;
+        &lt;br&gt;&lt;br&gt;
+        &lt;label for="prijmeni"&gt;Příjmení:&lt;/label&gt; &lt;input type="text" id="prijmeni" name="prijmeni" value="&lt;c:out value="${kontakt.prijmeni}"/&gt;" /&gt;
+        &lt;br&gt;&lt;br&gt;
+        &lt;label for="telefon"&gt;Telefon:&lt;/label&gt; &lt;input type="text" id="telefon" name="telefon" value="&lt;c:out value="${kontakt.telefon}"/&gt;" /&gt;
+        &lt;br&gt;&lt;br&gt;
+        &lt;button&gt;Upravit&lt;/button&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div><p class="paragraph u-mb-2">Vytvořený servlet namapujeme ve web.xml na "/upravit-kontakt".</p><div data-project="25" data-project-extends="24" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp/WEB-INF</li></ul><pre data-code="web.xml" data-folder="src/main/webapp/WEB-INF" data-active data-code-highlight="34-41"><code class="language-xml">&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://Java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+id="WebApp_ID" version="3.0"&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;HomeServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;HomeServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;HomeServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/home&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;CreateContactServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;CreateContactServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;CreateContactServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/vytvorit-kontakt&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;ContactsServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;ContactsServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;ContactsServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/kontakty&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;EditContactServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;EditContactServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;EditContactServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/upravit-kontakt&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    
+    &lt;welcome-file-list&gt;
+        &lt;welcome-file&gt;home&lt;/welcome-file&gt;
+    &lt;/welcome-file-list&gt;
+&lt;/web-app&gt;</code></pre></div><p class="paragraph u-mb-2">Pokud nyní na stránce s kontakty u některého vytvořeného kontaktu klikneme na "Upravit", tak se nám zobrazí stránka, na které můžeme kontakt upravit.</p><img src="../../static/img/screenshots/PrikladPraceSDatabaziEditaceKontaktuStranka.png" alt="stránka pro editaci kontaktu" class="image image--full-width image--with-border u-mb-2"><p class="paragraph u-mb-2">Abychom mohli kontakt upravit, tak v servletu EditContact servlet implementujeme metodu doPost. Ta bude sloužit pro zpracování formuláře a editaci kontaktu v databázi. Formulář obsahuje skrytý input, který obsahuje ID kontaktu. Podle toho zjistíme, který kontakt se má upravit. Nejdříve si ale ve třídě KontaktDBUtil potřebujeme vytvořit metodu pro editaci kontaktu. Ukazuje ji následující ukázka. Jako parametr bere ID kontaktu, který se má změnit a hodnoty pro jméno, příjmení a telefon. Jako navrátový typ má boolean hodnotu, která signalizuje, zda byl kontakt nalezen nebo ne.</p><div data-project="26" data-project-extends="25" class="u-mb-2"><pre data-code="KontaktDBUtil.java" data-java-package data-java-package-opened data-active data-code-highlight="86-103"><code class="language-java">import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.sql.DataSource;
+
+public class KontaktDBUtil {
+    private Connection conn;
+    
+    public KontaktDBUtil(DataSource dataSource) {
+        try {
+            conn = dataSource.getConnection();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
+    public List&lt;Kontakt&gt; getAll() {
+        ArrayList&lt;Kontakt&gt; kontakty = new ArrayList&lt;Kontakt&gt;();
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM kontakty");
+            
+            while (rs.next()) {
+                Kontakt kontakt = new Kontakt();
+                kontakt.setId(rs.getInt("id"));
+                kontakt.setJmeno(rs.getString("jmeno"));
+                kontakt.setPrijmeni(rs.getString("prijmeni"));
+                kontakt.setTelefon(rs.getString("telefon"));
+                kontakty.add(kontakt);
+            }
+            
+            statement.close();
+            rs.close();
+        } catch(SQLException e) {
+            System.out.println(e);
+        }
+        return kontakty;
+    }
+    
+    public Kontakt get(int id) {
+        try {
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM kontakty WHERE id = ?");
+            
+            statement.setInt(1, id);
+            
+            ResultSet rs = statement.executeQuery();
+            
+            if (rs.next()) {
+                Kontakt kontakt = new Kontakt();
+                kontakt.setId(rs.getInt("id"));
+                kontakt.setJmeno(rs.getString("jmeno"));
+                kontakt.setPrijmeni(rs.getString("prijmeni"));
+                kontakt.setTelefon(rs.getString("telefon"));
+                return kontakt;
+            }
+            
+            statement.close();
+            rs.close();
+        } catch(SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+    
+    public void add(Kontakt kontakt) {
+        try {
+            PreparedStatement statement = conn.prepareStatement("INSERT INTO kontakty (jmeno, prijmeni, telefon) VALUES (?, ?, ?)");
+            
+            statement.setString(1, kontakt.getJmeno());
+            statement.setString(2, kontakt.getPrijmeni());
+            statement.setString(3, kontakt.getTelefon());
+            
+            statement.execute();
+            
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
+    public boolean update(int id, String jmeno, String prijmeni, String telefon) {
+        int updatedCount = 0;
+        try {
+            PreparedStatement statement = conn.prepareStatement("UPDATE kontakty SET jmeno = ?, prijmeni = ?, telefon = ? WHERE id = ?");
+            
+            statement.setString(1, jmeno);
+            statement.setString(2, prijmeni);
+            statement.setString(3, telefon);
+            statement.setInt(4, id);
+            
+            updatedCount = statement.executeUpdate();
+            
+            statement.close();
+        } catch(SQLException e) {
+            System.out.println(e);
+        }
+        return updatedCount &gt; 0;
+    }
+    
+    public void close() {
+        try {
+            conn.close();
+        } catch(SQLException e) {
+            System.out.println(e);
+        }
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Teď můžeme tuto nově vytvořenou metodu použít v metodě doPost, kterou vytvoříme v servletu EditContact. V následující ukázka si ji můžete prohlédnout.</p><div data-project="27" data-project-extends="26" class="u-mb-2"><pre data-code="EditContactServlet.java" data-java-package data-java-package-opened data-active data-code-highlight="35-51"><code class="language-java">import java.io.IOException;
+
+import javax.annotation.Resource;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
+
+public class EditContactServlet extends HttpServlet {
+    @Resource(name="jdbc/kontakty")
+    private DataSource dataSource;
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        int id = Integer.parseInt(req.getParameter("id"));
+        
+        KontaktDBUtil dbUtil = new KontaktDBUtil(dataSource);
+        Kontakt kontakt = dbUtil.get(id);
+        dbUtil.close();
+        
+        if (kontakt != null) {
+            req.setAttribute("kontakt", kontakt);
+            RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/jsp/EditContact.jsp");
+            dispatcher.forward(req, res);			
+        } else {
+            req.setAttribute("zprava", "Kontakt nebyl nalezen.");
+            req.setAttribute("odkaz", "./");
+            RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/jsp/Message.jsp");
+            dispatcher.forward(req, res);
+        }
+    }
+    
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        int id = Integer.parseInt(req.getParameter("id"));
+        String jmeno = req.getParameter("jmeno");
+        String prijmeni = req.getParameter("prijmeni");
+        String telefon = req.getParameter("telefon");
+        
+        KontaktDBUtil dbUtil = new KontaktDBUtil(dataSource);
+        boolean success = dbUtil.update(id, jmeno, prijmeni, telefon);
+        dbUtil.close();
+        
+        req.setAttribute("zprava", success ? "Kontakt byl upraven." : "Kontakt nebyl nalezen.");
+        req.setAttribute("odkaz", "./");
+        RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/jsp/Message.jsp");
+        dispatcher.forward(req, res);
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Můžete si nějaký kontakt zkusit upravit. Mělo by to fungovat a zobrazit se zpráva, že kontakt byl úspěšně upraven.</p><img src="../../static/img/screenshots/PrikladPraceSDatabaziKontaktUpravenStranka.png" alt="stránka, oznamující že byl kontakt upraven" class="image image--full-width image--with-border u-mb-2"><p class="paragraph u-mb-2">Poslední věc, která nám zbývá udělat, je přidání možnosti smazat kontakt. U toho jsem se rozhodl, že na to uděláme samostatnou stránku, kde uživatel zadá ID kontaktu, který chce smazat. Začneme s přidáním metody pro odstranění kontaktu z databáze do třídy KontaktDBUtil. Ukazuje ji následující ukázka.</p><div data-project="28" data-project-extends="27" class="u-mb-2"><pre data-code="KontaktDBUtil.java" data-java-package data-java-package-opened data-active data-code-highlight="105-119"><code class="language-java">import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.sql.DataSource;
+
+public class KontaktDBUtil {
+    private Connection conn;
+    
+    public KontaktDBUtil(DataSource dataSource) {
+        try {
+            conn = dataSource.getConnection();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
+    public List&lt;Kontakt&gt; getAll() {
+        ArrayList&lt;Kontakt&gt; kontakty = new ArrayList&lt;Kontakt&gt;();
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM kontakty");
+            
+            while (rs.next()) {
+                Kontakt kontakt = new Kontakt();
+                kontakt.setId(rs.getInt("id"));
+                kontakt.setJmeno(rs.getString("jmeno"));
+                kontakt.setPrijmeni(rs.getString("prijmeni"));
+                kontakt.setTelefon(rs.getString("telefon"));
+                kontakty.add(kontakt);
+            }
+            
+            statement.close();
+            rs.close();
+        } catch(SQLException e) {
+            System.out.println(e);
+        }
+        return kontakty;
+    }
+    
+    public Kontakt get(int id) {
+        try {
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM kontakty WHERE id = ?");
+            
+            statement.setInt(1, id);
+            
+            ResultSet rs = statement.executeQuery();
+            
+            if (rs.next()) {
+                Kontakt kontakt = new Kontakt();
+                kontakt.setId(rs.getInt("id"));
+                kontakt.setJmeno(rs.getString("jmeno"));
+                kontakt.setPrijmeni(rs.getString("prijmeni"));
+                kontakt.setTelefon(rs.getString("telefon"));
+                return kontakt;
+            }
+            
+            statement.close();
+            rs.close();
+        } catch(SQLException e) {
+            System.out.println(e);
+        }
+        return null;
+    }
+    
+    public void add(Kontakt kontakt) {
+        try {
+            PreparedStatement statement = conn.prepareStatement("INSERT INTO kontakty (jmeno, prijmeni, telefon) VALUES (?, ?, ?)");
+            
+            statement.setString(1, kontakt.getJmeno());
+            statement.setString(2, kontakt.getPrijmeni());
+            statement.setString(3, kontakt.getTelefon());
+            
+            statement.execute();
+            
+            statement.close();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+    
+    public boolean update(int id, String jmeno, String prijmeni, String telefon) {
+        int updatedCount = 0;
+        try {
+            PreparedStatement statement = conn.prepareStatement("UPDATE kontakty SET jmeno = ?, prijmeni = ?, telefon = ? WHERE id = ?");
+            
+            statement.setString(1, jmeno);
+            statement.setString(2, prijmeni);
+            statement.setString(3, telefon);
+            statement.setInt(4, id);
+            
+            updatedCount = statement.executeUpdate();
+            
+            statement.close();
+        } catch(SQLException e) {
+            System.out.println(e);
+        }
+        return updatedCount &gt; 0;
+    }
+    
+    public boolean delete(int id) {
+        int deletedCount = 0;
+        try {
+            PreparedStatement statement = conn.prepareStatement("DELETE FROM kontakty WHERE id = ?");
+            
+            statement.setInt(1, id);
+            
+            deletedCount = statement.executeUpdate();
+            
+            statement.close();
+        } catch(SQLException e) {
+            System.out.println(e);
+        }
+        return deletedCount &gt; 0;
+    }
+    
+    public void close() {
+        try {
+            conn.close();
+        } catch(SQLException e) {
+            System.out.println(e);
+        }
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Teď vytvoříme servlet a JSP stránku. Ukazují je následující ukázky.</p><div data-project="29" data-project-extends="28" class="u-mb-4"><pre data-code="DeleteContactServlet.java" data-java-package data-java-package-opened data-active><code class="language-java">import java.io.IOException;
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
+
+public class DeleteContactServlet extends HttpServlet {
+    @Resource(name="jdbc/kontakty")
+    private DataSource dataSource;
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/jsp/DeleteContact.jsp");
+        dispatcher.forward(req, res);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        int id = Integer.parseInt(req.getParameter("id"));
+        
+        KontaktDBUtil dbUtil = new KontaktDBUtil(dataSource);
+        boolean success = dbUtil.delete(id);
+        dbUtil.close();
+        
+        req.setAttribute("zprava", success ? "Kontakt byl smazán." : "Kontakt nebyl nalezen.");
+        req.setAttribute("odkaz", "./");
+        RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/jsp/Message.jsp");
+        dispatcher.forward(req, res);
+    }
+}</code></pre></div><div data-project="30" data-project-extends="29" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp/WEB-INF/jsp</li></ul><pre data-code="DeleteContact.jsp" data-folder="src/main/webapp/WEB-INF/jsp" data-active><code class="language-html">&lt;%@ page contentType="text/html" pageEncoding="UTF-8"%&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Práce s databází&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;a href="./"&gt;Zpět&lt;/a&gt;
+    &lt;br&gt;&lt;br&gt;
+    &lt;form action="./odstranit-kontakt" method="POST"&gt;
+        &lt;label for="id"&gt;ID:&lt;/label&gt; &lt;input type="number" id="id" name="id" /&gt;
+        &lt;br&gt;&lt;br&gt;
+        &lt;button&gt;Odstranit&lt;/button&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div><p class="paragraph u-mb-2">Servlet v souboru web.xml namapujeme na "/odstranit-kontakt".</p><div data-project="31" data-project-extends="30" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp/WEB-INF</li></ul><pre data-code="web.xml" data-folder="src/main/webapp/WEB-INF" data-active data-code-highlight="43-50"><code class="language-xml">&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://Java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+id="WebApp_ID" version="3.0"&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;HomeServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;HomeServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;HomeServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/home&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;CreateContactServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;CreateContactServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;CreateContactServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/vytvorit-kontakt&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;ContactsServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;ContactsServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;ContactsServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/kontakty&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;EditContactServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;EditContactServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;EditContactServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/upravit-kontakt&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;DeleteContactServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;DeleteContactServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;DeleteContactServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/odstranit-kontakt&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    
+    &lt;welcome-file-list&gt;
+        &lt;welcome-file&gt;home&lt;/welcome-file&gt;
+    &lt;/welcome-file-list&gt;
+&lt;/web-app&gt;</code></pre></div><p class="paragraph u-mb-2">Po otevření odkazu "Odstranit kontakt" na hlavní stránce se nám nyní zobrazí formulář, do kterého můžeme zadat ID kontaktu a smazat jej.</p><img src="../../static/img/screenshots/PrikladPraceSDatabaziOdstraneniKontaktuStranka.png" alt="stránka pro odstranění kontaktu" class="image image--full-width image--with-border u-mb-2"><p class="paragraph u-mb-6">Naše aplikace je hotová. Není to samozřejmě úplně reálná aplikace, protože v ní například chybí validace a tak podobně. Její tvorbou jsme si hlavně chtěli jen vyzkoušet práci s databází, což bylo cílem této části.</p><p class="paragraph">Touto částí celý tutoriál o servletech a JSP končí. Po jeho absolvování máte základ, na kterém teď můžete stavět. Pokud si někdy budete chtít něco připomenout, tak se sem můžete vrátit a třeba si najít nějakou specifickou část tutoriálu v <a href="../../obsah/" class="link">obsahu</a>. Také se můžete podívat i na tutoriály/články v sekci <a href="../../dalsi-tutorialy/k-cemu-tato-sekce-slouzi/" class="link">další tutoriály</a>.</p></main></div></div><footer class="footer"><div class="footer__content"><p class="footer__text">Tento web vytvořil <a href="https://jirkasa.github.io/" target="_blank" class="footer__link">Jiří Satora</a></p></div></footer></body></html>

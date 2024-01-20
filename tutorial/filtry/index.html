@@ -1,0 +1,328 @@
+<!doctype html><html lang="cs"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes,maximum-scale=2.2,minimum-scale=1"><link rel="icon" type="image/svg+xml" href="../../static/img/favicon.svg"><meta name="author" content="Jiří Satora"><meta name="description" content="V této části tutoriálu si ukážeme, jak můžeme omezit přístup k servletům pomocí filtru. A nejen to. Jedná se jen o jednu z věcí, které můžeme pomocí filtrů dělat."><title>Filtry | Servlety a JSP - Návod</title><script src="../../static/js/highlight.min.js"></script><script>hljs.highlightAll()</script><script defer="defer" src="../../common.094d85ce485e92e2c2cb.js"></script><script defer="defer" src="../../618.274f04aa314232891610.js"></script><script defer="defer" src="../../tutorial.eb9162178c9dddad389b.js"></script><link href="../../css/style.dc6eaf064d238b949478.css" rel="stylesheet"></head><body><input type="hidden" id="PATH_TO_ROOT" value="../../"><header id="HeaderContainer" class="header"><div id="Header" class="header__container"><div class="header__content"><a href="../../" class="header__home-link">Servlety a JSP<span class="header__home-link-unimportant-part"> - Návod</span></a> <button id="NavigationToggleButton" class="menu-toggle-button">Otevřít/Zavřít menu<span class="menu-toggle-button__icon"></span></button><nav id="HeaderNavigation" class="header__navigation"><ul><li><a href="../../tutorial/priprava-pro-vyvoj/" class="header__navigation-link header__navigation-link--active">Tutoriál</a></li><li><a href="../../obsah/" class="header__navigation-link">Obsah</a></li><li><a href="../../dalsi-tutorialy/k-cemu-tato-sekce-slouzi/" class="header__navigation-link">Další tutoriály</a></li><li><a href="https://github.com/Jirkasa/servlety-a-jsp-navod" target="_blank" class="header__navigation-link">GitHub</a></li></ul></nav></div></div></header><div class="tutorial-page-layout"><div class="tutorial-page-layout__container"><nav id="TutorialNavigation" class="tutorial-page-layout__navigation-side"><ul class="navigation"><li><a href="../priprava-pro-vyvoj/" class="navigation__link">Příprava pro vývoj</a></li><li><a href="../uvod-do-servletu/" class="navigation__link">Úvod do Servletů</a></li><li><a href="../http-servlet/" class="navigation__link">HTTP Servlet</a></li><li><a href="../sledovani-relace/" class="navigation__link">Sledování relace</a></li><li><a href="../komunikace-mezi-servlety/" class="navigation__link">Komunikace mezi Servlety</a></li><li><a href="../filtry/" class="navigation__link navigation__link--active">Filtry</a></li><li><a href="../uvod-do-jsp/" class="navigation__link">Úvod do JSP</a></li><li><a href="../jsp-tagy-a-implicitni-objekty/" class="navigation__link">JSP tagy a implicitní objekty</a></li><li><a href="../jsp-direktivy/" class="navigation__link">JSP direktivy</a></li><li><a href="../jsp-action-tagy/" class="navigation__link">JSP action tagy</a></li><li><a href="../jsp-custom-tagy/" class="navigation__link">JSP custom tagy</a></li><li><a href="../jsp-expression-language/" class="navigation__link">JSP expression language</a></li><li><a href="../jstl/" class="navigation__link">JSTL</a></li><li><a href="../mvc-vzor/" class="navigation__link">MVC vzor</a></li><li><a href="../struts-framework/" class="navigation__link">Struts framework</a></li><li><a href="../prace-s-databazi/" class="navigation__link">Práce s databází</a></li></ul></nav><main class="tutorial-page-layout__content"><h1 class="heading-primary u-mb-4">Filtry</h1><p class="paragraph u-mb-4">V této části si ukážeme, jak můžeme omezit přístup k servletům pomocí filtrů. A nejen to, jedná se jen o jednu z věcí, které můžeme pomocí filtrů udělat.</p><h2 id="co-je-filtr" class="heading-secondary u-mb-2">Co je Filtr</h2><p class="paragraph u-mb-2">Filtr je objekt, který se spouští před zpracováním a po zpracování requestu. Používá se třeba k implementaci autentizace a autorizace, k logování, a tak podobně. Výhoda filtru je ta, že jej můžeme použít na více servletů. Není nijak závislý na specifickém servletu. Díky tomu je pro nás i jednodušší jeho správa.</p><p class="paragraph u-mb-4">Následující diagram ukazuje, kdy se filter spouští.</p><img src="../../static/img/illustrations/SpusteniFilteru.svg" alt="Diagram, ukazující kdy se filtr spouští" class="image u-mb-4"><p class="paragraph u-mb-4">Filtrů může být pro servlet nastavených klidně i více. Filtry se potom budou volat jeden po druhém až k servletu.</p><img src="../../static/img/illustrations/SpusteniViceFilteru.svg" alt="Diagram, ukazující kdy se spouští řetězec filtrů" class="image u-mb-6"><h2 id="rozhrani-filter" class="heading-secondary u-mb-2">Rozhraní Filter</h2><p class="paragraph u-mb-2">Filtr můžeme vytvořit implementací <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/Filter.html" target="_blank" class="link">Filter</a> rozhraní. Toto rozhraní definuje tři metody, které popisuje následující tabulka.</p><div class="table-wrapper u-mb-2"><table class="table"><thead><tr><th>Metoda</th><th>Návratový typ</th><th>Popis</th></tr></thead><tbody><tr><td>init(FilterConfig filterConfig)</td><td>void</td><td>Volána servlet containerem (Tomcatem) při vytvoření filtru. Slouží k inicializaci (můžeme třeba načíst nějakou konfiguraci atp.).</td></tr><tr><td>doFilter(ServletRequest request, ServletResponse response, FilterChain chain)</td><td>void</td><td>Volána pro provedení filteru (když na server přijde request, nebo je filter další na řadě v řetězci filterů).</td></tr><tr><td>destroy()</td><td>void</td><td>Volána servlet containerem (Tomcatem), když se filtr chystá vyřadit z provozu.</td></tr></tbody></table></div><p class="paragraph u-mb-2">Metody init a destroy mají defaultní implementaci. Pokud je tedy nepotřebujeme, nemusíme je implementovat. Následující ukázka ukazuje příklad, jak může filtr vypadat.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code="FilterExample.java"><code class="language-java">import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+
+public class RequestLoggingFilter implements Filter {
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+        // provedení nějaké akce před zpracováním requestu (v tomto případě vypsání IP adresy, ze které byl request poslán)
+        String ipAdresa = req.getRemoteAddr();
+        String requestUri = ((HttpServletRequest) req).getRequestURI();
+        System.out.println("Request obdržen z " + ipAdresa + " pro " + requestUri);
+
+        // poslání requestu pro zpracování do servletu (nebo dalšího filtru v pořadí)
+        chain.doFilter(req, res);
+
+        // provedení nějaké akce po zpracování requestu (v tomto případě vypsání response status kódu)
+        int statusCode = ((HttpServletResponse) response).getStatus();
+        System.out.println("Response status kód: " + statusCode);
+    }
+}</code></pre></div><h2 id="filter-chain" class="heading-secondary u-mb-2">Filter chain</h2><p class="paragraph u-mb-4">V metodě doFilter se jako poslední parametr předává objekt typu <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/FilterChain.html" target="_blank" class="link">FilterChain</a>. Jedná se o rozhraní, které definuje jen jednu metodu jménem doFilter. Tu ve filtru používáme k tomu, abychom předali request ke zpracování servletu nebo dalšímu filtru v řetězci. Slovo chain v češtině vlastně znamená řetězec. FilterChain tedy představuje takový řetězec filtrů směřující k servletu. Pokud v nějakém filtru metodu doFilter objektu FilterChain nezavoláme, tak se řetězec přeruší a request do servletu nedoputuje.</p><h2 id="vytvoreni-filtru" class="heading-secondary u-mb-2">Vytvoření filtru</h2><p class="paragraph u-mb-2">Pro ukázku si vytvoříme projekt, ve kterém budeme mít dva servlety, které jen vyrenderují stránku. Poté vytvoříme filtr, který na tyto servlety aplikujeme. Bude sloužit k tomu, že nám bude na serveru do konzole vypisovat, kdy proběhl request a na jaký servlet. Založíme tedy nový Maven projekt a vytvoříme první servlet. Ukazuje jej následující ukázka.</p><div data-project="1" data-project-name="logging-filter" class="u-mb-2"><ul data-project-folders><li>src<ul><li>main<ul><li data-java-packages-folder>java</li><li>resources</li><li>webapp</li></ul></li><li>test<ul><li>java</li><li>resources</li></ul></li></ul></li><li>target</li></ul><pre data-code="pom.xml"><code class="language-xml">&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;io.github.jirkasa&lt;/groupId&gt;
+    &lt;artifactId&gt;logging-filter&lt;/artifactId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;name&gt;logging-filter&lt;/name&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+        &lt;maven.compiler.source&gt;${java.version}&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;${java.version}&lt;/maven.compiler.target&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;4.0.1&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;</code></pre><pre data-code="Servlet1.java" data-java-package data-java-package-opened data-active><code class="language-java">import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class Servlet1 extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        res.setContentType("text/html; charset=utf-8");
+        try (PrintWriter out = res.getWriter()) {
+            out.println("&lt;!DOCTYPE html&gt;");
+            out.println("&lt;html&gt;");
+            out.println("&lt;head&gt;");
+            out.println("&lt;meta charset=\"UTF-8\"&gt;");
+            out.println("&lt;title&gt;Servlet1&lt;/title&gt;");
+            out.println("&lt;/head&gt;");
+            out.println("&lt;body&gt;");
+            out.println("&lt;h1&gt;Servlet1&lt;/h1&gt;");
+            out.println("&lt;p&gt;Stránka pro Servlet1.&lt;/p&gt;");
+            out.println("&lt;/body&gt;");
+            out.println("&lt;/html&gt;");
+        }
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Druhý servlet bude v podstatě stejný.</p><div data-project="2" data-project-extends="1" class="u-mb-2"><pre data-code="Servlet2.java" data-java-package data-java-package-opened data-active><code class="language-java">import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class Servlet2 extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        res.setContentType("text/html; charset=utf-8");
+        try (PrintWriter out = res.getWriter()) {
+            out.println("&lt;!DOCTYPE html&gt;");
+            out.println("&lt;html&gt;");
+            out.println("&lt;head&gt;");
+            out.println("&lt;meta charset=\"UTF-8\"&gt;");
+            out.println("&lt;title&gt;Servlet2&lt;/title&gt;");
+            out.println("&lt;/head&gt;");
+            out.println("&lt;body&gt;");
+            out.println("&lt;h1&gt;Servlet2&lt;/h1&gt;");
+            out.println("&lt;p&gt;Stránka pro Servlet2.&lt;/p&gt;");
+            out.println("&lt;/body&gt;");
+            out.println("&lt;/html&gt;");
+        }
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Ve web.xml můžeme servlety namapovat třeba na "/servlet-1" a "/servlet-2", jak ukazuje následující ukázka.</p><div data-project="3" data-project-extends="2" class="u-mb-2"><ul data-project-commands><li data-command-create-folder>src/main/webapp/WEB-INF</li><li data-command-open-folder-to-root>src/main/webapp/WEB-INF</li></ul><pre data-code="web.xml" data-folder="src/main/webapp/WEB-INF" data-active><code class="language-xml">&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://Java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+id="WebApp_ID" version="3.0"&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;Servlet1&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;Servlet1&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;Servlet2&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;Servlet2&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;Servlet1&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/servlet-1&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;Servlet2&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/servlet-2&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;</code></pre></div><p class="paragraph u-mb-2">Teď se již můžeme pustit do toho hlavního, o co nám tu jde. Vytvoříme si filtr, který nám bude do konzole vypisovat, že proběhl request. Filtr můžeme pojmenovat třeba jako LoggingFilter. Následující ukázka ukazuje jeho implementaci.</p><div data-project="4" data-project-extends="3" class="u-mb-2"><pre data-code="LoggingFilter.java" data-java-package data-java-package-opened data-active><code class="language-java">import java.io.IOException;
+import java.util.Date;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+
+public class LoggingFilter implements Filter {
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+        String requestUri = ((HttpServletRequest) req).getRequestURI();
+        // vypsání do konzole, že proběhl request
+        System.out.println(new Date() + ": proběhl request na " + requestUri);
+        
+        // předání requestu servletu pro zpracování
+        chain.doFilter(req, res);
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Filtry můžeme namapovat na jakýkoliv servlet chceme. To představuje jejich výhodu. Můžeme je přidávat a odstraňovat ze servletů, aniž bychom museli měnit servlety samotné. Dělá se to v souboru web.xml. Nejdříve musíme filtr nadefinovat pomocí elementu filter a poté jej namapovat pomocí elementu filter-mapping. Je to podobné jako u servletů. Element filter má podelement filter-name, který představuje název filtru a podelement filter-class, kde se definuje třída pro filtr. Element filter-mapping má podelement filter-name, který určuje pro jaký filtr provádíme mapování a podelement url-pattern, ve kterém definujeme vzor, podle kterého se filtr na servlety použije. Jelikož chceme náš filtr použít na všechny servlety v aplikaci, tak můžeme jako url-pattern nastavit "/*". Následující ukázka ukazuje náš upravený soubor web.xml.</p><div data-project="5" data-project-extends="4" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp/WEB-INF</li></ul><pre data-code="web.xml" data-folder="src/main/webapp/WEB-INF" data-active data-code-highlight="23-30"><code class="language-xml">&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://Java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+id="WebApp_ID" version="3.0"&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;Servlet1&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;Servlet1&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;Servlet2&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;Servlet2&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;Servlet1&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/servlet-1&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;Servlet2&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/servlet-2&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    &lt;filter&gt;
+        &lt;filter-name&gt;Logging&lt;/filter-name&gt;
+        &lt;filter-class&gt;LoggingFilter&lt;/filter-class&gt;
+    &lt;/filter&gt;
+    &lt;filter-mapping&gt;
+        &lt;filter-name&gt;Logging&lt;/filter-name&gt;
+        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+    &lt;/filter-mapping&gt;
+&lt;/web-app&gt;</code></pre></div><p class="paragraph u-mb-2">Pokud si nyní zkusíte jeden ze servletů otevřít, tak se vám v konzoli ve vašem IDE vypíše, že proběhl request.</p><div data-code-box data-no-buttons class="u-mb-6"><pre data-code><code class="no-highlight">Sat Dec 09 21:30:32 CET 2023: proběhl request na /logging-filter/servlet-2</code></pre></div><h2 id="zablokovani-pristupu-k-vybranym-servletum" class="heading-secondary u-mb-2">Zablokování přístupu k vybraným servletům</h2><p class="paragraph u-mb-2">Pokud ve filtru nezavoláme metodu doFilter FilterChain objektu, tak se request nedostane k cílovému servletu a nebude jím tedy zpracován. Tímto způsobem bychom tedy mohli vyřešit problém, se kterým jsme se setkali v minulé části.</p><p class="paragraph u-mb-2">Pro ukázku si vytvoříme projekt, kde budeme mít servlet renderující stránku. Přístup k tomuto servletu poté zamezíme pomocí filtru. Založíme tedy nový Maven projekt a vytvoříme servlet, který můžeme pojmenovat třeba jako MujServlet. Ukazuje jej následující ukázka.</p><div data-project="6" data-project-name="blocking-filter" class="u-mb-2"><ul data-project-folders><li>src<ul><li>main<ul><li data-java-packages-folder>java</li><li>resources</li><li>webapp</li></ul></li><li>test<ul><li>java</li><li>resources</li></ul></li></ul></li><li>target</li></ul><pre data-code="pom.xml"><code class="language-xml">&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;io.github.jirkasa&lt;/groupId&gt;
+    &lt;artifactId&gt;blocking-filter&lt;/artifactId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;name&gt;blocking-filter&lt;/name&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+        &lt;maven.compiler.source&gt;${java.version}&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;${java.version}&lt;/maven.compiler.target&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;4.0.1&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;</code></pre><pre data-code="MujServlet.java" data-java-package data-java-package-opened data-active><code class="language-java">import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class MujServlet extends HttpServlet{
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        res.setContentType("text/html; charset=utf-8");
+        try (PrintWriter out = res.getWriter()) {
+            out.println("&lt;!DOCTYPE html&gt;");
+            out.println("&lt;html&gt;");
+            out.println("&lt;head&gt;");
+            out.println("&lt;meta charset=\"UTF-8\"&gt;");
+            out.println("&lt;title&gt;Stránka&lt;/title&gt;");
+            out.println("&lt;/head&gt;");
+            out.println("&lt;body&gt;");
+            out.println("&lt;h1&gt;Stránka&lt;/h1&gt;");
+            out.println("&lt;p&gt;Nějaký text stránky.&lt;/p&gt;");
+            out.println("&lt;/body&gt;");
+            out.println("&lt;/html&gt;");
+        }
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Servlet můžeme namapovat třeba na "/stranka". Vytvoříme tedy soubor web.xml a uděláme to.</p><div data-project="7" data-project-extends="6" class="u-mb-2"><ul data-project-commands><li data-command-create-folder>src/main/webapp/WEB-INF</li><li data-command-open-folder-to-root>src/main/webapp/WEB-INF</li></ul><pre data-code="web.xml" data-folder="src/main/webapp/WEB-INF" data-active><code class="language-xml">&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://Java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+id="WebApp_ID" version="3.0"&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;Stranka&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;MujServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;Stranka&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/stranka&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;</code></pre></div><p class="paragraph u-mb-2">Pokud si aplikaci spustíte a otevřete <a href="http://localhost:8080/blocking-filter/stranka" target="_blank" class="link">http://localhost:8080/blocking-filter/stranka</a>, tak uvidíte stránku, kterou ukazuje následující obrázek.</p><img src="../../static/img/screenshots/StrankaProZablokovaniFiltrem.png" alt="Stránka" class="image image--full-width image--with-border u-mb-2"><p class="paragraph u-mb-2">Nyní si náš vytvořený servlet zkusíme zablokovat, aby na něj uživatel nemohl poslat request. Vytvoříme si na to filtr, který pojmenujeme třeba jako BlockingFilter. V tomto filtru nezavoláme metodu doFilter FilterChain objektu, ale pošleme klientovi chybu prostřednictvím sendError metody HttpServletResponse objektu. Následující ukázka filtr ukazuje. Metodou sendError posíláme chybu se status kódem 403, což znamená, že server klientovi odmítá vrátit zdroj, pro který poslal request. Namísto konstanty SC_FORBIDDEN bychom klidně mohli použít i číslo 403.</p><div data-project="8" data-project-extends="7" class="u-mb-2"><pre data-code="BlockingFilter.java" data-java-package data-java-package-opened data-active><code class="language-java">import java.io.IOException;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletResponse;
+
+public class BlockingFilter implements Filter {
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+        // castnutí ServletResponse na HttpServletResponse
+        HttpServletResponse httpRes = (HttpServletResponse) res;
+        
+        // poslání chyby se status kódem 403
+        httpRes.sendError(HttpServletResponse.SC_FORBIDDEN, "Přístup odepřen");
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Ve web.xml souboru si můžeme filtr namapovat na náš servlet, který renderuje stránku. Tím pádem již nebudeme mít možnost, jak se k němu jako uživatelé dostat.</p><div data-project="9" data-project-extends="8" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp/WEB-INF</li></ul><pre data-code="web.xml" data-folder="src/main/webapp/WEB-INF" data-active data-code-highlight="15-22"><code class="language-xml">&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://Java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+id="WebApp_ID" version="3.0"&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;Stranka&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;MujServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;Stranka&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/stranka&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    &lt;filter&gt;
+        &lt;filter-name&gt;BlockingFilter&lt;/filter-name&gt;
+        &lt;filter-class&gt;BlockingFilter&lt;/filter-class&gt;
+    &lt;/filter&gt;
+    &lt;filter-mapping&gt;
+        &lt;filter-name&gt;BlockingFilter&lt;/filter-name&gt;
+        &lt;url-pattern&gt;/stranka&lt;/url-pattern&gt;
+    &lt;/filter-mapping&gt;
+&lt;/web-app&gt;</code></pre></div><p class="paragraph u-mb-2">Pokud si aplikaci restartujete a zkusíte znovu navštívit <a href="http://localhost:8080/blocking-filter/stranka" target="_blank" class="link">http://localhost:8080/blocking-filter/stranka</a>, tak se vám již nezobrazí stránka jako předtím, ale zobrazí se vám chybová stránka.</p><img src="../../static/img/screenshots/ZablokovaniStrankyFiltrem.png" alt="Chybová stránka" class="image image--full-width image--with-border u-mb-6"><h2 id="filter-config" class="heading-secondary u-mb-2">Filter Config</h2><p class="paragraph u-mb-2">Podobně jako si můžeme v souboru web.xml nadefinovat inicializační parametry pro servlety, můžeme si je nadefinovat i pro filtry. Jedná se o hodnoty, které Tomcat předá do filtru když jej inicializuje prostřednictvím init metody. Metoda init přijímá jako parametr objekt typu <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/FilterConfig.html" target="_blank" class="link">FilterConfig</a>, ze kterého můžeme inicializační parametry dostat. Jedná se o rozhraní, které definuje čtyři metody, které popisuje následující tabulka.</p><div class="table-wrapper u-mb-2"><table class="table"><thead><tr><th>Metoda</th><th>Návratový typ</th><th>Popis</th></tr></thead><tbody><tr><td>getFilterName()</td><td>String</td><td>Vrací název filtru, který je specifikován v souboru web.xml.</td></tr><tr><td>getInitParameter(String name)</td><td>String</td><td>Vrací hodnotu inicializačního parametru.</td></tr><tr><td>getInitParameterNames()</td><td>Enumeration&lt;String&gt;</td><td>Vrací enumeraci všech jmen inicializačních parametrů pro filtr.</td></tr><tr><td>getServletContext()</td><td>ServletContext</td><td>Vrací referenci k servlet contextu, ve kterém se filtr spouští.</td></tr></tbody></table></div><p class="paragraph u-mb-2">Pro ukázku použití inicializačních parametrů si uprávíme projekt, který jsme si vytvořili pro ukázku zablokování přístupu k servletu. V souboru web.xml si budeme moci nastavit, jaká chybová zpráva se pro zablokovaný servlet vypíše. K definování inicializačních parametrů pro filtry se stejně jako u servletů používá element init-param. Následující ukázka ukazuje náš upravený web.xml soubor.</p><div data-project="10" data-project-extends="9" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp/WEB-INF</li></ul><pre data-code="web.xml" data-folder="src/main/webapp/WEB-INF" data-active data-code-highlight="18-21"><code class="language-xml">&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://Java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+id="WebApp_ID" version="3.0"&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;Stranka&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;MujServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;Stranka&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/stranka&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    &lt;filter&gt;
+        &lt;filter-name&gt;BlockingFilter&lt;/filter-name&gt;
+        &lt;filter-class&gt;BlockingFilter&lt;/filter-class&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;error_message&lt;/param-name&gt;
+            &lt;param-value&gt;Přístup k tomuto servletu je zablokovaný.&lt;/param-value&gt;
+        &lt;/init-param&gt;
+    &lt;/filter&gt;
+    &lt;filter-mapping&gt;
+        &lt;filter-name&gt;BlockingFilter&lt;/filter-name&gt;
+        &lt;url-pattern&gt;/stranka&lt;/url-pattern&gt;
+    &lt;/filter-mapping&gt;
+&lt;/web-app&gt;</code></pre></div><p class="paragraph u-mb-2">Teď můžeme nadefinovaný inicializační parametr ve filtru získat a použít. Implementujeme metodu init, ve které z FilterConfig objektu parametr získáme a uložíme si jej. Poté jej budeme používat v metodě doFilter. Následující ukázka ukazuje upravený kód.</p><div data-project="11" data-project-extends="10" class="u-mb-2"><pre data-code="BlockingFilter.java" data-java-package data-java-package-opened data-active data-code-highlight="12,14-18,26"><code class="language-java">import java.io.IOException;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletResponse;
+
+public class BlockingFilter implements Filter {
+    private String errorMessage;
+    
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        // získání inicializačního parametru
+        this.errorMessage = filterConfig.getInitParameter("error_message");
+    }
+    
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+        // castnutí ServletResponse na HttpServletResponse
+        HttpServletResponse httpRes = (HttpServletResponse) res;
+        
+        // poslání chyby se status kódem 403
+        httpRes.sendError(HttpServletResponse.SC_FORBIDDEN, this.errorMessage);
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Pokud nyní zkusíte servlet navštívit na <a href="http://localhost:8080/blocking-filter/stranka" target="_blank" class="link">http://localhost:8080/blocking-filter/stranka</a>, tak uvidíte, že se chybová zpráva nastavená jako inicializační parametr na chybové stránce použila.</p><img src="../../static/img/screenshots/ChybovaZpravaNastavenaInicializacnimParametremProFiltr.png" alt="Chybová stránka obsahující chybovou zprávu nastavenou přes inicializační parametr" class="image image--full-width image--with-border u-mb-6"><p class="paragraph u-mb-4">Pro tuto část je to vše. Nyní již víte k čemu filtry slouží a jak je použít. V příští části se začneme zabývat JSP.</p><div class="u-text-center"><a href="../uvod-do-jsp/" class="button-primary">Pokračovat na další část</a></div></main></div></div><footer class="footer"><div class="footer__content"><p class="footer__text">Tento web vytvořil <a href="https://jirkasa.github.io/" target="_blank" class="footer__link">Jiří Satora</a></p></div></footer></body></html>

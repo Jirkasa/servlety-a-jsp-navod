@@ -1,0 +1,542 @@
+<!doctype html><html lang="cs"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes,maximum-scale=2.2,minimum-scale=1"><link rel="icon" type="image/svg+xml" href="../../static/img/favicon.svg"><meta name="author" content="Jiří Satora"><meta name="description" content="V této části si vysvětlíme, co je MVC vzor a ukážeme si jeho použití na příkladu."><title>MVC vzor | Servlety a JSP - Návod</title><script src="../../static/js/highlight.min.js"></script><script>hljs.highlightAll()</script><script defer="defer" src="../../common.094d85ce485e92e2c2cb.js"></script><script defer="defer" src="../../618.274f04aa314232891610.js"></script><script defer="defer" src="../../tutorial.eb9162178c9dddad389b.js"></script><link href="../../css/style.dc6eaf064d238b949478.css" rel="stylesheet"></head><body><input type="hidden" id="PATH_TO_ROOT" value="../../"><header id="HeaderContainer" class="header"><div id="Header" class="header__container"><div class="header__content"><a href="../../" class="header__home-link">Servlety a JSP<span class="header__home-link-unimportant-part"> - Návod</span></a> <button id="NavigationToggleButton" class="menu-toggle-button">Otevřít/Zavřít menu<span class="menu-toggle-button__icon"></span></button><nav id="HeaderNavigation" class="header__navigation"><ul><li><a href="../../tutorial/priprava-pro-vyvoj/" class="header__navigation-link header__navigation-link--active">Tutoriál</a></li><li><a href="../../obsah/" class="header__navigation-link">Obsah</a></li><li><a href="../../dalsi-tutorialy/k-cemu-tato-sekce-slouzi/" class="header__navigation-link">Další tutoriály</a></li><li><a href="https://github.com/Jirkasa/servlety-a-jsp-navod" target="_blank" class="header__navigation-link">GitHub</a></li></ul></nav></div></div></header><div class="tutorial-page-layout"><div class="tutorial-page-layout__container"><nav id="TutorialNavigation" class="tutorial-page-layout__navigation-side"><ul class="navigation"><li><a href="../priprava-pro-vyvoj/" class="navigation__link">Příprava pro vývoj</a></li><li><a href="../uvod-do-servletu/" class="navigation__link">Úvod do Servletů</a></li><li><a href="../http-servlet/" class="navigation__link">HTTP Servlet</a></li><li><a href="../sledovani-relace/" class="navigation__link">Sledování relace</a></li><li><a href="../komunikace-mezi-servlety/" class="navigation__link">Komunikace mezi Servlety</a></li><li><a href="../filtry/" class="navigation__link">Filtry</a></li><li><a href="../uvod-do-jsp/" class="navigation__link">Úvod do JSP</a></li><li><a href="../jsp-tagy-a-implicitni-objekty/" class="navigation__link">JSP tagy a implicitní objekty</a></li><li><a href="../jsp-direktivy/" class="navigation__link">JSP direktivy</a></li><li><a href="../jsp-action-tagy/" class="navigation__link">JSP action tagy</a></li><li><a href="../jsp-custom-tagy/" class="navigation__link">JSP custom tagy</a></li><li><a href="../jsp-expression-language/" class="navigation__link">JSP expression language</a></li><li><a href="../jstl/" class="navigation__link">JSTL</a></li><li><a href="../mvc-vzor/" class="navigation__link navigation__link--active">MVC vzor</a></li><li><a href="../struts-framework/" class="navigation__link">Struts framework</a></li><li><a href="../prace-s-databazi/" class="navigation__link">Práce s databází</a></li></ul></nav><main class="tutorial-page-layout__content"><h1 class="heading-primary u-mb-4">MVC vzor</h1><p class="paragraph u-mb-4">Tato část je o MVC. Jedná se o návrhový vzor, který odděluje data, prezentační logiku a business logiku. Jeho použití má spoustu výhod, jako je třeba lepší čitelnost kódu, údržba, testovatelost, snadnější práce v týmu, a tak podobně.</p><h2 id="komponenty-mvc-vzoru" class="heading-secondary u-mb-2">Komponenty MVC vzoru</h2><p class="paragraph u-mb-2">MVC vzor se skládá ze tří komponent: Model, View a Controller. Následující tabulka je popisuje.</p><div class="table-wrapper u-mb-2"><table class="table"><thead><tr><th>Komponenta</th><th>Popis</th></tr></thead><tbody><tr><td>Model</td><td>Reprezentuje datovou část aplikace.</td></tr><tr><td>View</td><td>Zobrazuje data, reprezentovaná modelem.</td></tr><tr><td>Controller</td><td>Představuje rozhraní mezi modelem a view. Zpracovává příchozí requesty. Komunikuje s modelem (získává/aktualizuje/vytváří data) a vybírá view (stránku), která se pošle klientovi (stránce případně předává k zobrazení získaná data).</td></tr></tbody></table></div><p class="paragraph u-mb-2">V kontextu servletů a JSP je většinou controller reprezentován servletem, view JSP stránkou a model může představovat třeba Java bean třída. Pokud například používáme nějaký framework, ORM nástroj, a tak podobně, tak to samozřejmě může být trochu jinak.</p><p class="paragraph u-mb-4">Funguje to tak, že servlety (controllery) přijímají ke zpracování requesty. Pokud například klient pošle request pro nějakou stránku, na které se mu mají v tabulce vypsat všechny položky z databáze, tak servlet, který je k tomu určený, získá položky z modelu (zavolá metodu nějaké třídy, která mu je vrátí) a předá je do JSP stránky (view) k zobrazení v tabulce.</p><img src="../../static/img/illustrations/MVCVzor.svg" alt="MVC vzor" class="image image--full-width u-mb-6"><h2 id="ukazka-pouziti-mvc" class="heading-secondary u-mb-2">Ukázka použití MVC</h2><p class="paragraph u-mb-2">Pro ukázku MVC vzoru si vytvoříme aplikaci, ve které bude mít uživatel možnost vytvářet, mazat a zobrazovat položky (textové poznámky). Aplikace bude obsahovat dvě stránky. Úvodní stránku, která uživatele v aplikaci jen přivítá, a stránku s položkami, na které si uživatel bude moci své položky prohlížet, mazat, nebo si případně vytvářet nové.</p><p class="paragraph u-mb-2">Založíme si nový Maven projekt a začneme tím, že si do souboru pom.xml kromě závislosti pro servlety přidáme také závislost pro JSTL. Budeme jej totiž v JSP stránkách používat.</p><div data-project="1" data-project-name="mvc-vzor" class="u-mb-2"><ul data-project-folders><li>src<ul><li>main<ul><li data-java-packages-folder>java</li><li>resources</li><li>webapp</li></ul></li><li>test<ul><li>java</li><li>resources</li></ul></li></ul></li><li>target</li></ul><pre data-code="pom.xml" data-active data-code-highlight="24-28"><code class="language-xml">&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;io.github.jirkasa&lt;/groupId&gt;
+    &lt;artifactId&gt;mvc-vzor&lt;/artifactId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;name&gt;mvc-vzor&lt;/name&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+        &lt;maven.compiler.source&gt;${java.version}&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;${java.version}&lt;/maven.compiler.target&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;4.0.1&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;jstl&lt;/artifactId&gt;
+            &lt;version&gt;1.2&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;</code></pre></div><p class="paragraph u-mb-2">Nejprve si vytvoříme stránku, která uživatele v aplikaci přivítá. V tomto případě je to jednoduché. Servlet (controller) jen nastaví stránku, která se má vyrenderovat. Nebude do ní předávat žádná data k zobrazení.</p><p class="paragraph u-mb-2">Jelikož nyní nechceme, aby k JSP stránkám měli uživatelé přímý přístup, tak je budeme ukládat do složky WEB-INF. K této složce totiž uživatelé přístup nemají. Vytvoříme tedy složku WEB-INF a v ní složku jsp, do které budeme JSP stránky ukládat. Uvnitř jsp složky vytvoříme stránku "Home.jsp" představující domovskou stránku. Následující ukázka ukazuje její kód. Jen zobrazuje uvítací text a odkaz na stránku s položkami.</p><div data-project="2" data-project-extends="1" class="u-mb-2"><ul data-project-commands><li data-command-create-folder>src/main/webapp/WEB-INF/jsp</li><li data-command-open-folder-to-root>src/main/webapp/WEB-INF/jsp</li></ul><pre data-code="Home.jsp" data-folder="src/main/webapp/WEB-INF/jsp" data-active><code class="language-html">&lt;%@ page contentType="text/html" pageEncoding="UTF-8"%&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;MVC Vzor&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;p&gt;Vítej ve webové aplikaci, kterou můžeš použít ke psaní poznámek.&lt;/p&gt;
+    &lt;a href="./polozky"&gt;Pokračovat do aplikace&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div><p class="paragraph u-mb-2">Teď si vytvoříme servlet, který pojmenujeme jako HomeController. Bude sloužit jen k tomu, že zobrazí JSP stránku (vytvoří request dispatcher a předá request ke zpracování do JSP stránky). Servlety (controllery) budeme vytvářet v nějakém Java balíčku (např. io.github.jirkasa.controllers). Následující ukázka ukazuje kód servletu.</p><div data-project="3" data-project-extends="2" class="u-mb-2"><pre data-code="HomeController.java" data-java-package="io.github.jirkasa.controllers" data-java-package-opened data-active><code class="language-java">package io.github.jirkasa.controllers;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class HomeController extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/jsp/Home.jsp");
+        dispatcher.forward(req, res);
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Vytvoříme si soubor web.xml a servlet si namapujeme na nějaké URL. Použijeme také element welcome-file-list, který jsme v tutoriálu zatím nepoužili. Ten slouží k nastavení hlavní stránky aplikace. Jeho podelementem je element welcome-file, pomocí kterého můžeme nastavit URL, které se má pro hlavní stránku použít. Pokud máme welcome-file elementů více, tak se použije první, pro který se najde stránka. Následující ukázka obsah našeho web.xml souboru ukazuje. Servlet mapujeme na "/home", ale používáme jej také jako hlavní stránku aplikace.</p><div data-project="4" data-project-extends="3" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp/WEB-INF</li></ul><pre data-code="web.xml" data-folder="src/main/webapp/WEB-INF" data-active><code class="language-xml">&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://Java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+id="WebApp_ID" version="3.0"&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;HomeController&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;io.github.jirkasa.controllers.HomeController&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;HomeController&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/home&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    
+    &lt;welcome-file-list&gt;
+        &lt;welcome-file&gt;home&lt;/welcome-file&gt;
+    &lt;/welcome-file-list&gt;
+&lt;/web-app&gt;</code></pre></div><p class="paragraph u-mb-2">Protože jsme si servlet namapovali jako hlavní stránku, tak se vám spustí i po otevření <a href="http://localhost:8080/mvc-vzor/" target="_blank" class="link">http://localhost:8080/mvc-vzor/</a>. Uvidíte tedy stránku, kterou ukazuje následující obrázek.</p><img src="../../static/img/screenshots/MVCPrikladHlavniStranka.png" alt="úvodní stránka aplikace" class="image image--full-width image--with-border u-mb-2"><p class="paragraph u-mb-2">Teď začneme s tvorbou stránky s položkami. Jako první začneme vytvářet bean třídu (model), která bude představovat položku. Pro modely vytvoříme nový Java balíček (třeba io.github.jirkasa.models) a uvnitř něj třídu Item. Kód pro ni ukazuje následující ukázka. Jako vlastnosti má "id" (unikátní identifikátor položky), "text" (text položky) a "createdAt" (datum a čas vytvoření položky).</p><div data-project="5" data-project-extends="4" class="u-mb-2"><pre data-code="Item.java" data-java-package="io.github.jirkasa.models" data-java-package-opened data-active><code class="language-java">package io.github.jirkasa.models;
+
+import java.io.Serializable;
+import java.util.Date;
+
+public class Item implements Serializable {
+    private String id;
+    private String text;
+    private Date createdAt;
+
+    public void setId(String id) { this.id = id; }
+    public String getId() { return id; }
+    
+    public void setText(String text) { this.text = text; }
+    public String getText() { return text; }
+    
+    public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
+    public Date getCreatedAt() { return createdAt; }
+}</code></pre></div><p class="paragraph u-mb-2">Kromě toho, že třída Item bude reprezentovat položku, tak bude také obsahovat statické metody, s jejichž pomocí budeme moci vytvářet, získávat a mazat položky. Zatím si do ní přidáme jen metodu pro získání všech položek uživatele. Ještě jsme se v tutoriálu neučili, jak pracovat s databází, takže budeme data ukládat v session. V reálné aplikaci by to byl ale špatný nápad, protože po restartu aplikace by uživatel o data přišel. Navíc není dobré v session ukládat větší množství dat. Následující ukázka přidává do třídy Item statickou metodu getAll, která jako parametr přijímá session a vrací uživatelovy položky.</p><div data-project="6" data-project-extends="5" class="u-mb-2"><pre data-code="Item.java" data-java-package="io.github.jirkasa.models" data-java-package-opened data-active data-code-highlight="23-28,4-5,7"><code class="language-java">package io.github.jirkasa.models;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+
+import javax.servlet.http.HttpSession;
+
+public class Item implements Serializable {
+    private String id;
+    private String text;
+    private Date createdAt;
+
+    public void setId(String id) { this.id = id; }
+    public String getId() { return id; }
+    
+    public void setText(String text) { this.text = text; }
+    public String getText() { return text; }
+    
+    public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
+    public Date getCreatedAt() { return createdAt; }
+    
+    public static ArrayList&lt;Item&gt; getAll(HttpSession session) {
+        ArrayList&lt;Item&gt; items = (ArrayList&lt;Item&gt;) session.getAttribute("items");
+        
+        if (items == null) return new ArrayList&lt;Item&gt;();
+        return items;
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Teď si vytvoříme servlet (controller), který zavoláním metody getAll třídy Item získá uživatelovy položky a předá je k zobrazení na stránce. Můžeme jej pojmenovat jako ItemsController a umístit do Java balíčku pro controllery. Následující ukázka ukazuje jeho kód.</p><div data-project="7" data-project-extends="6" class="u-mb-2"><pre data-code="ItemsController.java" data-java-package="io.github.jirkasa.controllers" data-java-package-opened data-active><code class="language-java">package io.github.jirkasa.controllers;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import io.github.jirkasa.models.Item;
+
+public class ItemsController extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        // získání všech položek uživatele
+        ArrayList&lt;Item&gt; items = Item.getAll(req.getSession());
+        
+        // nastavení položek pro zobrazení na stránce
+        req.setAttribute("items", items);
+        
+        // zobrazení stránky "Items.jsp"
+        RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/jsp/Items.jsp");
+        dispatcher.forward(req, res);
+    }
+}</code></pre></div><p class="paragraph u-mb-2">V souboru web.xml servlet namapujeme na "/polozky", jak ukazuje následující ukázka.</p><div data-project="8" data-project-extends="7" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp/WEB-INF</li></ul><pre data-code="web.xml" data-folder="src/main/webapp/WEB-INF" data-active data-code-highlight="16-23"><code class="language-xml">&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://Java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+id="WebApp_ID" version="3.0"&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;HomeController&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;io.github.jirkasa.controllers.HomeController&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;HomeController&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/home&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;ItemsController&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;io.github.jirkasa.controllers.ItemsController&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;ItemsController&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/polozky&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    
+    &lt;welcome-file-list&gt;
+        &lt;welcome-file&gt;home&lt;/welcome-file&gt;
+    &lt;/welcome-file-list&gt;
+&lt;/web-app&gt;</code></pre></div><p class="paragraph u-mb-2">Servlet ItemsController zobrazuje stránku "Items.jsp". Vytvoříme ji tedy. Zatím v ní jen vypíšeme položky, které do ní servlet předává, nebo zobrazíme zprávu, že uživatel žádné položky momentálně vytvořené nemá. Následující ukázka kód stránky ukazuje. Myslím, že když se na něj podívate, tak pochopíte jak to funguje. Pro procházení položek se používá forEach tag z JSTL knihovny, o kterém jste si mohli přečíst v minulé části. Pro každou položku se v tabulce vytváří jeden řádek.</p><div data-project="9" data-project-extends="8" class="u-mb-2"><ul data-project-commands><li data-command-create-folder>src/main/webapp/WEB-INF/jsp</li><li data-command-open-folder-to-root>src/main/webapp/WEB-INF/jsp</li></ul><pre data-code="Items.jsp" data-folder="src/main/webapp/WEB-INF/jsp" data-active><code class="language-html">&lt;%@ page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %&gt;
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %&gt;
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;MVC Vzor&lt;/title&gt;
+    
+    &lt;style&gt;
+        table, tr, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;table&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th colspan="3"&gt;Položky&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;c:choose&gt;
+                &lt;c:when test="${fn:length(items) &gt; 0}"&gt;
+                    &lt;c:forEach var="item" items="${items}"&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;&lt;fmt:formatDate value="${item.createdAt}" type="BOTH" /&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;c:out value="${item.text}" /&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;button&gt;Smazat&lt;/button&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                    &lt;/c:forEach&gt;
+                &lt;/c:when&gt;
+                &lt;c:otherwise&gt;
+                    &lt;tr&gt;
+                        &lt;td colspan="3"&gt;Momentálně nemáš vytvořené žádné položky.&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/c:otherwise&gt;
+            &lt;/c:choose&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div><p class="paragraph u-mb-2">Po kliknutí na "Pokračovat do aplikace" na hlavní stránce nebo otevření <a href="http://localhost:8080/mvc-vzor/polozky" target="_blank" class="link">http://localhost:8080/mvc-vzor/polozky</a> by se vám stránka měla zobrazit. Zatím samozřejmě ještě nemáme vytvořené žádné položky.</p><img src="../../static/img/screenshots/MVCPrikladPrazdnaStrankaSPolozkami.png" alt="prázdná stránka s položkami" class="image image--full-width image--with-border u-mb-2"><p class="paragraph u-mb-2">Logiku pro zobrazování položek sice naprogramovanou máme, ale zatím ještě nemůžeme žádné položky vytvářet. To teď napravíme. Do stránky si přidáme formulář s inputem pro zadání textu položky a tlačítkem pro jeho odeslání. Formulář bude odkazovat na stejný servlet, který stránku poslal, ale odešle se metodou POST. Následující ukázka ukazuje upravený kód stránky.</p><div data-project="10" data-project-extends="9" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp/WEB-INF/jsp</li></ul><pre data-code="Items.jsp" data-folder="src/main/webapp/WEB-INF/jsp" data-active data-code-highlight="45-49"><code class="language-html">&lt;%@ page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %&gt;
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %&gt;
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;MVC Vzor&lt;/title&gt;
+    
+    &lt;style&gt;
+        table, tr, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;table&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th colspan="3"&gt;Položky&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;c:choose&gt;
+                &lt;c:when test="${fn:length(items) &gt; 0}"&gt;
+                    &lt;c:forEach var="item" items="${items}"&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;&lt;fmt:formatDate value="${item.createdAt}" type="BOTH" /&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;c:out value="${item.text}" /&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;button&gt;Smazat&lt;/button&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                    &lt;/c:forEach&gt;
+                &lt;/c:when&gt;
+                &lt;c:otherwise&gt;
+                    &lt;tr&gt;
+                        &lt;td colspan="3"&gt;Momentálně nemáš vytvořené žádné položky.&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/c:otherwise&gt;
+            &lt;/c:choose&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+    &lt;br&gt;
+    &lt;form action="./polozky" method="POST"&gt;
+        &lt;input type="text" name="text" /&gt;
+        &lt;button&gt;Přidat&lt;/button&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div><p class="paragraph u-mb-2">V servletu ItemsController implementujeme metodu doPost, ve které budeme na odeslání formuláře reagovat. Než to ale uděláme, tak si do třídy Item přidáme metodu create pro vytvoření nové položky. Následující ukázka ji ukazuje.</p><div data-project="11" data-project-extends="10" class="u-mb-2"><pre data-code="Item.java" data-java-package="io.github.jirkasa.models" data-java-package-opened data-active data-code-highlight="5-6,31-47"><code class="language-java">package io.github.jirkasa.models;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.UUID;
+
+import javax.servlet.http.HttpSession;
+
+public class Item implements Serializable {
+    private String id;
+    private String text;
+    private Date createdAt;
+
+    public void setId(String id) { this.id = id; }
+    public String getId() { return id; }
+    
+    public void setText(String text) { this.text = text; }
+    public String getText() { return text; }
+    
+    public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
+    public Date getCreatedAt() { return createdAt; }
+    
+    public static ArrayList&lt;Item&gt; getAll(HttpSession session) {
+        ArrayList&lt;Item&gt; items = (ArrayList&lt;Item&gt;) session.getAttribute("items");
+        
+        if (items == null) return new ArrayList&lt;Item&gt;();
+        return items;
+    }
+    
+    public static Item create(HttpSession session, String text) {
+        ArrayList&lt;Item&gt; items = (ArrayList&lt;Item&gt;) session.getAttribute("items");
+        
+        if (items == null) {
+            items = new ArrayList&lt;Item&gt;();
+            session.setAttribute("items", items);
+        }
+        
+        Item item = new Item();
+        item.setId(UUID.randomUUID().toString());
+        item.setText(text);
+        item.setCreatedAt(new Date());
+        
+        items.add(item);
+        
+        return item;
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Teď v servletu ItemsController vytvoříme metodu doPost a metodu create třídy Item v ní pro vytvoření nové položky použijeme. Poté znova vyrenderujeme stránku s položkami. Jelikož tuto operaci děláme i v metodě doGet, tak na to vytvoříme samostatnou metodu. Následující ukázka ukazuje upravený kód.</p><div data-project="12" data-project-extends="11" class="u-mb-2"><pre data-code="ItemsController.java" data-java-package="io.github.jirkasa.controllers" data-java-package-opened data-active data-code-highlight="17,20-30,32-40"><code class="language-java">package io.github.jirkasa.controllers;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import io.github.jirkasa.models.Item;
+
+public class ItemsController extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        renderItemsPage(req, res);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        // je potřeba nastavit kódování, abychom data z formuláře získali ve správném formátu
+        req.setCharacterEncoding("UTF-8");
+        
+        // vytvoření nové položky podle textu z formuláře
+        String text = req.getParameter("text");
+        Item.create(req.getSession(), text);
+        
+        renderItemsPage(req, res);
+    }
+    
+    // zobrazuje stránku "Items.jsp"
+    private void renderItemsPage(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        ArrayList&lt;Item&gt; items = Item.getAll(req.getSession());
+                
+        req.setAttribute("items", items);
+
+        RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/jsp/Items.jsp");
+        dispatcher.forward(req, res);
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Můžete si pár položek zkusit přidat. Zobrazí se vám na stránce v tabulce.</p><img src="../../static/img/screenshots/MVCPrikladStrankaSPolozkami.png" alt="stránka s položkami" class="image image--full-width image--with-border u-mb-2"><p class="paragraph u-mb-2">Nyní nám již zbývá jen přidat funkcionalitu pro mazání položek. To si zkusíme udělat přes JavaScript, jelikož pro mazání budeme používat HTTP metodu DELETE, kterou HTML formuláře nepodporují. Začneme tím, že pro mazání položek přidáme do třídy Item statickou metodu deleteById, která smaže položku podle předaného identifikátoru. Ukazuje ji následující ukázka. Jako návratový typ má hodnotu boolean, která určuje, zda se položka smazala nebo ne.</p><div data-project="13" data-project-extends="12" class="u-mb-2"><pre data-code="Item.java" data-java-package="io.github.jirkasa.models" data-java-package-opened data-active data-code-highlight="49-66"><code class="language-java">package io.github.jirkasa.models;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.UUID;
+
+import javax.servlet.http.HttpSession;
+
+public class Item implements Serializable {
+    private String id;
+    private String text;
+    private Date createdAt;
+
+    public void setId(String id) { this.id = id; }
+    public String getId() { return id; }
+    
+    public void setText(String text) { this.text = text; }
+    public String getText() { return text; }
+    
+    public void setCreatedAt(Date createdAt) { this.createdAt = createdAt; }
+    public Date getCreatedAt() { return createdAt; }
+    
+    public static ArrayList&lt;Item&gt; getAll(HttpSession session) {
+        ArrayList&lt;Item&gt; items = (ArrayList&lt;Item&gt;) session.getAttribute("items");
+        
+        if (items == null) return new ArrayList&lt;Item&gt;();
+        return items;
+    }
+    
+    public static Item create(HttpSession session, String text) {
+        ArrayList&lt;Item&gt; items = (ArrayList&lt;Item&gt;) session.getAttribute("items");
+        
+        if (items == null) {
+            items = new ArrayList&lt;Item&gt;();
+            session.setAttribute("items", items);
+        }
+        
+        Item item = new Item();
+        item.setId(UUID.randomUUID().toString());
+        item.setText(text);
+        item.setCreatedAt(new Date());
+        
+        items.add(item);
+        
+        return item;
+    }
+    
+    public static boolean deleteById(HttpSession session, String id) {
+    	ArrayList&lt;Item&gt; items = (ArrayList&lt;Item&gt;) session.getAttribute("items");
+    	
+    	if (items == null) return false;
+    	
+    	int itemIdx = -1;
+    	for (int i = 0; i &lt; items.size(); i++) {
+    		if (items.get(i).id.equals(id)) {
+    			itemIdx = i;
+    			break;
+    		}
+    	}
+    	
+    	if (itemIdx == -1) return false;
+    	
+    	items.remove(itemIdx);
+    	return true;
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Teď můžeme do servletu ItemsController přidat metodu doDelete, která z query parametru získá id položky, která se má odstranit, a použitím metody deleteById třídy User ji odstraní. Následující ukázka ji ukazuje.</p><div data-project="14" data-project-extends="13" class="u-mb-2"><pre data-code="ItemsController.java" data-java-package="io.github.jirkasa.controllers" data-java-package-opened data-active data-code-highlight="32-47"><code class="language-java">package io.github.jirkasa.controllers;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import io.github.jirkasa.models.Item;
+
+public class ItemsController extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        renderItemsPage(req, res);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        // je potřeba nastavit kódování, abychom data z formuláře získali ve správném formátu
+        req.setCharacterEncoding("UTF-8");
+        
+        // vytvoření nové položky podle textu z formuláře
+        String text = req.getParameter("text");
+        Item.create(req.getSession(), text);
+        
+        renderItemsPage(req, res);
+    }
+    
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        String itemId = req.getParameter("itemId");
+        
+        // smazání položky podle ID
+        boolean success = Item.deleteById(req.getSession(), itemId);
+        
+        // nastavení status kódu, který se pošle klientovi
+        if (success) {
+            // položka se smazala
+            res.setStatus(200);
+        } else {
+            // položka se nesmazala (nenašla se)
+            res.setStatus(404);
+        }
+    }
+
+    // zobrazuje stránku "Items.jsp"
+    private void renderItemsPage(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        ArrayList&lt;Item&gt; items = Item.getAll(req.getSession());
+                
+        req.setAttribute("items", items);
+
+        RequestDispatcher dispatcher = req.getRequestDispatcher("WEB-INF/jsp/Items.jsp");
+        dispatcher.forward(req, res);
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Jak jsem psal, tak mazání položek budeme provádět přes JavaScript. Ve složce webapp si tedy vytvoříme JavaScript soubor, který pojmenujeme třeba jako "ItemsPage.js". Tento soubor bude obsahovat funkci, kterou budeme moci volat pro smazání položky. Následující ukázka obsah tohoto JavaScript souboru ukazuje. Pokud JavaScriptu příliš nerozumíte, tak nevadí, tento tutoriál je o servletech. Stačí vám vědět, že když tuto funkci zavoláte, tak se pošle HTTP request pro smazání položky a stránka se znovu načte.</p><div data-project="15" data-project-extends="14" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp</li></ul><pre data-code="ItemsPage.js" data-folder="src/main/webapp" data-active><code class="language-javascript">async function deleteItemById(itemId) {
+    try {
+        // odeslání requestu pro smázání položky
+        await fetch(`./polozky?itemId=${itemId}`, {
+            method: "DELETE"
+        });
+        // obnovení stránky
+        location.href = location.href;
+    } catch(err) {
+        console.log(err);
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Script si na stránku napojíme a u tlačítka pro smazání položky nastavíme onclick atribut, pomocí kterého zavoláme funkci pro smazání položky, když se na tlačítko klikne. Následující ukázka ukazuje upravenou stránku.</p><div data-project="16" data-project-extends="15" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp/WEB-INF/jsp</li></ul><pre data-code="Items.jsp" data-folder="src/main/webapp/WEB-INF/jsp" data-active data-code-highlight="33,50"><code class="language-html">&lt;%@ page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %&gt;
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %&gt;
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;MVC Vzor&lt;/title&gt;
+    
+    &lt;style&gt;
+        table, tr, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;table&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th colspan="3"&gt;Položky&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;c:choose&gt;
+                &lt;c:when test="${fn:length(items) &gt; 0}"&gt;
+                    &lt;c:forEach var="item" items="${items}"&gt;
+                        &lt;tr&gt;
+                            &lt;td&gt;&lt;fmt:formatDate value="${item.createdAt}" type="BOTH" /&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;c:out value="${item.text}" /&gt;&lt;/td&gt;
+                            &lt;td&gt;&lt;button onclick="deleteItemById('${item.id}')"&gt;Smazat&lt;/button&gt;&lt;/td&gt;
+                        &lt;/tr&gt;
+                    &lt;/c:forEach&gt;
+                &lt;/c:when&gt;
+                &lt;c:otherwise&gt;
+                    &lt;tr&gt;
+                        &lt;td colspan="3"&gt;Momentálně nemáš vytvořené žádné položky.&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/c:otherwise&gt;
+            &lt;/c:choose&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+    &lt;br&gt;
+    &lt;form action="./polozky" method="POST"&gt;
+        &lt;input type="text" name="text" /&gt;
+        &lt;button&gt;Přidat&lt;/button&gt;
+    &lt;/form&gt;
+    &lt;script src="./ItemsPage.js"&gt;&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div><p class="paragraph u-mb-6">Teď již máme možnost položky i mazat. Naše aplikace je tedy hotová.</p><p class="paragraph u-mb-4">Na závěr této části bych chtěl jen zmínit, že aplikace, kterou jsme si v této části naprogramovali není úplně ideální. V praxi by se to určitě dalo naprogramovat o dost lépe. Myslím si ale, že podstatu MVC vzoru ilustruje celkem dobře a o to nám v této části šlo.</p><div class="u-text-center"><a href="../struts-framework/" class="button-primary">Pokračovat na další část</a></div></main></div></div><footer class="footer"><div class="footer__content"><p class="footer__text">Tento web vytvořil <a href="https://jirkasa.github.io/" target="_blank" class="footer__link">Jiří Satora</a></p></div></footer></body></html>

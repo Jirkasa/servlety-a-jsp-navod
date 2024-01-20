@@ -1,0 +1,320 @@
+<!doctype html><html lang="cs"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes,maximum-scale=2.2,minimum-scale=1"><link rel="icon" type="image/svg+xml" href="../../static/img/favicon.svg"><meta name="author" content="Jiří Satora"><meta name="description" content="V této části tutoriálu si představíme knihovnu JSTL a projdeme si její tagy."><title>JSTL | Servlety a JSP - Návod</title><script src="../../static/js/highlight.min.js"></script><script>hljs.highlightAll()</script><script defer="defer" src="../../common.094d85ce485e92e2c2cb.js"></script><script defer="defer" src="../../618.274f04aa314232891610.js"></script><script defer="defer" src="../../tutorial.eb9162178c9dddad389b.js"></script><link href="../../css/style.dc6eaf064d238b949478.css" rel="stylesheet"></head><body><input type="hidden" id="PATH_TO_ROOT" value="../../"><header id="HeaderContainer" class="header"><div id="Header" class="header__container"><div class="header__content"><a href="../../" class="header__home-link">Servlety a JSP<span class="header__home-link-unimportant-part"> - Návod</span></a> <button id="NavigationToggleButton" class="menu-toggle-button">Otevřít/Zavřít menu<span class="menu-toggle-button__icon"></span></button><nav id="HeaderNavigation" class="header__navigation"><ul><li><a href="../../tutorial/priprava-pro-vyvoj/" class="header__navigation-link header__navigation-link--active">Tutoriál</a></li><li><a href="../../obsah/" class="header__navigation-link">Obsah</a></li><li><a href="../../dalsi-tutorialy/k-cemu-tato-sekce-slouzi/" class="header__navigation-link">Další tutoriály</a></li><li><a href="https://github.com/Jirkasa/servlety-a-jsp-navod" target="_blank" class="header__navigation-link">GitHub</a></li></ul></nav></div></div></header><div class="tutorial-page-layout"><div class="tutorial-page-layout__container"><nav id="TutorialNavigation" class="tutorial-page-layout__navigation-side"><ul class="navigation"><li><a href="../priprava-pro-vyvoj/" class="navigation__link">Příprava pro vývoj</a></li><li><a href="../uvod-do-servletu/" class="navigation__link">Úvod do Servletů</a></li><li><a href="../http-servlet/" class="navigation__link">HTTP Servlet</a></li><li><a href="../sledovani-relace/" class="navigation__link">Sledování relace</a></li><li><a href="../komunikace-mezi-servlety/" class="navigation__link">Komunikace mezi Servlety</a></li><li><a href="../filtry/" class="navigation__link">Filtry</a></li><li><a href="../uvod-do-jsp/" class="navigation__link">Úvod do JSP</a></li><li><a href="../jsp-tagy-a-implicitni-objekty/" class="navigation__link">JSP tagy a implicitní objekty</a></li><li><a href="../jsp-direktivy/" class="navigation__link">JSP direktivy</a></li><li><a href="../jsp-action-tagy/" class="navigation__link">JSP action tagy</a></li><li><a href="../jsp-custom-tagy/" class="navigation__link">JSP custom tagy</a></li><li><a href="../jsp-expression-language/" class="navigation__link">JSP expression language</a></li><li><a href="../jstl/" class="navigation__link navigation__link--active">JSTL</a></li><li><a href="../mvc-vzor/" class="navigation__link">MVC vzor</a></li><li><a href="../struts-framework/" class="navigation__link">Struts framework</a></li><li><a href="../prace-s-databazi/" class="navigation__link">Práce s databází</a></li></ul></nav><main class="tutorial-page-layout__content"><h1 class="heading-primary u-mb-4">JSTL</h1><p class="paragraph u-mb-4">V této části se podíváme na JSTL (JSP Standard Tag Library). Jedná se o knihovnu (nebo spíš knihovny) custom tagů, která poskytuje tagy, které jsou v JSP aplikacích často potřeba.</p><h2 id="typy-jstl-tagu" class="heading-secondary u-mb-2">Typy JSTL tagů</h2><p class="paragraph u-mb-2">JSTL tagy se dělí do pěti kategorií (knihoven). Následující tabulka je popisuje.</p><div class="table-wrapper u-mb-4"><table class="table"><thead><tr><th>Kategorie</th><th>URI</th><th>Často používaný prefix</th><th>Popis</th></tr></thead><tbody><tr><td>Core tagy</td><td style="word-break:break-all">http://java.sun.com/jsp/jstl/core</td><td>c</td><td>Tagy v této kategorii poskytují podporu pro proměnné, podmínky, cykly a tak podobně.</td></tr><tr><td>Funkční tagy</td><td style="word-break:break-all">http://java.sun.com/jsp/jstl/functions</td><td>fn</td><td>Tagy v této kategorii poskytují podporu pro práci s řetězci (většinou).</td></tr><tr><td>Formátovací tagy</td><td style="word-break:break-all">http://java.sun.com/jsp/jstl/fmt</td><td>fmt</td><td>Tagy v této kategorii poskytují podporu pro formátování.</td></tr><tr><td>XML tagy</td><td style="word-break:break-all">http://java.sun.com/jsp/jstl/xml</td><td>x</td><td>Tagy v této kategorii poskytují podporu pro práci s XML.</td></tr><tr><td>SQL tagy</td><td style="word-break:break-all">http://java.sun.com/jsp/jstl/sql</td><td>sql</td><td>Tagy v této kategorii poskytují podporu pro práci s relačními databázemi.</td></tr></tbody></table></div><h2 id="pouziti-jstl" class="heading-secondary u-mb-2">Použití JSTL</h2><p class="paragraph u-mb-2">Předtím než začneme se zkoumáním různých tagů, které nám JSTL nabízí, tak si zkusíme vytvořit projekt, ve kterém JSTL použijeme. Založíme si tedy nový projekt a začneme s tím, že si v souboru pom.xml kromě závislosti pro servlety přidáme i <a href="https://mvnrepository.com/artifact/javax.servlet/jstl/1.2" target="_blank" class="link">závislost pro JSTL</a>.</p><div data-project="1" data-project-name="jstl" class="u-mb-2"><ul data-project-folders><li>src<ul><li>main<ul><li data-java-packages-folder>java</li><li>resources</li><li>webapp</li></ul></li><li>test<ul><li>java</li><li>resources</li></ul></li></ul></li><li>target</li></ul><pre data-code="pom.xml" data-active data-code-highlight="24-28"><code class="language-xml">&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;io.github.jirkasa&lt;/groupId&gt;
+    &lt;artifactId&gt;jstl&lt;/artifactId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;name&gt;jstl&lt;/name&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+        &lt;maven.compiler.source&gt;${java.version}&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;${java.version}&lt;/maven.compiler.target&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;4.0.1&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;jstl&lt;/artifactId&gt;
+            &lt;version&gt;1.2&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;</code></pre></div><p class="paragraph u-mb-2">Teď si můžeme vytvořit JSP stránku (třeba "stranka.jsp"), ve které JSTL použijeme. Následující ukázka ukazuje její základní kód.</p><div data-project="2" data-project-extends="1" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp</li></ul><pre data-code="stranka.jsp" data-folder="src/main/webapp" data-active><code class="language-html">&lt;%@ page contentType="text/html" pageEncoding="UTF-8"%&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;JSTL&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div><p class="paragraph u-mb-2">Na stránce si zkusíme pomocí taglib direktivy nadefinovat JSTL knihovnu pro core tagy a použít nějaký její tag. Zkusíme si třeba pomocí forEach tagu vypsat pod sebe 5 řádků textu. Potom si jednotlivé tagy JSTL knihovny projdeme, teď nám jde hlavně o to, zkusit si JSTL do projektu vůbec přidat.</p><div data-project="3" data-project-extends="2" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp</li></ul><pre data-code="stranka.jsp" data-folder="src/main/webapp" data-active data-code-highlight="2,11-13"><code class="language-html">&lt;%@ page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;JSTL&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;c:forEach var="i" begin="1" end="5"&gt;
+        Řádek &lt;c:out value="${i}"/&gt;&lt;p&gt;
+    &lt;/c:forEach&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div><p class="paragraph u-mb-2">Pokud si aplikaci spustíte a navštívíte <a href="http://localhost:8080/jstl/stranka.jsp" target="_blank" class="link">http://localhost:8080/jstl/stranka.jsp</a>, tak se vám zobrazí stránka, kterou ukazuje následující obrázek.</p><img src="../../static/img/screenshots/JSTLPrikladStranka.png" alt="vygenerovaná stránka" class="image image--full-width image--with-border u-mb-2"><p class="paragraph u-mb-4">JSTL knihovnu jsme si zkusili přidat do projektu a použít. Ve zbytku této části si můžeme jednotlivé tagy, které nám JSTL nabízí, projít.</p><h2 id="core-tagy" class="heading-secondary u-mb-2">Core tagy</h2><p class="paragraph u-mb-2">Do core kategorie patří tagy, které poskytují podporu pro proměnné, podmínky, cykly, a tak podobně. Jednoduše se jedná o takové základní tagy. Následující tabulka popisuje, které tagy do této kategorie patří.</p><div class="table-wrapper u-mb-4"><table class="table"><thead><tr><th>Tag</th><th>Popis</th></tr></thead><tbody><tr><td>c:out</td><td>Vypisuje výsledek pro expression, podobně jako expression tag (&lt;%= ... %&gt;).</td></tr><tr><td>c:import</td><td>Poskytuje podobnou funkcionalitu jako jsp:include action tag. Umožňuje ale přidat obsah jakéhokoliv zdroje (klidně i mimo server).</td></tr><tr><td>c:set</td><td>Umožňuje nastavit výsledek expression jako proměnnou.</td></tr><tr><td>c:remove</td><td>Umožňuje odstranit proměnnou.</td></tr><tr><td>c:catch</td><td>Umožňuje zachytit vyjímky.</td></tr><tr><td>c:if</td><td>Umožňuje vytvořit podmínku.</td></tr><tr><td>c:choose</td><td>Umožňuje vytvořit sérii podmínek.</td></tr><tr><td>c:when</td><td>Používá se s tagem c:choose.</td></tr><tr><td>c:otherwise</td><td>Používá se s tagem c:choose.</td></tr><tr><td>c:forEach</td><td>Umožňuje provádět nějaký kód několikrát nebo pro každou položku v kolekci.</td></tr><tr><td>c:forTokens</td><td>Umožňuje rozdělit řetězec na části a provádět pro každou část nějaký kód.</td></tr><tr><td>c:redirect</td><td>Umožňuje provést přesměrování na jinou URL.</td></tr><tr><td>c:url</td><td>Umožňuje vytvořit URL.</td></tr><tr><td>c:param</td><td>Používá se s tagem c:url.</td></tr></tbody></table></div><h3 id="c-out" class="heading-tertiary u-mb-1">c:out</h3><p class="paragraph u-mb-2">Tag c:out se používá k vypsání obsahu na stránku. Je podobný jako expression tag. Rozdíl je, že c:out automaticky escapne HTML tagy, takže jeho použitím zamezíme XSS (Cross Site Scripting) útokům. Potenciální tagy, které se na stránku vypíší, se zobrazí jen jako text, ne jako tagy.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;!-- toto se na stránku přidá jako script tag --&gt;
+&lt;%= "&lt;script&gt;console.log('ahoj');&lt;/script&gt;" %&gt;
+
+&lt;c:set var="obsah" value="&lt;script&gt;console.log('ahoj');&lt;/script&gt;"/&gt;
+&lt;!-- toto se na stránku přidá jako text --&gt;
+&lt;c:out value="${ obsah }"/&gt;</code></pre></div><h3 id="c-import" class="heading-tertiary u-mb-1">c:import</h3><p class="paragraph u-mb-2">Tag c:import slouží k načtení jakéhokoliv zdroje (klidně i mimo server). Následující ukázka ukazuje, jak můžeme například obsah stránky z URL "https://jirkasa.github.io/" načíst do proměnné "data".</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;!-- načte obsah stránky z URL "https://jirkasa.github.io/" do proměnné "data" --&gt;
+&lt;c:import var="data" url="https://jirkasa.github.io/"/&gt;</code></pre></div><h3 id="c-set" class="heading-tertiary u-mb-1">c:set</h3><p class="paragraph u-mb-2">Pomocí tagu c:set můžeme nastavit proměnnou v nějakém rozsahu. Defaultně v page rozsahu, nebo můžeme rozsah definovat prostřednictvím scope atributu.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;!-- vytvoření proměnné cislo v page rozsahu --&gt;
+&lt;c:set var="cislo" value="${20}"/&gt;
+&lt;!-- vytvoření proměnné cislo v session rozsahu --&gt;
+&lt;c:set var="cislo" scope="session" value="${30}"/&gt;
+
+&lt;!-- vypsání proměnné z page rozsahu --&gt;
+${cislo}
+&lt;!-- vypsání proměnné ze session rozsahu --&gt;
+&lt;!-- (musíme použít sessionScope.cislo, protože máme proměnnou cislo i v page rozsahu) --&gt;
+${sessionScope.cislo}</code></pre></div><h3 id="c-remove" class="heading-tertiary u-mb-1">c:remove</h3><p class="paragraph u-mb-2">Pomocí tagu c:remove můžeme odstranit proměnnou ze všech rozsahů nebo specifického rozsahu. Pokud nenastavíme atribut scope, tak se proměnná odstraní ze všech rozsahů. Pokud jej nastavíme, tak se odstraní jen z rozsahu, který specifikujeme.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;!-- odstranění proměnné cislo ze všech rozsahů --&gt;
+&lt;c:remove var="cislo"/&gt;
+&lt;!-- odstranění proměnné cislo z rozsahu page --&gt;
+&lt;c:remove var="cislo" scope="page"/&gt;</code></pre></div><h3 id="c-catch" class="heading-tertiary u-mb-1">c:catch</h3><p class="paragraph u-mb-2">Tag c:catch slouží k zachycení vyjímky, kterou vyhodí kód, který obaluje. Následující kód by na stránku vypsal "Zachycena vyjímka: java.lang.ArithmeticException: / by zero".</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;!-- pokud dojde uvnitř c:catch tagu k vyjímce, tak
+se vyjímka uloží do proměnné catchException --&gt;
+&lt;c:catch var="catchException"&gt;
+    &lt;% int x = 10 / 0; %&gt;
+&lt;/c:catch&gt;
+
+&lt;!-- pokud proměnná catchException není null (došlo
+k vyjímce), tak se na stránku vyjímka vypíše --&gt;
+&lt;c:if test="${catchException != null}"&gt;
+    &lt;p&gt;Zachycena vyjímka: ${catchException}&lt;/p&gt;
+&lt;/c:if&gt;</code></pre></div><h3 id="c-if" class="heading-tertiary u-mb-1">c:if</h3><p class="paragraph u-mb-2">Pomocí tagu c:if můžeme v JSP stránce vytvořit podmínku.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;c:if test="${3 > 2}"&gt;
+    &lt;p&gt;Toto se vypíše jen když platí podmínka.&lt;/p&gt;
+&lt;/c:if&gt;</code></pre></div><h3 id="c-choose" class="heading-tertiary u-mb-">c:choose</h3><p class="paragraph u-mb-2">Tag c:choose slouží k vytvoření série podmínek. Uvnitř něj můžeme použít tagy c:when a c:otherwise. Pomocí tagu c:when můžeme vytvořit podmínku a tag c:otherwise slouží k tomu, že se kód uvnitř něj zavolá, pokud ani jedna podmínka nastavená v c:when tagu neplatí. V následující ukázce to určitě pochopíte lépe.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;c:set var="cislo1" value="${3}"/&gt;
+&lt;c:set var="cislo2" value="${2}"/&gt;
+
+&lt;c:choose&gt;
+    &lt;c:when test="${cislo1 &lt; cislo2}"&gt;
+        &lt;p&gt;cislo1 je menší než cislo2&lt;/p&gt;
+    &lt;/c:when&gt;
+    &lt;c:when test="${cislo1 &gt; cislo2}"&gt;
+        &lt;p&gt;cislo1 je větší než cislo2&lt;/p&gt;
+    &lt;/c:when&gt;
+    &lt;c:otherwise&gt;
+        &lt;p&gt;cislo1 se rovná cislo2&lt;/p&gt;
+    &lt;/c:otherwise&gt;
+&lt;/c:choose&gt;</code></pre></div><h3 id="c-foreach" class="heading-tertiary u-mb-1">c:forEach</h3><p class="paragraph u-mb-2">Pomocí tagu c:forEach můžeme vytvořit cyklus. Můžeme provádět nějaký kód několikrát za sebou nebo procházet položky v kolekci.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;!-- vypsání 5 řádků --&gt;
+&lt;c:forEach var="i" begin="1" end="5"&gt;
+    &lt;p&gt;Řádek ${i}&lt;/p&gt;
+&lt;/c:forEach&gt;
+
+&lt;!-- vypsání jmen všech uživatelů z listu users --&gt;
+&lt;c:forEach var="user" items="${users}"&gt;
+    &lt;p&gt;${user.name}&lt;/p&gt;
+&lt;/c:forEach&gt;</code></pre></div><h3 id="c-fortokens" class="heading-tertiary u-mb-1">c:forTokens</h3><p class="paragraph u-mb-2">Pomocí tagu c:forTokens můžeme rozdělit řetězec na části a provádět pro každou část nějaký kód.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;!-- kód uvnitř následujícího c:forTokens tagu se provede
+pro hodnotu "nosorožec", "opice" a "medvěd" --&gt;
+&lt;c:forTokens var="zvire" items="nosorožec,opice,medvěd" delims=","&gt;
+    &lt;c:out value="${zvire}"/&gt;&lt;p&gt;
+&lt;/c:forTokens&gt;</code></pre></div><h3 id="c-redirect" class="heading-tertiary u-mb-1">c:redirect</h3><p class="paragraph u-mb-2">Tag c:redirect umožňuje provádět přesměrování na jinou URL.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;!-- přesměrování na https://jirkasa.github.io/ --&gt;
+&lt;c:redirect url="https://jirkasa.github.io/"/&gt;</code></pre></div><h3 id="c-url" class="heading-tertiary u-mb-1">c:url</h3><p class="paragraph u-mb-2">Pomocí tagu c:url můžeme vytvořit URL. Je to alternativa k <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServletResponse.html#encodeURL-java.lang.String-" target="_blank" class="link">response.encodeURL()</a> metodě. Pokud tag c:url zavoláme bez atributu var, tak se výsledek vypíše na stránku, jinak se uloží do proměnné.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;!-- vypsání URL na stránku --&gt;
+&lt;c:url value="/stranka.jsp"/&gt;
+&lt;!-- uložení URL do proměnné mojeURL --&gt;
+&lt;c:url var="mojeURL" value="/stranka.jsp"/&gt;</code></pre></div><h3 id="c-param" class="heading-tertiary u-mb-1">c:param</h3><p class="paragraph u-mb-2">Tag c:param se používá uvnitř tagu c:url ke specifikování query parametrů.</p><div data-code-box data-no-buttons class="u-mb-6"><pre data-code><code class="language-html">&lt;!-- vytvoří URL /nazev-projektu/stranka.jsp?page=1&category=keyboards --&gt;
+&lt;c:url var="mojeURL" value="/stranka.jsp"&gt;
+    &lt;c:param name="page" value="1"/&gt;
+    &lt;c:param name="category" value="keyboards"/&gt;
+&lt;/c:url&gt;</code></pre></div><h2 id="funkcni-tagy" class="heading-secondary u-mb-2">Funkční tagy</h2><p class="paragraph u-mb-2">V kategorii funkčních tagů se nacházejí funkce, které nám umožňují různě pracovat s řetězci (většinou). Následující tabulka je ukazuje.</p><div class="table-wrapper u-mb-4"><table class="table"><thead><tr><th>Funkce</th><th>Popis</th></tr></thead><tbody><tr><td>fn:contains</td><td>Zjišťuje, zda řetězec obsahuje předaný podřetězec.</td></tr><tr><td>fn:containsIgnoreCase</td><td>Zjišťuje, zda řetězec obsahuje předaný podřetězec bez rozlišení malých a velkých písmen.</td></tr><tr><td>fn:startsWith</td><td>Zjišťuje, zda řetězec začíná na předaný podřetězec.</td></tr><tr><td>fn:endsWith</td><td>Zjišťuje, zda řetězec končí na předaný podřetězec.</td></tr><tr><td>fn:escapeXml</td><td>Escapuje znaky, které by jinak byly interpretovány jako XML/HTML tagy.</td></tr><tr><td>fn:indexOf</td><td>Vrací index prvního výskytu podřetězce v řetězci.</td></tr><tr><td>fn:trim</td><td>Odstraňuje bílé znaky ze začátku a konce řetězce.</td></tr><tr><td>fn:split</td><td>Rozděluje řetězec do pole podřetězců.</td></tr><tr><td>fn:join</td><td>Spojuje pole řetězců do jednoho řetězce.</td></tr><tr><td>fn:toLowerCase</td><td>Převádí řetězec na malá písmena.</td></tr><tr><td>fn:toUpperCase</td><td>Převádí řetězec na velká písmena.</td></tr><tr><td>fn:substring</td><td>Vytváří podřetězec z řetězce.</td></tr><tr><td>fn:substringAfter</td><td>Vrací část řetězce nacházející se za předaným podřetězcem.</td></tr><tr><td>fn:substringBefore</td><td>Vrací část řetězce nacházející se před předaným podřetězcem.</td></tr><tr><td>fn:length</td><td>Zjišťuje délku řetězce nebo počet položek v kolekci.</td></tr><tr><td>fn:replace</td><td>Nahrazuje veškerý výskyt předaného podřetězce v řetězci za jiný řetězec.</td></tr></tbody></table></div><h3 id="fn-contains" class="heading-tertiary u-mb-1">fn:contains</h3><p class="paragraph u-mb-2">Funkce fn:contains se používá ke zjištění, zda řetězec obsahuje předaný podřetězec.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;c:set var="retezec" value="Toto je řetězec."/&gt;
+
+&lt;c:if test="${fn:contains(retezec, 'řetězec')}"&gt;
+    &lt;p&gt;Řetězec obsahuje slovo "řetězec".&lt;/p&gt;
+&lt;/c:if&gt;</code></pre></div><h3 id="fn-containsignorecase" class="heading-tertiary u-mb-1">fn:containsIgnoreCase</h3><p class="paragraph u-mb-2">Funkce fn:containsIgnoreCase se používá ke zjištění, zda řetězec obsahuje předaný podřetězec bez rozlišení malých a velkých písmen.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;c:set var="retezec" value="Toto je řetězec."/&gt;
+
+&lt;c:if test="${fn:containsIgnoreCase(retezec, 'ŘETĚZEC')}"&gt;
+    &lt;p&gt;Řetězec obsahuje slovo "řetězec".&lt;/p&gt;
+&lt;/c:if&gt;</code></pre></div><h3 id="fn-startswith" class="heading-tertiary u-mb-1">fn:startsWith</h3><p class="paragraph u-mb-2">Funkce fn:startsWith se používá ke zjištění, zda řetězec začíná na předaný podřetězec.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;c:set var="retezec" value="Toto je řetězec."/&gt;
+
+&lt;c:if test="${fn:startsWith(retezec, 'Toto')}"&gt;
+    &lt;p&gt;Řetězec začíná na "Toto".&lt;/p&gt;
+&lt;/c:if&gt;</code></pre></div><h3 id="fn-endswith" class="heading-tertiary u-mb-1">fn:endsWith</h3><p class="paragraph u-mb-2">Funkce fn:endsWith se používá ke zjištění, zda řetězec končí na předaný podřetězec.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;c:set var="retezec" value="Toto je řetězec."/&gt;
+
+&lt;c:if test="${fn:endsWith(retezec, 'řetězec.')}"&gt;
+    &lt;p&gt;Řetězec končí na "řetězec.".&lt;/p&gt;
+&lt;/c:if&gt;</code></pre></div><h3 id="fn-escapexml" class="heading-tertiary u-mb-1">fn:escapeXml</h3><p class="paragraph u-mb-2">Funkce fn:escapeXml se používá k escapnutí znáků, které by jinak byly interpretovány jako XML/HTML tagy.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;c:set var="retezec" value="&lt;script&gt;console.log('Ahoj')&lt;/script&gt;"/&gt;
+
+&lt;!-- toto se na stránku přidá jako script element --&gt;
+${retezec}
+
+&lt;!-- toto se přidá na stránku jako text "&lt;script&gt;console.log('Ahoj')&lt;/script&gt;" --&gt;
+${fn:escapeXml(retezec)}</code></pre></div><h3 id="fn-indexof" class="heading-tertiary u-mb-1">fn:indexOf</h3><p class="paragraph u-mb-2">Funkce fn:indexOf se používá k nalezení indexu (pozice) prvního výskytu podřetězce v řetězci.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;c:set var="retezec" value="Toto je řetězec."/&gt;
+
+&lt;!-- funkce indexOf v tomto případě vrátí hodnotu 5 --&gt;
+&lt;p&gt;Index (pozice) podřetězce "je": ${fn:indexOf(retezec, "je")}&lt;/p&gt;</code></pre></div><h3 if="fn-trim" class="heading-tertiary u-mb-1">fn:trim</h3><p class="paragraph u-mb-2">Funkce fn:trim se používá k odstranění bílých znaků ze začátku a konce řetězce.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;c:set var="retezec" value="   Toto je řetězec.     "/&gt;
+
+&lt;!-- funkce fn:trim v tomto případě vrátí "Toto je řetězec." --&gt;
+&lt;p&gt;${fn:trim(retezec)}&lt;/p&gt;</code></pre></div><h3 id="fn-split" class="heading-tertiary u-mb-1">fn:split</h3><p class="paragraph u-mb-2">Funkce fn:split se používá k rozdělení řetězce do pole podřetězců podle předaného oddělovače.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;c:set var="retezec" value="nosorožec-lev-opice"/&gt;
+
+&lt;!-- vytvoření pole zvirata ["nosorožec", "lev", "opice"] --&gt;
+&lt;c:set var="zvirata" value="${fn:split(retezec, '-')}"/&gt;
+
+&lt;!-- výsledné pole můžeme třeba projet forEach cyklem --&gt;
+&lt;c:forEach var="zvire" items="${zvirata}"&gt;
+    &lt;p&gt;${zvire}&lt;/p&gt;
+&lt;/c:forEach&gt;</code></pre></div><h3 id="fn-join" class="heading-tertiary u-mb-1">fn:join</h3><p class="paragraph u-mb-2">Funkce fn:join se používá ke spojení pole řetězců do jednoho řetězce.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;c:set var="retezec" value="nosorožec-lev-opice"/&gt;
+&lt;!-- vytvoření pole zvirata ["nosorožec", "lev", "opice"] --&gt;
+&lt;c:set var="zvirata" value="${fn:split(retezec, '-')}"/&gt;
+
+&lt;!-- vytvoření řetězce "nosorožec,lev,opice" --&gt;
+&lt;c:set var="retezec2" value="${fn:join(zvirata, ',')}"/&gt;</code></pre></div><h3 id="fn-tolowercase" class="heading-tertiary u-mb-1">fn:toLowerCase</h3><p class="paragraph u-mb-2">Funkce fn:toLowerCase se používá k převedení řetězce na malá písmena.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;c:set var="retezec" value="TOTO JE ŘETĚZEC."/&gt;
+
+&lt;!-- vytvoří řetězec "toto je řetězec." --&gt;
+${fn:toLowerCase(retezec)}</code></pre></div><h3 id="fn-touppercase" class="heading-tertiary u-mb-1">fn:toUpperCase</h3><p class="paragraph u-mb-2">Funkce fn:toUpperCase se používá k převedení řetězce na velká písmena.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;c:set var="retezec" value="Toto je řetězec."/&gt;
+
+&lt;!-- vytvoří řetězec "TOTO JE ŘETĚZEC." --&gt;
+${fn:toUpperCase(retezec)}</code></pre></div><h3 id="fn-substring" class="heading-tertiary u-mb-1">fn:substring</h3><p class="paragraph u-mb-2">Funkce fn:substring slouží k získání podřetězce z řetězce.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;c:set var="retezec" value="Toto je řetězec."/&gt;
+
+&lt;!-- vytvoří řetězec "je" --&gt;
+${fn:substring(retezec, 5, 7)}</code></pre></div><h3 id="fn-substringafter" class="heading-tertiary u-mb-1">fn:substringAfter</h3><p class="paragraph u-mb-2">Funkce fn:substringAfter se používá k získání podřetězce z řetězce, nacházejícím se za předaným podřetězcem.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;c:set var="retezec" value="Toto je řetězec."/&gt;
+
+&lt;!-- vytvoří řetězec " řetězec." --&gt;
+${fn:substringAfter(retezec, "je")}</code></pre></div><h3 id="fn-substringbefore" class="heading-tertiary u-mb-1">fn:substringBefore</h3><p class="paragraph u-mb-2">Funkce fn:substringBefore se používá k získání podřetězce z řetězce, nacházejícím se před předaným podřetězcem.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;c:set var="retezec" value="Toto je řetězec."/&gt;
+
+&lt;!-- vytvoří řetězec "Toto " --&gt;
+${fn:substringBefore(retezec, "je")}</code></pre></div><h3 id="fn-length" class="heading-tertiary u-mb-1">fn:length</h3><p class="paragraph u-mb-2">Funkce fn:length slouží k získání délky řetězce nebo počtu položek v kolekci.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;c:set var="retezec" value="Toto je řetězec."/&gt;
+&lt;p&gt;Délka řetězce je ${fn:length(retezec)}&lt;/p&gt;
+
+&lt;c:set var="zvirata" value="${fn:split(\"nosorožec-lev-opice\", '-')}"/&gt;
+&lt;p&gt;Délka pole je ${fn:length(zvirata)}&lt;/p&gt;</code></pre></div><h3 id="fn-replace" class="heading-tertiary u-mb-1">fn:replace</h3><p class="paragraph u-mb-2">Funkce fn:replace slouží k nahrazení veškerého výskytu předaného podřetězce v řetězci za jiný řetězec.</p><div data-code-box data-no-buttons class="u-mb-6"><pre data-code><code class="language-html">&lt;c:set var="retezec" value="Toto je řetězec."/&gt;
+
+&lt;!-- vytvoří řetězec "Toto je text." --&gt;
+${fn:replace(retezec, "řetězec", "text")}</code></pre></div><h2 id="formatovaci-tagy" class="heading-secondary u-mb-2">Formátovací tagy</h2><p class="paragraph u-mb-2">Do kategorie formátovacích tagů patří tagy, které nám umožňují provádět formátování a internacionalizaci. Následující tabulka popisuje, které tagy do této kategorie patří.</p><div class="table-wrapper u-mb-4"><table class="table"><thead><tr><th>Tag</th><th>Popis</th></tr></thead><tbody><tr><td>fmt:formatNumber</td><td>Formátuje číslo se specifickou přesností nebo formátem.</td></tr><tr><td>fmt:parseNumber</td><td>Parsuje řetězcovou reprezentaci čísla, měny nebo procenta.</td></tr><tr><td>fmt:formatDate</td><td>Formátuje datum a/nebo čas.</td></tr><tr><td>fmt:parseDate</td><td>Parsuje řetězcovou reprezentaci datumu a/nebo času.</td></tr><tr><td>fmt:bundle</td><td>Používá se pro internacionalizaci k načtení souboru hodnot.</td></tr><tr><td>fmt:setLocale</td><td>Nastavuje locale.</td></tr><tr><td>fmt:setBundle</td><td>Používá se pro internacionalizaci k načtení souboru hodnot.</td></tr><tr><td>fmt:timeZone</td><td>Nastavuje časovou zónu, která má vliv na formátování uvnitř těla tagu.</td></tr><tr><td>fmt:setTimeZone</td><td>Nastavuje časovou zónu, která má vliv na formátování.</td></tr><tr><td>fmt:message</td><td>Používá se k vypisování hodnot ve více jazycích.</td></tr><tr><td>fmt:requestEncoding</td><td>Nastavuje kódování requestu.</td></tr></tbody></table></div><h3 id="fmt-formatnumber" class="heading-tertiary u-mb-1">fmt:formatNumber</h3><p class="paragraph u-mb-2">Tag fmt:formatNumber slouží k formátování čísel. Následující tabulka ukazuje atributy, které můžeme pro tento atribut nastavit.</p><div class="table-wrapper u-mb-2"><table class="table"><thead><tr><th>Atribut</th><th>Povinné</th><th>Defaultní hodnota</th><th>Popis</th></tr></thead><tbody><tr><td>value</td><td>ano</td><td>žádná</td><td>Numerická hodnota ke zformátování.</td></tr><tr><td>type</td><td>ne</td><td>NUMBER</td><td>NUMBER, CURRENCY nebo PERCENT</td></tr><tr><td>pattern</td><td>ne</td><td>žádná</td><td>Vlastní formátovací vzor.</td></tr><tr><td>currencyCode</td><td>ne</td><td>z defaultního locale</td><td><a href="https://www.iban.com/currency-codes" target="_blank" class="link">Kód měny</a></td></tr><tr><td>currencySymbol</td><td>ne</td><td>z defaultního locale</td><td>Symbol měny</td></tr><tr><td>groupingUsed</td><td>ne</td><td>true</td><td>Určuje, zda se mají čísla seskupovat (true/false).</td></tr><tr><td>maxIntegerDigits</td><td>ne</td><td>žádná</td><td>Určuje maximální počet číslic, které mohou být zobrazeny v celočíselné části. Pokud jich má číslo více, tak se oříznou.</td></tr><tr><td>minIntegerDigits</td><td>ne</td><td>žádná</td><td>Určuje minimální počet číslic, které musejí být zobrazeny v celočíselné části. Pokud jich má číslo méně, tak se tam umístí nuly.</td></tr><tr><td>maxFractionDigits</td><td>ne</td><td>žádná</td><td>Určuje maximální počet číslic, které mohou být zobrazeny v desetinné části. Pokud jich má číslo více, tak se oříznou.</td></tr><tr><td>minFractionDigits</td><td>ne</td><td>žádná</td><td>Určuje minimální počet číslic, které musejí být zobrazeny v desetinné části. Pokud jich má číslo méně, tak se tam umístí nuly.</td></tr><tr><td>var</td><td>ne</td><td>bez specifikování var atributu se výsledek vypíše na stránku</td><td>Jméno proměnné, do které se má uložit zformátované číslo.</td></tr><tr><td>scope</td><td>ne</td><td>page</td><td>Rozsah proměnné, do které se ukládá zformátované číslo.</td></tr></tbody></table></div><p class="paragraph u-mb-2">Následující ukázka ukazuje pár příkladů formátování čísel.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;!-- 20,00 Kč --&gt;
+&lt;fmt:formatNumber value="${20}" type="currency" currencyCode="CZK"/&gt;
+
+&lt;!-- 7 666,254 --&gt;
+&lt;fmt:formatNumber value="${197666.25367}" maxIntegerDigits="4"/&gt;
+
+&lt;!-- 197 666,25 --&gt;
+&lt;fmt:formatNumber value="${197666.25367}" maxFractionDigits="2"/&gt;
+
+&lt;!-- 20,00 --&gt;
+&lt;fmt:formatNumber value="${20}" groupingUsed="false" minFractionDigits="2"/&gt;</code></pre></div><h3 id="fmt-parsenumber" class="heading-tertiary u-mb-1">fmt:parseNumber</h3><p class="paragraph u-mb-2">Tag fmt:parseNumber slouží k parsování řetězcové reprezentace čísel, měn nebo procent. Následující tabulka ukazuje atributy, které můžeme pro tento atribut nastavit.</p><div class="table-wrapper u-mb-2"><table class="table"><thead><tr><th>Atribut</th><th>Povinné</th><th>Defaultní hodnota</th><th>Popis</th></tr></thead><tbody><tr><td>value</td><td>ano</td><td>žádná</td><td>Hodnota k parsnutí.</td></tr><tr><td>type</td><td>ne</td><td>NUMBER</td><td>NUMBER, CURRENCY nebo PERCENT</td></tr><tr><td>parseLocale</td><td>ne</td><td>defaultní locale</td><td>Locale, který se má při parsování použít.</td></tr><tr><td>integerOnly</td><td>ne</td><td>false</td><td>Určuje, zda se má číslo parsnout jen jako celé číslo nebo se má ponechat desetinná část.</td></tr><tr><td>pattern</td><td>ne</td><td>žádná</td><td>Vlastní vzor pro parsování.</td></tr><tr><td>var</td><td>ne</td><td>bez specifikování var atributu se výsledek vypíše na stránku</td><td>Jméno proměnné, do které se má uložit parsnuté číslo.</td></tr><tr><td>scope</td><td>ne</td><td>page</td><td>Rozsah proměnné, do které se ukládá parsnuté číslo.</td></tr></tbody></table></div><p class="paragraph u-mb-2">Následující ukázka ukazuje dva příklady parsování čísla.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;!-- 20 --&gt;
+&lt;fmt:parseNumber value="20,00 Kč"/&gt;
+
+&lt;!-- 196358 --&gt;
+&lt;fmt:parseNumber value="196358,354" integerOnly="true"/&gt;</code></pre></div><h3 id="fmt-formatdate" class="heading-tertiary u-mb-1">fmt:formatDate</h3><p class="paragraph u-mb-2">Tag fmt:formatDate slouží k formátování datumu a/nebo času. Následující tabulka ukazuje atributy, které můžeme pro tento atribut nastavit.</p><div class="table-wrapper u-mb-2"><table class="table"><thead><tr><th>Atribut</th><th>Povinné</th><th>Defaultní hodnota</th><th>Popis</th></tr></thead><tbody><tr><td>value</td><td>ano</td><td>žádná</td><td>Datum ke zformátování.</td></tr><tr><td>type</td><td>ne</td><td>DATE</td><td>DATE, TIME nebo BOTH</td></tr><tr><td>dataStyle</td><td>ne</td><td>DEFAULT</td><td>FULL, LONG, MEDIUM, SHORT nebo DEFAULT</td></tr><tr><td>timeStyle</td><td>ne</td><td>DEFAULT</td><td>FULL, LONG, MEDIUM, SHORT nebo DEFAULT</td></tr><tr><td>pattern</td><td>ne</td><td>žádná</td><td>Vlastní formátovací vzor.</td></tr><tr><td>timeZone</td><td>ne</td><td>defaultní časová zóna</td><td>Časová zóna formátovaného datumu.</td></tr><tr><td>var</td><td>ne</td><td>bez specifikování var atributu se výsledek vypíše na stránku</td><td>Jméno proměnné, do které se má uložit zformátovaný datum.</td></tr><tr><td>scope</td><td>ne</td><td>page</td><td>Rozsah proměnné, do které se ukládá zformátovaný datum.</td></tr></tbody></table></div><p class="paragraph u-mb-2">Následující ukázka ukazuje pár příkladů formátování datumu.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;c:set var="date" value="&lt;%= new java.util.Date(123, 11, 30, 21, 0) %&gt;" /&gt;
+
+&lt;!-- 21:00:00 --&gt;
+&lt;fmt:formatDate value="${date}" type="TIME" /&gt;
+
+&lt;!-- 2023-12-30 --&gt;
+&lt;fmt:formatDate value="${date}" pattern="yyyy-MM-dd" /&gt;
+
+&lt;!-- 30. 12. 2023 --&gt;
+&lt;fmt:formatDate value="${date}" dateStyle="MEDIUM" /&gt;</code></pre></div><h3 id="fmt-parsedate" class="heading-tertiary u-mb-1">fmt:parseDate</h3><p class="paragraph u-mb-2">Tag fmt:parseDate slouží k parsování řetězcové reprezentace datumů na java.util.Date objekt. Následující tabulka ukazuje atributy, které můžeme pro tento atribut nastavit.</p><div class="table-wrapper u-mb-2"><table class="table"><thead><tr><th>Atribut</th><th>Povinné</th><th>Defaultní hodnota</th><th>Popis</th></tr></thead><tbody><tr><td>value</td><td>ano</td><td>žádná</td><td>Datum k parsnutí.</td></tr><tr><td>type</td><td>ne</td><td>DATE</td><td>DATE, TIME nebo BOTH</td></tr><tr><td>dataStyle</td><td>ne</td><td>DEFAULT</td><td>FULL, LONG, MEDIUM, SHORT nebo DEFAULT</td></tr><tr><td>timeStyle</td><td>ne</td><td>DEFAULT</td><td>FULL, LONG, MEDIUM, SHORT nebo DEFAULT</td></tr><tr><td>parseLocale</td><td>ne</td><td>defaultní locale</td><td>Locale, který se má při parsování použít.</td></tr><tr><td>pattern</td><td>ne</td><td>žádná</td><td>Vlastní vzor pro parsování.</td></tr><tr><td>timeZone</td><td>ne</td><td>defaultní časová zóna</td><td>Časová zóna parsovaného datumu.</td></tr><tr><td>var</td><td>ne</td><td>bez specifikování var atributu se výsledek vypíše na stránku</td><td>Jméno proměnné, do které se má uložit zformátovaný datum.</td></tr><tr><td>scope</td><td>ne</td><td>page</td><td>Rozsah proměnné, do které se ukládá zformátovaný datum.</td></tr></tbody></table></div><p class="paragraph u-mb-2">Následující ukázka ukazuje příklad parsnutí datumu.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;fmt:parseDate var="date" value="${'2023-12-30'}" pattern="yyyy-MM-dd"/&gt;</code></pre></div><h3 id="i18n-tagy" class="heading-tertiary u-mb-1">I18N tagy</h3><p class="paragraph u-mb-2">Na tagy fmt:setBundle, fmt:setMessage a fmt:setLocale bude lepší se podívat dohromady. S jejich pomocí můžeme provádět internacionalizaci (I18N). Jde o to, že namísto toho, abychom do stránky vkládali text natvrdo, načítáme jej odjinud. Díky tomu můžeme naši webovou aplikaci přeložit do více jazyků.</p><p class="paragraph u-mb-2">Pro ukázku si založíme nový projekt, ve kterém si internacionalizaci ukážeme. Začneme tím, že si do souboru pom.xml kromě závislosti pro servlety přidáme závislost i pro JSTL.</p><div data-project="4" data-project-name="i18n" class="u-mb-2"><ul data-project-folders><li>src<ul><li>main<ul><li data-java-packages-folder>java</li><li>resources</li><li>webapp</li></ul></li><li>test<ul><li>java</li><li>resources</li></ul></li></ul></li><li>target</li></ul><pre data-code="pom.xml" data-active data-code-highlight="24-28"><code class="language-xml">&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;io.github.jirkasa&lt;/groupId&gt;
+    &lt;artifactId&gt;i18n&lt;/artifactId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;name&gt;i18n&lt;/name&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+        &lt;maven.compiler.source&gt;${java.version}&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;${java.version}&lt;/maven.compiler.target&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;4.0.1&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;jstl&lt;/artifactId&gt;
+            &lt;version&gt;1.2&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;</code></pre></div><p class="paragraph u-mb-2">Jelikož chceme vytvářet aplikaci pro více jazyků, tak nebudeme text natvrdo psát do JSP stránky ale budeme jej načítat z .properties souborů, které uložíme do složky "src/main/resources". Tyto soubory slouží k ukládání textu ve specifickém jazyce a musejí mít název ve specifickém formátu. Ukazuje jej následující ukázka. Na začátku je nějaký název, který je následován localem (kombinací <a href="https://en.wikipedia.org/wiki/List_of_ISO_639_language_codes" target="_blank" class="link">kódu jazyka</a> a <a href="https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes" target="_blank" class="link">kódu země</a>).</p><div data-code-box data-no-buttons class="u-mb-2"><pre data-code><code class="no-highlight">&lt;název souboru&gt;_&lt;kód jazyka&gt;_&lt;kód země&gt;.properties</code></pre></div><p class="paragraph u-mb-2">Následující tabulka ukazuje pár příkladů názvu .properties souboru. Pokud locale nespecifikujeme (specifikujeme jen název), tak se jedná o soubor s defaultním jazykem, který se použije, pokud se pro jazyk nenajde vlastní soubor.</p><div class="table-wrapper u-mb-2"><table class="table"><thead><tr><th>Název souboru</th><th>Jazyk</th><th>Země</th></tr></thead><tbody><tr><td>labels.properties</td><td colspan="2">defaultní jazyk</td></tr><tr><td>labels_en_GB.properties</td><td>Angličtina</td><td>Spojené Království</td></tr><tr><td>labels_de_DE.properties</td><td>Němčina</td><td>Německo</td></tr><tr><td>labels_cs_CZ.properties</td><td>Čeština</td><td>Česko</td></tr></tbody></table></div><p class="paragraph u-mb-2">Pro začátek si v našem projektu vytvoříme soubor "labels.properties", který bude obsahovat text v defaultním jazyce. V našem případě to bude angličtina. Soubor uložíme do složky "src/main/resources", ve kterém vytvoříme nějaký balíček (hierarchii složek, která se pro Java balíčky tvoří i ve složce "src/main/java"). Složka resources vlastně slouží pro ukládání všech věcí, které nejsou Java třídy. Properties soubory obsahují data ve formě klíčů a hodnot. Každý řádek souboru je ve formátu "klíč=hodnota". Následující ukázka ukazuje obsah pro náš vytvořený soubor "labels.properties".</p><div data-project="5" data-project-extends="4" class="u-mb-2"><ul data-project-commands><li data-command-create-folder>src/main/resources/io/github/jirkasa</li><li data-command-open-folder-to-root>src/main/resources/io/github/jirkasa</li></ul><pre data-code="labels.properties" data-folder="src/main/resources/io/github/jirkasa" data-active><code class="no-highlight">label.welcome=Welcome. Enter your username and password.
+label.username=Username
+label.password=Password
+label.login=Login</code></pre></div><p class="paragraph u-mb-2">Teď můžeme text z našeho properties souboru použít v JSP stránce. Vytvoříme si tedy novou JSP stránku, kterou můžeme pojmenovat třeba jako "stranka.jsp". Na této stránce si nadefinujeme JSTL knihovnu s formátovacími tagy a na začátku stránky použijeme tag fmt:setBundle, pomocí kterého použijeme properties soubor, který jsme si vytvořili. Atributem basename specifikujeme jen balíček a název bez localu a koncovky souboru.</p><div data-project="6" data-project-extends="5" class="u-mb-2"><ul data-project-commands><li data-command-open-folder>src/main/resources/io</li><li data-command-open-folder>src/main/resources/io/github</li><li data-command-open-folder>src/main/resources/io/github/jirkasa</li><li data-command-open-folder-to-root>src/main/webapp</li></ul><pre data-code="stranka.jsp" data-folder="src/main/webapp" data-active><code class="language-html">&lt;%@ page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %&gt;
+
+&lt;fmt:setBundle basename="io.github.jirkasa.labels" /&gt;</code></pre></div><p class="paragraph u-mb-2">Po použití fmt:setBundle tagu můžeme na stránku vložit hodnoty z properties souboru pomocí tagu fmt:message, kde vždy jen specifikujeme klíč hodnoty, kterou chceme použít. Následující ukázka ukazuje dokončenou JSP stránku.</p><div data-project="7" data-project-extends="6" class="u-mb-2"><ul data-project-commands><li data-command-open-folder>src/main/resources/io</li><li data-command-open-folder>src/main/resources/io/github</li><li data-command-open-folder>src/main/resources/io/github/jirkasa</li><li data-command-open-folder-to-root>src/main/webapp</li></ul><pre data-code="stranka.jsp" data-folder="src/main/webapp" data-active><code class="language-html">&lt;%@ page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %&gt;
+
+&lt;fmt:setBundle basename="io.github.jirkasa.labels" /&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;I18N&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;fmt:message key="label.welcome" /&gt;
+    &lt;br&gt;&lt;br&gt;
+    &lt;fmt:message key="label.username" /&gt;: &lt;input type="text" name="username" /&gt;
+    &lt;br&gt;&lt;br&gt;
+    &lt;fmt:message key="label.password" /&gt;: &lt;input type="password" name="password" /&gt;
+    &lt;br&gt;&lt;br&gt;
+    &lt;button&gt;&lt;fmt:message key="label.login" /&gt;&lt;/button&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div><p class="paragraph u-mb-2">Pokud aplikaci spustíte a navštívíte <a href="http://localhost:8080/i18n/stranka.jsp" target="_blank" class="link">http://localhost:8080/i18n/stranka.jsp</a>, tak uvidíte stránku, kterou ukazuje následující obrázek. Hodnoty z properties souboru se tedy použily.</p><img src="../../static/img/screenshots/I18NPrikladStranka.png" alt="vygenerovaná stránka" class="image image--full-width image--with-border u-mb-2"><p class="paragraph u-mb-2">Teď si zkusíme vytvořit properties soubor pro češtinu. Ve složce resources (v balíčku) tedy vytvoříme soubor "labels_cs_CZ.properties". Obsah pro něj ukazuje následující ukázka.</p><div data-project="8" data-project-extends="7" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/resources/io/github/jirkasa</li></ul><pre data-code="labels_cs_CZ.properties" data-folder="src/main/resources/io/github/jirkasa" data-active><code class="no-highlight">label.welcome=Vítejte. Zadejte své uživatelské jméno a heslo.
+label.username=Uživatelské jméno
+label.password=Heslo
+label.login=Přihlásit se</code></pre></div><p class="paragraph u-mb-2">Pokud si JSP stránku otevřete teď, tak ji uvidíte v češtině (možná budete muset restartovat server). Pokud v prohlížeči nemáte nastavenou češtinu, tak ji česky neuvidíte. Prohlížeč totiž automaticky na server posílá locale prostřednitvím Accept-Language headeru, podle toho, jaký jazyk je v prohlížeči nastavený.</p><img src="../../static/img/screenshots/I18NPrikladCestinaStranka.png" alt="vygenerovaná stránka v češtině" class="image image--full-width image--with-border u-mb-2"><p class="paragraph u-mb-2">Zkusíme si přidat properties soubor ještě pro jeden jazyk a poté uživateli umožníme, aby si mohl jazyk webové stránky sám měnit. Následující ukázka ukazuje soubor "labels_de_DE.properties" pro němčinu.</p><div data-project="9" data-project-extends="8" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/resources/io/github/jirkasa</li></ul><pre data-code="labels_de_DE.properties" data-folder="src/main/resources/io/github/jirkasa" data-active><code class="no-highlight">label.welcome=Willkommen. Geben Sie Ihren Benutzernamen und Ihr Passwort ein.
+label.username=Nutzername
+label.password=Passwort
+label.login=Anmeldung</code></pre></div><p class="paragraph u-mb-2">Ke změně localu můžeme použít tag fmt:setLocale. Následující ukázka ukazuje, jak můžeme na naší stránce naprevno nastavit němčinu.</p><div data-project="10" data-project-extends="9" class="u-mb-2"><ul data-project-commands><li data-command-open-folder>src/main/resources/io</li><li data-command-open-folder>src/main/resources/io/github</li><li data-command-open-folder>src/main/resources/io/github/jirkasa</li><li data-command-open-folder-to-root>src/main/webapp</li></ul><pre data-code="stranka.jsp" data-folder="src/main/webapp" data-active data-code-highlight="4"><code class="language-html">&lt;%@ page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %&gt;
+
+&lt;fmt:setLocale value="de_DE"/&gt;
+&lt;fmt:setBundle basename="io.github.jirkasa.labels" /&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;I18N&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;fmt:message key="label.welcome" /&gt;
+    &lt;br&gt;&lt;br&gt;
+    &lt;fmt:message key="label.username" /&gt;: &lt;input type="text" name="username" /&gt;
+    &lt;br&gt;&lt;br&gt;
+    &lt;fmt:message key="label.password" /&gt;: &lt;input type="password" name="password" /&gt;
+    &lt;br&gt;&lt;br&gt;
+    &lt;button&gt;&lt;fmt:message key="label.login" /&gt;&lt;/button&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div><p class="paragraph u-mb-2">Když si teď JSP stránku otevřete, uvidíte ji v němčině.</p><img src="../../static/img/screenshots/I18NPrikladNemcinaStranka.png" alt="vygenerovaná stránka v němčině" class="image image--full-width image--with-border u-mb-2"><p class="paragraph u-mb-2">Teď uživateli umožníme, aby prostřednictvím query parametru mohl nastavit, v jakém jazyku se mu má stránka zobrazit. Do naší JSP stránky přidáme tři odkazy, pomocí kterých půjde jazyk stránky přepínat. Všechny odkazy budou odkazovat na stejnou stránku na které se nacházejí, akorát budou mít jiný query parametr. V JSP stránce si hodnotu query parametru přečteme a nastavíme podle ní locale. Následující ukázka ukazuje upravený kód stránky.</p><div data-project="11" data-project-extends="10" class="u-mb-2"><ul data-project-commands><li data-command-open-folder>src/main/resources/io</li><li data-command-open-folder>src/main/resources/io/github</li><li data-command-open-folder>src/main/resources/io/github/jirkasa</li><li data-command-open-folder-to-root>src/main/webapp</li></ul><pre data-code="stranka.jsp" data-folder="src/main/webapp" data-active data-code-highlight="4-6,16-17"><code class="language-html">&lt;%@ page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %&gt;
+
+&lt;!-- nastavení locale podle query parametru nebo použití defaultního locale, který
+se poslal v headeru Accept-Language (jazyka, který má uživatel nastavený v prohlížeči) --&gt;
+&lt;fmt:setLocale value="${not empty param.language ? param.language : pageContext.request.locale}"/&gt;
+&lt;fmt:setBundle basename="io.github.jirkasa.labels" /&gt;
+
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;I18N&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;a href="./stranka.jsp?language=en_GB"&gt;English&lt;/a&gt; | &lt;a href="./stranka.jsp?language=cs_CZ"&gt;Česky&lt;/a&gt; | &lt;a href="./stranka.jsp?language=de_DE"&gt;Deutsch&lt;/a&gt;
+    &lt;hr&gt;
+    &lt;fmt:message key="label.welcome" /&gt;
+    &lt;br&gt;&lt;br&gt;
+    &lt;fmt:message key="label.username" /&gt;: &lt;input type="text" name="username" /&gt;
+    &lt;br&gt;&lt;br&gt;
+    &lt;fmt:message key="label.password" /&gt;: &lt;input type="password" name="password" /&gt;
+    &lt;br&gt;&lt;br&gt;
+    &lt;button&gt;&lt;fmt:message key="label.login" /&gt;&lt;/button&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div><p class="paragraph u-mb-2">Nyní máme možnost zobrazit si stránku v různých jazycích.</p><img src="../../static/img/screenshots/I18NPrikladVyberJazykuStranka.png" alt="vygenerovaná stránka s možností výběru jazyka" class="image image--full-width image--with-border u-mb-2"><p class="paragraph u-mb-2">Kromě tagu fmt:setBundle existuje ještě tag fmt:bundle. Ten má podobnou funkcionalitu, akorát poskytuje lokalizovaný text jen pro tagy fmt:message, které se nacházejí uvnitř jeho těla.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;fmt:bundle basename="io.github.jirkasa.labels"&gt;
+    &lt;fmt:message key="label.welcome" /&gt;
+&lt;/fmt:bundle&gt;</code></pre></div><h3 id="fmt-settimezone" class="heading-tertiary u-mb-1">fmt:setTimeZone</h3><p class="paragraph u-mb-2">Tag fmt:setTimeZone slouží k nastavení <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="_blank" class="link">časové zóny</a>, která se poté použije třeba na formátování datumů.</p><div data-code-box data-no-buttons class="u-mb-2"><pre data-code><code class="language-html">&lt;fmt:setTimeZone value="CET"/&gt;
+&lt;fmt:formatDate value="&lt;%= new java.util.Date() %&gt;" dateStyle="FULL" /&gt;</code></pre></div><p class="paragraph u-mb-2">Pokud si chcete vypsat datum ve všech dostupných časových zónách, můžete to udělat způsobem, který ukazuje následující ukázka.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;c:set var="date" value="&lt;%= new java.util.Date(123, 11, 30, 21, 0) %&gt;" /&gt;
+&lt;c:forEach var="zone" items="&lt;%= java.util.TimeZone.getAvailableIDs()%&gt;"&gt;
+    &lt;fmt:setTimeZone value="${zone}"/&gt;
+    ${zone} - &lt;fmt:formatDate value="${date}" dateStyle="FULL" /&gt;
+    &lt;br&gt;
+&lt;/c:forEach&gt;</code></pre></div><h3 id="fmt-timezone" class="heading-tertiary u-mb-1">fmt:timeZone</h3><p class="paragraph u-mb-2">Tag fmt:timeZone poskytuje podobnou funkcionalitu jako tag fmt:setTimeZone. Rozdíl je v tom, že má vliv jen na formátování, které se děje uvnitř jeho těla.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-html">&lt;fmt:timeZone value="CET"&gt;
+    &lt;fmt:formatDate value="&lt;%= new java.util.Date() %&gt;" dateStyle="FULL" /&gt;
+&lt;/fmt:timeZone&gt;</code></pre></div><h3 id="fmt-requestencoding" class="heading-tertiary u-mb-1">fmt:requestEncoding</h3><p class="paragraph u-mb-2">Tag fmt:requestEncoding slouží pro nastavení kódování na requestu, stejně jako metoda setCharacterEncoding z rozhraní ServletRequest.</p><div data-code-box data-no-buttons class="u-mb-6"><pre data-code><code class="language-html">&lt;fmt:requestEncoding value="UTF-8" /&gt;</code></pre></div><p class="paragraph u-mb-4">Pro tuto část je to vše. Prošli jsme si různé tagy ze třech kategorií JSTL knihovny. Spíš jsme si je jen představili, takže pokud byste se o nich potřebovali dozvědět více informací, tak si pro ně budete muset najít jiný zdroj. Tagy v kategorii XML a SQL si tu procházet nebudeme. Tagy z kategorie XML totiž slouží pro práci s XML a tagy z kategorie SQL pro práci s relačními databázemi. Není podle mě dobré něco takového v JSP dělat. V příští části, která je o MVC vzoru, zjistíte proč. Pokud používáme JSP zároveň se servlety, tak bychom měli JSP stránky používat jen k zobrazování dat, ne k jejich zpracování.</p><div class="u-text-center"><a href="../mvc-vzor/" class="button-primary">Pokračovat na další část</a></div></main></div></div><footer class="footer"><div class="footer__content"><p class="footer__text">Tento web vytvořil <a href="https://jirkasa.github.io/" target="_blank" class="footer__link">Jiří Satora</a></p></div></footer></body></html>

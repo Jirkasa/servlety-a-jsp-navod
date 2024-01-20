@@ -1,0 +1,328 @@
+<!doctype html><html lang="cs"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes,maximum-scale=2.2,minimum-scale=1"><link rel="icon" type="image/svg+xml" href="../../static/img/favicon.svg"><meta name="author" content="Jiří Satora"><meta name="description" content="V této části se budeme zabývat komunikací mezi servlety."><title>Komunikace mezi Servlety | Servlety a JSP - Návod</title><script src="../../static/js/highlight.min.js"></script><script>hljs.highlightAll()</script><script defer="defer" src="../../common.094d85ce485e92e2c2cb.js"></script><script defer="defer" src="../../618.274f04aa314232891610.js"></script><script defer="defer" src="../../tutorial.eb9162178c9dddad389b.js"></script><link href="../../css/style.dc6eaf064d238b949478.css" rel="stylesheet"></head><body><input type="hidden" id="PATH_TO_ROOT" value="../../"><header id="HeaderContainer" class="header"><div id="Header" class="header__container"><div class="header__content"><a href="../../" class="header__home-link">Servlety a JSP<span class="header__home-link-unimportant-part"> - Návod</span></a> <button id="NavigationToggleButton" class="menu-toggle-button">Otevřít/Zavřít menu<span class="menu-toggle-button__icon"></span></button><nav id="HeaderNavigation" class="header__navigation"><ul><li><a href="../../tutorial/priprava-pro-vyvoj/" class="header__navigation-link header__navigation-link--active">Tutoriál</a></li><li><a href="../../obsah/" class="header__navigation-link">Obsah</a></li><li><a href="../../dalsi-tutorialy/k-cemu-tato-sekce-slouzi/" class="header__navigation-link">Další tutoriály</a></li><li><a href="https://github.com/Jirkasa/servlety-a-jsp-navod" target="_blank" class="header__navigation-link">GitHub</a></li></ul></nav></div></div></header><div class="tutorial-page-layout"><div class="tutorial-page-layout__container"><nav id="TutorialNavigation" class="tutorial-page-layout__navigation-side"><ul class="navigation"><li><a href="../priprava-pro-vyvoj/" class="navigation__link">Příprava pro vývoj</a></li><li><a href="../uvod-do-servletu/" class="navigation__link">Úvod do Servletů</a></li><li><a href="../http-servlet/" class="navigation__link">HTTP Servlet</a></li><li><a href="../sledovani-relace/" class="navigation__link">Sledování relace</a></li><li><a href="../komunikace-mezi-servlety/" class="navigation__link navigation__link--active">Komunikace mezi Servlety</a></li><li><a href="../filtry/" class="navigation__link">Filtry</a></li><li><a href="../uvod-do-jsp/" class="navigation__link">Úvod do JSP</a></li><li><a href="../jsp-tagy-a-implicitni-objekty/" class="navigation__link">JSP tagy a implicitní objekty</a></li><li><a href="../jsp-direktivy/" class="navigation__link">JSP direktivy</a></li><li><a href="../jsp-action-tagy/" class="navigation__link">JSP action tagy</a></li><li><a href="../jsp-custom-tagy/" class="navigation__link">JSP custom tagy</a></li><li><a href="../jsp-expression-language/" class="navigation__link">JSP expression language</a></li><li><a href="../jstl/" class="navigation__link">JSTL</a></li><li><a href="../mvc-vzor/" class="navigation__link">MVC vzor</a></li><li><a href="../struts-framework/" class="navigation__link">Struts framework</a></li><li><a href="../prace-s-databazi/" class="navigation__link">Práce s databází</a></li></ul></nav><main class="tutorial-page-layout__content"><h1 class="heading-primary u-mb-4">Komunikace mezi Servlety</h1><p class="paragraph u-mb-4">Tato část se zabývá komunikací mezi servlety. Servlety na webovém serveru spolu mohou komunikovat a sdílet mezi sebou zdroje jako jsou třeba proměnné.</p><h2 id="request-dispatcher" class="heading-secondary u-mb-2">Request Dispatcher</h2><p class="paragraph u-mb-2">Komunikace mezi servlety je možná díky <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/RequestDispatcher.html" target="_blank" class="link">RequestDispatcher</a> rozraní. Používá se k delegování requestů ze servletu do jiných zdrojů (např. servlet, HTML soubor, JSP soubor...). Servlet může pro request provést nějakou akci a poslat jej dál na jiný servlet pro další zpracování.</p><p class="paragraph u-mb-2">RequestDispatcher můžeme získat z HttpServletRequest objektu pomocí metody <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/ServletRequest.html#getRequestDispatcher-java.lang.String-" target="_blank" class="link">getRequestDispatcher</a> a použít jej. Rozhraní RequestDispatcher definuje dvě metody, které můžeme pro komunikaci mezi servlety použít. Následující tabulka je popisuje.</p><div class="table-wrapper u-mb-2"><table class="table"><thead><tr><th>Metoda</th><th>Návratový typ</th><th>Popis</th></tr></thead><tbody><tr><td>forward(ServletRequest request, ServletResponse response)</td><td>void</td><td>Předá request ze servletu do jiného zdroje (např. servletu, JSP stránky...).</td></tr><tr><td>include(ServletRequest request, ServletResponse response)</td><td>void</td><td>Přidá obsah jiného zdroje (např. servletu, JSP stránky...) do response.</td></tr></tbody></table></div><p class="paragraph u-mb-4">Rozdíl mezi metodou forward a include je ten, že když používáme metodu forward, tak v serveletu pro request nejdříve provedeme nějakou akci a poté request předáme pro zpracování do jiného servletu. Metodu include můžeme použít k tomu, že můžeme request předat ke zpracování do jiného servletu, který nám může třeba něco nastavit do response, a poté pokračovat ve zpracování requestu.</p><h2 id="servlet-context" class="heading-secondary u-mb-2">Servlet Context</h2><p class="paragraph u-mb-2">Kromě toho, že můžeme RequestDispatcher objekt získat z HttpServletRequest objektu, tak jej můžeme získat i ze <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/ServletContext.html" target="_blank" class="link">ServletContextu</a>. Servlet context je v podstatě adresář, ve kterém jsou na serveru servlety umístěny. Servlety, které máme v jednom projektu vlastně patří do stejného servlet contextu. Můžeme mít na serveru více aplikací a tedy i více servlet contextů.</p><p class="paragraph u-mb-4">Při spuštění aplikace vytváří web container objekt typu <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/ServletContext.html" target="_blank" class="link">ServletContext</a>, ke kterému můžeme v servletu získat referenci pomocí metody <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/GenericServlet.html#getServletContext--" target="_blank" class="link">getServletContext</a>. ServletContext objekt definuje metody, které může servlet použít ke komunikaci se servlet containerem. Můžeme jej například použít k získání konfiguračních informací z web.xml. Pro jednu webovou aplikaci existuje jen jeden ServletContext objekt.</p><h3 id="context-parametry" class="heading-tertiary u-mb-1">Context parametry</h3><p class="paragraph u-mb-2">Tato část je sice o komunikaci mezi servlety, ale myslím si, že se tu hodí také zmínit, jakým způsobem můžeme mezi servlety sdílet konfigurační parametry z web.xml. Slouží k tomu element jménem context-param. Pomocí jeho podelementu param-name definujeme název parametru, a pomocí podelementu param-value definujeme hodnotu parametru.</p><p class="paragraph u-mb-2">Pro ukázku si založíme nový Maven projekt, ve kterém si soubor web.xml vytvoříme a nadefinujeme context parametr. Následující ukázka ukazuje, jak to můžeme udělat.</p><div data-project="1" data-project-name="context-parametry" class="u-mb-2"><ul data-project-folders><li data-opened>src<ul><li data-opened>main<ul><li data-java-packages-folder>java</li><li>resources</li><li data-opened>webapp<ul><li data-opened>WEB-INF</li></ul></li></ul></li><li>test<ul><li>java</li><li>resources</li></ul></li></ul></li><li>target</li></ul><pre data-code="pom.xml"><code class="language-xml">&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;io.github.jirkasa&lt;/groupId&gt;
+    &lt;artifactId&gt;context-parametry&lt;/artifactId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;name&gt;context-parametry&lt;/name&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+        &lt;maven.compiler.source&gt;${java.version}&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;${java.version}&lt;/maven.compiler.target&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;4.0.1&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;</code></pre><pre data-code="web.xml" data-folder="src/main/webapp/WEB-INF" data-code-highlight="7-10" data-active><code class="language-xml">&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://Java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+id="WebApp_ID" version="3.0"&gt;
+    &lt;context-param&gt;
+        &lt;param-name&gt;text&lt;/param-name&gt;
+        &lt;param-value&gt;Toto je můj text.&lt;/param-value&gt;
+    &lt;/context-param&gt;
+&lt;/web-app&gt;</code></pre></div><p class="paragraph u-mb-2">Teď si můžeme vytvořit servlet a parametr v něm použít. Jelikož se jedná o context parametr, tak jej budeme moci použít v jakémkoliv servletu. Nejedná se o inicializační parametr pro servlet, o kterém jste se mohli dozvědět v jedné z předešlích částí. Náš servlet můžeme pojmenovat třeba jako MujServlet. Implementujeme mu metodu doGet, ve které získáme pomocí metody getServletContext servlet context a poté z něj získáme parametr, který použijeme na stránce, kterou vygenerujeme. Následující ukázka servlet ukazuje.</p><div data-project="2" data-project-extends="1" class="u-mb-2"><pre data-code="MujServlet.java" data-java-package data-java-package-opened data-active><code class="language-java">import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class MujServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        // získání servlet contextu
+        ServletContext context = getServletContext();
+        // získání konfiguračního parametru ze servlet contextu
+        String text = context.getInitParameter("text");
+        
+        res.setContentType("text/html; charset=utf-8");
+        try (PrintWriter out = res.getWriter()) {
+            out.println("&lt;!DOCTYPE html&gt;");
+            out.println("&lt;html&gt;");
+            out.println("&lt;head&gt;");
+            out.println("&lt;meta charset=\"UTF-8\"&gt;");
+            out.println("&lt;title&gt;Context parametry&lt;/title&gt;");
+            out.println("&lt;/head&gt;");
+            out.println("&lt;body&gt;");
+            out.println("&lt;h1&gt;Context parametr&lt;/h1&gt;");
+            out.println("&lt;p&gt;" + text + "&lt;/p&gt;");
+            out.println("&lt;/body&gt;");
+            out.println("&lt;/html&gt;");
+        }
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Ve web.xml můžeme servlet namapovat třeba na "/", což zapříčiní, že se bude volat vždycky.</p><div data-project="3" data-project-extends="2" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp/WEB-INF</li></ul><pre data-code="web.xml" data-folder="src/main/webapp/WEB-INF" data-active data-code-highlight="11-18"><code class="language-xml">&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://Java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+id="WebApp_ID" version="3.0"&gt;
+    &lt;context-param&gt;
+        &lt;param-name&gt;text&lt;/param-name&gt;
+        &lt;param-value&gt;Toto je můj text.&lt;/param-value&gt;
+    &lt;/context-param&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;MujServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;MujServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;MujServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;</code></pre></div><p class="paragraph u-mb-2">Pokud si aplikaci spustíte a navštívíte <a href="http://localhost:8080/context-parametry/" target="_blank" class="link">http://localhost:8080/context-parametry/</a>, tak uvidíte na stránce vypsaný text, který jste v souboru web.xml nastavili jako parametr.</p><img src="../../static/img/screenshots/ContextParametrStranka.png" alt="Stránka s textem podle context parametru" class="image image--full-width image--with-border u-mb-4"><h3 id="rozdil-mezi-request-dispatcherem-ze-servlet-requestu-a-servlet-contextu" class="heading-tertiary u-mb-1">Rozdíl mezi request dispatcherem ze servlet requestu a servlet contextu</h3><p class="paragraph u-mb-4">Rozhraní ServletContext také definuje metodu getRequestDispatcher, stejně jako ServletRequest, kterou můžeme použít k získání objektu typu RequestDispatcher. Jsou v tom nějaké rozdíly. RequestDispatcher získaný ze ServletRequestu například nemůžeme použít mimo aktuální servlet context, ale RequestDispatcher získaný ze ServletContextu můžeme. Jaký je v tom rozdíl si můžete přečíst třeba na <a href="https://way2java.com/servlets/difference-between-requestdispatcher-from-servletrequest-and-servletcontext/" target="_blank" class="link">této stránce</a>. Přiznám se že tomu moc nerozumím.</p><h2 id="metoda-forward" class="heading-secondary u-mb-2">Metoda forward</h2><p class="paragraph u-mb-2">Jak jste se již mohli dočíst, tak rozhraní RequestDispatcher definuje metodu forward a include. Již jsem tak nějak popsal k čemu slouží. Pomocí metody forward můžeme request předat ke zpracování na jiný servlet. Teď si zkusíme pro ukázku vytvořit projekt, ve kterém metodu forward použijeme.</p><p class="paragraph u-mb-2">V našem projektu budeme mít dva servlety. První vygeneruje náhodné číslo a druhý toto číslo zobrazí. Začneme tím, že si vytvoříme ten první. Můžeme jej pojmenovat třeba jako NahodneCisloServlet. Věci, které v tomto tutoriálu děláme, jsou samozřejmě blbosti. V praxi byste něco takového neprogramovali. Nám tu jde jen o to, abychom si na jednoduchých příkladech vyzkoušeli, jak věci fungují. Následující ukázka servlet ukazuje. Na začátku se vygeneruje náhodné číslo, které se potom nastaví jako atribut requestu metodou <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/ServletRequest.html#setAttribute-java.lang.String-java.lang.Object-" target="_blank" class="link">setAttribute</a> aby se k němu druhý servlet dostal. Také se metodou getRequestDispatcher získává RequestDispatcher pro servlet, který později vytvoříme a volá se metoda forward, aby se request na tento servlet předal ke zpracování.</p><div data-project="4" data-project-name="metoda-forward" class="u-mb-2"><ul data-project-folders><li>src<ul><li>main<ul><li data-java-packages-folder>java</li><li>resources</li><li>webapp</li></ul></li><li>test<ul><li>java</li><li>resources</li></ul></li></ul></li><li>target</li></ul><pre data-code="pom.xml"><code class="language-xml">&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;io.github.jirkasa&lt;/groupId&gt;
+    &lt;artifactId&gt;metoda-forward&lt;/artifactId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;name&gt;metoda-forward&lt;/name&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+        &lt;maven.compiler.source&gt;${java.version}&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;${java.version}&lt;/maven.compiler.target&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;4.0.1&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;</code></pre><pre data-code="NahodneCisloServlet.java" data-java-package data-java-package-opened data-active><code class="language-java">import java.io.IOException;
+import java.util.Random;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class NahodneCisloServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        Random rand = new Random();
+        // vygenerování náhodného čísla
+        int randomNumber = rand.nextInt(100);
+        
+        // získání request dispatcheru pro ZobrazCisloServlet
+        RequestDispatcher dispatcher = req.getRequestDispatcher("/zobraz-cislo");
+        
+        // aby měl k vygenerovanému číslu druhý servlet přístup, tak jej nastavíme jako atribut
+        req.setAttribute("nahodneCislo", randomNumber);
+        
+        // předání requestu pro zpracování servletem ZobrazCisloServlet
+        dispatcher.forward(req, res);
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Teď můžeme vytvořit servlet, na který se v prvním servletu volá metoda forward. Pojmenujeme jej jako ZobrazCisloServlet. Tento servlet jen získá atribut "nahodneCislo" pomocí metody <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/ServletRequest.html#getAttribute-java.lang.String-" target="_blank" class="link">getAttribute</a>, který nastavil předchozí servlet a vypíše jej na stránku.</p><div data-project="5" data-project-extends="4" class="u-mb-2"><pre data-code="ZobrazCisloServlet.java" data-java-package data-java-package-opened data-active><code class="language-java">import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class ZobrazCisloServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        // získání atributu, který nastavil předchozí servlet
+        int nahodneCislo = (int) req.getAttribute("nahodneCislo");
+        
+        res.setContentType("text/html; charset=utf-8");
+        try (PrintWriter out = res.getWriter()) {
+            out.println("&lt;!DOCTYPE html&gt;");
+            out.println("&lt;html&gt;");
+            out.println("&lt;head&gt;");
+            out.println("&lt;meta charset=\"UTF-8\"&gt;");
+            out.println("&lt;title&gt;Metoda forward&lt;/title&gt;");
+            out.println("&lt;/head&gt;");
+            out.println("&lt;body&gt;");
+            out.println("&lt;h1&gt;Náhodné číslo je: " + nahodneCislo + "&lt;/h1&gt;");
+            out.println("&lt;/body&gt;");
+            out.println("&lt;/html&gt;");
+        }
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Na závěr ještě vytvoříme soubor web.xml a servlety namapujeme.</p><div data-project="6" data-project-extends="5" class="u-mb-2"><ul data-project-commands><li data-command-create-folder>src/main/webapp/WEB-INF</li><li data-command-open-folder-to-root>src/main/webapp/WEB-INF</li></ul><pre data-code="web.xml" data-folder="src/main/webapp/WEB-INF" data-active><code class="language-xml">&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://Java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+id="WebApp_ID" version="3.0"&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;NahodneCislo&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;NahodneCisloServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;ZobrazCislo&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;ZobrazCisloServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;NahodneCislo&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/nahodne-cislo&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;ZobrazCislo&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/zobraz-cislo&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;</code></pre></div><p class="paragraph u-mb-2">Po spuštění aplikace a otevření <a href="http://localhost:8080/metoda-forward/nahodne-cislo" target="_blank" class="link">http://localhost:8080/metoda-forward/nahodne-cislo</a> byste měli vidět stránku s vygenerovaným náhodným číslem.</p><img src="../../static/img/screenshots/MetodaForwardNahodneCisloStranka.png" alt="Stránka s náhodným číslem" class="image image--full-width image--with-border u-mb-2"><p class="paragraph u-mb-2">Naše aplikace obsahuje jeden problém. Pokud navštívíme <a href="http://localhost:8080/metoda-forward/zobraz-cislo" target="_blank" class="link">http://localhost:8080/metoda-forward/zobraz-cislo</a> (servlet ZobrazCisloServlet), tak nám server vrátí chybu (response se status kódem 500). Atribut "nahodneCislo" totiž není nastavený a metoda getAttribute tedy vrátí null.</p><img src="../../static/img/screenshots/MetodaForwardZobrazCisloStrankaChyba.png" alt="Chybová stránka" class="image image--full-width image--with-border u-mb-2"><p class="paragraph u-mb-4">Nechceme aby servlet ZobrazCisloServlet mohli uživatelé zavolat přímo. Je pouze používán jinými servlety. V příští části, která je o filtrech, se dozvíte, jak můžete k některým servletům přístup omezit.</p><h2 id="metoda-include" class="heading-secondary u-mb-2">Metoda include</h2><p class="paragraph u-mb-2">Jak použít metodu forward jsme si ukázali. Teď si vytvoříme projekt, kde použijeme metodu include. Ta slouží k tomu, že můžeme request předat ke zpracování do jiného servletu, který nám může třeba něco nastavit do response, a poté pokračovat ve zpracování requestu.</p><p class="paragraph u-mb-2">Pro ukázku si vytvoříme servlet, který bude vytvářet HTML stránku voláním různých dalších servletů. Jeden servlet vytvoří začátek stránky, další její obsah a poslední konec stránky. Začneme tím, že si založíme nový Maven projekt a vytvoříme servlet, který pojmenujeme třeba jako StrankaServlet. Tento servlet bude používat ostatní servlety pro sestavení stránky. Následující ukázka ukazuje jeho kód. Je úplně jednoduchý. Jen se získá RequestDispatcher pro jednotlivé servlety a zavolá se metoda include.</p><div data-project="7" data-project-name="metoda-include" class="u-mb-2"><ul data-project-folders><li>src<ul><li>main<ul><li data-java-packages-folder>java</li><li>resources</li><li>webapp</li></ul></li><li>test<ul><li>java</li><li>resources</li></ul></li></ul></li><li>target</li></ul><pre data-code="pom.xml"><code class="language-xml">&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;io.github.jirkasa&lt;/groupId&gt;
+    &lt;artifactId&gt;metoda-include&lt;/artifactId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;name&gt;metoda-include&lt;/name&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+        &lt;maven.compiler.source&gt;${java.version}&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;${java.version}&lt;/maven.compiler.target&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;4.0.1&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;</code></pre><pre data-code="StrankaServlet.java" data-java-package data-java-package-opened data-active><code class="language-java">import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class StrankaServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        // jelikož chceme print writer zavřít až poté, co jej použijí jiné servlety, tak celý kód obalíme v try-with-resources
+        try (PrintWriter out = res.getWriter()) {
+            res.setContentType("text/html; charset=utf-8");
+            req.getRequestDispatcher("/page-start").include(req, res);
+            req.getRequestDispatcher("/page-obsah").include(req, res);
+            req.getRequestDispatcher("/page-end").include(req, res);			
+        }
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Teď vytvoříme servlety pro sestavení jednotlivých částí stránky. Ukazují je následující ukázky.</p><div data-project="8" data-project-extends="7" class="u-mb-2"><pre data-code="PageStartServlet.java" data-java-package data-java-package-opened data-active><code class="language-java">import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class PageStartServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        // vytvoření začátku stránky
+        PrintWriter out = res.getWriter();
+        out.println("&lt;!DOCTYPE html&gt;");
+        out.println("&lt;html&gt;");
+        out.println("&lt;head&gt;");
+        out.println("&lt;meta charset=\"UTF-8\"&gt;");
+        out.println("&lt;title&gt;Metoda include&lt;/title&gt;");
+        out.println("&lt;/head&gt;");
+        out.println("&lt;body&gt;");
+    }
+}</code></pre></div><div data-project="9" data-project-extends="8" class="u-mb-2"><pre data-code="PageObsahServlet.java" data-java-package data-java-package-opened data-active><code class="language-java">import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class PageObsahServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        // vytvoření obsahu stránky
+        PrintWriter out = res.getWriter();
+        out.println("&lt;h1&gt;Obsah stránky&lt;/h1&gt;");
+    }
+}</code></pre></div><div data-project="10" data-project-extends="9" class="u-mb-2"><pre data-code="PageEndServlet.java" data-java-package data-java-package-opened data-active><code class="language-java">import java.io.IOException;
+import java.io.PrintWriter;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class PageEndServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        // vytvoření konce stránky
+        PrintWriter out = res.getWriter();
+        out.println("&lt;/body&gt;");
+        out.println("&lt;/html&gt;");
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Teď již zbývá jen vytvořit soubor web.xml a servlety namapovat. Ukazuje jej následující ukázka.</p><div data-project="11" data-project-extends="10" class="u-mb-2"><ul data-project-commands><li data-command-create-folder>src/main/webapp/WEB-INF</li><li data-command-open-folder-to-root>src/main/webapp/WEB-INF</li></ul><pre data-code="web.xml" data-folder="src/main/webapp/WEB-INF" data-active><code class="language-xml">&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://Java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+id="WebApp_ID" version="3.0"&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;Stranka&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;StrankaServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;PageStart&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;PageStartServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;PageObsah&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;PageObsahServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;PageEnd&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;PageEndServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;Stranka&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/stranka&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;PageStart&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/page-start&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;PageObsah&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/page-obsah&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;PageEnd&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/page-end&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;</code></pre></div><p class="paragraph u-mb-2">Po spuštění aplikace a navštívení <a href="http://localhost:8080/metoda-include/stranka" target="_blank" class="link">http://localhost:8080/metoda-include/stranka</a> se vám zobrazí vygenerovaná stránka.</p><img src="../../static/img/screenshots/MetodaIncludeStranka.png" alt="Vygenerovaná stránka" class="image image--full-width image--with-border u-mb-2"><p class="paragraph u-mb-4">Stejně jako v ukázce pro metodu forward, tak i zde máme problém s tím, že uživatel může navštívit i servlety, které by neměl. Může navštívit třeba <a href="http://localhost:8080/metoda-include/page-start" target="_blank" class="link">http://localhost:8080/metoda-include/page-start</a> a vrátí se mu jen začátek stránky. Jak jsem již psal, tak v příští části se dozvíte, jak k některým servletům přístup omezit.</p><h2 id="presmerovani" class="heading-secondary u-mb-2">Přesměrování</h2><p class="paragraph u-mb-2">Kromě toho, že můžeme komunikovat mezi servlety pomocí request dispatcheru, tak je tu i jiná možnost. Již jsme se s ní v tutoriálu potkaly. Můžeme použít metodu <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServletResponse.html#sendRedirect-java.lang.String-" target="_blank" class="link">sendRedirect</a> HttpServletResponse objektu k přesměrování na jinou stránku. Tato metoda posílá HTTP response se <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/302" target="_blank" class="link">status kódem 302</a>. Ten klientovi (prohlížeči) naznačuje, že má provést request na jinou URL (tato URL se předává v headeru jménem Location). Můžeme tedy uživatele přesměrovat na jiný servlet tím, že mu řekneme aby na něj poslal request. Nejedná se tedy o komunikaci mezi servlety na serveru, ale probíhá přes klienta.</p><p class="paragraph u-mb-2">Použití metody sendRedirect je jednoduché a již jsme ji v minulé části použili. Nebudeme tedy vytvářet žádný projekt, následující ukázka jen ukazuje její použití.</p><div data-code-box data-no-buttons class="u-mb-6"><pre data-code="Servlet1.java" data-code-highlight="11"><code class="language-java">import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class Servlet1 extends HttpServlet {
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        res.sendRedirect("./servlet-2");
+    }
+}</code></pre></div><p class="paragraph u-mb-4">V této části jste se dozvěděli, jakým způsobem můžete komunikovat mezi servlety. Narazili jsme ale na problém. Nechceme uživatelům umožnit, aby měli k některým servletům přímý přístup. Proto se v příští části podíváme na filtry.</p><div class="u-text-center"><a href="../filtry/" class="button-primary">Pokračovat na další část</a></div></main></div></div><footer class="footer"><div class="footer__content"><p class="footer__text">Tento web vytvořil <a href="https://jirkasa.github.io/" target="_blank" class="footer__link">Jiří Satora</a></p></div></footer></body></html>
