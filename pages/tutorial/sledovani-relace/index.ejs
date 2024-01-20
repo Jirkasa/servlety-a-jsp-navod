@@ -179,7 +179,10 @@
         <img src="../../static/img/screenshots/SessionCookie.png" alt="Session cookie" class="image image--full-width u-mb-2">
         <p class="paragraph u-mb-2">Defaultní maximální čas, do kdy session na serveru existuje, pokud klient neposlal na server request spjatý se session, je v Tomcatu 30 minut. U jednotlivých session tento čas můžeme změnit pomocí metody setMaxInactiveInterval. Pokud jej ale chceme změnit pro všechny session, můžeme to udělat pomocí session-config elementu v souboru web.xml, jak ukazuje následující ukázka. Čas se nastavuje v minutách.</p>
         <%- include("./includes/session-config-code-box.ejs") %>
-        <p class="paragraph">Pro tuto část je to vše. Nyní již víte, jak můžete uživatele ve své webové aplikaci sledovat. V příští části si ukážeme, jak funguje komunikace mezi servlety.</p>
+        <p class="paragraph u-mb-4">Pro tuto část je to vše. Nyní již víte, jak můžete uživatele ve své webové aplikaci sledovat. V příští části si ukážeme, jak funguje komunikace mezi servlety.</p>
+        <div class="u-text-center">
+            <a href="../komunikace-mezi-servlety/" class="button-primary">Pokračovat na další část</a>
+        </div>
     <%- include("../../includes/tutorial-page-layout-end.ejs") %>
     <%- include("../../includes/footer.ejs") %>
 <%- include("../../includes/page-end.ejs") %>

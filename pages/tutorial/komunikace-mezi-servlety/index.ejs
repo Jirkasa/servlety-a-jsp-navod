@@ -75,7 +75,10 @@
         <p class="paragraph u-mb-2">Kromě toho, že můžeme komunikovat mezi servlety pomocí request dispatcheru, tak je tu i jiná možnost. Již jsme se s ní v tutoriálu potkaly. Můžeme použít metodu <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServletResponse.html#sendRedirect-java.lang.String-" target="_blank" class="link">sendRedirect</a> HttpServletResponse objektu k přesměrování na jinou stránku. Tato metoda posílá HTTP response se <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/302" target="_blank" class="link">status kódem 302</a>. Ten klientovi (prohlížeči) naznačuje, že má provést request na jinou URL (tato URL se předává v headeru jménem Location). Můžeme tedy uživatele přesměrovat na jiný servlet tím, že mu řekneme aby na něj poslal request. Nejedná se tedy o komunikaci mezi servlety na serveru, ale probíhá přes klienta.</p>
         <p class="paragraph u-mb-2">Použití metody sendRedirect je jednoduché a již jsme ji v minulé části použili. Nebudeme tedy vytvářet žádný projekt, následující ukázka jen ukazuje její použití.</p>
         <%- include("./includes/send-redirect-code-box.ejs") %>
-        <p class="paragraph">V této části jste se dozvěděli, jakým způsobem můžete komunikovat mezi servlety. Narazili jsme ale na problém. Nechceme uživatelům umožnit, aby měli k některým servletům přímý přístup. Proto se v příští části podíváme na filtry.</p>
+        <p class="paragraph u-mb-4">V této části jste se dozvěděli, jakým způsobem můžete komunikovat mezi servlety. Narazili jsme ale na problém. Nechceme uživatelům umožnit, aby měli k některým servletům přímý přístup. Proto se v příští části podíváme na filtry.</p>
+        <div class="u-text-center">
+            <a href="../filtry/" class="button-primary">Pokračovat na další část</a>
+        </div>
     <%- include("../../includes/tutorial-page-layout-end.ejs") %>
     <%- include("../../includes/footer.ejs") %>
 <%- include("../../includes/page-end.ejs") %>
