@@ -1,0 +1,17 @@
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M26.5 58L13 58L13 87L69 87L69 58M26.5 58L47.75 58M26.5 58L26.5 36M69 58L87 58L87 13L26.5 13L26.5 36M69 58L47.75 58M47.75 58C47.75 50.6667 47.75 36 47.75 36L26.5 36" stroke="#B0ABA6" stroke-width="8" stroke-linejoin="round"/>
+<circle cx="87" cy="58" r="10" fill="#FAA033"/>
+<circle cx="48" cy="36" r="10" fill="#FAA033"/>
+<circle cx="13" cy="87" r="10" fill="#FAA033"/>
+<path d="M34 58L34 87" stroke="#B0ABA6" stroke-width="4" stroke-linejoin="round"/>
+<path d="M42 58L42 68.5M42 87L42 68.5M42 68.5L69 68.5" stroke="#B0ABA6" stroke-width="4" stroke-linejoin="round"/>
+<path d="M16 56L16 24L26 24" stroke="#B0ABA6" stroke-width="4" stroke-linejoin="round"/>
+<path d="M65 15L65 56" stroke="#B0ABA6" stroke-width="4" stroke-linejoin="round"/>
+<path d="M73 15L73 56" stroke="#B0ABA6" stroke-width="4" stroke-linejoin="round"/>
+<circle cx="65" cy="44" r="4" fill="#FAA033"/>
+<circle cx="73" cy="27" r="4" fill="#FAA033"/>
+<circle cx="42" cy="77" r="4" fill="#FAA033"/>
+<path d="M70 87H79V70H70" stroke="#B0ABA6" stroke-width="4" stroke-linejoin="round"/>
+<circle cx="79" cy="87" r="4" fill="#FAA033"/>
+<circle cx="16" cy="46" r="4" fill="#FAA033"/>
+</svg>
