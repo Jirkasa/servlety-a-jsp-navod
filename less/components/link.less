@@ -9,8 +9,12 @@
         word-break: break-word;
     }
 
-    &:hover {
+    &:hover, &:focus-visible {
         background-color: @colors[analogic-4];
         color: @colors[white];
+    }
+    &:focus-visible {
+        outline: .3rem solid @colors[grey-80];
+        outline-offset: -.2rem;
     }
 }

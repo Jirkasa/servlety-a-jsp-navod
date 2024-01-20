@@ -25,8 +25,12 @@
             height: @slider-arrow-button-size-small;
         }
 
-        &:hover {
+        &:hover, &:focus-visible {
             background-color: darken(@colors[analogic-2], 10%);
+        }
+        &:focus-visible {
+            outline: .3rem solid @colors[grey-80];
+            outline-offset: -.2rem;
         }
 
         svg {
@@ -79,8 +83,12 @@
             cursor: pointer;
         }
 
-        .is-active, &__page:hover {
+        .is-active, &__page:hover, &__page:focus-visible {
             background-color: @colors[analogic-2];
+        }
+        &:focus-visible {
+            outline: .3rem solid @colors[grey-80];
+            outline-offset: -.2rem;
         }
     }
 }

@@ -55,11 +55,15 @@
             border: .2rem solid @colors[analogic-2];
             border-radius: .4rem;
 
-            transition: all .2s;
+            transition: background-color .2s;
         }
 
-        &:hover, &--active:link, &--active:visited {
+        &:hover, &:focus-visible, &--active:link, &--active:visited {
             background-color: @colors[analogic-2];
+        }
+        &:focus-visible {
+            outline: .3rem solid @colors[grey-80];
+            outline-offset: -.2rem;
         }
     }
 }

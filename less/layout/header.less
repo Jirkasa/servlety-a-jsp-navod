@@ -58,6 +58,10 @@
     
             color: @colors[analogic-1];
 
+            &:focus-visible {
+                outline: .3rem solid @colors[white];
+            }
+
             @media (max-width: #pxToEm(430)[]) {
                 font-size: 2rem;
             }
@@ -144,10 +148,13 @@
             transition: all .2s;
         }
 
-        &--active, &:hover {
+        &--active, &:hover, &:focus-visible {
             &:link, &:visited {
                 color: @colors[analogic-2];
             }
+        }
+        &:focus-visible {
+            outline: .3rem solid @colors[white];
         }
     }
 }

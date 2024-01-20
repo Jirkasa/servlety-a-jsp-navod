@@ -17,10 +17,14 @@
 
         cursor: pointer;
 
-        transition: all .2s;
+        transition: background-color .2s;
     }
 
-    &:hover {
+    &:hover, &:focus-visible {
         background-color: @colors[analogic-2];
+    }
+    &:focus-visible {
+        outline: .3rem solid @colors[grey-80];
+        outline-offset: -.2rem;
     }
 }

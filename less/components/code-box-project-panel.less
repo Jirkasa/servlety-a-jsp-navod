@@ -67,6 +67,15 @@
         height: 100%;
 
         cursor: pointer;
+        transition: background-color .15s;
+
+        &:hover, &:focus-visible {
+            background-color: darken(@colors[analogic-2], 10%);
+        }
+        &:focus-visible {
+            outline: .3rem solid @colors[grey-80];
+            outline-offset: -.2rem;
+        }
 
         svg {
             #center-pos-abs();
@@ -110,7 +119,11 @@
         cursor: pointer;
 
         &--active {
-            text-decoration: underline; // asi ještě změnit
+            text-decoration: underline;
+        }
+        &:focus-visible {
+            outline: .3rem solid @colors[grey-80];
+            outline-offset: -.2rem;
         }
     }
 
