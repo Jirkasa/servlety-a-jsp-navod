@@ -1,6 +1,6 @@
 <%- include("../../includes/page-start.ejs", {pathToRootFolder: "../../", title: "JSP action tagy", metaDescription: "V této části tutoriálu si projdeme různé JSP action tagy.", useHighlightJS: true}) %>
     <%- include("../../includes/header.ejs", {pathToRootFolder: "../../", activeLink: "tutorial"}) %>
-    <%- include("../../includes/tutorial-page-layout-start.ejs", {pathToTutorialFolder: "./", activeLink: "jsp-action-tagy"}) %>
+    <%- include("../../includes/tutorial-page-layout-start.ejs", {pathToTutorialFolder: "../", activeLink: "jsp-action-tagy"}) %>
         <h1 class="heading-primary u-mb-4">JSP action tagy</h1>
         <p class="paragraph u-mb-2">V této části si ukážeme JSP action tagy. Jedná se o tagy, které slouží k provedení nějakého specifického úkolu. Můžeme je brát jako již předdefinované custom tagy, jelikož v podstatě fungují stejně. Akorát si je nemusíme v JSP souboru definovat prostřednictvím taglib direktivy a mají vždy prefix "jsp". Custom tagy jsou uživatelsky definované tagy o kterých se dozvíte v další části. Tato část se zaměřuje na action tagy (takové již předdefinované custom tagy), takže si je tu postupně projdeme.</p>
         <p class="paragraph u-mb-2">Syntaxy pro action tagy ukazuje následující ukázka. Pokud máme více atributů, tak je můžeme oddělit mezerou. Pokud má nějaký tag obsah, tak je potřeba jej uzavřít použitím uzavíracího tagu.</p>

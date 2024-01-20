@@ -1,6 +1,6 @@
 <%- include("../../includes/page-start.ejs", {pathToRootFolder: "../../", title: "Práce s databází", metaDescription: "V této části se zkusíme připojit k databázi a pracovat s ní v servletech.", useHighlightJS: true}) %>
     <%- include("../../includes/header.ejs", {pathToRootFolder: "../../", activeLink: "tutorial"}) %>
-    <%- include("../../includes/tutorial-page-layout-start.ejs", {pathToTutorialFolder: "./", activeLink: "prace-s-databazi"}) %>
+    <%- include("../../includes/tutorial-page-layout-start.ejs", {pathToTutorialFolder: "../", activeLink: "prace-s-databazi"}) %>
         <h1 class="heading-primary u-mb-4">Práce s databází</h1>
         <p class="paragraph u-mb-2">Naprostá většina webových aplikací potřebuje nějakou databázi. V první části tutoriálu jste si mohli nainstalovat MySQL databázy. V této části se dozvíte, jak se k ní můžete připojit a pracovat s ní. Pokud jste si teda namísto MySQL nenainstalovali nějakou jinou databázi. Práce s jinými relačními databázemi je ale hodně podobná. Takže pokud chcete používat jinou databázi, tak samozřejmě můžete.</p>
         <p class="paragraph u-mb-4">Nebudeme tu rozebírat databáze do hloubky a ani si vysvětlovat, jak funguje dotazovací jazyk SQL. Pokud je pro vás práce s databázemi úplně nová, tak se budete muset SQL naučit někde jinde. Zde si akorát ukážeme, jak se můžeme k databázi připojit pomocí JDBC a pracovat s ní v servletech.</p>
@@ -20,7 +20,7 @@
         <%- include("./includes/code-box-3.ejs") %>
         <p class="paragraph u-mb-2">Ve složce WEB-INF vytvoříme soubor web.xml a náš vytvořený servlet namapujeme na "/home". Také jej použijeme jako domovskou stránku aplikace.</p>
         <%- include("./includes/code-box-4.ejs") %>
-        <p class="paragraph u-mb-2">Po spuštění aplikace a navštívení <a href="" class="link"></a> by jste měli vidět stránku, kterou ukazuje následující obrázek.</p>
+        <p class="paragraph u-mb-2">Po spuštění aplikace a navštívení <a href="http://localhost:8080/kontakty/" target="_blank" class="link">http://localhost:8080/kontakty/</a> by jste měli vidět stránku, kterou ukazuje následující obrázek.</p>
         <img src="../../static/img/screenshots/PrikladPraceSDatabaziHlavniStranka.png" alt="hlavní stránka aplikace" class="image image--full-width image--with-border u-mb-2">
         <p class="paragraph u-mb-2">Teď bude pravděpodobně nejlepší začít s tvorbou stránky pro přidání nového kontaktu, abychom si do databáze vůbec mohli nějaké kontakty přidat. Následující ukázky pro ni ukazují servlet a JSP stránku. JSP stránka se jmenuje "CreateContact.jsp" a nachází se na ní formulář pro vytvoření nového kontaktu. Do servletu pro jeho zpracování potom přidáme metodu doPost.</p>
         <%- include("./includes/code-box-5.ejs") %>

@@ -18,9 +18,15 @@
 
         cursor: pointer;
 
+        transition: background-color .2s;
+
         @media (max-width: @slider-arrow-button-size-breakpoint) {
             width: @slider-arrow-button-size-small;
             height: @slider-arrow-button-size-small;
+        }
+
+        &:hover {
+            background-color: darken(@colors[analogic-2], 10%);
         }
 
         svg {
