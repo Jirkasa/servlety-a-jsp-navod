@@ -1,0 +1,23 @@
+<div data-code-box class="u-mb-2">
+    <pre data-code="RequireLoginMiddleware.java" data-active><code class="language-java">public class RequireLoginMiddleware extends HttpMiddleware {
+    @Override
+    public boolean handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+
+        // pokud je uživatel přihlášený, request pokračuje dál
+        if (session.getAttribute("LOGGED_USER") != null) return true;
+
+        // jinak je uživatel přesměrován na login stránku
+        response.sendRedirect(request.getAttribute("BASE_URL") + "/login");
+        return false;
+    }
+}</code></pre>
+    <pre data-code="AppRouter.java" data-code-highlight="6"><code class="language-java">public class AppRouter extends HttpRouter {
+    public AppRouter() {
+        register(new BaseURLAttributeSetter());
+        register("/", HomeController.class);
+        register("/login", LoginController.class);
+        register("/games", new RequireLoginMiddleware(), new GamesRouter());
+    }
+}</code></pre>
+</div>

@@ -1,9 +1,12 @@
 import "./arrow-right.svg";
 import "./double-arrow-right.svg";
 import "./file.svg";
+import "./github.svg";
 import "./inventory.svg";
+import "./java.svg";
 import "./javatpoint-logo.svg";
 import "./key.svg";
+import "./mvn-repository.svg";
 import "./opened-folder.svg";
 import "./package.svg";
 import "./tutorialspoint-logo.svg";

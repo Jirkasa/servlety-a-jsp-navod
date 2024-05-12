@@ -1,0 +1,15 @@
+<div data-code-box class="u-mb-2">
+    <pre data-code="MyRouter.java" data-active data-code-highlight="3"><code class="language-java">public class MyRouter extends HttpRouter {
+    public MyRouter() {
+        register("/example/:myParam", MyController.class);
+    }
+}</code></pre>
+<pre data-code="MyController.java" data-code-highlight="4"><code class="language-java">public class MyController extends HttpController {
+    @Override
+    protected void handleGet(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String param = getPathParam("myParam");
+        request.setAttribute("myPathParameter", param);
+        forwardTo("/WEB-INF/jsp/ExamplePage.jsp", request, response);
+    }
+}</code></pre>
+</div>

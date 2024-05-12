@@ -1,0 +1,14 @@
+<div data-project="20" data-project-extends="19" class="u-mb-2">
+    <ul data-project-commands>
+        <li data-command-open-folder-to-root>src/main/webapp/WEB-INF/jsp</li>
+    </ul>
+    <pre data-code="AdminLoginPage.jsp" data-folder="src/main/webapp/WEB-INF/jsp" data-active><code class="language-html">&lt;%@page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;%@ include file="./includes/PageStart.jsp" %&gt;
+    &lt;h1&gt;Administrace - přihlášení&lt;/h1&gt;
+    &lt;form action="${BASE_URL}/admin/login" method="POST"&gt;
+        &lt;input name="username" type="text" required&gt;
+        &lt;input name="password" type="password" required&gt;
+        &lt;button type="submit"&gt;Přihlásit se&lt;/button&gt;
+    &lt;/form&gt;
+&lt;%@ include file="./includes/PageEnd.jsp" %&gt;</code></pre>
+</div>

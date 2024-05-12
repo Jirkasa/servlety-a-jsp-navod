@@ -1,0 +1,16 @@
+<div data-project="25" data-project-extends="24" class="u-mb-2">
+    <ul data-project-commands>
+        <li data-command-open-folder-to-root>src/main/webapp/WEB-INF/jsp</li>
+    </ul>
+    <pre data-code="AdminAddProductPage.jsp" data-folder="src/main/webapp/WEB-INF/jsp" data-active><code class="language-html">&lt;%@page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;%@ include file="./includes/PageStart.jsp" %&gt;
+    &lt;h1&gt;Administrace - přidat produkt&lt;/h1&gt;
+    &lt;form action="${BASE_URL}/admin/pridat-produkt" method="POST"&gt;
+        &lt;label&gt;Název:&lt;/label&gt;
+        &lt;input name="name" type="text" required&gt;&lt;br&gt;
+        &lt;label&gt;Cena:&lt;/label&gt;
+        &lt;input name="price" type="number" required&gt;&lt;br&gt;
+        &lt;button type="submit"&gt;Přidat&lt;/button&gt;
+    &lt;/form&gt;
+&lt;%@ include file="./includes/PageEnd.jsp" %&gt;</code></pre>
+</div>

@@ -1,0 +1,17 @@
+<div data-code-box data-no-buttons class="u-mb-2">
+    <pre data-code data-code-highlight="12"><code class="language-java">public class ProductController extends HttpController {
+    @Override
+    protected void handleGet(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String productId = req.getParameter("productId");
+
+        Product product = DBUtil.loadProductById(productId);
+
+        if (product) {
+            request.setAttribute("product", product);
+            forwardTo("/WEB-INF/jsp/ProductPage.jsp", request, response);
+        } else {
+            continueHandlersChain();
+        }
+    }
+}</code></pre>
+</div>

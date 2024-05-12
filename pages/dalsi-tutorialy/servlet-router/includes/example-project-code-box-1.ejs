@@ -1,0 +1,55 @@
+<div data-project="1" data-project-name="servlet-router-example-app" class="u-mb-2">
+    <ul data-project-folders>
+        <li>
+            src
+            <ul>
+                <li>
+                    main
+                    <ul>
+                        <li data-java-packages-folder>java</li>
+                        <li>resources</li>
+                        <li>webapp</li>
+                    </ul>
+                </li>
+                <li>
+                    test
+                    <ul>
+                        <li>java</li>
+                        <li>resources</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>target</li>
+    </ul>
+<pre data-code="pom.xml" data-active data-code-highlight="17-29"><code class="language-xml">&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;io.github.jirkasa&lt;/groupId&gt;
+    &lt;artifactId&gt;servlet-router-example-app&lt;/artifactId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;name&gt;servlet-router-example-app&lt;/name&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+        &lt;maven.compiler.source&gt;${java.version}&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;${java.version}&lt;/maven.compiler.target&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;4.0.1&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;io.github.jirkasa&lt;/groupId&gt;
+            &lt;artifactId&gt;servlet-router&lt;/artifactId&gt;
+            &lt;version&gt;1.0.1&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;</code></pre>
+</div>

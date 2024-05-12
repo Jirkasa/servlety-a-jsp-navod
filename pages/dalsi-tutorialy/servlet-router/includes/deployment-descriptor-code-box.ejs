@@ -1,0 +1,21 @@
+<div data-code-box data-no-buttons class="u-mb-4">
+    <pre data-code><code class="language-xml">&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://Java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+id="WebApp_ID" version="3.0"&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;AppServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;com.example.app.AppServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;AppServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;default&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/static/*&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;</code></pre>
+</div>

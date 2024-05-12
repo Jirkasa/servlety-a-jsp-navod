@@ -1,0 +1,26 @@
+<div data-code-box class="u-mb-2">
+<pre data-code="MyHandler.java" data-active><code class="language-java">public class MyHandler implements Handler&lt;HttpServletRequest, HttpServletResponse&gt; {
+    private Map&lt;String, String&gt; pathParams;
+
+    @Override
+    public boolean handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request.setAttribute("test", pathParams.get("test"));
+        return true;
+    }
+
+    @Override
+    public void matchesFullPath() {
+        return false;
+    }
+
+    @Override
+    public void setPathParams(Map&lt;String, String&gt; pathParams) {
+        this.pathParams = pathParams;
+    }
+}</code></pre>
+    <pre data-code="MyRouter.java"><code class="language-java">public class MyRouter extends HttpRouter {
+    public MyRouter() {
+        register("/example/:test", new MyHandler(), MyController.class);
+    }
+}</code></pre>
+</div>

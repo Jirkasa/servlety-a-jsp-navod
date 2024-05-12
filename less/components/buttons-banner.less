@@ -1,0 +1,72 @@
+.buttons-banner {
+    display: flex;
+    width: 100%;
+    justify-content: stretch;
+
+    overflow: hidden;
+    border-radius: .4rem;
+
+    @media (max-width: #pxToEm(600)[]) {
+        flex-direction: column;
+    }
+
+    &__button {
+        &, &:link, &:visited {
+            font-family: inherit;
+            font-size: 1.6rem;
+            font-weight: 500;
+            line-height: 2rem;
+
+            flex: 1 0;
+
+            display: flex;
+            align-items: center;
+            gap: .8rem;
+
+            text-transform: uppercase;
+            text-decoration: none;
+            color: @colors[white];
+            background-color: @colors[grey-80];
+            border: none;
+
+            padding: 1.2rem 1.6rem;
+
+            cursor: pointer;
+
+            transition: background-color .15s;
+        }
+
+        svg {
+            width: 2rem;
+            height: 2rem;
+            fill: @colors[white];
+        }
+
+        &--mvn-repository {
+            &, &:link, &:visited {
+                background-color: #276bc0;
+            }
+            &:hover {
+                background-color: darken(#276bc0, 8%);
+            }
+        }
+
+        &--javadoc {
+            &, &:link, &:visited {
+                background-color: #db8719;
+            }
+            &:hover {
+                background-color: darken(#db8719, 8%);
+            }
+        }
+
+        &--github {
+            &, &:link, &:visited {
+                background-color: #1f2328;
+            }
+            &:hover {
+                background-color: darken(#1f2328, 8%);
+            }
+        }
+    }
+}

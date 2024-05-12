@@ -1,0 +1,11 @@
+<div data-code-box data-no-buttons class="u-mb-4">
+    <pre data-code data-code-highlight="3-7"><code class="language-java">public class AppRouter extends HttpRouter {
+    public AppRouter() {
+        register("/", HomeController.class);
+        register("/info", new InfoRouter());
+        register("/account", new RequireAuthenticationMiddleware(), new AccountRouter());
+        register("/admin", new RequireAuthenticationMiddleware(), new RequireAdminPermissionMiddleware(), new AdminRouter());
+        register(PageNotFoundController.class);
+    }
+}</code></pre>
+</div>

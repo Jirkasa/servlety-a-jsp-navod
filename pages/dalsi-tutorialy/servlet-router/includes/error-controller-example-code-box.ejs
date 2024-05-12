@@ -1,0 +1,29 @@
+<div data-code-box class="u-mb-4">
+    <pre data-code="MyErrorController.java" data-active><code class="language-java">public class MyErrorController extends HttpErrorController {
+    public MyErrorController(Exception exception) {
+        super(exception);
+    }
+
+    @Override
+    public boolean handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        // vypsání chyby do konzole
+        System.out.println(getException().getMessage());
+
+        // nastavení HTTP status kódu na 500
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        
+        // zobrazení chybové stránky
+        forwardTo("/WEB-INF/jsp/ErrorPage.jsp", request, response);
+
+        return false;
+    }
+}</code></pre>
+    <pre data-code="AppRouter.java" data-code-highlight="6"><code class="language-java">public class AppRouter extends HttpRouter {
+    public AppRouter() {
+        register(new BaseURLAttributeSetter());
+        register("/", HomeController.class);
+
+        registerErrorController(MyErrorController.class);
+    }
+}</code></pre>
+</div>

@@ -1,0 +1,15 @@
+<div data-code-box data-no-buttons class="u-mb-4">
+    <pre data-code><code class="language-java">public abstract class MyAppController extends HttpController {
+
+    protected void login(HttpServletRequest request, User user) {
+        HttpSession session = request.getSession();
+        session.setAttribute("LOGGED_USER", user);
+    }
+
+    protected void logout(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.removeAttribute("LOGGED_USER");
+    }
+
+}</code></pre>
+</div>

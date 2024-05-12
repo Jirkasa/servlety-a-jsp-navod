@@ -1,0 +1,31 @@
+<div data-project="29" data-project-extends="28" class="u-mb-2">
+    <pre data-code="AddProductController.java" data-java-package="com.example.app.routes.admin" data-java-package-opened data-active data-code-highlight="16-28"><code class="language-java">package com.example.app.routes.admin;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.example.app.ExampleAppController;
+import com.example.app.model.Product;
+import com.example.app.model.ProductsDatabase;
+
+public class AddProductController extends ExampleAppController {
+    @Override
+    protected void handleGet(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        forwardTo("/WEB-INF/jsp/AdminAddProductPage.jsp", request, response);
+    }
+
+    @Override
+    protected void handlePost(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String name = (String) request.getParameter("name");
+        double price = Double.parseDouble((String) request.getParameter("price"));
+        
+        Product product = new Product();
+        product.setName(name);
+        product.setPrice(price);
+        
+        ProductsDatabase.addProduct(request, product);
+        
+        response.sendRedirect(request.getAttribute("BASE_URL") + "/admin");
+    }
+}</code></pre>
+</div>

@@ -1,0 +1,21 @@
+<div data-project="19" data-project-extends="18" class="u-mb-2">
+    <pre data-code="RequireAdminLogin.java" data-java-package="com.example.app.middlewares" data-java-package-opened data-active><code class="language-java">package com.example.app.middlewares;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import io.github.jirkasa.servletrouter.HttpMiddleware;
+
+public class RequireAdminLogin extends HttpMiddleware {
+    @Override
+    public boolean handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        
+        if (session.getAttribute("ADMIN_LOGGED_IN") != null) return true;
+        
+        request.getRequestDispatcher("/WEB-INF/jsp/AdminLoginPage.jsp").forward(request, response);
+        return false;
+    }
+}</code></pre>
+</div>

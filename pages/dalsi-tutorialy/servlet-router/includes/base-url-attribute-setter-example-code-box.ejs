@@ -1,0 +1,29 @@
+<div data-code-box class="u-mb-4">
+    <pre data-code="AppRouter.java" data-active data-code-highlight="3"><code class="language-java">public class AppRouter extends HttpRouter {
+    public AppRouter() {
+        register(new BaseURLAttributeSetter());
+        register("/", HomeController.class);
+    }
+}</code></pre>
+    <pre data-code="HomeController.java"><code class="language-java">public class HomeController extends HttpController {
+    @Override
+    protected void handleGet(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        // forwardnutí requestu na JSP stránku
+        forwardTo("/WEB-INF/jsp/HomePage.jsp", request, response);
+    }
+}</code></pre>
+    <pre data-code="HomePage.jsp" data-code-highlight="8-9"><code class="language-html">&lt;%@page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Home Page&lt;/title&gt;
+
+    &lt;link rel="icon" type="image/svg+xml" href="${BASE_URL}/static/img/favicon.svg"&gt;
+    &lt;link href="${BASE_URL}/static/css/style.css" rel="stylesheet"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Welcome!&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</div>

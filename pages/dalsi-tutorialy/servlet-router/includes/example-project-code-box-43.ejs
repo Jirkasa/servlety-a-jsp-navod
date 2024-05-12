@@ -1,0 +1,23 @@
+<div data-project="43" data-project-extends="42" class="u-mb-2">
+    <pre data-code="AppRouter.java" data-java-package="com.example.app.routes" data-java-package-opened data-active data-code-highlight="19"><code class="language-java">package com.example.app.routes;
+
+import com.example.app.middlewares.RequireAdminLogin;
+import com.example.app.routes.admin.AdminLoginController;
+import com.example.app.routes.admin.AdminRouter;
+import com.example.app.routes.products.ProductsRouter;
+
+import io.github.jirkasa.servletrouter.BaseURLAttributeSetter;
+import io.github.jirkasa.servletrouter.HttpRouter;
+
+public class AppRouter extends HttpRouter {
+    public AppRouter() {
+        register(new BaseURLAttributeSetter());
+        register("/", HomeController.class);
+        register("/produkty", new ProductsRouter());
+        register("/admin/login", AdminLoginController.class);
+        register("/admin", new RequireAdminLogin(), new AdminRouter());
+        register(PageNotFoundController.class);
+        registerErrorController(ServerErrorController.class);
+    }
+}</code></pre>
+</div>

@@ -1,0 +1,32 @@
+<div data-project="22" data-project-extends="21" class="u-mb-2">
+    <pre data-code="AdminLoginController.java" data-java-package="com.example.app.routes.admin" data-java-package-opened data-active><code class="language-java">package com.example.app.routes.admin;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.example.app.ExampleAppController;
+
+public class AdminLoginController extends ExampleAppController {
+    private String CORRECT_USERNAME = "admin";
+    private String CORRECT_PASSWORD = "password";
+    
+    @Override
+    protected void handlePost(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        
+        if (
+            username != null
+            && password != null
+            && CORRECT_USERNAME.equals(username)
+            && CORRECT_PASSWORD.equals(password)
+        ) {
+            HttpSession session = request.getSession();
+            session.setAttribute("ADMIN_LOGGED_IN", true);
+        }
+        
+        response.sendRedirect(request.getAttribute("BASE_URL") + "/admin");
+    }
+}</code></pre>
+</div>

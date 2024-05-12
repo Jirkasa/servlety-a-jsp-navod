@@ -1,0 +1,14 @@
+<div data-code-box data-no-buttons class="u-mb-2">
+    <pre data-code data-code-highlight="3-5"><code class="language-java">public class ExampleController extends HttpController {
+    public ExampleController() {
+        // pro neimplementované metody se nebude posílat error stránka, ale
+        // bude se pokračovat v routování requestu na další handlery/controllery
+        this.skipUnimplementedMethods = true;
+    }
+
+    @Override
+    protected void handleGet(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        forwardTo("/WEB-INF/jsp/ExamplePage.jsp", request, response);
+    }
+}</code></pre>
+</div>

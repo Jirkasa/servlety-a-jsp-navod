@@ -1,0 +1,13 @@
+<div data-project="36" data-project-extends="35" class="u-mb-2">
+    <ul data-project-commands>
+        <li data-command-open-folder-to-root>src/main/webapp/WEB-INF/jsp</li>
+    </ul>
+    <pre data-code="ProductDetailPage.jsp" data-folder="src/main/webapp/WEB-INF/jsp" data-active><code class="language-html">&lt;%@page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;%@ page import="com.example.app.model.Product" %&gt;
+&lt;%@ include file="./includes/PageStart.jsp" %&gt;
+    &lt;h1&gt;Detail produktu&lt;/h1&gt;
+    &lt;p&gt;Název: ${product.name}&lt;/p&gt;
+    &lt;p&gt;Cena: ${product.price}&lt;/p&gt;
+    &lt;p&gt;&lt;a href="${BASE_URL}/produkty"&gt;zpět na seznam&lt;/a&gt;&lt;/p&gt;
+&lt;%@ include file="./includes/PageEnd.jsp" %&gt;</code></pre>
+</div>

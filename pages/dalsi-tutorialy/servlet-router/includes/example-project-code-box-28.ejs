@@ -1,0 +1,44 @@
+<div data-project="28" data-project-extends="27" class="u-mb-2">
+    <pre data-code="ProductsDatabase.java" data-java-package="com.example.app.model" data-java-package-opened data-active><code class="language-java">package com.example.app.model;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+public class ProductsDatabase {
+    private ProductsDatabase() {}
+    
+    private static int counter = 0;
+    
+    public static void addProduct(HttpServletRequest request, Product product) {
+        List&lt;Product&gt; products = (List&lt;Product&gt;) request.getServletContext().getAttribute("PRODUCTS");
+        if (products == null) {
+            products = new LinkedList&lt;Product&gt;();
+            request.getServletContext().setAttribute("PRODUCTS", products);
+        }
+        
+        product.setId(counter);
+        counter++;
+        
+        products.add(product);
+    }
+    
+    public static List&lt;Product&gt; getProducts(HttpServletRequest request) {
+        List&lt;Product&gt; products = (List&lt;Product&gt;) request.getServletContext().getAttribute("PRODUCTS");
+        if (products == null) products = new LinkedList&lt;Product&gt;();
+        return products;
+    }
+    
+    public static Product getProductById(HttpServletRequest request, int id) {
+        List&lt;Product&gt; products = (List&lt;Product&gt;) request.getServletContext().getAttribute("PRODUCTS");
+        if (products == null) products = new LinkedList&lt;Product&gt;();
+        
+        for (Product product : products) {
+            if (product.getId() == id) return product;
+        }
+        
+        return null;
+    }
+}</code></pre>
+</div>

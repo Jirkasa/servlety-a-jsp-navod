@@ -1,0 +1,12 @@
+<div data-project="37" data-project-extends="36" class="u-mb-2">
+    <pre data-code="ProductsRouter.java" data-java-package="com.example.app.routes.products" data-java-package-opened data-active data-code-highlight="8"><code class="language-java">package com.example.app.routes.products;
+
+import io.github.jirkasa.servletrouter.HttpRouter;
+
+public class ProductsRouter extends HttpRouter {
+    public ProductsRouter() {
+        register("/", ProductsController.class);
+        register("/:id", ProductController.class);
+    }
+}</code></pre>
+</div>

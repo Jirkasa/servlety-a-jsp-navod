@@ -1,0 +1,25 @@
+<div data-project="13" data-project-extends="12" class="u-mb-2">
+    <ul data-project-commands>
+        <li data-command-create-folder>src/main/webapp/WEB-INF</li>
+        <li data-command-open-folder-to-root>src/main/webapp/WEB-INF</li>
+    </ul>
+    <pre data-code="web.xml" data-folder="src/main/webapp/WEB-INF" data-active data-code-highlight="15-18"><code class="language-xml">&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://Java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+id="WebApp_ID" version="3.0"&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;AppServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;com.example.app.AppServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;AppServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;default&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/static/*&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;</code></pre>
+</div>

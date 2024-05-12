@@ -1,0 +1,21 @@
+<div data-code-box class="u-mb-4">
+    <pre data-code="AppRouter.java" data-active data-code-highlight="4-5"><code class="language-java">public class AppRouter extends HttpRouter {
+    public AppRouter() {
+        register("/", HomeController.class);
+        register("/info", new InfoRouter());
+        register("/products", new ProductsRouter());
+    }
+}</code></pre>
+    <pre data-code="InfoRouter.java"><code class="language-java">public class InfoRouter extends HttpRouter {
+    public InfoRouter() {
+        register("/about", AboutController.class);
+        register("/about-products", AboutProductsController.class);
+    }
+}</code></pre>
+    <pre data-code="ProductsRouter.java"><code class="language-java">public class ProductsRouter extends HttpRouter {
+    public ProductsRouter() {
+        register("/glasses", GlassesController.class);
+        register("/computers", ComputersController.class);
+    }
+}</code></pre>
+</div>

@@ -1,0 +1,27 @@
+<div data-project="32" data-project-extends="31" class="u-mb-2">
+    <ul data-project-commands>
+        <li data-command-open-folder-to-root>src/main/webapp/WEB-INF/jsp</li>
+    </ul>
+    <pre data-code="ProductsListPage.jsp" data-folder="src/main/webapp/WEB-INF/jsp" data-active><code class="language-html">&lt;%@page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;%@ page import="com.example.app.model.Product" %&gt;
+&lt;%@ page import="java.util.List" %&gt;
+&lt;%@ include file="./includes/PageStart.jsp" %&gt;
+    &lt;h1&gt;Produkty&lt;/h1&gt;
+    &lt;table&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Název&lt;/th&gt;
+                &lt;th&gt;Cena&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;% for (Product product : (List&lt;Product&gt;) request.getAttribute("products")) { %&gt;
+            &lt;tr&gt;
+                &lt;td&gt;&lt;a href="${BASE_URL}/produkty/&lt;%= product.getId() %&gt;"&gt;&lt;%= product.getName() %&gt;&lt;/a&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;%= product.getPrice() %&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;% } %&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;%@ include file="./includes/PageEnd.jsp" %&gt;</code></pre>
+</div>
