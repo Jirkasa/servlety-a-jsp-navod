@@ -1,0 +1,877 @@
+<!doctype html><html lang="cs"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes,maximum-scale=2.2,minimum-scale=1"><link rel="icon" type="image/svg+xml" href="../../static/img/favicon.svg"><meta name="author" content="Jiří Satora"><meta name="description" content="Článek o jednoduché knihovně pro routování v servletech."><title>Servlet Router | Servlety a JSP - Návod</title><script src="../../static/js/highlight.min.js"></script><script>hljs.highlightAll()</script><script defer="defer" src="../../common.094d85ce485e92e2c2cb.js"></script><script defer="defer" src="../../618.274f04aa314232891610.js"></script><script defer="defer" src="../../tutorial.eb9162178c9dddad389b.js"></script><link href="../../css/style.9befb716022502a8a300.css" rel="stylesheet"></head><body><input type="hidden" id="PATH_TO_ROOT" value="../../"><header id="HeaderContainer" class="header"><div id="Header" class="header__container"><div class="header__content"><a href="../../" class="header__home-link">Servlety a JSP<span class="header__home-link-unimportant-part"> - Návod</span></a> <button id="NavigationToggleButton" class="menu-toggle-button">Otevřít/Zavřít menu<span class="menu-toggle-button__icon"></span></button><nav id="HeaderNavigation" class="header__navigation"><ul><li><a href="../../tutorial/priprava-pro-vyvoj/" class="header__navigation-link">Tutoriál</a></li><li><a href="../../obsah/" class="header__navigation-link">Obsah</a></li><li><a href="../../dalsi-tutorialy/k-cemu-tato-sekce-slouzi/" class="header__navigation-link header__navigation-link--active">Další tutoriály</a></li><li><a href="https://github.com/Jirkasa/servlety-a-jsp-navod" target="_blank" class="header__navigation-link">GitHub</a></li></ul></nav></div></div></header><div class="tutorial-page-layout"><div class="tutorial-page-layout__container"><nav id="TutorialNavigation" class="tutorial-page-layout__navigation-side"><ul class="navigation"><li><a href="../k-cemu-tato-sekce-slouzi/" class="navigation__link">K čemu tato sekce slouží</a></li><li><a href="../servlet-router/" class="navigation__link navigation__link--active">Servlet Router</a></li></ul></nav><main class="tutorial-page-layout__content"><h1 class="heading-primary u-mb-2">Servlet Router</h1><p class="article-author u-mb-4"><span class="article-author__label">Autor:</span> <a rel="author" href="https://jirkasa.github.io/" target="_blank" class="link">Jiří Satora</a></p><p class="paragraph u-mb-2">V tomto článku se můžete naučit pracovat s knihovnou <a href="https://github.com/Jirkasa/servlet-router" target="_blank" class="link">Servlet Router</a>. Jedná se o jednoduchou knihovnu, kterou jsem se rozhodl sám vytvořit a slouží pro routování requestů v servletech. Tato stránka pro ni v podstatě představuje českou dokumentaci. Verze v angličtině je k dispozici <a href="https://jirkasa.github.io/servlet-router/" target="_blank" class="link">zde</a>.</p><div class="buttons-banner u-mb-4"><a href="https://mvnrepository.com/artifact/io.github.jirkasa/servlet-router" target="_blank" class="buttons-banner__button buttons-banner__button--mvn-repository"><svg><use xlink:href="../../static/icon-sprite.svg#mvn-repository"></use></svg> <span>MVN Repository</span> </a><a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/package-summary.html" target="_blank" class="buttons-banner__button buttons-banner__button--javadoc"><svg><use xlink:href="../../static/icon-sprite.svg#java"></use></svg> <span>JavaDoc</span> </a><a href="https://github.com/Jirkasa/servlet-router" target="_blank" class="buttons-banner__button buttons-banner__button--github"><svg><use xlink:href="../../static/icon-sprite.svg#github"></use></svg> <span>GitHub</span></a></div><h2 class="heading-secondary u-mb-2">Proč knihovnu Servlet Router použít</h2><p class="paragraph u-mb-2">Pravděpodobně vás zajímá, proč byste vůbec nějakou knihovnu pro routování, která je navíc vytvořená mnou samotným, měli chtít použít. Důvodů je více.</p><p class="paragraph u-mb-2">Mapování URL na servlety prostřednictvím web.xml souboru za mě nepředstavuje zrovna nejlepší způsob, jak ve webové aplikaci provádět routování. Pokud máme hodně servletů, tak se stává dost obtížné se v takovém souboru orientovat. Vždy si tam nejprve musíme servlet nadefinovat, což zabere 4 řádky kódu, a poté jej musíme namapovat na nějakou URL, což zabere také nejmíň 4 řádky kódu. A to ještě nebereme v potaz filtry, které je potřeba v souboru web.xml také nadefinovat a namapovat. Specifikování cesty v elementu url-pattern pro namapování servletu nebo filtru také není moc uživatelsky přívětivé a ne vždy se nám snadno podaří servlet namapovat na URL, na kterou jej namapovat chceme. Dále si nemyslím, že routování pro webovou aplikaci by se mělo někde konfigurovat. Mělo by to být napevno nastaveno v kódu aplikace (pokud se tedy nebavíme o nějakém CMS systému a podobně, kde si třeba uživatel vytváří vlastní stránky). Toto jsou hlavní důvody, které mě přiměly knihovnu pro routování vytvořit a těmto problémům se tak vyhnout.</p><p class="paragraph u-mb-1">Výhody proč knihovnu Servlet Router použít shrnuje následující seznam:</p><ul class="list u-mb-4"><li>žádné neohrabané URL mapování v konfiguračním souboru web.xml</li><li>stačí namapovat jeden vstupní servlet pro všechny requesty a dále je routování závislé již na samotném kódu aplikace (není potřeba složitě konfigurovat soubor web.xml)</li><li>žádné použití filtrů</li><li>žádné zmatené nastavovaní URL patternů</li><li>podpora parametrů přímo v URL cestě (path parametry)</li><li>lepší orientace v kódu (nemusíte složitě patrát, pro jakou URL se co volá)</li><li>snadná implementace MVC architektury</li><li>vestavěná podpora HTTP PATCH metody (třída HttpServlet ji v základu nepodporuje)</li></ul><h2 class="heading-secondary u-mb-2">Komponenty knihovny</h2><p class="paragraph u-mb-4">Knihovna Servlet Router obsahuje takové tři základní komponenty: <a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/Router.html" target="_blank" class="link">Router</a>, <a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/Controller.html" target="_blank" class="link">Controller</a> a <a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/Handler.html" target="_blank" class="link">Handler</a>. Postupně se na ně nyní podíváme a dozvíte se i o jiných komponentách, které na nich staví.</p><h3 class="heading-tertiary u-mb-1">Router</h3><p class="paragraph u-mb-2">Router je komponenta, která má za úkol mapovat controllery a handlery na specifické cesty. Základní třídou je <a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/Router.html" target="_blank" class="link">Router</a>. Tato třída je abstraktní. Může být rozšířena a použita pro routování jakéhokoliv typu <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/ServletRequest.html" target="_blank" class="link">ServletRequest</a> a <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/ServletResponse.html" target="_blank" class="link">ServletResponse</a> objektu. V 99.9 procentech případů ale budete chtít routovat <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServletRequest.html" target="_blank" class="link">HttpServletRequest</a> a <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServletResponse.html" target="_blank" class="link">HttpServletResponse</a> objekty. V takovém případě můžete použít <a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/HttpRouter.html" target="_blank" class="link">HttpRouter</a>.</p><p class="paragraph u-mb-2">HttpRouter můžete vytvořit buď napřímo a poté namapovat příslušné controllery a handlery (což nedoporučuji), nebo můžete vytvořit podtřídu a mapování provést v konstruktoru. Následující ukázka ukazuje první (nedoporučený) postup.</p><div data-code-box data-no-buttons class="u-mb-2"><pre data-code><code class="language-java">// vytvoření routeru
+HttpRouter router = new HttpRouter();
+// namapování controlleru
+router.register("/", HomeController.class);
+// namapování jiného routeru (handleru)
+router.register("/info", infoRouter);</code></pre></div><p class="paragraph u-mb-2">Další ukázka ukazuje lepší způsob jak router vytvořit.</p><div data-code-box data-no-buttons class="u-mb-2"><pre data-code><code class="language-java">public class AppRouter extends HttpRouter {
+    public AppRouter() {
+        // namapování controlleru
+        register("/", HomeController.class);
+        // namapování jiného routeru (handleru)
+        register("/info", new InfoRouter());
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Jak jste si v předchozích ukázkách mohli všimnout, tak pro namapování (registraci) controlleru nebo handleru se používá metoda register. Pokud se podíváte do <a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/Router.html" target="_blank" class="link">JavaDoc dokumentace</a>, tak uvidíte, že je nejmíň desetkrát přetížená. To je proto, aby se mohly registrovat třídy controllerů i handlery zároveň. V Javě nejde moc jednoduše a typově bezpečně zařídit, aby se mohli jako parametr metody předávat dva různé typy. Vyřešil jsem to tedy tak, že jsem metodu register mnohokrát přetížil, aby byla uživatelsky přívětivá a jednodušeji se používala. Díky tomu se může volat s více handlery nebo controllery jdoucími po sobě, jak ukazuje následující ukázka. Proč byste to měli chtít dělat se později dozvíte.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code data-code-highlight="3-7"><code class="language-java">public class AppRouter extends HttpRouter {
+    public AppRouter() {
+        register("/", HomeController.class);
+        register("/info", new InfoRouter());
+        register("/account", new RequireAuthenticationMiddleware(), new AccountRouter());
+        register("/admin", new RequireAuthenticationMiddleware(), new RequireAdminPermissionMiddleware(), new AdminRouter());
+        register(PageNotFoundController.class);
+    }
+}</code></pre></div><h3 class="heading-tertiary u-mb-1">Controller</h3><p class="paragraph u-mb-2">Další základní komponentou je controller. Ten má za úkol zpracovávat requesty na nějaké konkrétní (většinou) cestě. Podobně jako u routeru, tak i zde je základní třídou třída <a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/Controller.html" target="_blank" class="link">Controller</a>. Nejčastěji ale budete pracovat s protokolem HTTP a zpracovávat objekty typu <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServletRequest.html" target="_blank" class="link">HttpServletRequest</a> a <a href="https://javaee.github.io/javaee-spec/javadocs/javax/servlet/http/HttpServletResponse.html" target="_blank" class="link">HttpServletResponse</a>, takže budete pro tvorbu controlleru rozšiřovat třídu <a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/HttpController.html" target="_blank" class="link">HttpController</a>. Ta poskytuje metody pro zpracování requestů poslaných různými metodami (GET, POST, DELETE, atd.). Následující ukázka ukazuje, jak může controller vypadat.</p><div data-code-box data-no-buttons class="u-mb-2"><pre data-code><code class="language-java">public class ExampleController extends HttpController {
+    @Override
+    protected void handleGet(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        forwardTo("/WEB-INF/jsp/ExamplePage.jsp", request, response);
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Následující tabulka ukazuje různé metody třídy HttpController, které můžeme přepsat a zpracovávat tak různé druhy requestů.</p><div class="table-wrapper u-mb-2"><table class="table"><thead><tr><th>Metoda</th><th>Popis</th></tr></thead><tbody><tr><td><a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/HttpController.html#handle(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)" target="_blank" class="link">handle</a></td><td>Zpracovává requesty a podle metody kterou byly poslány volá příslušné další metody. Tato metoda může být přepsána například pro controller, který řeší 404 stránku, aby reagoval na requesty poslané jakoukoliv metodou.</td></tr><tr><td><a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/HttpController.html#handleGet(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)" target="_blank" class="link">handleGet</a></td><td>Zpracovává requesty poslané metodou GET.</td></tr><tr><td><a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/HttpController.html#handlePost(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)" target="_blank" class="link">handlePost</a></td><td>Zpracovává requesty poslané metodou POST.</td></tr><tr><td><a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/HttpController.html#handlePut(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)" target="_blank" class="link">handlePut</a></td><td>Zpracovává requesty poslané metodou PUT.</td></tr><tr><td><a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/HttpController.html#handlePatch(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)" target="_blank" class="link">handlePatch</a></td><td>Zpracovává requesty poslané metodou PATCH.</td></tr><tr><td><a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/HttpController.html#handleDelete(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)" target="_blank" class="link">handleDelete</a></td><td>Zpracovává requesty poslané metodou DELETE.</td></tr><tr><td><a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/HttpController.html#handleHead(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)" target="_blank" class="link">handleHead</a></td><td>Zpracovává requesty poslané metodou HEAD.</td></tr><tr><td><a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/HttpController.html#handleOptions(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)" target="_blank" class="link">handleOptions</a></td><td>Zpracovává requesty poslané metodou OPTIONS. Tato metoda by běžně neměla být přepisována.</td></tr><tr><td><a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/HttpController.html#handleTrace(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)" target="_blank" class="link">handleTrace</a></td><td>Zpracovává requesty poslané metodou TRACE. Tato metoda by běžně neměla být přepisována.</td></tr></tbody></table></div><p class="paragraph u-mb-2">Kromě metod handleOptions a handleTrace nemají výše zmíněné metody pro zpracování requestů poslaných specifickými metodami defaultní implementaci. Defaultně se pro ně posílá error stránka se status kódem 405 (metoda není podporována). Pokud namísto toho chceme neimplementované metody přeskočit a pokračovat v routování requestu do dalších handlerů/controllerů, tak můžeme nastavit vlastnost <a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/HttpController.html#skipUnimplementedMethods" target="_blank" class="link">skipUnimplementedMethods</a> na true, jak ukazuje následující ukázka.</p><div data-code-box data-no-buttons class="u-mb-2"><pre data-code data-code-highlight="3-5"><code class="language-java">public class ExampleController extends HttpController {
+    public ExampleController() {
+        // pro neimplementované metody se nebude posílat error stránka, ale
+        // bude se pokračovat v routování requestu na další handlery/controllery
+        this.skipUnimplementedMethods = true;
+    }
+
+    @Override
+    protected void handleGet(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        forwardTo("/WEB-INF/jsp/ExamplePage.jsp", request, response);
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Když se při routování requestu najde controller, který se použije pro zpracování requestu, tak již request neputuje dál do dalších handlerů nebo jiného controlleru. Pokud chceme, aby se s routováním requestu pokračovalo dál, tak máme možnost zavolat metodu <a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/HttpController.html#continueHandlersChain()" target="_blank" class="link">continueHandlersChain</a>, jak ukazuje následující ukázka. Možná zatím nevíte co mám tím routováním requestu přesně na mysli, ale až se pustíme do tvorby ukázkového projektu, tak to pravděpodobně pochopíte.</p><div data-code-box data-no-buttons class="u-mb-2"><pre data-code data-code-highlight="12"><code class="language-java">public class ProductController extends HttpController {
+    @Override
+    protected void handleGet(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String productId = req.getParameter("productId");
+
+        Product product = DBUtil.loadProductById(productId);
+
+        if (product) {
+            request.setAttribute("product", product);
+            forwardTo("/WEB-INF/jsp/ProductPage.jsp", request, response);
+        } else {
+            continueHandlersChain();
+        }
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Věc, kterou u klasických servletů běžně neuděláte, je získání parametru přímo z URL cesty. S knihovnou Servlet Router je to ale jednoduché. Stačí si do cesty při její registraci v routeru nadefinovat parametr zapsáním znaku ":" a nějakého názvu. Poté můžeme parametr v controlleru získat pomocí <a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/Controller.html#getPathParam(java.lang.String)" target="_blank" class="link">getPathParam</a> metody. Lépe to ukazuje následující ukázka.</p><div data-code-box class="u-mb-2"><pre data-code="MyRouter.java" data-active data-code-highlight="3"><code class="language-java">public class MyRouter extends HttpRouter {
+    public MyRouter() {
+        register("/example/:myParam", MyController.class);
+    }
+}</code></pre><pre data-code="MyController.java" data-code-highlight="4"><code class="language-java">public class MyController extends HttpController {
+    @Override
+    protected void handleGet(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String param = getPathParam("myParam");
+        request.setAttribute("myPathParameter", param);
+        forwardTo("/WEB-INF/jsp/ExamplePage.jsp", request, response);
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Dobrou praktikou je nerozšiřovat pro tvorbu controllerů přímo třídu HttpController, ale vytvořit si svoji vlastní základní controller třídu. V té si totiž poté můžeme vytvářet metody pro operace, které často v controllerech provádíme. Následující ukázka ukazuje příklad takového základní controlleru.</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-java">public abstract class MyAppController extends HttpController {
+
+    protected void login(HttpServletRequest request, User user) {
+        HttpSession session = request.getSession();
+        session.setAttribute("LOGGED_USER", user);
+    }
+
+    protected void logout(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        session.removeAttribute("LOGGED_USER");
+    }
+
+}</code></pre></div><h3 class="heading-tertiary u-mb-1">Handler</h3><p class="paragraph u-mb-2">Router může registrovat controllery a handlery. Co je to controller již víte, ale ještě jsme se nezabývali handlerem. Jedná se o podobnou komponentu jako controller, jelikož také slouží pro zpracovávání requestů. Rozdíl je v tom, že u controlleru v routeru registrujeme třídu controlleru, ale u handleru instanci třídy. Handlerem se může stát jakákoliv třída implementující rozhraní <a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/Handler.html" target="_blank" class="link">Handler</a>. To definuje metody, které popisuje následující tabulka.</p><div class="table-wrapper u-mb-2"><table class="table"><thead><tr><th>Metoda</th><th>Popis</th></tr></thead><tbody><tr><td><a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/Handler.html#handle(Request,Response)" target="_blank" class="link">handle(Request request, Response response)</a></td><td>Volá se pro zpracování requestu. Jako návratovou hodnotu vrací boolean, signalizující, zda se má s routováním requestu pokračovat dál, nebo přestat.</td></tr><tr><td><a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/Handler.html#matchesFullPath()" target="_blank" class="link">matchesFullPath()</a></td><td>Návratová hodnota této metody, která je typu boolean, určuje, zda musí být cesta shodná s request cestou nebo stačí, když je shodný začátek request cesty.</td></tr><tr><td><a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/Handler.html#setPathParams(java.util.Map)" target="_blank" class="link">setPathParams(Map&lt;String, String&gt; pathParams)</a></td><td>Tato metoda se volá před zavoláním metody handle k nastavení mapy, obsahující parametry v cestě (path parametry).</td></tr></tbody></table></div><p class="paragraph u-mb-2">Následující ukázka ukazuje příklad vytvoření handleru.</p><div data-code-box class="u-mb-2"><pre data-code="MyHandler.java" data-active><code class="language-java">public class MyHandler implements Handler&lt;HttpServletRequest, HttpServletResponse&gt; {
+    private Map&lt;String, String&gt; pathParams;
+
+    @Override
+    public boolean handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        request.setAttribute("test", pathParams.get("test"));
+        return true;
+    }
+
+    @Override
+    public void matchesFullPath() {
+        return false;
+    }
+
+    @Override
+    public void setPathParams(Map&lt;String, String&gt; pathParams) {
+        this.pathParams = pathParams;
+    }
+}</code></pre><pre data-code="MyRouter.java"><code class="language-java">public class MyRouter extends HttpRouter {
+    public MyRouter() {
+        register("/example/:test", new MyHandler(), MyController.class);
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Běžně pro tvorbu handlerů nebudete rozhraní Handler implementovat napřímo. Namísto toho většinou budete při tvorbě handlerů rozšiřovat třídu <a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/HttpMiddleware.html" target="_blank" class="link">HttpMiddleware</a>. O co se jedná se můžete dozvědět o něco níže.</p><p class="paragraph u-mb-2">Rozhraní Handler implementuje také třída Router, takže router je ve své podstatě také handler. Díky tomu můžeme routery do sebe různě vnořovat. Příklad ukazuje následující ukázka.</p><div data-code-box class="u-mb-4"><pre data-code="AppRouter.java" data-active data-code-highlight="4-5"><code class="language-java">public class AppRouter extends HttpRouter {
+    public AppRouter() {
+        register("/", HomeController.class);
+        register("/info", new InfoRouter());
+        register("/products", new ProductsRouter());
+    }
+}</code></pre><pre data-code="InfoRouter.java"><code class="language-java">public class InfoRouter extends HttpRouter {
+    public InfoRouter() {
+        register("/about", AboutController.class);
+        register("/about-products", AboutProductsController.class);
+    }
+}</code></pre><pre data-code="ProductsRouter.java"><code class="language-java">public class ProductsRouter extends HttpRouter {
+    public ProductsRouter() {
+        register("/glasses", GlassesController.class);
+        register("/computers", ComputersController.class);
+    }
+}</code></pre></div><h3 class="heading-tertiary u-mb-1">Middleware</h3><p class="paragraph u-mb-2">Middleware, stejně jako controller, slouží ke zpracování requestů. Typicky se ale používá jen pro provedení nějaké akce pro request a routování requestu může pokračovat dál. Middleware můžeme například použít k omezení přístupu k vybraným controllerům jen pro přihlášené uživatele, k nastavování nějakého atributu na request, a tak podobně. Základní třídou je třída <a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/Middleware.html" target="_blank" class="link">Middleware</a>, ale v naprosté většině případů budete chtít pracovat s protokolem HTTP, takže můžete při tvorbě middlewaru dědit od třídy <a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/HttpMiddleware.html" target="_blank" class="link">HttpMiddleware</a>.</p><p class="paragraph u-mb-2">Následující ukázka ukazuje příklad middlewaru, který kontroluje, zda je uživatel přihlášen. Pokud ano, tak request pustí dál. V opačném případě jej přesměruje na stránku pro přihlášení.</p><div data-code-box class="u-mb-2"><pre data-code="RequireLoginMiddleware.java" data-active><code class="language-java">public class RequireLoginMiddleware extends HttpMiddleware {
+    @Override
+    public boolean handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+
+        // pokud je uživatel přihlášený, request pokračuje dál
+        if (session.getAttribute("LOGGED_USER") != null) return true;
+
+        // jinak je uživatel přesměrován na login stránku
+        response.sendRedirect(request.getAttribute("BASE_URL") + "/login");
+        return false;
+    }
+}</code></pre><pre data-code="AppRouter.java" data-code-highlight="6"><code class="language-java">public class AppRouter extends HttpRouter {
+    public AppRouter() {
+        register(new BaseURLAttributeSetter());
+        register("/", HomeController.class);
+        register("/login", LoginController.class);
+        register("/games", new RequireLoginMiddleware(), new GamesRouter());
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Middleware je handler a implementuje tedy rozhraní Handler. Metody setPathParams a matchesFullPath implementuje již za nás. Ukládání parametrů v cestě je totiž stejné pro každý middleware, takže by bylo zbytečné to provádět v každém middlewaru, který bychom vytvářeli. Na získávání parametrů z URL cesty namísto toho můžeme použít metodu <a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/Middleware.html#getPathParam(java.lang.String)" target="_blank" class="link">getPathParam</a>. Metoda matchesFullPath je již implementována proto, že pro většinu middlewaru budeme chtít, aby se s cestou shodoval jen začátek request cesty. Pokud by nám to nevyhovovalo, můžeme metodu matchesFullPath přepsat.</p><p class="paragraph u-mb-2">Knihovna Servlet Router poskytuje jeden již předpřipravený middleware, který ve své aplikace budete pravděpodobně chtít na začátku zaregistrovat. Jedná se o <a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/BaseURLAttributeSetter.html" target="_blank" class="link">BaseURLAttributeSetter</a>. Slouží k nastavení atributu, který obsahuje kořenovou URL vaší aplikace, do requestu. Nemusíte tedy při nastavování cest k různým assetům v JSP stránkách používat relativní cesty, což vede k tomu, že se potom JSP stránka nedá použít pro jinak dlouhé URL. Následující ukázka ukazuje, jak tento middleware můžete zaregistrovat. Defaultní název pro atribut je "BASE_URL". To se ale dá změnit předáním názvu do konstruktoru.</p><div data-code-box class="u-mb-4"><pre data-code="AppRouter.java" data-active data-code-highlight="3"><code class="language-java">public class AppRouter extends HttpRouter {
+    public AppRouter() {
+        register(new BaseURLAttributeSetter());
+        register("/", HomeController.class);
+    }
+}</code></pre><pre data-code="HomeController.java"><code class="language-java">public class HomeController extends HttpController {
+    @Override
+    protected void handleGet(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        // forwardnutí requestu na JSP stránku
+        forwardTo("/WEB-INF/jsp/HomePage.jsp", request, response);
+    }
+}</code></pre><pre data-code="HomePage.jsp" data-code-highlight="8-9"><code class="language-html">&lt;%@page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Home Page&lt;/title&gt;
+
+    &lt;link rel="icon" type="image/svg+xml" href="${BASE_URL}/static/img/favicon.svg"&gt;
+    &lt;link href="${BASE_URL}/static/css/style.css" rel="stylesheet"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;Welcome!&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div><h3 class="heading-tertiary u-mb-1">Error controller</h3><p class="paragraph u-mb-2">Router umožňuje nastavit speciální controller, sloužící k zachycení vyjímek. Můžeme jej zaregistrovat pomocí metody <a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/Router.html#registerErrorController(java.lang.Class)" target="_blank" class="link">registerErrorController</a>. Pokud pro router error controller je nastaven, tak se bude volat, když dojde k vyjímce. V opačném případě router vyjímku namísto toho vyhodí.</p><p class="paragraph u-mb-2">Základní třídou pro tvorbu error controlleru je třída <a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/ErrorController.html" target="_blank" class="link">ErrorController</a>. Pokud ale pracujeme s HTTP protokolem, tak pro vytvoření error controlleru můžeme využít třídu <a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/HttpErrorController.html" target="_blank" class="link">HttpErrorController</a>. Následující ukázka ukazuje, jak takový error controller může vypadat. K získání chyby v handle metodě můžeme použít metodu <a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/ErrorController.html#getException()" target="_blank" class="link">getException</a>.</p><div data-code-box class="u-mb-4"><pre data-code="MyErrorController.java" data-active><code class="language-java">public class MyErrorController extends HttpErrorController {
+    public MyErrorController(Exception exception) {
+        super(exception);
+    }
+
+    @Override
+    public boolean handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        // vypsání chyby do konzole
+        System.out.println(getException().getMessage());
+
+        // nastavení HTTP status kódu na 500
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        
+        // zobrazení chybové stránky
+        forwardTo("/WEB-INF/jsp/ErrorPage.jsp", request, response);
+
+        return false;
+    }
+}</code></pre><pre data-code="AppRouter.java" data-code-highlight="6"><code class="language-java">public class AppRouter extends HttpRouter {
+    public AppRouter() {
+        register(new BaseURLAttributeSetter());
+        register("/", HomeController.class);
+
+        registerErrorController(MyErrorController.class);
+    }
+}</code></pre></div><h2 class="heading-secondary u-mb-2">Integrace knihovny do aplikace</h2><p class="paragraph u-mb-2">Při použití knihovny Servlet Router vám stačí vytvořit jen jeden servlet, který v souboru web.xml namapujete pro všechny příchozí requesty. V tomto servletu poté většinou voláte metodu <a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/Router.html#handle(Request,Response)" target="_blank" class="link">handle</a> nějakého vstupního routeru vaší webové aplikace, když na servlet dorazí request ke zpracování. Jak může takový servlet vypadat ukazuje následující ukázka.</p><div data-code-box data-no-buttons class="u-mb-2"><pre data-code><code class="language-java">public class AppServlet extends HttpServlet {
+    AppRouter appRouter = new AppRouter();
+    
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        try {
+            appRouter.handle(req, res);
+        } catch (Exception e) {
+            System.out.println(e);
+            res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Something went wrong.");
+        }
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Jak můžete v souboru web.xml servlet namapovat na všechny příchozí requesty ukazuje následující ukázka. Kromě toho je také důležité určit si, jak se bude jmenovat složka, která se bude nacházet ve složce webapp a obsahovat statické assety jako jsou CSS soubory, obrázky, a tak podobně, a namapovat cestu k ní na defaultní servlet. Když jsou totiž všechny requesty směrovány na servlet, tak je tím pádem zablokovaný přístup k obsahu ve složce webapp (kromě JSP souborů - bohužel.. - Toto mě na JSP štve. I když takto zablokujeme přístup ke složce webapp, tak se uživatel stejně k JSP souborům dostane. Takže JSP soubory stejně musíte vkládat do složky WEB-INF, kde k nim není přímý přístup.). Defaultní servlet slouží k přístupu ke statickým zdrojům a většina webových serverů jej má. Pro Tomcat má tento servlet název "default".</p><div data-code-box data-no-buttons class="u-mb-4"><pre data-code><code class="language-xml">&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://Java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+id="WebApp_ID" version="3.0"&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;AppServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;com.example.app.AppServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;AppServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;default&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/static/*&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;</code></pre></div><h2 class="heading-secondary u-mb-2">Ukázka tvorby projektu</h2><p class="paragraph u-mb-2">Možná byste rádi viděli, jak vypadá použití knihovny Servlet Router v nějakém projektu. Pustíme se tedy do tvorby ukázkové aplikace. Bude to jednoduchý web, který bude mít hlavní stránku, stránku zobrazující nějaký seznam produktů a stránku s detailem produktu. Produkty bude mít možnost přidávat administrátor, který se bude moci přihlásit. Následující diagram ukazuje, jak bude vypadat struktura webu.</p><img src="../../static/img/illustrations/ServletRouterExampleAppStructure.svg" alt="Struktura webu ukázkové aplikace" class="image image--full-width u-mb-4"><p class="paragraph u-mb-2">Začneme tím, že si založíme nový Maven projekt, který můžeme pojmenovat třeba jako "servlet-router-example-app". V souboru pom.xml si do projektu knihovnu Servlet Router přidáme jako dependency, společně se servlety, jak ukazuje následující ukázka.</p><div data-project="1" data-project-name="servlet-router-example-app" class="u-mb-2"><ul data-project-folders><li>src<ul><li>main<ul><li data-java-packages-folder>java</li><li>resources</li><li>webapp</li></ul></li><li>test<ul><li>java</li><li>resources</li></ul></li></ul></li><li>target</li></ul><pre data-code="pom.xml" data-active data-code-highlight="17-29"><code class="language-xml">&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;io.github.jirkasa&lt;/groupId&gt;
+    &lt;artifactId&gt;servlet-router-example-app&lt;/artifactId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;name&gt;servlet-router-example-app&lt;/name&gt;
+
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;
+        &lt;java.version&gt;17&lt;/java.version&gt;
+        &lt;maven.compiler.source&gt;${java.version}&lt;/maven.compiler.source&gt;
+        &lt;maven.compiler.target&gt;${java.version}&lt;/maven.compiler.target&gt;
+    &lt;/properties&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;javax.servlet&lt;/groupId&gt;
+            &lt;artifactId&gt;javax.servlet-api&lt;/artifactId&gt;
+            &lt;version&gt;4.0.1&lt;/version&gt;
+            &lt;scope&gt;provided&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;io.github.jirkasa&lt;/groupId&gt;
+            &lt;artifactId&gt;servlet-router&lt;/artifactId&gt;
+            &lt;version&gt;1.0.1&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;</code></pre></div><p class="paragraph u-mb-2">První věc, kterou můžeme udělat, je, že si založíme kořenový router naší aplikace. Můžeme jej pojmenovat třeba jako AppRouter. Zatím bude prázdný, akorát na začátku zaregistrujeme <a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/BaseURLAttributeSetter.html" target="_blank" class="link">BaseURLAttributeSetter</a> pro nastavování atributu obsahující kořenovou URL naší aplikace. Můžeme si pro něj vytvořit java balíček, který pojmenujeme třeba jako com.example.app.routes, a vytvořit jej tam.</p><div data-project="2" data-project-extends="1" class="u-mb-2"><pre data-code="AppRouter.java" data-java-package="com.example.app.routes" data-java-package-opened data-active><code class="language-java">package com.example.app.routes;
+
+import io.github.jirkasa.servletrouter.BaseURLAttributeSetter;
+import io.github.jirkasa.servletrouter.HttpRouter;
+
+public class AppRouter extends HttpRouter {
+    public AppRouter() {
+        register(new BaseURLAttributeSetter());
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Teď si můžeme založit vstupní servlet pro naši aplikaci (třeba v balíčku com.example.app). Když na něj dorazí ke zpracování request, tak jej předáme do našeho kořenového routeru metodou handle. Volání této metody musíme obalit do try-catch bloku. Tím zajistíme, že když v routeru dojde k jakékoliv chybě tak ji zachytíme. Později si vytvoříme i vlastní error controller, takže k vyhození vyjímky až do tohoto try-catch bloku pravděpodobně vůbec nebude docházet, ale pro jistotu budeme vracet chybovou stránku metodou sendError, kdyby přece jenom chyba doputovala až sem.</p><div data-project="3" data-project-extends="2" class="u-mb-2"><pre data-code="AppServlet.java" data-java-package="com.example.app" data-java-package-opened data-active><code class="language-java">package com.example.app;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.example.app.routes.AppRouter;
+
+public class AppServlet extends HttpServlet {
+    AppRouter appRouter = new AppRouter();
+    
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        try {
+            appRouter.handle(req, res);
+        } catch (Exception e) {
+            System.out.println(e);
+            res.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Bohužel došlo k chybě.");
+        }
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Vytvořený servlet si namapujeme pro všechny příchozí requesty. Ve složce webapp si tedy založíme podsložku WEB-INF a v ní soubor web.xml, ve kterém náš servlet namapujeme. Následující ukázka ukazuje jeho obsah.</p><div data-project="4" data-project-extends="3" class="u-mb-2"><ul data-project-commands><li data-command-create-folder>src/main/webapp/WEB-INF</li><li data-command-open-folder-to-root>src/main/webapp/WEB-INF</li></ul><pre data-code="web.xml" data-folder="src/main/webapp/WEB-INF" data-active><code class="language-xml">&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://Java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+id="WebApp_ID" version="3.0"&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;AppServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;com.example.app.AppServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;AppServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;</code></pre></div><p class="paragraph u-mb-2">Základní přípravu projektu máme hotovou. Teď se pustíme do tvorby domovské stránky. Než to ale uděláme, tak si vytvoříme svoji vlastní základní controller třídu, namísto toho abychom u controllerů dědili přímo třídu <a href="https://jirkasa.github.io/servlet-router/javadoc/io/github/jirkasa/servletrouter/HttpController.html" target="_blank" class="link">HttpController</a>. To je dobrá praktika, protože si v této základní třídě potom můžeme definovat metody pro kód, který třeba často spouštíme ve více controllerech. Vytvoříme si tedy základní abstraktní třídu pro controllery, kterou můžeme pojmenovat třeba jako ExampleAppController. Bude dědit od třídy HttpController a v našem příkladu bude prázdná. To ale nevadí, hlavní je, že budeme mít možnost si základní třídu pro controllery kdykoliv rozšířit, bez modifikace již existujících controllerů. Vytvoříme ji třeba v kořenovém balíčku com.example.app.</p><div data-project="5" data-project-extends="4" class="u-mb-2"><pre data-code="ExampleAppController.java" data-java-package="com.example.app" data-java-package-opened data-active><code class="language-java">package com.example.app;
+
+import io.github.jirkasa.servletrouter.HttpController;
+
+public abstract class ExampleAppController extends HttpController {}</code></pre></div><p class="paragraph u-mb-2">Po vytvoření základní třídy můžeme začít s tvorbou controlleru pro domovskou stránku. Vytvoříme jej v balíčku com.example.app.routes a pojmenujeme jej třeba jako HomeController. Tento controller bude úplně jednoduchý, jelikož akorát předá request ke zpracování do JSP souboru k vyrenderování HTML stránky.</p><div data-project="6" data-project-extends="5" class="u-mb-2"><pre data-code="HomeController.java" data-java-package="com.example.app.routes" data-java-package-opened data-active><code class="language-java">package com.example.app.routes;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.example.app.ExampleAppController;
+
+public class HomeController extends ExampleAppController {
+    @Override
+    protected void handleGet(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        forwardTo("/WEB-INF/jsp/HomePage.jsp", request, response);
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Teď tedy vytvoříme JSP stránku. Ve složce WEB-INF (aby se k JSP stránkám napřímo nedostali uživatelé) si založíme složku jsp a v ní soubor "HomePage.jsp". V následující ukázce si můžete prohlédnout jeho kód. Hlavní stránka akorát vypíše nějaký uvítací text a zobrazí odkaz na stránku se seznamem produktů. Můžete si všimnout, že v odkazu používáme atribut BASE_URL, který nám nastavuje middleware BaseURLAttributeSetter. Tento atribut obsahuje kořenovou URL naší aplikace.</p><div data-project="7" data-project-extends="6" class="u-mb-2"><ul data-project-commands><li data-command-create-folder>src/main/webapp/WEB-INF/jsp</li><li data-command-open-folder-to-root>src/main/webapp/WEB-INF/jsp</li></ul><pre data-code="HomePage.jsp" data-folder="src/main/webapp/WEB-INF/jsp" data-active><code class="language-html">&lt;%@page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;%@ include file="./includes/PageStart.jsp" %&gt;
+    &lt;h1&gt;Vítejte&lt;/h1&gt;
+    &lt;p&gt;Tento web představuje ukázkovou aplikaci pro knihovnu Servlet Router. Kliknutím na odkaz níže si můžete prohlédnout seznam produktů.&lt;/p&gt;
+    &lt;a href="${BASE_URL}/produkty" class="button"&gt;Seznam produktů&lt;/a&gt;
+&lt;%@ include file="./includes/PageEnd.jsp" %&gt;</code></pre></div><p class="paragraph u-mb-2">V předchozím kódu pro domovskou stránku používáme include direktivu k připojení obsahu jiných souborů. Ty jsme ale zatím ještě nevytvořili, takže to uděláme teď. Děláme to tak proto, že začátek a konec stránky bude společný pro všechny stránky v naší aplikaci.</p><p class="paragraph u-mb-2">První soubor, který se připojuje na začátku, bude obsahovat kód pro začátek stránky. Vytvoříme jej ve složce includes, kterou založíme, a pojmenujeme jej jako "PageStart.jsp". Jeho obsah ukazuje následující ukázka.</p><div data-project="8" data-project-extends="7" class="u-mb-2"><ul data-project-commands><li data-command-create-folder>src/main/webapp/WEB-INF/jsp/includes</li><li data-command-open-folder-to-root>src/main/webapp/WEB-INF/jsp/includes</li></ul><pre data-code="PageStart.jsp" data-folder="src/main/webapp/WEB-INF/jsp/includes" data-active><code class="language-html">&lt;%@page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Ukázková aplikace&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="page"&gt;</code></pre></div><p class="paragraph u-mb-2">Soubor, který se připojuje na konci, bude obsahovat kód pro konec stránky. Ve složce includes si vytvoříme soubor "PageEnd.jsp". Kód pro něj můžete vidět v ukázce.</p><div data-project="9" data-project-extends="8" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp/WEB-INF/jsp/includes</li></ul><pre data-code="PageEnd.jsp" data-folder="src/main/webapp/WEB-INF/jsp/includes" data-active><code class="language-html">&lt;%@page contentType="text/html" pageEncoding="UTF-8"%&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre></div><p class="paragraph u-mb-2">Poslední věcí, kterou musíme pro domovoskou stránku udělat, je zaregistrovat controller v routeru, jak ukazuje následující ukázka.</p><div data-project="10" data-project-extends="9" class="u-mb-2"><pre data-code="AppRouter.java" data-java-package="com.example.app.routes" data-java-package-opened data-active data-code-highlight="9"><code class="language-java">package com.example.app.routes;
+
+import io.github.jirkasa.servletrouter.BaseURLAttributeSetter;
+import io.github.jirkasa.servletrouter.HttpRouter;
+
+public class AppRouter extends HttpRouter {
+    public AppRouter() {
+        register(new BaseURLAttributeSetter());
+        register("/", HomeController.class);
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Nyní si můžete aplikaci spustit a po navštívení <a href="http://localhost:8080/servlet-router-example-app/" target="_blank" class="link">http://localhost:8080/servlet-router-example-app/</a> byste měli vidět stránku, kterou ukazuje následující obrázek.</p><img src="../../static/img/screenshots/ServletRouterUkazkovaAplikaceHlavniStranka.png" alt="Hlavní stránka aplikace" class="image image--full-width image--with-border u-mb-2"><p class="paragraph u-mb-2">Nevypadá to moc pěkně, takže si teď stránku nastylujeme pomocí CSS stylů. Tím se dostáváme k tomu, že si ve složce webapp musíme vytvořit nějakou složku, do které budeme dávat věci jako jsou obrázky, JavaScript soubory, CSS styly, a tak podobně. Musíme na ni totiž namapovat defaultní servlet, protože jinak by všechny requesty pro tyto soubory putovali do našeho servletu, který jsme pojmenovali jako "AppServlet". Tuto složku tedy založíme a nazveme ji třeba jako "static". Poté v ní můžeme vytvořit soubor s CSS styly. Kód pro něj ukazuje následující ukázka, takže si jej můžete zkopírovat.</p><div data-project="11" data-project-extends="10" class="u-mb-2"><ul data-project-commands><li data-command-create-folder>src/main/webapp/static</li><li data-command-open-folder-to-root>src/main/webapp/static</li></ul><pre data-code="style.css" data-folder="src/main/webapp/static" data-active><code class="language-css">*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+html {
+    font-size: 62.5%; /* 1rem = 10px */
+}
+
+body {
+    box-sizing: border-box;
+    overflow-x: hidden;
+    
+    padding: 1.6rem;
+    background-color: #F4EFEA;
+}
+
+.page {
+    width: 100%;
+    max-width: 80rem;
+    background-color: #FFFFFF;
+    
+    margin: 0 auto;
+    padding: 1.6rem;
+}
+
+h1 {
+    font-size: 3.2rem;
+    line-height: 1;
+    
+    color: #292726;
+    
+    margin-bottom: .8rem;
+}
+
+p {
+    font-size: 1.6rem;
+    color: #5B5854;
+    
+    margin-bottom: .8rem;
+}
+
+.button, .button:link, .button:visited {
+    font-family: inherit;
+    font-size: 1.6rem;
+    font-weight: 500;
+    line-height: 2rem;
+    
+    display: inline-block;
+    
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #292726;
+    background-color: #F8E4B9;
+    border: none;
+    border-radius: .4rem;
+
+    padding: 1.2rem 1.6rem;
+
+    cursor: pointer;
+}
+
+table {
+	font-size: 1.6rem;
+	border-collapse: collapse;
+	width: 100%;
+}
+td, th {
+	border: 1px solid #292726;
+	padding: .8rem 1.2rem;
+}</code></pre></div><p class="paragraph u-mb-2">V souboru PageStart.jsp, který obsahuje kód pro začátek stránky, si soubor s CSS styly připojíme. Použijeme atribut BASE_URL, aby to fungovalo pro jakoukoliv stránku, ve které se soubor PageStart.jsp includuje.</p><div data-project="12" data-project-extends="11" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp/WEB-INF/jsp/includes</li></ul><pre data-code="PageStart.jsp" data-folder="src/main/webapp/WEB-INF/jsp/includes" data-active data-code-highlight="8"><code class="language-html">&lt;%@page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Ukázková aplikace&lt;/title&gt;
+    
+    &lt;link href="${BASE_URL}/static/style.css" rel="stylesheet"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div class="page"&gt;</code></pre></div><p class="paragraph u-mb-2">V souboru web.xml naši nově vytvořenou složku static namapujeme na defaultní servlet, jak ukazuje následující ukázka.</p><div data-project="13" data-project-extends="12" class="u-mb-2"><ul data-project-commands><li data-command-create-folder>src/main/webapp/WEB-INF</li><li data-command-open-folder-to-root>src/main/webapp/WEB-INF</li></ul><pre data-code="web.xml" data-folder="src/main/webapp/WEB-INF" data-active data-code-highlight="15-18"><code class="language-xml">&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://Java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+id="WebApp_ID" version="3.0"&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;AppServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;com.example.app.AppServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;AppServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;default&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/static/*&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;</code></pre></div><p class="paragraph u-mb-2">Po restartu serveru a obnovení stránky byste měli vidět, že se stránka nastylovala.</p><img src="../../static/img/screenshots/ServletRouterUkazkovaAplikaceHlavniStrankaNastylovana.png" alt="Hlavní stránka aplikace" class="image image--full-width image--with-border u-mb-2"><p class="paragraph u-mb-2">Hlavní stránku naší aplikace máme. Teď se pustíme do tvorby stránek pro admina. Ty bude mít na starosti samostatný router. Vytvoříme si jej tedy a umístíme jej do nového balíčku, který nazveme třeba com.example.app.routes.admin. Záleží na vás jak si budete chtít jednotlivé třídy rozdělovat do balíčků. V této ukázkové aplikaci jsem se to rozhodl udělat tak, že pro každý router a jeho controllery máme samostatný balíček.</p><div data-project="14" data-project-extends="13" class="u-mb-2"><pre data-code="AdminRouter.java" data-java-package="com.example.app.routes.admin" data-java-package-opened data-active><code class="language-java">package com.example.app.routes.admin;
+
+import io.github.jirkasa.servletrouter.HttpRouter;
+
+public class AdminRouter extends HttpRouter {
+    public AdminRouter() {
+        
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Jako první si vytvoříme domovskou stránku pro admina. Na té se bude nacházet jen nadpis "Administrace" a odkaz na stránku pro přidání nového produktu. Budeme potřebovat controller a JSP stránku. Ukazují je následující ukázky. Název souboru pro stránku je "AdminHomePage.jsp".</p><div data-project="15" data-project-extends="14" class="u-mb-4"><pre data-code="AdminHomeController.java" data-java-package="com.example.app.routes.admin" data-java-package-opened data-active><code class="language-java">package com.example.app.routes.admin;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.example.app.ExampleAppController;
+
+public class AdminHomeController extends ExampleAppController {
+    @Override
+    protected void handleGet(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        forwardTo("/WEB-INF/jsp/AdminHomePage.jsp", request, response);
+    }
+}</code></pre></div><div data-project="16" data-project-extends="15" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp/WEB-INF/jsp</li></ul><pre data-code="AdminHomePage.jsp" data-folder="src/main/webapp/WEB-INF/jsp" data-active><code class="language-html">&lt;%@page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;%@ include file="./includes/PageStart.jsp" %&gt;
+    &lt;h1&gt;Administrace&lt;/h1&gt;
+    &lt;a href="${BASE_URL}/admin/pridat-produkt" class="button"&gt;Přidat produkt&lt;/a&gt;
+&lt;%@ include file="./includes/PageEnd.jsp" %&gt;</code></pre></div><p class="paragraph u-mb-2">V admin routeru controller namapujeme, jak ukazuje následující ukázka.</p><div data-project="17" data-project-extends="16" class="u-mb-2"><pre data-code="AdminRouter.java" data-java-package="com.example.app.routes.admin" data-java-package-opened data-active data-code-highlight="7"><code class="language-java">package com.example.app.routes.admin;
+
+import io.github.jirkasa.servletrouter.HttpRouter;
+
+public class AdminRouter extends HttpRouter {
+    public AdminRouter() {
+        register("/", AdminHomeController.class);
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Náš admin router také musíme namapovat v našem kořenovém routeru. Následující ukázka ukazuje upravený kód.</p><div data-project="18" data-project-extends="17" class="u-mb-2"><pre data-code="AppRouter.java" data-java-package="com.example.app.routes" data-java-package-opened data-active data-code-highlight="12"><code class="language-java">package com.example.app.routes;
+
+import com.example.app.routes.admin.AdminRouter;
+
+import io.github.jirkasa.servletrouter.BaseURLAttributeSetter;
+import io.github.jirkasa.servletrouter.HttpRouter;
+
+public class AppRouter extends HttpRouter {
+    public AppRouter() {
+        register(new BaseURLAttributeSetter());
+        register("/", HomeController.class);
+        register("/admin", new AdminRouter());
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Pokud nyní navštívíte <a href="http://localhost:8080/servlet-router-example-app/admin/" target="_blank" class="link">http://localhost:8080/servlet-router-example-app/admin/</a>, tak uvidíte stránku, kterou ukazuje následující obrázek.</p><img src="../../static/img/screenshots/ServletRouterUkazkovaAplikaceHlavniStrankaAdministrace.png" alt="Hlavní stránka administrace" class="image image--full-width image--with-border u-mb-2"><p class="paragraph u-mb-2">V naší aplikaci nechceme, aby mohl kdokoliv stránky administrace navštívit. Proto si je nyní zabezpečíme. Vytvoříme si middleware, který bude kontrolovat, zda je uživatel přihlášen jako admin. Pokud ano, tak jej pustí dál, jinak zobrazí přihlašovací stránku.</p><p class="paragraph u-mb-2">Na tvorbu middlewarů si vytvoříme nový java balíček, který pojmenujeme třeba jako com.example.app.middlewares. V něm poté vytvoříme třídu, kterou nazveme například jako RequireAdminLogin. Následující ukázka ukazuje její kód. Pokud v middlewaru zjistíme, že je uživatel přihlášen (má v session nastaven atribut ADMIN_LOGGED_IN), tak pustíme request dál. V opačném případě zobrazíme stránku pro přihlášení.</p><div data-project="19" data-project-extends="18" class="u-mb-2"><pre data-code="RequireAdminLogin.java" data-java-package="com.example.app.middlewares" data-java-package-opened data-active><code class="language-java">package com.example.app.middlewares;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import io.github.jirkasa.servletrouter.HttpMiddleware;
+
+public class RequireAdminLogin extends HttpMiddleware {
+    @Override
+    public boolean handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        
+        if (session.getAttribute("ADMIN_LOGGED_IN") != null) return true;
+        
+        request.getRequestDispatcher("/WEB-INF/jsp/AdminLoginPage.jsp").forward(request, response);
+        return false;
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Kód JSP stránky pro přihlášení ukazuje následující ukázka. Nachází se na ní formulář, který uživatel může vyplnit a poslat.</p><div data-project="20" data-project-extends="19" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp/WEB-INF/jsp</li></ul><pre data-code="AdminLoginPage.jsp" data-folder="src/main/webapp/WEB-INF/jsp" data-active><code class="language-html">&lt;%@page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;%@ include file="./includes/PageStart.jsp" %&gt;
+    &lt;h1&gt;Administrace - přihlášení&lt;/h1&gt;
+    &lt;form action="${BASE_URL}/admin/login" method="POST"&gt;
+        &lt;input name="username" type="text" required&gt;
+        &lt;input name="password" type="password" required&gt;
+        &lt;button type="submit"&gt;Přihlásit se&lt;/button&gt;
+    &lt;/form&gt;
+&lt;%@ include file="./includes/PageEnd.jsp" %&gt;</code></pre></div><p class="paragraph u-mb-2">V kořenovém routeru musíme middleware zaregistrovat před admin routerem, jak ukazuje následující ukázka.</p><div data-project="21" data-project-extends="20" class="u-mb-2"><pre data-code="AppRouter.java" data-java-package="com.example.app.routes" data-java-package-opened data-active data-code-highlight="13"><code class="language-java">package com.example.app.routes;
+
+import com.example.app.middlewares.RequireAdminLogin;
+import com.example.app.routes.admin.AdminRouter;
+
+import io.github.jirkasa.servletrouter.BaseURLAttributeSetter;
+import io.github.jirkasa.servletrouter.HttpRouter;
+
+public class AppRouter extends HttpRouter {
+    public AppRouter() {
+        register(new BaseURLAttributeSetter());
+        register("/", HomeController.class);
+        register("/admin", new RequireAdminLogin(), new AdminRouter());
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Teď byste již po novém načtení hlavní stránky administrace měli vidět, že se vám namísto ní zobrazila stránka pro přihlášení.</p><img src="../../static/img/screenshots/ServletRouterUkazkovaAplikacePrihlaseniDoAdministrace.png" alt="Stránka pro přihlášení do administrace" class="image image--full-width image--with-border u-mb-2"><p class="paragraph u-mb-2">Formulář na stránce pro přihlášení se posílá metodou POST na /admin/login. Vytvoříme si tedy controller, který tento formulář bude zpracovávat. Nazveme jej třeba jako AdminLoginController. Jelikož budeme chtít zpracovávat POST request, tak implementujeme metodu handlePost. V této metodě zjistíme, zda jsou zadané údaje správně a pokud ano, tak uživatele přihlásíme (nastavíme mu do session atribut). V opačném případě jej jen znovu přesměrujeme na hlavní admin stránku, kde se mu opět zobrazí přihlašovací formulář (žádné validační zprávy apod. v našem příkladu neřešíme). Následující ukázka ukazuje kód controlleru. Správné údaje pro přihlášení máme zadané přímo v kódu. V reálné aplikaci by to samozřejmě nebylo bezpečné, ale toto je jen ukázkový projekt.</p><div data-project="22" data-project-extends="21" class="u-mb-2"><pre data-code="AdminLoginController.java" data-java-package="com.example.app.routes.admin" data-java-package-opened data-active><code class="language-java">package com.example.app.routes.admin;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.example.app.ExampleAppController;
+
+public class AdminLoginController extends ExampleAppController {
+    private String CORRECT_USERNAME = "admin";
+    private String CORRECT_PASSWORD = "password";
+    
+    @Override
+    protected void handlePost(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        
+        if (
+            username != null
+            && password != null
+            && CORRECT_USERNAME.equals(username)
+            && CORRECT_PASSWORD.equals(password)
+        ) {
+            HttpSession session = request.getSession();
+            session.setAttribute("ADMIN_LOGGED_IN", true);
+        }
+        
+        response.sendRedirect(request.getAttribute("BASE_URL") + "/admin");
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Jelikož chceme, aby ke controlleru pro přihlášení do administrace měl přístup jakýkoliv uživatel, tak jej nemůžeme zaregistrovat v admin routeru. Ten je totiž chráněn naším middlewarem, který kontroluje, zda je uživatel přihlášený jako administrátor. Request by se do controlleru nedostal. Proto controller pro přihlášení zaregistrujeme přímo v našem kořenovém routeru, jak ukazuje následující ukázka. Routery a middlewary se volají, i když je pro ně shodný jen začátek request cesty a proto musíme controller zaregistrovat ještě před registrací admin routeru. Jinak by se request do controlleru nedostal.</p><div data-project="23" data-project-extends="22" class="u-mb-2"><pre data-code="AppRouter.java" data-java-package="com.example.app.routes" data-java-package-opened data-active data-code-highlight="14"><code class="language-java">package com.example.app.routes;
+
+import com.example.app.middlewares.RequireAdminLogin;
+import com.example.app.routes.admin.AdminLoginController;
+import com.example.app.routes.admin.AdminRouter;
+
+import io.github.jirkasa.servletrouter.BaseURLAttributeSetter;
+import io.github.jirkasa.servletrouter.HttpRouter;
+
+public class AppRouter extends HttpRouter {
+    public AppRouter() {
+        register(new BaseURLAttributeSetter());
+        register("/", HomeController.class);
+        register("/admin/login", AdminLoginController.class);
+        register("/admin", new RequireAdminLogin(), new AdminRouter());
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Pokud nyní zkusíte přihlašovací formulář správně vyplnit a poslat (uživatelské jméno je "admin" a heslo "password"), tak byste se měli úspěšně přihlásit a vidět hlavní stránku administrace.</p><p class="paragraph u-mb-2">Teď si vytvoříme stránku, pomocí které bude mít administrátor možnost přidat nový produkt. Budeme potřebovat controller a JSP stránku s formulářem. Kód pro ně ukazuje následující ukázka. Controller zatím implementuje jen metodu handleGet a předává request ke zpracování do JSP stránky jménem "AdminAddProductPage.jsp".</p><div data-project="24" data-project-extends="23" class="u-mb-4"><pre data-code="AddProductController.java" data-java-package="com.example.app.routes.admin" data-java-package-opened data-active><code class="language-java">package com.example.app.routes.admin;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.example.app.ExampleAppController;
+
+public class AddProductController extends ExampleAppController {
+    @Override
+    protected void handleGet(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        forwardTo("/WEB-INF/jsp/AdminAddProductPage.jsp", request, response);
+    }
+}</code></pre></div><div data-project="25" data-project-extends="24" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp/WEB-INF/jsp</li></ul><pre data-code="AdminAddProductPage.jsp" data-folder="src/main/webapp/WEB-INF/jsp" data-active><code class="language-html">&lt;%@page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;%@ include file="./includes/PageStart.jsp" %&gt;
+    &lt;h1&gt;Administrace - přidat produkt&lt;/h1&gt;
+    &lt;form action="${BASE_URL}/admin/pridat-produkt" method="POST"&gt;
+        &lt;label&gt;Název:&lt;/label&gt;
+        &lt;input name="name" type="text" required&gt;&lt;br&gt;
+        &lt;label&gt;Cena:&lt;/label&gt;
+        &lt;input name="price" type="number" required&gt;&lt;br&gt;
+        &lt;button type="submit"&gt;Přidat&lt;/button&gt;
+    &lt;/form&gt;
+&lt;%@ include file="./includes/PageEnd.jsp" %&gt;</code></pre></div><p class="paragraph u-mb-2">V admin routeru nově vytvořený controller zaregistrujeme.</p><div data-project="26" data-project-extends="25" class="u-mb-2"><pre data-code="AdminRouter.java" data-java-package="com.example.app.routes.admin" data-java-package-opened data-active data-code-highlight="8"><code class="language-java">package com.example.app.routes.admin;
+
+import io.github.jirkasa.servletrouter.HttpRouter;
+
+public class AdminRouter extends HttpRouter {
+    public AdminRouter() {
+        register("/", AdminHomeController.class);
+        register("/pridat-produkt", AddProductController.class);
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Pokud teď na hlavní stránce administrace kliknete na "přidat produkt", tak se vám zobrazí stránka s formulářem, kterou ukazuje následující obrázek.</p><img src="../../static/img/screenshots/ServletRouterUkazkovaAplikaceStrankaProPridaniProduktu.png" alt="Stránka pro přidání produktu" class="image image--full-width image--with-border u-mb-2"><p class="paragraph u-mb-2">Formulář, který se na stránce nachází, směřuje na ten samý controller, který stránku zobrazuje, a posílá se metodou POST. V controlleru tedy implementujeme metodu handlePost, zpracujeme formulář a vytvoříme nový produkt. Tím se dostáváme k tomu, že si musíme vytvořené produkty nějak ukládat. Pro naše účely bude stačit, když si je uložíme jen v paměti. Produkt bude v naší aplikaci reprezentovat následující třída, kterou můžeme vytvořit třeba v novém balíčku, který nazveme například jako "com.example.app.model".</p><div data-project="27" data-project-extends="26" class="u-mb-2"><pre data-code="Product.java" data-java-package="com.example.app.model" data-java-package-opened data-active><code class="language-java">package com.example.app.model;
+
+public class Product {
+    private int id;
+    private String name;
+    private double price;
+    
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public double getPrice() {
+        return price;
+    }
+    public void setPrice(double price) {
+        this.price = price;
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Pro přidávání a získávání produktů budeme používat následující třídu, kterou můžete vytvořit také v balíčku "com.example.app.model". Nemusíte se zabývat tím, jak to funguje. Obsahuje tři statické metody. Pomocí metody addProduct máme možnost přidat nový produkt, metodou getProducts můžeme získat seznam všech uložených produktů a metodou getProductById můžeme získat produkt podle ID.</p><div data-project="28" data-project-extends="27" class="u-mb-2"><pre data-code="ProductsDatabase.java" data-java-package="com.example.app.model" data-java-package-opened data-active><code class="language-java">package com.example.app.model;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+public class ProductsDatabase {
+    private ProductsDatabase() {}
+    
+    private static int counter = 0;
+    
+    public static void addProduct(HttpServletRequest request, Product product) {
+        List&lt;Product&gt; products = (List&lt;Product&gt;) request.getServletContext().getAttribute("PRODUCTS");
+        if (products == null) {
+            products = new LinkedList&lt;Product&gt;();
+            request.getServletContext().setAttribute("PRODUCTS", products);
+        }
+        
+        product.setId(counter);
+        counter++;
+        
+        products.add(product);
+    }
+    
+    public static List&lt;Product&gt; getProducts(HttpServletRequest request) {
+        List&lt;Product&gt; products = (List&lt;Product&gt;) request.getServletContext().getAttribute("PRODUCTS");
+        if (products == null) products = new LinkedList&lt;Product&gt;();
+        return products;
+    }
+    
+    public static Product getProductById(HttpServletRequest request, int id) {
+        List&lt;Product&gt; products = (List&lt;Product&gt;) request.getServletContext().getAttribute("PRODUCTS");
+        if (products == null) products = new LinkedList&lt;Product&gt;();
+        
+        for (Product product : products) {
+            if (product.getId() == id) return product;
+        }
+        
+        return null;
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Teď tedy v controlleru pro přidání produktu implementujeme metodu handlePost a pomocí třídy, kterou jsme si právě vytvořili, uložíme produkt, který vytvoříme podle hodnot z formuláře. Následující ukázka kód metody handlePost ukazuje. Nezabýváme se žádnou validací, takže pokud uživatel třeba nějakou hodnotu nezadá, tak je nám to jedno. Pro jednoduchost po uložení produktu uživatele jen přesměrujeme na hlavní stránku administrace.</p><div data-project="29" data-project-extends="28" class="u-mb-2"><pre data-code="AddProductController.java" data-java-package="com.example.app.routes.admin" data-java-package-opened data-active data-code-highlight="16-28"><code class="language-java">package com.example.app.routes.admin;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.example.app.ExampleAppController;
+import com.example.app.model.Product;
+import com.example.app.model.ProductsDatabase;
+
+public class AddProductController extends ExampleAppController {
+    @Override
+    protected void handleGet(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        forwardTo("/WEB-INF/jsp/AdminAddProductPage.jsp", request, response);
+    }
+
+    @Override
+    protected void handlePost(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String name = (String) request.getParameter("name");
+        double price = Double.parseDouble((String) request.getParameter("price"));
+        
+        Product product = new Product();
+        product.setName(name);
+        product.setPrice(price);
+        
+        ProductsDatabase.addProduct(request, product);
+        
+        response.sendRedirect(request.getAttribute("BASE_URL") + "/admin");
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Můžete si teď produkt klidně zkusit přidat, ale zatím jej samozřejmě nikde neuvidíte. Po odeslání formuláře byste jen měli být přesměrováni na hlavní stránku administrace.</p><p class="paragraph u-mb-2">S administrací jsme hotovi. Teď nám již zbývá jen vytvořit stránku zobrazující seznam produktů a stránku zobrazující detail produktu. Pro tyto stránky si založíme router, který vytvoříme v novém balíčku, který můžeme nazvat jako "com.example.app.routes.products".</p><div data-project="30" data-project-extends="29" class="u-mb-2"><pre data-code="ProductsRouter.java" data-java-package="com.example.app.routes.products" data-java-package-opened data-active><code class="language-java">package com.example.app.routes.products;
+
+import io.github.jirkasa.servletrouter.HttpRouter;
+
+public class ProductsRouter extends HttpRouter {
+    public ProductsRouter() {
+        
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Začneme se stránkou, zobrazující seznam produktů. Následující ukázky pro ni ukazující controller a JSP stránku. V controlleru získáme seznam produktů, nastavíme je jako atribut do requestu a JSP stránka je zobrazí.</p><div data-project="31" data-project-extends="30" class="u-mb-4"><pre data-code="ProductsController.java" data-java-package="com.example.app.routes.products" data-java-package-opened data-active><code class="language-java">package com.example.app.routes.products;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.example.app.ExampleAppController;
+import com.example.app.model.Product;
+import com.example.app.model.ProductsDatabase;
+
+public class ProductsController extends ExampleAppController {
+    @Override
+    protected void handleGet(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        List&lt;Product&gt; products = ProductsDatabase.getProducts(request);
+        
+        request.setAttribute("products", products);
+        
+        forwardTo("/WEB-INF/jsp/ProductsListPage.jsp", request, response);
+    }
+}</code></pre></div><div data-project="32" data-project-extends="31" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp/WEB-INF/jsp</li></ul><pre data-code="ProductsListPage.jsp" data-folder="src/main/webapp/WEB-INF/jsp" data-active><code class="language-html">&lt;%@page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;%@ page import="com.example.app.model.Product" %&gt;
+&lt;%@ page import="java.util.List" %&gt;
+&lt;%@ include file="./includes/PageStart.jsp" %&gt;
+    &lt;h1&gt;Produkty&lt;/h1&gt;
+    &lt;table&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th&gt;Název&lt;/th&gt;
+                &lt;th&gt;Cena&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;% for (Product product : (List&lt;Product&gt;) request.getAttribute("products")) { %&gt;
+            &lt;tr&gt;
+                &lt;td&gt;&lt;a href="${BASE_URL}/produkty/&lt;%= product.getId() %&gt;"&gt;&lt;%= product.getName() %&gt;&lt;/a&gt;&lt;/td&gt;
+                &lt;td&gt;&lt;%= product.getPrice() %&gt;&lt;/td&gt;
+            &lt;/tr&gt;
+            &lt;% } %&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+&lt;%@ include file="./includes/PageEnd.jsp" %&gt;</code></pre></div><p class="paragraph u-mb-2">V routeru nově vytvořený controller zaregistrujeme, jak ukazuje následující ukázka.</p><div data-project="33" data-project-extends="32" class="u-mb-2"><pre data-code="ProductsRouter.java" data-java-package="com.example.app.routes.products" data-java-package-opened data-active data-code-highlight="7"><code class="language-java">package com.example.app.routes.products;
+
+import io.github.jirkasa.servletrouter.HttpRouter;
+
+public class ProductsRouter extends HttpRouter {
+    public ProductsRouter() {
+        register("/", ProductsController.class);
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Nesmíme také zapomenout náš router zaregistrovat v kořenovém routeru naší aplikace.</p><div data-project="34" data-project-extends="33" class="u-mb-2"><pre data-code="AppRouter.java" data-java-package="com.example.app.routes" data-java-package-opened data-active data-code-highlight="15"><code class="language-java">package com.example.app.routes;
+
+import com.example.app.middlewares.RequireAdminLogin;
+import com.example.app.routes.admin.AdminLoginController;
+import com.example.app.routes.admin.AdminRouter;
+import com.example.app.routes.products.ProductsRouter;
+
+import io.github.jirkasa.servletrouter.BaseURLAttributeSetter;
+import io.github.jirkasa.servletrouter.HttpRouter;
+
+public class AppRouter extends HttpRouter {
+    public AppRouter() {
+        register(new BaseURLAttributeSetter());
+        register("/", HomeController.class);
+        register("/produkty", new ProductsRouter());
+        register("/admin/login", AdminLoginController.class);
+        register("/admin", new RequireAdminLogin(), new AdminRouter());
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Pokud teď na hlavní stránce kliknete na tlačítko "seznam produktů", tak se vám zobrazí stránka, kterou ukazuje následující obrázek. Nejdříve si ale samozřejmě budete muset nějaké produkty přidat v administraci.</p><img src="../../static/img/screenshots/ServletRouterUkazkovaAplikaceSeznamProduktu.png" alt="Stránka se seznamem produktů" class="image image--full-width image--with-border u-mb-2"><p class="paragraph u-mb-2">Na každou položku v tabulce máme možnost kliknout a dostat se tak na stránku s detailem. U každé položky je odkaz který směřuje na /produkty/:id. Vytvoříme tedy controller, který bude stránku s detailem zobrazovat. Následující ukázka jej ukazuje a pod ní se můžete podívat také na kód JSP stránky.</p><div data-project="35" data-project-extends="34" class="u-mb-4"><pre data-code="ProductController.java" data-java-package="com.example.app.routes.products" data-java-package-opened data-active><code class="language-java">package com.example.app.routes.products;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.example.app.ExampleAppController;
+import com.example.app.model.Product;
+import com.example.app.model.ProductsDatabase;
+
+public class ProductController extends ExampleAppController {
+    @Override
+    protected void handleGet(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String idParam = getPathParam("id");
+        int id = Integer.parseInt(idParam);
+        
+        Product product = ProductsDatabase.getProductById(request, id);
+        request.setAttribute("product", product);
+        
+        forwardTo("/WEB-INF/jsp/ProductDetailPage.jsp", request, response);
+    }
+}</code></pre></div><div data-project="36" data-project-extends="35" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp/WEB-INF/jsp</li></ul><pre data-code="ProductDetailPage.jsp" data-folder="src/main/webapp/WEB-INF/jsp" data-active><code class="language-html">&lt;%@page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;%@ page import="com.example.app.model.Product" %&gt;
+&lt;%@ include file="./includes/PageStart.jsp" %&gt;
+    &lt;h1&gt;Detail produktu&lt;/h1&gt;
+    &lt;p&gt;Název: ${product.name}&lt;/p&gt;
+    &lt;p&gt;Cena: ${product.price}&lt;/p&gt;
+    &lt;p&gt;&lt;a href="${BASE_URL}/produkty"&gt;zpět na seznam&lt;/a&gt;&lt;/p&gt;
+&lt;%@ include file="./includes/PageEnd.jsp" %&gt;</code></pre></div><p class="paragraph u-mb-2">Vytvořený controller zaregistrujeme v routeru.</p><div data-project="37" data-project-extends="36" class="u-mb-2"><pre data-code="ProductsRouter.java" data-java-package="com.example.app.routes.products" data-java-package-opened data-active data-code-highlight="8"><code class="language-java">package com.example.app.routes.products;
+
+import io.github.jirkasa.servletrouter.HttpRouter;
+
+public class ProductsRouter extends HttpRouter {
+    public ProductsRouter() {
+        register("/", ProductsController.class);
+        register("/:id", ProductController.class);
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Pokud teď na nějaký produkt kliknete, tak se vám stránka s detailem produktu otevře.</p><img src="../../static/img/screenshots/ServletRouterUkazkovaAplikaceDetailProduktu.png" alt="Stránka s detailem produktu" class="image image--full-width image--with-border u-mb-2"><p class="paragraph u-mb-2">Naše aplikace je v podstatě hotová. Mohli bychom si ale ještě vytvořit error controller, který by zobrazil chybovou stránku, pokud by náhodou v nějakém našem controlleru došlo k chybě. Kromě toho bychom také mohli přidat 404 stránku pro případ, že se pro URL nenajde žádný controller.</p><p class="paragraph u-mb-2">Začneme s 404 stránkou. V balíčku "com.example.app.routes" si vytvoříme controller, který můžeme nazvat třeba jako PageNotFoundController. Tento controller bude trochu jiný než ostatní, jelikož budeme chtít, aby zpracovával requesty bez závislosti na tom, jakou metodou byly poslány. Přepíšeme v něm tedy metodu handle, ve které nastavíme HTTP status kód na 404 (stránka nenalezena) a vyrenderujeme JSP stránku, na které bude napsáno, že se stránka nenašla. Následující ukázky ukazují kód controlleru a JSP stránky, kterou zobrazuje.</p><div data-project="38" data-project-extends="37" class="u-mb-4"><pre data-code="PageNotFoundController.java" data-java-package="com.example.app.routes" data-java-package-opened data-active><code class="language-java">package com.example.app.routes;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.example.app.ExampleAppController;
+
+public class PageNotFoundController extends ExampleAppController {
+    @Override
+    public boolean handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        forwardTo("/WEB-INF/jsp/PageNotFoundPage.jsp", request, response);
+        return false;
+    }
+}</code></pre></div><div data-project="39" data-project-extends="38" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp/WEB-INF/jsp</li></ul><pre data-code="PageNotFoundPage.jsp" data-folder="src/main/webapp/WEB-INF/jsp" data-active><code class="language-html">&lt;%@page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;%@ include file="./includes/PageStart.jsp" %&gt;
+    &lt;h1&gt;Stránka nenalezena&lt;/h1&gt;
+    &lt;p&gt;Stránka bohužel neexistuje. Pokračujte na &lt;a href="${BASE_URL}"&gt;úvodní stránku&lt;/a&gt;.&lt;/p&gt;
+&lt;%@ include file="./includes/PageEnd.jsp" %&gt;</code></pre></div><p class="paragraph u-mb-2">Controller zaregistrujeme jako poslední controller v našem kořenovém routeru pro všechny requesty. Pokud se tedy při routování nenajde jiný controller, který by request zpracoval, tak se použije.</p><div data-project="40" data-project-extends="39" class="u-mb-2"><pre data-code="AppRouter.java" data-java-package="com.example.app.routes" data-java-package-opened data-active data-code-highlight="18"><code class="language-java">package com.example.app.routes;
+
+import com.example.app.middlewares.RequireAdminLogin;
+import com.example.app.routes.admin.AdminLoginController;
+import com.example.app.routes.admin.AdminRouter;
+import com.example.app.routes.products.ProductsRouter;
+
+import io.github.jirkasa.servletrouter.BaseURLAttributeSetter;
+import io.github.jirkasa.servletrouter.HttpRouter;
+
+public class AppRouter extends HttpRouter {
+    public AppRouter() {
+        register(new BaseURLAttributeSetter());
+        register("/", HomeController.class);
+        register("/produkty", new ProductsRouter());
+        register("/admin/login", AdminLoginController.class);
+        register("/admin", new RequireAdminLogin(), new AdminRouter());
+        register(PageNotFoundController.class);
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Pokud nyní navštívíte nějakou URL, která není namapována na žádný controller, tak by se vám měla zobrazit stránka, kterou ukazuje následující obrázek.</p><img src="../../static/img/screenshots/ServletRouterUkazkovaAplikaceStrankaNenalezena.png" alt="Stránka nenalezena" class="image image--full-width image--with-border u-mb-2"><p class="paragraph u-mb-2">Teď si tedy ještě vytvoříme error controller, který zobrazí chybovou stránku, když dojde k nějaké chybě, a tím budeme naši aplikaci považovat za hotovou. Vytvoříme jej v balíčku "com.example.app.routes" a pojmenujeme jej třeba jako "ServerErrorController". V metodě handle si akorát vypíšeme chybovou zprávu do konzole, nastavíme HTTP status kód na 500 a vyrenderujeme stránku, oznamující že došlo k chybě. Kód controlleru i JSP stránky ukazující následující ukázky.</p><div data-project="41" data-project-extends="40" class="u-mb-4"><pre data-code="ServerErrorController.java" data-java-package="com.example.app.routes" data-java-package-opened data-active><code class="language-java">package com.example.app.routes;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import io.github.jirkasa.servletrouter.HttpErrorController;
+
+public class ServerErrorController extends HttpErrorController {
+    public ServerErrorController(Exception exception) {
+        super(exception);
+    }
+
+    @Override
+    public boolean handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        System.out.println(getException().getMessage());
+        
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        
+        forwardTo("/WEB-INF/jsp/ErrorPage.jsp", request, response);
+        return false;
+    }
+    
+}</code></pre></div><div data-project="42" data-project-extends="41" class="u-mb-2"><ul data-project-commands><li data-command-open-folder-to-root>src/main/webapp/WEB-INF/jsp</li></ul><pre data-code="ErrorPage.jsp" data-folder="src/main/webapp/WEB-INF/jsp" data-active><code class="language-html">&lt;%@page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;%@ include file="./includes/PageStart.jsp" %&gt;
+    &lt;h1&gt;Došlo k chybě&lt;/h1&gt;
+    &lt;p&gt;Bohužel došlo k chybě.&lt;/p&gt;
+&lt;%@ include file="./includes/PageEnd.jsp" %&gt;</code></pre></div><p class="paragraph u-mb-2">Na závěr náš error controller zaregistrujeme v kořenovém routeru naší aplikace pomocí metody registerErrorController, jak ukazuje následující ukázka.</p><div data-project="43" data-project-extends="42" class="u-mb-2"><pre data-code="AppRouter.java" data-java-package="com.example.app.routes" data-java-package-opened data-active data-code-highlight="19"><code class="language-java">package com.example.app.routes;
+
+import com.example.app.middlewares.RequireAdminLogin;
+import com.example.app.routes.admin.AdminLoginController;
+import com.example.app.routes.admin.AdminRouter;
+import com.example.app.routes.products.ProductsRouter;
+
+import io.github.jirkasa.servletrouter.BaseURLAttributeSetter;
+import io.github.jirkasa.servletrouter.HttpRouter;
+
+public class AppRouter extends HttpRouter {
+    public AppRouter() {
+        register(new BaseURLAttributeSetter());
+        register("/", HomeController.class);
+        register("/produkty", new ProductsRouter());
+        register("/admin/login", AdminLoginController.class);
+        register("/admin", new RequireAdminLogin(), new AdminRouter());
+        register(PageNotFoundController.class);
+        registerErrorController(ServerErrorController.class);
+    }
+}</code></pre></div><p class="paragraph u-mb-2">Pokud by v naší aplikaci někdy došlo k chybě, tak by se měl zaregistrovaný error controller zavolat, vypsat chybu do konzole a zobrazit chybovou stránku. Pokud si to chcete vyzkoušet, tak si můžete v nějakém controlleru zkusit vyhodit vyjímku.</p><p class="paragraph u-mb-2">Naše ukázková aplikace je hotová. Pokud si ještě chcete prohlédnout její kód, tak si můžete v následující ukázce otevřít levý panel a zobrazovat si jednotlivé soubory projektu.</p><div data-project="44" data-project-extends="43"></div></main></div></div><footer class="footer"><div class="footer__content"><p class="footer__text">Tento web vytvořil <a href="https://jirkasa.github.io/" target="_blank" class="footer__link">Jiří Satora</a></p></div></footer></body></html>
