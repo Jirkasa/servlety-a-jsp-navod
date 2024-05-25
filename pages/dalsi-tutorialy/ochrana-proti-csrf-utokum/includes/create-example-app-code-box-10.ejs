@@ -1,0 +1,55 @@
+<div data-project="10" data-project-extends="9" class="u-mb-4">
+    <pre data-code="LoginServlet.java" data-java-package="com.example.servlets" data-java-package-opened data-active><code class="language-java">package com.example.servlets;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.example.model.User;
+import com.example.model.UsersDatabase;
+
+public class LoginServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+        User loggedUser = (User) session.getAttribute("LOGGED_USER");
+        
+        // pokud je uživatel již přihlášen, tak je přesměrován na hlavní stránku
+        if (loggedUser != null) {
+            res.sendRedirect("./home");
+            return;
+        }
+        
+        RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/jsp/LoginPage.jsp");
+        dispatcher.forward(req, res);
+    }
+    
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+        
+        // nalezení uživatele v databázi podle uživatelského jména
+        User user = UsersDatabase.getUserByUsername(req, username);
+        
+        // pokud se uživatel nenašel nebo je špatné heslo,
+        // tak se stránka pro přihlášení zobrazí znovu
+        if (user == null || !user.getPassword().equals(password)) {
+            res.sendRedirect("./login");
+            return;
+        }
+        
+        // uložení uživatele do session
+        HttpSession session = req.getSession();
+        session.setAttribute("LOGGED_USER", user);
+        
+        // přesměrování na hlavní stránku
+        res.sendRedirect("./home");
+    }
+}</code></pre>
+</div>

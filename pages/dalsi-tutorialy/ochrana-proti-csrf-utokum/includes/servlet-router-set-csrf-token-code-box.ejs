@@ -1,0 +1,13 @@
+<div data-code-box class="u-mb-2">
+    <pre data-code="HTML formulář" data-active data-code-highlight="2"><code class="language-html">&lt;form action="${BASE_URL}/login" method="POST"&gt;
+    &lt;input name="CSRF_TOKEN" value="${CSRF_TOKEN}" type="hidden"&gt;
+    &lt;input name="username" type="text" required&gt;
+    &lt;input name="password" type="password" required&gt;
+    &lt;button type="submit"&gt;Přihlásit se&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+    <pre data-code="JavaScript" data-code-highlight="4"><code class="language-html">&lt;script&gt;
+    // nastavení globální proměnné, kterou může použít
+    // JavaScript kód, když se přes něj bude posílat request
+    const CSRF_TOKEN = ${CSRF_TOKEN};
+&lt;/script&gt;</code></pre>
+</div>

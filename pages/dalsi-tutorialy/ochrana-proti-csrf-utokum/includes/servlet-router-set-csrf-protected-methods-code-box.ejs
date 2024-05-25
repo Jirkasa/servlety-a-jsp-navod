@@ -1,0 +1,13 @@
+<div data-code-box data-no-buttons class="u-mb-2">
+    <pre data-code data-code-highlight="3-4"><code class="language-java">public class MyCSRFProtection extends CSRFProtection {
+    public MyCSRFProtection() {
+        // pouze metody POST a PUT budou chráněné proti CSRF útokům
+        super(new String[]{"POST", "PUT"});
+    }
+    
+    @Override
+    public void handleError(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+    }
+}</code></pre>
+</div>

@@ -1,0 +1,69 @@
+<div data-project="7" data-project-extends="6" class="u-mb-2">
+    <pre data-code="UsersDatabase.java" data-java-package="com.example.model" data-java-package-opened data-active><code class="language-java">package com.example.model;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+public class UsersDatabase {
+    private UsersDatabase() {}
+    
+    private static int counter = 0;
+    
+    public static void addUser(HttpServletRequest request, User user) {
+        List&lt;User&gt; users = (List&lt;User&gt;) request.getServletContext().getAttribute("USERS");
+        if (users == null) {
+            users = new LinkedList&lt;User&gt;();
+            request.getServletContext().setAttribute("USERS", users);
+        }
+        
+        user.setId(counter);
+        counter++;
+        
+        users.add(user);
+    }
+    
+    public static List&lt;User&gt; getUsers(HttpServletRequest request) {
+        List&lt;User&gt; users = (List&lt;User&gt;) request.getServletContext().getAttribute("USERS");
+        if (users == null) users = new LinkedList&lt;User&gt;();
+        return users;
+    }
+        
+    public static User getUserById(HttpServletRequest request, int id) {
+        List&lt;User&gt; users = (List&lt;User&gt;) request.getServletContext().getAttribute("USERS");
+        if (users == null) users = new LinkedList&lt;User&gt;();
+        
+        for (User user : users) {
+            if (user.getId() == id) return user;
+        }
+        
+        return null;
+    }
+    
+    public static User getUserByUsername(HttpServletRequest request, String username) {
+        List&lt;User&gt; users = (List&lt;User&gt;) request.getServletContext().getAttribute("USERS");
+        if (users == null) users = new LinkedList&lt;User&gt;();
+        
+        for (User user : users) {
+            if (user.getUsername().equals(username)) return user;
+        }
+        
+        return null;
+    }
+    
+    public static void deleteUserById(HttpServletRequest request, int id) {
+        List&lt;User&gt; users = (List&lt;User&gt;) request.getServletContext().getAttribute("USERS");
+        if (users == null) users = new LinkedList&lt;User&gt;();
+        
+        for (int i = 0; i &lt; users.size(); i++) {
+            User user = users.get(i);
+            
+            if (user.getId() == id) {
+                users.remove(i);
+                break;
+            }
+        }
+    }
+}</code></pre>
+</div>

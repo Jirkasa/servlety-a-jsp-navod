@@ -1,0 +1,18 @@
+<div data-code-box class="u-mb-2">
+    <pre data-code="MyCSRFProtection.java" data-active data-code-highlight="3"><code class="language-java">public class MyCSRFProtection extends CSRFProtection {
+    public MyCSRFProtection() {
+        super("MY_CSRF_TOKEN");
+    }
+    
+    @Override
+    public void handleError(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+    }
+}</code></pre>
+    <pre data-code="HTML formulář" data-code-highlight="2"><code class="language-html">&lt;form action="${BASE_URL}/login" method="POST"&gt;
+    &lt;input name="MY_CSRF_TOKEN" value="${MY_CSRF_TOKEN}" type="hidden"&gt;
+    &lt;input name="username" type="text" required&gt;
+    &lt;input name="password" type="password" required&gt;
+    &lt;button type="submit"&gt;Přihlásit se&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+</div>

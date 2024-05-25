@@ -1,0 +1,17 @@
+<div data-code-box class="u-mb-2">
+    <pre data-code="MyCSRFProtection.java" data-active><code class="language-java">public class MyCSRFProtection extends CSRFProtection {
+    @Override
+    public void handleError(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+    }
+}</code></pre>
+    <pre data-code="AppRouter.java" data-code-highlight="4"><code class="language-java">public class AppRouter extends HttpRouter {
+    public AppRouter() {
+        register(new BaseURLAttributeSetter());
+        register(new MyCSRFProtection());
+        register("/", HomeController.class);
+        register("/games", new GamesRouter());
+        registerErrorController(MyErrorController.class);
+    }
+}</code></pre>
+</div>
