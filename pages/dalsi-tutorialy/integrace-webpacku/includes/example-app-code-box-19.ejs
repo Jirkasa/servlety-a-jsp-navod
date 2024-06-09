@@ -1,0 +1,45 @@
+<div data-project="19" data-project-extends="18" class="u-mb-2">
+    <ul data-project-commands>
+        <li data-command-open-folder-to-root>frontend</li>
+    </ul>
+    <pre data-code="webpack.prod.js" data-folder="frontend" data-active><code class="language-javascript">const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { merge } = require("webpack-merge");
+const commonConfig = require("./webpack.common");
+
+module.exports = merge(commonConfig, {
+    module: {
+        rules: [
+            {
+                test: /\.less$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: "css-loader",
+                        options: {
+                            url: false
+                        }
+                    },
+                    {
+                        loader: "postcss-loader",
+                        options: {
+                            postcssOptions: {
+                                plugins: [
+                                    ["postcss-preset-env", {}]
+                                ]
+                            }
+                        }
+                    },
+                    "less-loader"
+                ]
+            }
+        ]
+    },
+    optimization: {
+        minimizer: [
+            `...`,
+            new CssMinimizerPlugin()
+        ]
+    }
+});</code></pre>
+</div>

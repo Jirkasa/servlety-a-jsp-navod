@@ -1,7 +1,10 @@
 import CodeBox from "./CodeBox";
 import CodeBoxCode from "./CodeBoxCode";
 import CodeButton from "./CodeButton";
+import FileButton from "./FileButton";
 import SimpleCodeButton from "./SimpleCodeButton";
+import SimpleDownloadFileButton from "./SimpleDownloadFileButton";
+import SimpleNoDownloadFileButton from "./SimpleNoDownloadFileButton";
 
 /**
  * Represents simple code box with buttons container.
@@ -41,8 +44,16 @@ class SimpleCodeBox extends CodeBox {
     }
     
     protected createCodeButton(codeBoxCode: CodeBoxCode, codeElementDataset: DOMStringMap) : CodeButton {
-        const codeButton = new SimpleCodeButton(codeElementDataset.code || "unnamed", this.buttonsContainer, codeBoxCode);
-        return codeButton;
+        return new SimpleCodeButton(codeElementDataset.code || "unnamed", this.buttonsContainer, codeBoxCode);
+    }
+
+    protected createFileButton(fileName: string, fileElementDataset: DOMStringMap): FileButton {
+        // create file button (with or without download link)
+        if (fileElementDataset.file) {
+            return new SimpleDownloadFileButton(fileName || "unnamed", fileElementDataset.file, this.buttonsContainer);
+        } else {
+            return new SimpleNoDownloadFileButton(fileName || "unnamed", this.buttonsContainer);
+        }
     }
 }
 

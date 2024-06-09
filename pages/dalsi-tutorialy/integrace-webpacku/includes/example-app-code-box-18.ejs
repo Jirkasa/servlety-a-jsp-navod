@@ -1,0 +1,24 @@
+<div data-project="18" data-project-extends="17" class="u-mb-2">
+    <ul data-project-commands>
+        <li data-command-open-folder-to-root>frontend</li>
+    </ul>
+    <pre data-code="webpack.common.js" data-folder="frontend" data-active><code class="language-javascript">const path = require("path");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
+
+module.exports = {
+    entry: {
+        style: "./less/main.less"
+    },
+    output: {
+        clean: true,
+        path: path.resolve(__dirname, "..", "backend", "src", "main", "webapp", "assets")
+    },
+    plugins: [
+        new MiniCssExtractPlugin({
+            filename: "css/[name].css"
+        }),
+        new RemoveEmptyScriptsPlugin()
+    ]
+}</code></pre>
+</div>

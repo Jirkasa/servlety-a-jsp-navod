@@ -1,0 +1,33 @@
+<div data-project="20" data-project-extends="19" class="u-mb-2">
+    <ul data-project-commands>
+        <li data-command-open-folder-to-root>frontend</li>
+    </ul>
+    <pre data-code="webpack.dev.js" data-folder="frontend" data-active><code class="language-javascript">const { merge } = require("webpack-merge");
+const commonConfig = require("./webpack.common");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
+module.exports = merge(commonConfig, {
+    module: {
+        rules: [
+            {
+                test: /\.less$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: "css-loader",
+                        options: {
+                            url: false
+                        }
+                    },
+                    "less-loader"
+                ]
+            }
+        ]
+    },
+    devtool: 'inline-source-map',
+    devServer: {
+        static: "../backend/src/main/webapp/assets",
+        port: 3000
+    }
+});</code></pre>
+</div>

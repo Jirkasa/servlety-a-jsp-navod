@@ -104,22 +104,29 @@
     }
 
     &__item {
-        font-size: 1.6rem;
-        line-height: 2rem;
+        &, &:link, &:visited {
+            font-size: 1.6rem;
+            line-height: 2rem;
+    
+            display: flex;
+            align-items: center;
+    
+            color: @colors[grey-80];
+            background-color: transparent;
+            border: none;
+            text-decoration: none;
 
-        display: flex;
-        align-items: center;
-
-        color: @colors[grey-80];
-        background-color: transparent;
-        border: none;
-
-        margin-bottom: .4rem;
-        
-        cursor: pointer;
+            max-width: fit-content;
+    
+            margin-bottom: .4rem;
+            
+            cursor: pointer;
+        }
 
         &--active {
-            text-decoration: underline;
+            &, &:link, &:visited {
+                text-decoration: underline;
+            }
         }
         &:focus-visible {
             outline: .3rem solid @colors[grey-80];
@@ -186,6 +193,22 @@
             svg {
                 fill: @colors[grey-60];
             }
+        }
+    }
+
+    &__item-download-icon {
+        width: 1.6rem;
+        height: 1.6rem;
+
+        margin-left: .4rem;
+
+        position: relative;
+
+        svg {
+            #center-pos-abs();
+            width: 100%;
+            height: 100%;
+            fill: @colors[analogic-4];
         }
     }
 

@@ -232,6 +232,7 @@
         <ul class="list u-mb-2">
             <li><b>Code box</b> - Element, který představuje celou ukázku.</li>
             <li><b>Elementy s kódy</b> - Code box může obsahovat jeden či více elementů s kódy (ukázky kódu).</li>
+            <li><b>File elementy</b> - Code box může kromě elementů s kódy obsahovat také soubory, které se nedají zobrazit, ale lze je stáhnout (např. obrázky).</li>
             <li><b>Složky projektu</b> - Pokud je code box (ukázka) zobrazen jako projekt, tak může obsahovat element, který definuje složky projektu.</li>
             <li><b>Container s příkazy</b> - Pokud je code box (ukázka) zobrazen jako projekt, tak může obsahovat příkazy, které se mají pro ukázku vykonat (například smazání souboru, atp.).</li>
         </ul>
@@ -330,7 +331,7 @@
                 </tbody>
             </table>
         </div>
-        <p class="paragraph u-mb-1">Podle toho, co za kód zobrazujeme, musíme v code elementu specifikovat CSS třídu, aby se nám kód správně zvýrazňoval. V současné době je podporován jazyk HTML, XML, Java, JavaScript, CSS a SQL. Podporu pro více jazyků je ale možno přidat změněním souboru highlight.min.js ve složce static/js. Následující seznam popisuje CSS třídy, které můžeme code elementu nastavit:</p>
+        <p class="paragraph u-mb-1">Podle toho, co za kód zobrazujeme, musíme v code elementu specifikovat CSS třídu, aby se nám kód správně zvýrazňoval. V současné době je podporován jazyk HTML, XML, Java, JavaScript, CSS, SQL, LESS, TypeScript a JSON. Podporu pro více jazyků je ale možno přidat změněním souboru highlight.min.js ve složce static/js. Následující seznam popisuje CSS třídy, které můžeme code elementu nastavit:</p>
         <ul class="list u-mb-4">
             <li><b>language-html</b> - HTML</li>
             <li><b>language-xml</b> - XML</li>
@@ -338,8 +339,38 @@
             <li><b>language-javascript</b> - JavaScript</li>
             <li><b>language-css</b> - CSS</li>
             <li><b>language-sql</b> - SQL</li>
+            <li><b>language-less</b> - LESS</li>
+            <li><b>language-typescript</b> - TypeScript</li>
+            <li><b>language-json</b> - JSON</li>
             <li><b>no-highlight</b> - vypne zvýrazňování kódu</li>
         </ul>
+        <h3 class="heading-tertiary u-mb-1">File elementy</h3>
+        <p class="paragraph u-mb-2">Code box může kromě elementů s kódy obsahovat také soubory, které se nedají zobrazit, ale mohou být staženy (např. obrázky). Takové soubory představují elementy, které mají jako atribut nastavený atribut data-file.</p>
+        <%- include("./includes/file-element-component.ejs") %>
+        <p class="paragraph u-mb-2">Název souboru se nastavuje jako obsah file elementu. Následující tabulka popisuje, co dalšího můžeme pro file elementy nastavovat pomocí data atributů.</p>
+        <div class="table-wrapper u-mb-4">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Atribut</th>
+                        <th>Hodnota</th>
+                        <th>Popis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>data-file</td>
+                        <td>Odkaz ke stažení souboru.</td>
+                        <td>Nastavuje, že se jedná o file element.</td>
+                    </tr>
+                    <tr>
+                        <td>data-folder</td>
+                        <td>cesta ke složce (např. src/main/webapp)</td>
+                        <td>Nastavuje, do jaké složky se má umístit tlačítko souboru (defaultně se tlačítka umísťují do kořenové složky projektu). Má smysl jen pokud má code box nastaven atribut data-project.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <h3 class="heading-tertiary u-mb-1">Složky projektu</h3>
         <p class="paragraph u-mb-2">Pokud je code box zobrazen jako projekt, tak může obsahovat ul element, který definuje adresářovou strukturu projektu. Tento element musí obsahovat atribut data-project-folders. Následující ukázka ukazuje příklad takového elementu.</p>
         <%- include("./includes/project-folders-component.ejs") %>

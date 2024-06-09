@@ -1,0 +1,31 @@
+<div data-project="26" data-project-extends="25" class="u-mb-2">
+    <ul data-project-commands>
+        <li data-command-create-folder>frontend/ts</li>
+        <li data-command-open-folder-to-root>frontend/ts</li>
+    </ul>
+    <pre data-code="Calculator.ts" data-folder="frontend/ts" data-active><code class="language-typescript">class Calculator {
+    private resultElement : HTMLElement;
+    private inputElement1 : HTMLInputElement;
+    private inputElement2 : HTMLInputElement;
+
+    constructor(inputElement1 : HTMLInputElement, inputElement2 : HTMLInputElement, resultElement : HTMLElement) {
+        this.inputElement1 = inputElement1;
+        this.inputElement2 = inputElement2;
+        this.resultElement = resultElement;
+
+        inputElement1.addEventListener("input", () => this.onInputChange());
+        inputElement2.addEventListener("input", () => this.onInputChange());
+    }
+
+    private onInputChange() {
+        const number1 = Number.parseFloat(this.inputElement1.value) || 0;
+        const number2 = Number.parseFloat(this.inputElement2.value) || 0;
+
+        const result = number1 + number2;
+
+        this.resultElement.innerText = result.toString();
+    }
+}
+
+export default Calculator;</code></pre>
+</div>

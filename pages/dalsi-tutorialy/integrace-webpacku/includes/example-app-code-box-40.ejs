@@ -1,0 +1,46 @@
+<div data-project="40" data-project-extends="39" class="u-mb-2">
+    <ul data-project-commands>
+        <li data-command-open-folder-to-root>backend/src/main/webapp/WEB-INF</li>
+    </ul>
+    <pre data-code="web.xml" data-folder="backend/src/main/webapp/WEB-INF" data-active data-code-highlight="25-40"><code class="language-xml">&lt;web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://Java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+id="WebApp_ID" version="3.0"&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;HomeServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;HomeServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;HomeServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/home&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;CalculatorServlet&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;CalculatorServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;CalculatorServlet&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/kalkulacka&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+    
+    &lt;filter&gt;
+        &lt;filter-name&gt;ProxyFilter&lt;/filter-name&gt;
+        &lt;filter-class&gt;ProxyFilter&lt;/filter-class&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;DEV_SERVER_URL&lt;/param-name&gt;
+            &lt;param-value&gt;http://localhost:3000&lt;/param-value&gt;
+        &lt;/init-param&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;DEV_MODE&lt;/param-name&gt;
+            &lt;param-value&gt;true&lt;/param-value&gt;
+        &lt;/init-param&gt;
+    &lt;/filter&gt;
+    &lt;filter-mapping&gt;
+        &lt;filter-name&gt;ProxyFilter&lt;/filter-name&gt;
+        &lt;url-pattern&gt;/assets/*&lt;/url-pattern&gt;
+    &lt;/filter-mapping&gt;
+&lt;/web-app&gt;</code></pre>
+</div>

@@ -1,0 +1,192 @@
+<%- include("../../includes/page-start.ejs", {pathToRootFolder: "../../", title: "Integrace Webpacku", metaAuthor: "Jiří Satora", metaDescription: "Článek o použití Webpacku v servletových aplikacích.", useHighlightJS: true}) %>
+    <%- include("../../includes/header.ejs", {pathToRootFolder: "../../", activeLink: "dalsi-tutorialy"}) %>
+    <%- include("../../includes/other-tutorial-page-layout-start.ejs", {pathToOtherTutorialsFolder: "../", activeLink: "integrace-webpacku"}) %>
+        <h1 class="heading-primary u-mb-2">Integrace Webpacku</h1>
+        <p class="article-author u-mb-4"><span class="article-author__label">Autor:</span> <a rel="author" href="https://jirkasa.github.io/" target="_blank" class="link">Jiří Satora</a></p>
+        <p class="paragraph u-mb-2">V tomto článku si ukážeme, jak můžeme při tvorbě servletových webových aplikací používat Webpack. Jedná se o nástroj, který slouží k sestavování webových aplikací. Může například vzít různé soubory, zpracovat je a sloučit do menší skupiny souborů, které jsou lepší pro produkční užití. Také díky němu můžeme používat technologie jako jsou CSS preprocesory nebo třeba TypeScript.</p>
+        <p class="paragraph u-mb-4">Nebudu tu podrobně vysvětlovat jak Webpack funguje a jak se konfiguruje. Cílem je vám jen ukázat, jak jej můžete použít ve svých servletových webových aplikacích. Pokud byste se o něm chtěli dozvědět více, tak můžete navštívit třeba <a href="https://jirkasa.github.io/webpack-tahak/" target="_blank" class="link">tento web</a>, který jsem o Webpacku vytvořil.</p>
+        <h2 class="heading-secondary u-mb-2">Výhody použití Webpacku</h2>
+        <p class="paragraph u-mb-1">Použití Webpacku přináší spoustu výhod. Některé jsem vypsal do následujícího seznamu:</p>
+        <ul class="list u-mb-4">
+            <li>Můžeme pro frontend používat moderní technologie, jako je TypeScript, různé CSS preprocesory, a tak podobně.</li>
+            <li>Tím že můžeme použít CSS preprocesory a různé nadstavby JavaScriptu jako je TypeScript, tak může být náš kód více čistší a lépe strukturovaný.</li>
+            <li>Nemusíme ručně skládat například SVG sprity (Webpack to udělá automaticky za nás).</li>
+            <li>Můžeme optimalizovat výsledné soubory (minifikovat je, atp.).</li>
+            <li>Můžeme převést novější JavaScript kód do staršího, aby mu rozumněli i starší prohlížeče.</li>
+            <li>Můžeme automaticky prefixnout novější CSS vlastnosti, které zatím některé prohlížeče podporují jen se speciálním prefixem.</li>
+        </ul>
+        <h2 class="heading-secondary u-mb-2">Ukázka integrace Webpacku do webové aplikace</h2>
+        <p class="paragraph u-mb-4">Abychom si ukázali, jak Webpack v servletové webové aplikaci můžeme použít, tak si budeme muset nějakou ukázkovou aplikaci vytvořit. Bude se jednat o web, který bude obsahovat jen dvě JSP stránky. Jedna bude představovat úvodní stránku a na druhé se bude nacházet jednoduchá kalkulačka. Postupně tuto aplikaci naprogramujeme, jak budeme Webpack konfigurovat.</p>
+        <h3 class="heading-tertiary u-mb-1">Založení projektů</h3>
+        <p class="paragraph u-mb-2">Naše ukázková aplikace bude rozdělena do dvou samostatných projektů. Jeden bude obsahovat serverový Java a JSP kód, a druhý kód pro frontend (takže CSS, JavaScript, ale také třeba obrázky, atp.). Takže by se dalo říct, že jeden projekt budeme mít pro backend a druhý pro frontend.</p>
+        <p class="paragraph u-mb-2">Oba tyto projekty budeme mít umístěné v nějaké kořenové složce. Takže začneme tím, že si ji vytvoříme, a uvnitř ní si založíme složky, které můžeme pojmenovat třeba jako "backend" a "frontend". Složka backend bude obsahovat náš backend kód a složka frontend bude obsahovat náš frontend kód.</p>
+        <p class="paragraph u-mb-2">Uvnitř složky backend si můžeme založit nový Maven projekt a v souboru pom.xml si nadefinovat závislost pro servlety, jak ukazuje následující ukázka. Po otevření levého panelu si můžete také prohlédnout adresářovou strukturu.</p>
+        <%- include("./includes/example-app-code-box-1.ejs") %>
+        <p class="paragraph u-mb-2">Uvnitř složky frontend si nebudeme vytvářet Maven projekt, ale namísto něj použijeme <a href="https://www.npmjs.com/" target="_blank" class="link">NPM</a>. Maven se totiž používá primárně pro Java projekty. NPM je podobný nástroj jako Maven (také slouží pro správu balíčků a závislostí), ale narozdíl od něj se zase používá hlavně pro JavaScript projekty. Instaluje se společně s Node.js, což je prostředí pro běh JavaScriptu i na serveru. Pokud tedy NPM ještě nemáte nainstalované, tak si jej můžete nainstalovat tím, že si nainstalujete <a href="https://nodejs.org/" target="_blank" class="link">Node.js</a>.</p>
+        <p class="paragraph u-mb-2">Pokud máme NPM nainstalované, tak se můžeme v příkazovém řádku přepnout do složky frontend, a spustit příkaz "npm init -y". Tím se nám ve složce vygeneruje soubor package.json. Jedná se o něco podobného jako pom.xml.</p>
+        <%- include("./includes/npm-init-command-code-box.ejs") %>
+        <p class="paragraph u-mb-2">V následující ukázce si můžete prohlédnout obsah vygenerovaného souboru.</p>
+        <%- include("./includes/example-app-code-box-2.ejs") %>
+        <h3 class="heading-tertiary u-mb-1">Vytvoření serverové části aplikace</h3>
+        <p class="paragraph u-mb-2">Projekty máme vytvořené a můžeme tedy začít s programováním aplikace. Začneme backendem a až poté se pustíme do instalace a konfigurace Webpacku. Jak jsem již psal, tak naše aplikace bude obsahovat dvě stránky. Jednu úvodní a druhou s kalkulačkou. Začneme s úvodní stránkou. Vytvoříme si pro ni servlet, který můžeme pojmenovat jako "HomeServlet". Jeho kód ukazuje následující ukázka. Je úplně jednoduchý, akorát vykresluje JSP stránku.</p>
+        <%- include("./includes/example-app-code-box-3.ejs") %>
+        <p class="paragraph u-mb-2">JSP stránku, kterou servlet vykresluje, vytvoříme ve složce webapp/WEB-INF/jsp. Kód pro ni ukazuje následující ukázka. Na stránce se nachází akorát nadpis, úvodní text a odkaz na stránku s kalkulačkou.</p>
+        <%- include("./includes/example-app-code-box-4.ejs") %>
+        <p class="paragraph u-mb-2">Teď ve složce WEB-INF vytvoříme soubor web.xml a servlet namapujeme na "/home".</p>
+        <%- include("./includes/example-app-code-box-5.ejs") %>
+        <p class="paragraph u-mb-2">Po nasazení aplikace na server a spuštění serveru byste po navštívení <a href="http://localhost:8080/example-app/home" target="_blank" class="link">http://localhost:8080/example-app/home</a> měli vidět stránku, kterou ukazuje následující obrázek.</p>
+        <img src="../../static/img/screenshots/WebpackAppHomePage.png" alt="Domovská stránka ukázkové aplikace" class="image image--full-width image--with-border u-mb-2">
+        <p class="paragraph u-mb-2">Teď vytvoříme ještě servlet a JSP stránku pro stránku s kalkulačkou, a tím budeme mít serverovou část prozatím hotovou. Servlet můžeme nazvat jako "CalculatorServlet". Kód pro něj ukazuje následující ukázka. Stejně jako servlet pro domovskou stránku, vykresluje jen JSP stránku.</p>
+        <%- include("./includes/example-app-code-box-6.ejs") %>
+        <p class="paragraph u-mb-2">Následující ukázka ukazuje kód JSP stránky. Na stránce se nachází dva inputy a text zobrazující výsledek. Později to nastylujeme pomocí CSS stylů a zprovozníme pomocí JavaScriptu.</p>
+        <%- include("./includes/example-app-code-box-7.ejs") %>
+        <p class="paragraph u-mb-2">Servlet pro stránku s kalkulačkou namapujeme v souboru web.xml na "/kalkulacka", jak ukazuje následující ukázka.</p>
+        <%- include("./includes/example-app-code-box-8.ejs") %>
+        <p class="paragraph u-mb-2">Pokud teď restartujete server a na hlavní stránce aplikace kliknete na odkaz "Otevřít kalkulačku", tak se vám zobrazí stránka, kterou ukazuje následující obrázek.</p>
+        <img src="../../static/img/screenshots/WebpackAppCalculatorPage.png" alt="Stránka s kalkulačkou ukázkové aplikace" class="image image--full-width image--with-border u-mb-4">
+        <h3 class="heading-tertiary u-mb-1">Instalace Webpacku</h3>
+        <p class="paragraph u-mb-2">Serverovou část aplikace máme prozatím hotovou. Teď se tedy pustíme do konfigurace Webpacku a tvorby kódu pro frontend.</p>
+        <p class="paragraph u-mb-1">První věc, kterou uděláme, je nainstalování všech potřebných balíčků, které budeme při konfiguraci Webpacku potřebovat. Je jich celkem dost. Vypsal jsem je do následujícího seznamu:</p>
+        <ul class="list u-mb-2">
+            <li><b>webpack</b> - Základní balíček pro Webpack.</li>
+            <li><b>webpack-cli</b> - Command line interface pro Webpack.</li>
+            <li><b>webpack-merge</b> - Umožňuje sloučit více konfigurací Webpacku do jedné.</li>
+            <li><b>webpack-dev-server</b> - Umožní nám spustit Webpack Dev Server pro vývoj.</li>
+            <li><b>webpack-remove-empty-scripts</b> - Plugin, který odstraňuje prázdné skripty z výsledné složky.</li>
+            <li><b>css-loader</b> - Budeme zpracovávat CSS kód, takže potřebujeme CSS loader.</li>
+            <li><b>less</b> - Použijeme CSS preprocesor jménem LESS, takže si jej budeme muset nainstalovat.</li>
+            <li><b>less-loader</b> - Budeme zpracovávat LESS kód, takže pro něj potřebujeme speciální loader.</li>
+            <li><b>mini-css-extract-plugin</b> - CSS kód budeme chtít mít v samostatném souboru, takže na to potřebujeme plugin.</li>
+            <li><b>postcss</b> - Budeme chtít automaticky prefixnout novější CSS vlastnosti, takže k tomu budeme potřebovat nástroj jménem PostCSS.</li>
+            <li><b>postcss-loader</b> - Abychom mohli PostCSS použít ve Webpacku, potřebujeme k tomu loader.</li>
+            <li><b>postcss-preset-env</b> - Plugin pro PostCSS, který nám automaticky prefixne novější CSS vlastnosti. Více si o něm můžete přečíst <a href="https://www.npmjs.com/package/postcss-preset-env" target="_blank" class="link">zde</a>.</li>
+            <li><b>css-minimizer-webpack-plugin</b> - Pomocí tohoto pluginu minifikujeme výsledný CSS soubor.</li>
+            <li><b>typescript</b> - Namísto klasického JavaScriptu budeme používat TypeScript, takže si jej budeme muset nainstalovat.</li>
+            <li><b>ts-loader</b> - Budeme zpracovávat TypeScript kód, takže na to potřebujeme speciální loader.</li>
+            <li><b>copy-webpack-plugin</b> - Budeme mít složku, která bude uchovávat statické věci, jako jsou třeba obrázky. K jejímu nakopírování do složky s výslednými soubory použijeme tento plugin.</li>
+            <li><b>svg-sprite-loader</b> - Budeme chtít, aby nám Webpack automaticky sestavil SVG sprite. K tomu použijeme speciální loader.</li>
+            <li><b>svgo-loader</b> - Pro zpracování SVG souborů budeme také potřebovat SVGO loader. Pomocí něj si můžeme zpracovávané soubory trochu upravovat (například odstraňovat některé atributy).</li>
+        </ul>
+        <p class="paragraph u-mb-2">V příkazovém řádku se přepněte do složky frontend a spusťte příkaz, který ukazuje následující ukázka. Tím se nainstalují všechny balíčky, které jsou vypsané výše.</p>
+        <%- include("./includes/npm-install-command-code-box.ejs") %>
+        <p class="paragraph u-mb-2">Po instalaci by se vám měla vytvořit složka node_modules, do které se balíčky nainstalovaly. Tady v ukázkách na webu bude tato složka vždy prázdná, ale u vás v ní samozřejmě něco bude. Také by se vám měl automaticky aktualizovat soubor package.json, kde by vám měla přibýt sekce "devDependencies" s nadefinovanými závislostmi, jak ukazuje následující ukázka (je to podobné jak závislosti v pom.xml). Pokud byste někdy složku node_modules smazali, tak stačí napsat příkaz "npm install" a balíčky se vám podle souboru package.json nainstalují.</p>
+        <%- include("./includes/example-app-code-box-9.ejs") %>
+        <h3 class="heading-tertiary u-mb-1">Vytvoření CSS stylů</h3>
+        <p class="paragraph u-mb-1">Teď když máme všechny potřebné balíčky nainstalované, můžeme se pustit do tvorby kódu. Začneme s CSS styly. Budeme používat <a href="https://lesscss.org/" target="_blank" class="link">preprocesor LESS</a>, takže CSS kód můžeme psát klidně do více souborů, které potom sloučíme do jednoho. Vytvoříme si na ně složku less, do které je budeme umísťovat. Kód budeme rozdělovat do souborů a složek podle 7-1 vzoru. Jedná se o systém organizace CSS kódu, který definuje následující složky:</p>
+        <ul class="list u-mb-2">
+            <li><b>abstracts</b> - Obsahuje věci, které nejsou obsaženy ve vygenerovaném CSS souboru (např. proměnné).</li>
+            <li><b>base</b> - Obsahuje základní styly, jako je třeba nějaký reset CSS stylů, nastavení REM jednotky nebo třeba typografii.</li>
+            <li><b>components</b> - Obsahuje různé komponenty (např. tlačítko).</li>
+            <li><b>layout</b> - Obsahuje komponenty pro tvorbu layoutu.</li>
+            <li><b>pages</b> - Obsahu styly, které jsou specifické pro různé stránky.</li>
+            <li><b>vendors</b> - Obsahuje CSS styly třetích stran.</li>
+            <li><b>themes</b> - Styly pro různé theme (mohli bychom například vytvořit pro náš web světlý a tmavý styl).</li>
+        </ul>
+        <p class="paragraph u-mb-2">Více si o 7-1 vzoru můžete přečíst třeba na <a href="https://strukturovani-css-kodu.4fan.cz/rozdeleni-kodu-do-slozek/" target="_blank" class="link">tomto webu</a>, který jsem kdysi dávno vytvořil. Dále budeme pro tvorbu CSS stylů používat BEM (Block Element Modifier) metodiku, o které si také můžete krátce přečíst na tom samém webu na <a href="https://strukturovani-css-kodu.4fan.cz/metodiky-pro-organizaci-css-kodu/" target="_blank" class="link">této stránce</a>. Pokud pro organizaci kódu použijete 7-1 vzor a pro psaní CSS stylů BEM metodiku, tak svůj CSS kód posunete úplně na jinou úroveň a bude se snadněji číst.</p>
+        <p class="paragraph u-mb-2">Tento článek je hlavně o integraci Webpacku do servletových aplikací, takže tu nebudu dál vysvětlovat další věci ohledně tvorby CSS kódu pomocí preprocesoru LESS a přejdu rovnou ke kódu. Kód, který ukazuje následující ukázka, vložte do souboru variables.less, který vytvořte ve složce less/abstracts. Definuje proměnné pro barvy, které budeme v našich stylech používat.</p>
+        <%- include("./includes/example-app-code-box-10.ejs") %>
+        <p class="paragraph u-mb-2">Dále vytvořte soubor base.less, který umístěte do složky less/base. Kód pro něj ukazuje následující ukázka. Jedná se o základní reset CSS stylů a nastavení velikosti pro rem jednotku (je lepší používat rem jednotku namísto px, protože tím potom uživateli umožníme, změnit si v prohlížeči velikost fontu).</p>
+        <%- include("./includes/example-app-code-box-11.ejs") %>
+        <p class="paragraph u-mb-2">Dále ve složce base vytvořte soubor typography.less a vložte do něj kód z následující ukázky. Jedná se o styly pro typografii.</p>
+        <%- include("./includes/example-app-code-box-12.ejs") %>
+        <p class="paragraph u-mb-2">Nakonec ve složce base vytvořte soubor utilities.less a opět do něj vložte kód z následující ukázky. Jedná se o různé utility třídy (například pro nastavení spodního marginu).</p>
+        <%- include("./includes/example-app-code-box-13.ejs") %>
+        <p class="paragraph u-mb-2">Teď vytvoříme složku layout a v ní soubor page.less. Bude definovat CSS třídu, která bude představovat takový container pro stránku. Kód pro něj ukazuje následující ukázka.</p>
+        <%- include("./includes/example-app-code-box-14.ejs") %>
+        <p class="paragraph u-mb-2">Teď si vytvoříme složku components a v ní pár komponent. Začneme s primárním tlačítkem. Vytvořte v ní soubor button-primary.less a vložte do něj kód z následující ukázky.</p>
+        <%- include("./includes/example-app-code-box-15.ejs") %>
+        <p class="paragraph u-mb-2">Dále si přidáme styly pro kalkulačku. Vytvořte ve složce components soubor calculator.less a zkopírujte do něj kód z následující ukázky.</p>
+        <%- include("./includes/example-app-code-box-16.ejs") %>
+        <p class="paragraph u-mb-2">Na závěr si vytvoříme ve složce less soubor main.less a všechny ostatní vytvořené LESS soubory do něj naimportujeme. Bude se jednat o hlavní soubor, který bude Webpack zpracovávat.</p>
+        <%- include("./includes/example-app-code-box-17.ejs") %>
+        <h3 class="heading-tertiary u-mb-1">Vytvoření konfiguračních souborů pro Webpack a zpracování CSS stylů</h3>
+        <p class="paragraph u-mb-1">Nyní náš LESS kód pomocí Webpacku zpracujeme a vytvoříme z něj jeden CSS soubor, který budeme moci přidat na naše webové stránky. Tím se dostáváme k tomu, že si budeme muset vytvořit konfigurační soubor pro webpack. Vlastně si vytvoříme tři konfigurační soubory. Chceme totiž jednu konfiguraci pro vývoj a jednu pro zabalení kódu pro produkci. Budeme mít jeden konfigurační pro vývoj, jeden pro produkci a jeden, který bude obsahovat společnou část konfigurace pro vývoj i pro produkci. Následující seznam popisuje, které soubory si ve složce frontend vytvoříme:</p>
+        <ul class="list u-mb-2">
+            <li><b>webpack.common.js</b> - Společná část konfigurace pro vývoj i pro produkci.</li>
+            <li><b>webpack.dev.js</b> - Konfigurace pro vývoj.</li>
+            <li><b>webpack.prod.js</b> - Konfigurace pro produkci.</li>
+        </ul>
+        <p class="paragraph u-mb-2">Začneme se soubor webpack.common.js, který bude obsahovat společnou konfiguraci pro vývoj i produkci. Můžete si jej tedy vytvořit a zkopírovat do něj konfiguraci z následující ukázky. Konfigurace definuje jako vstupní bod soubor main.less, který Webpack zpracuje. Jako pluginy přidává MiniCssExtractPlugin, pomocí kterého se vytáhne CSS kód do samostatného souboru, který se umístí do složky css, a plugin RemoveEmptyScriptsPlugin, který zajistí, že se ve výstupní složce nebude nacházet prázdný skript (jako vstupní soubor máme totiž nastavený less soubor, takže by se vygeneroval prázdný skript). Jako výstupní složka je nastavena složka assets, která se vytvoří ve složce backend/src/main/webapp. Možnost clean nastavuje, že se má obsah této složky vždy nejdříve smazat, než se v ní vytvoří nový obsah.</p>
+        <%- include("./includes/example-app-code-box-18.ejs") %>
+        <p class="paragraph u-mb-2">Teď si vytvoříme konfigurační soubor pro produkci, který pojmenujeme jako webpack.prod.js. Vytvořte jej tedy a vložte do něj konfiguraci, která se nachází v následující ukázce.</p>
+        <%- include("./includes/example-app-code-box-19.ejs") %>
+        <p class="paragraph u-mb-1">Jak si můžete všimnout, tak pro spojení dvou konfigurací do jedné se používá funkce merge. V konfiguraci se nastavují loadery pro LESS soubory a minimizer CSSMinizerPlugin, který minifikuje výsledný CSS soubor. Co dělají jednotlivé loadery popisuje následující seznam:</p>
+        <ol class="list u-mb-2">
+            <li><b>less-loader</b> - Převádí LESS na CSS kód.</li>
+            <li><b>postcss-loader</b> - Provádí na CSS kódu úpravy, jako je třeba automatické prefixnutí novějších CSS vlastností.</li>
+            <li><b>css-loader</b> - Přidává CSS kód do JavaScriptu.</li>
+            <li><b>MiniCssExtractPlugin.loader</b> - Vytahuje z JavaScriptu CSS kód a umisťuje jej do samostatného souboru.</li>
+        </ol>
+        <p class="paragraph u-mb-2">U css-loaderu je důležité, aby byla možnost "url" nastavena na false. Tím se zajistí, že se nebudou zpracovávat url (například pro obrázky pozadí), ale nechají se tak jak jsou.</p>
+        <p class="paragraph u-mb-2">Nyní si vytvoříme konfigurační soubor pro vývoj. Pojmenujte jej jako webpack.dev.js a vložte do něj kód z následující ukázky.</p>
+        <%- include("./includes/example-app-code-box-20.ejs") %>
+        <p class="paragraph u-mb-4">Loadery pro vývoj jsou podobné, jako ty pro produkci. Rozdíl je ale v tom, že se nemusí provádět prefixování a minifikování CSS kódu a zpracování je tak rychlejší. V konfiguraci se také nastavuje DEV server, který budeme při vývoji používat. Vlastnost port nastavuje port, na kterém bude server běžet, a vlastnost static složku pro statické assety (ta by možná ani nemusela být nastavená, ale nechal jsem ji tam).</p>
+        <h3 class="heading-tertiary u-mb-1">Sestavení CSS kódu pro produkci</h3>
+        <p class="paragraph u-mb-2">Webpack máme nakonfigurovaný a můžeme si tedy zkusit náš CSS kód sestavit. Zatím to uděláme pro produkci. Spuštění DEV serveru pro vývoj si vyzkoušíme až později.</p>
+        <p class="paragraph u-mb-2">V souboru package.json můžete smazat výchozí skript a vložit místo něj ten, který ukazuje následující ukázka. Tento příkaz spouští Webpack s konfiguračním souborem webpack.prod.js v módu pro produkci.</p>
+        <%- include("./includes/example-app-code-box-21.ejs") %>
+        <p class="paragraph u-mb-2">Název skriptu, který jsme si do souboru package.json přidali, je "build". Můžete jej tedy spustit pomocí příkazu "npm run build". Jakmile to uděláte, tak by se vám za chvíli měla ve složce "backend/src/main/webapp" vytvořit složka "assets" a v ní podsložka "css" se souborem "style.css".</p>
+        <%- include("./includes/npm-run-build-code-box.ejs") %>
+        <p class="paragraph u-mb-2">V následující ukázce si můžete prohlédnout obsah výsledného CSS souboru. Jak vidíte, kód je minifikovaný a nachází se jen na jednom řádku.</p>
+        <%- include("./includes/example-app-code-box-22.ejs") %>
+        <p class="paragraph u-mb-2">Klidně si teď můžeme vygenerovaný CSS soubor připojit do našich JSP stránek, jak ukazují následující ukázky.</p>
+        <%- include("./includes/example-app-code-box-23.ejs") %>
+        <%- include("./includes/example-app-code-box-24.ejs") %>
+        <p class="paragraph u-mb-2">Následující obrázky ukazují, jak nyní vypadají naše stránky s aplikovanými CSS styly.</p>
+        <img src="../../static/img/screenshots/WebpackAppHomePageStyled.png" alt="Nastylovaná domovská stránka ukázkové aplikace" class="image image--full-width image--with-border u-mb-4">
+        <img src="../../static/img/screenshots/WebpackAppCalculatorPageStyled.png" alt="Nastylovaná stránka s kalkulačkou ukázkové aplikace" class="image image--full-width image--with-border u-mb-4">
+        <h3 class="heading-tertiary u-mb-1">Přidání TypeScript kódu</h3>
+        <p class="paragraph u-mb-2">Abychom zprovoznili naši webovou kalkulačku, tak si budeme muset napsat nějaký JavaScript kód. Využijeme toho, že používáme Webpack, a použijeme nadstavbu JavaScriptu jménem TypeScript. Jedná se o programovací jazyk, který JavaScript staví na úroveň jazyků, jako je třeba Java. Přidává mu typovou bezpečnost, zapouzdření, a tak podobně, a tím z něj dělá mnohem sofistikovanější programovací jazyk.</p>
+        <p class="paragraph u-mb-2">První co můžeme udělat, je vytvoření konfiguračního souboru pro TypeScript jménem tsconfig.json, v kořenové složce frontend. Obsah pro něj ukazuje následující ukázka. Nastavuje se tam například do jaké verze JavaScriptu se má TypeScript kompilovat, jestli má být zapnuta striktní typová kontrola, a tak podobně.</p>
+        <%- include("./includes/example-app-code-box-25.ejs") %>
+        <p class="paragraph u-mb-2">Teď můžeme založit složku ts, ve které budeme vytvářet TypeScript soubory, a pustit se do programování kalkulačky. Kalkulačku bude představovat třída Calculator, kterou ukazuje následující ukázka. Tento kód můžete vložit do souboru Calculator.ts.</p>
+        <%- include("./includes/example-app-code-box-26.ejs") %>
+        <p class="paragraph u-mb-2">Třídu Calculator z předchozí ukázky bude používat soubor main.ts, který můžete také vytvořit ve složce ts. Kód pro něj ukazuje následující ukázka. Jedná se o hlavní soubor, který bude Webpack zpracovávat.</p>
+        <%- include("./includes/example-app-code-box-27.ejs") %>
+        <p class="paragraph u-mb-2">Kód máme hotový. Teď nám stačí již jen nakonfigurovat Webpack, aby náš TypeScript kód zpracoval a vytvořil z něj jeden výsledný JavaScript soubor. Následující ukázka ukazuje upravený konfigurační soubor webpack.common.js.</p>
+        <%- include("./includes/example-app-code-box-28.ejs") %>
+        <p class="paragraph u-mb-2">V konfiguraci nastavujeme jako vstupní soubor ts/main.ts, pro který také nastavujeme, že se má vytvořit složka js a v ní soubor calculator.js. Pro TypeScript soubory jsme si také nadefinovali loader, který se postará o jejich zpracování.</p>
+        <p class="paragraph u-mb-2">Pokud nyní znovu spustíte příkaz "npm run build", tak se vám ve složce assets vytvoří složka js a v ní soubor calculator.js. V následující ukázka si můžete prohlédnout jeho obsah.</p>
+        <%- include("./includes/example-app-code-box-29.ejs") %>
+        <p class="paragraph u-mb-2">Vygenerovaný JavaScript soubor si můžeme napojit na stránce s kalkulačkou, jak ukazuje následující ukázka. Tím by nám měla začít fungovat.</p>
+        <%- include("./includes/example-app-code-box-30.ejs") %>
+        <p class="paragraph u-mb-2">Pokud teď zkusíte do kalkulačky zadat nějaká čísla, měl by se vám automaticky zobrazit jejich součet.</p>
+        <img src="../../static/img/screenshots/WebpackAppWorkingCalculator.png" alt="Fungující kalkulačka" class="image image--full-width image--with-border u-mb-4">
+        <h3 class="heading-tertiary u-mb-1">Kopírování složky se statickými assety</h3>
+        <p class="paragraph u-mb-2">Na webových stránkách často používáme různé statické assety, jakou jsou třeba obrázky. Mohli bychom je sice vkládat přímo do složky webapp, ale myslím že bude lepší, když budou pohromadě spolu s ostatními věcmi, které se týkají frontendu. Proto si ve složce frontend založíme složku, do které statické assety budeme ukládat, a nakonfigurujeme Webpack, aby tuto složku kopíroval.</p>
+        <p class="paragraph u-mb-2">Abychom v naší webové aplikaci nějaké statické assety používaly, tak si alespoň v CSS kódu nastavíme obrázek pozadí. Následující ukázka ukazuje upravený soubor base.less. Obrázek pozadí je nastaven na obrázek background.jpg, nacházející se ve složce static/img. Vytvořte tedy ve složce frontend složku static, podsložku img a do ní vložce soubor background.jpg. Ten si můžete stáhnout z ukázky po otevření levého panelu.</p>
+        <%- include("./includes/example-app-code-box-31.ejs") %>
+        <p class="paragraph u-mb-2">Teď můžeme do konfigurace Webpacku přidat plugin na kopírování složky static, jak ukazuje následující ukázka.</p>
+        <%- include("./includes/example-app-code-box-32.ejs") %>
+        <p class="paragraph u-mb-2">Pokud nyní spustíte příkaz "npm run build", tak by se vám složka static ze složky frontend měla zkopírovat do složky backend/src/main/webapp/assets. Když si poté v prohlížeči webovou aplikaci otevřete, tak by se měl obrázek pozadí aplikovat, jak ukazuje následující obrázek.</p>
+        <img src="../../static/img/screenshots/WebpackAppHomePageWithBackgroundImage.png" alt="Domovská stránka s obrázkem pozadí" class="image image--full-width image--with-border u-mb-4">
+        <h3 class="heading-tertiary u-mb-1">Generování SVG spritu</h3>
+        <p class="paragraph u-mb-2">Poslední věcí, kterou si ve Webpacku nakonfigurujeme, je generování SVG spritu pro ikony ze samostatných SVG souborů. Nejprve si upravíme domovskou stránku, na které si nějaké ikony zobrazíme. Následující ukázka ukazuje upravený soubor HomePage.jsp.</p>
+        <%- include("./includes/example-app-code-box-33.ejs") %>
+        <p class="paragraph u-mb-2">Dále si také přidáme soubor "icons-container.less" do složky frontend/less/components, pomocí kterého ikony na domovské stránce nastylujeme. Následující ukázka ukazuje jeho kód.</p>
+        <%- include("./includes/example-app-code-box-34.ejs") %>
+        <p class="paragraph u-mb-2">Nový LESS soubor musíme také naimportovat v souboru main.less.</p>
+        <%- include("./includes/example-app-code-box-35.ejs") %>
+        <p class="paragraph u-mb-2">Na SVG ikony budeme mít ve složce frontend vyhrazenou složku, kterou můžeme pojmenovat třeba jako "icons". Budou se v ní nacházet tři SVG ikony, které zobrazujeme na hlavní stránce, a JavaScript soubor "main.js", do kterého se budou tyto ikony importovat. Tento JavaScript soubor bude Webpack zpracovávat a vytvářet podle něj výsledný SVG sprite. V následující ukázce se můžete podívat, jak se SVG ikony do JavaScriptu importují a po otevření levého panelu ukázky si můžete importované ikony stáhnout.</p>
+        <%- include("./includes/example-app-code-box-36.ejs") %>
+        <p class="paragraph u-mb-2">Teď si v souboru webpack.common.js můžeme nadefinovat nový vstupní bod a nastavit loadery pro svg soubory, jak ukazuje následující ukázka. Pomocí svgo-loaderu odstraňujeme z SVG ikon, které mají jako výplň/tah nastavenou černou barvu, atributy fill nebo stroke, aby se to dalo přepsat v CSS kódu. Barevné ikony necháváme tak, jak jsou. Pomocí svg-sprite-loaderu nastavujeme, aby se vytvořil SVG sprite, který se bude jmenovat jako "icon-sprite.svg".</p>
+        <%- include("./includes/example-app-code-box-37.ejs") %>
+        <p class="paragraph u-mb-2">Pokud nyní spustíte příkaz "npm run build", tak by se vám ve složce backend/src/main/webapp/assets měl vygenerovat soubor "icon-sprite.svg". Poté si můžete v prohlížeči zobrazit hlavní stránku a měli byste ikony, které se zobrazují pomocí SVG spritu, vidět.</p>
+        <img src="../../static/img/screenshots/WebpackAppHomePageWithIcons.png" alt="Domovská stránka s ikonami" class="image image--full-width image--with-border u-mb-4">
+        <h3 class="heading-tertiary u-mb-1">Spuštění Webpack DEV serveru</h3>
+        <p class="paragraph u-mb-2">Při vývoji samozřejmě nechceme při každé úpravě frontend kódu spouštět příkaz "npm run build" a čekat až se aplikace sestaví. Proto si nyní ukážeme, jak můžeme spustit Webpack DEV server a servírovat frontend kód odsud.</p>
+        <p class="paragraph u-mb-2">V souboru webpack.dev.js máme již vše připravené, abychom Webpack DEV server mohli spustit. Zbývá nám jen v souboru package.json definovat příkaz, pomocí kterého to uděláme. Nastavíme mu například název "dev". Následující ukázka ukazuje upravený soubor package.json.</p>
+        <%- include("./includes/example-app-code-box-38.ejs") %>
+        <p class="paragraph u-mb-2">Pokud po upravení souboru package.json spustíte příkaz "npm run dev", tak se vám Webpack DEV server spustí. Namísto toho, aby se výsledné soubory generovaly do nějaké složky, budou nyní servírovány z DEV serveru. Také se budou automaticky aktualizovat když něco upravíme, aniž bychom museli DEV server spouštět znovu.</p>
+        <p class="paragraph u-mb-4">Pokud si chcete ověřit, že se DEV server spustil, tak můžete ve webovém prohlížeči navštívit třeba <a href="http://localhost:3000/js/calculator.js" target="_blank" class="link">http://localhost:3000/js/calculator.js</a>. Měl by se vám zobrazit vygenerovaný JavaScript kód souboru calculator.js.</p>
+        <h3 class="heading-tertiary u-mb-1">Servirování assetů z Webpack DEV serveru</h3>
+        <p class="paragraph u-mb-2">Dostali jsme se k hlavní části tohoto článku. Musíme nějakým způsobem zajistit, aby se v naší servletové aplikaci webové soubory namísto ze složky webapp/assets servírovaly z DEV serveru. Uděláme to pomocí filtru. Můžeme jej pojmenovat třeba jako "ProxyFilter", protože se v podstatě bude jednat o takového prostředníka mezi webovou aplikací a Webpack DEV serverem.</p>
+        <p class="paragraph u-mb-2">V následující ukázce si můžete prohlédnout okomentovaný kód filtru. Obsahuje dva inicializační parametry: DEV_SERVER_URL a DEV_MODE. Parametr DEV_SERVER_URL určuje adresu DEV serveru a parametr DEV_MODE určuje, zda se mají soubory servírovat z DEV serveru nebo z assets složky. Pro vývoj můžeme mít atribut DEV_MODE nastavený na true a pro produkci na false. Pokud je parametr DEV_MODE nastaven na true, tak se pro příchozí requesty, směřující na složku assets, nasměrují namísto na složku webapp/assets na DEV server.</p>
+        <%- include("./includes/example-app-code-box-39.ejs") %>
+        <p class="paragraph u-mb-2">V souboru web.xml můžeme náš vytvořený filtr nadefinovat a namapovat na "/assets/*", jak ukazuje následující ukázka. Pomocí inicializačního parametru DEV_SERVER_URL definujeme URL adresu, na kterém DEV server běží a pomocí parametru DEV_MODE nastavujeme, že se má DEV server použít.</p>
+        <%- include("./includes/example-app-code-box-40.ejs") %>
+        <p class="paragraph u-mb-4">Po restartu aplikace by se vám teď soubory namísto ze složky webapp/assets měli servírovat z Webpack DEV serveru. Pokud se chcete ujistit, že tomu tak opravdu je, tak si složku assets ve složce webapp můžete klidně smazat.</p>
+        <p class="paragraph">Díky filtru, který jsme si na závěr tohoto článku vytvořili, již máte možnost, jak do vašich servletových webových aplikací integrovat Webpack. Jak jsem psal na začátku, to bylo cílem tohoto článku. Konfiguraci Webpacku jsem tu moc detailně nepopisoval, takže pokud s Webpackem teprve začínáte, můžete navštívit <a href="https://jirkasa.github.io/webpack-tahak/" target="_blank" class="link">tento web</a>, který jsem o Webpacku vytvořil. Najdete tam krátký tutoriál, který vás konfigurací Webpacku postupně provede.</p>
+    <%- include("../../includes/other-tutorial-page-layout-end.ejs") %>
+    <%- include("../../includes/footer.ejs") %>
+<%- include("../../includes/page-end.ejs") %>

@@ -1,0 +1,65 @@
+<div data-project="39" data-project-extends="38" class="u-mb-2">
+    <ul data-project-commands>
+        <li data-command-open-folder-to-root>backend</li>
+    </ul>
+    <pre data-code="ProxyFilter.java" data-java-package data-java-package-opened data-active><code class="language-java">import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+public class ProxyFilter implements Filter {
+    // URL DEV serveru
+    private String devServerURL;
+    // určuje, zda je zapnutý development mód
+    private boolean devModeEnabled;
+
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        // nastavení podle inicializační parametrů
+        devServerURL = filterConfig.getInitParameter("DEV_SERVER_URL");
+        if (devServerURL == null) devServerURL = "http://localhost:3000";
+        devModeEnabled = "true".equals(filterConfig.getInitParameter("DEV_MODE"));
+    }
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        // pokud není zapnutý development mód, tak se webové soubory mohou servírovat ze složky assets
+        if (!devModeEnabled) {
+            chain.doFilter(request, response);
+            return;
+        }
+        
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
+        
+        // získání cesty z requestu
+        String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
+        
+        // pokud cesta začíná na "/assets/", tak se vrátí soubor z DEV serveru namísto ze složky assets
+        if (path.startsWith("/assets/")) {
+            URL url = new URL(devServerURL + path.replaceFirst("/assets", ""));
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod(httpRequest.getMethod());
+            
+            for (String headerName : connection.getHeaderFields().keySet()) {
+                if (headerName != null) {
+                    httpResponse.setHeader(headerName, connection.getHeaderField(headerName));
+                }
+            }
+            
+            httpResponse.setStatus(connection.getResponseCode());
+            connection.getInputStream().transferTo(httpResponse.getOutputStream());
+        } else {
+            chain.doFilter(request, response);        	
+        }
+    }
+}</code></pre></pre>
+</div>

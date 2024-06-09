@@ -1,6 +1,7 @@
 import CodeBoxCode from "./CodeBoxCode";
 import CodeButton from "./CodeButton";
 import EventSourcePoint from "./EventSourcePoint";
+import FileButton from "./FileButton";
 
 /**
  * Base class for code box.
@@ -29,6 +30,8 @@ abstract class CodeBox {
     private onCodeButtonClickEventSource : EventSourcePoint<CodeButton>;
     /** Currently active code button. */
     private activeCodeButton : CodeButton | null;
+    /** File buttons of code box. */
+    private fileButtons : FileButton[];
 
     /**
      * @param codeBoxElement Code box element.
@@ -41,6 +44,7 @@ abstract class CodeBox {
         this.codes = [];
         this.onCodeButtonClickEventSource = new EventSourcePoint();
         this.activeCodeButton = null;
+        this.fileButtons = [];
 
         codeBoxElement.classList.add(CodeBox.CSS_CODE_BOX_CLASS);
 
@@ -94,6 +98,22 @@ abstract class CodeBox {
             this.activeCodeButton.activate();
             this.activeCodeButton.codeBoxCode.show();
         }
+
+        const fileElements = this.codeBoxElement.querySelectorAll("[data-file]");
+        // process all file elements in code box
+        fileElements.forEach(fileElement => {
+            // validate
+            if (!this.validateFileElement(fileElement as HTMLElement)) {
+                fileElement.remove();
+                return;
+            }
+
+            // create file button
+            const fileButton = this.createFileButton((fileElement as HTMLElement).innerText, (fileElement as HTMLElement).dataset);
+
+            this.fileButtons.push(fileButton);
+            (fileElement as HTMLElement).style.display = "none";
+        });
     }
 
     /**
@@ -126,11 +146,27 @@ abstract class CodeBox {
     }
 
     /**
+     * Validates file element. This method can be overriden in subclasses.
+     * @param fileElement File element to be validated.
+     * @returns Validation result.
+     */
+    protected validateFileElement(fileElement: HTMLElement) : boolean {
+        return true;
+    }
+
+    /**
      * Creates new code button.
      * @param codeBoxCode Code that should be associated with button.
      * @param codeElementDataset Dataset of code element (pre element with code element).
      */
     protected abstract createCodeButton(codeBoxCode: CodeBoxCode, codeElementDataset: DOMStringMap) : CodeButton;
+
+    /**
+     * Creates new file button.
+     * @param fileName Name of file.
+     * @param fileElementDataset Dataset of file element.
+     */
+    protected abstract createFileButton(fileName: string, fileElementDataset: DOMStringMap) : FileButton;
 
     /**
      * Called after new code is displayed in code box. This method can be overriden in subclasses.

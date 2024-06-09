@@ -105,7 +105,7 @@ class CollapsibleContainer {
         for (let i = 0; i < children.length; i++) {
             const child = children[i];
 
-            if (child.tagName === "BUTTON" && (!child.nextElementSibling || child.nextElementSibling.tagName == "BUTTON")) {
+            if ((child.tagName === "BUTTON" || child.tagName === "A") && (!child.nextElementSibling || child.nextElementSibling.tagName == "BUTTON" || child.nextElementSibling.tagName == "A")) {
                 buttons.push(child as HTMLElement);
             }
         }

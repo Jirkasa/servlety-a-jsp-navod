@@ -34,23 +34,26 @@
     }
 
     &__file-button {
-        display: flex;
-        align-items: center;
-        gap: .8rem;
-
-        padding: .8rem 1.6rem .8rem .8rem;
-
-        font-size: 1.6rem;
-        line-height: 1;
-
-        color: @colors[grey-80];
-        background-color: @colors[analogic-2-light];
-        border: none;
-        border-top-left-radius: .8rem;
-        border-top-right-radius: .8rem;
-
-        transition: all .2s;
-        cursor: pointer;
+        &, &:link, &:visited {
+            display: flex;
+            align-items: center;
+            gap: .8rem;
+    
+            padding: .8rem 1.6rem .8rem .8rem;
+    
+            font-size: 1.6rem;
+            line-height: 1;
+    
+            color: @colors[grey-80];
+            background-color: @colors[analogic-2-light];
+            border: none;
+            border-top-left-radius: .8rem;
+            border-top-right-radius: .8rem;
+            text-decoration: none;
+    
+            transition: all .2s;
+            cursor: pointer;
+        }
 
         svg {
             width: 1.6rem;
@@ -58,12 +61,23 @@
             fill: @colors[grey-80];
         }
 
-        &--active, &:hover, &:focus-visible {
+        &--active, &--active:link, &--active:visited, &:hover, &:focus-visible {
             background-color: @colors[analogic-2];
         }
         &:focus-visible {
             outline: .3rem solid @colors[grey-80];
             outline-offset: -.2rem;
+        }
+    }
+
+    &__file-button-download-icon {
+        display: flex;
+        align-items: center;
+
+        svg {
+            width: 1.6rem;
+            height: 1.6rem;
+            fill: @colors[grey-60];
         }
     }
 

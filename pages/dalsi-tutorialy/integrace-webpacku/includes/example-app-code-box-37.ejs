@@ -1,0 +1,78 @@
+<div data-project="37" data-project-extends="36" class="u-mb-2">
+    <ul data-project-commands>
+        <li data-command-open-folder-to-root>frontend</li>
+    </ul>
+    <pre data-code="webpack.common.js" data-folder="frontend" data-active data-code-highlight="5,10,27-51,71"><code class="language-javascript">const path = require("path");
+const CopyPlugin = require("copy-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
+const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
+
+module.exports = {
+    entry: {
+        style: "./less/main.less",
+        icons: './icons/main.js',
+        calculator: {
+            import: './ts/main.ts',
+            filename: "js/calculator.js"
+        }
+    },
+    output: {
+        clean: true,
+        path: path.resolve(__dirname, "..", "backend", "src", "main", "webapp", "assets")
+    },
+    module: {
+        rules: [
+            {
+                test: /(\.ts|\.d.ts)$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
+            },
+            {
+                test: /\.svg$/,
+                use: [
+                    {
+                        loader: 'svg-sprite-loader',
+                        options: {
+                            extract: true,
+                            spriteFilename: "icon-sprite.svg"
+                        }
+                    },
+                    {
+                        loader: 'svgo-loader',
+                        options: {
+                            plugins: [
+                                {
+                                    name: 'removeAttrs',
+                                    params: {
+                                        attrs: ['*:fill:(none|black)', '*:stroke:(none|black)']
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    resolve: {
+        extensions: ['.ts', '.js']
+    },
+    plugins: [
+        new MiniCssExtractPlugin({
+            filename: "css/[name].css"
+        }),
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: path.resolve(__dirname, "static").replace(/\\/g, "/"),
+                    to: path.resolve(__dirname, "..", "backend", "src", "main", "webapp", "assets", "static"),
+                    noErrorOnMissing: true
+                }
+            ]
+        }),
+        new RemoveEmptyScriptsPlugin(),
+        new SpriteLoaderPlugin()
+    ]
+}</code></pre>
+</div>

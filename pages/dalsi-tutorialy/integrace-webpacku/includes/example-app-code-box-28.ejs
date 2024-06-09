@@ -1,0 +1,40 @@
+<div data-project="28" data-project-extends="27" class="u-mb-2">
+    <ul data-project-commands>
+        <li data-command-open-folder-to-root>frontend</li>
+    </ul>
+    <pre data-code="webpack.common.js" data-folder="frontend" data-active data-code-highlight="8-11,17-28"><code class="language-javascript">const path = require("path");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
+
+module.exports = {
+    entry: {
+        style: "./less/main.less",
+        calculator: {
+            import: './ts/main.ts',
+            filename: "js/calculator.js"
+        }
+    },
+    output: {
+        clean: true,
+        path: path.resolve(__dirname, "..", "backend", "src", "main", "webapp", "assets")
+    },
+    module: {
+        rules: [
+            {
+                test: /(\.ts|\.d.ts)$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
+            }
+        ]
+    },
+    resolve: {
+        extensions: ['.ts', '.js']
+    },
+    plugins: [
+        new MiniCssExtractPlugin({
+            filename: "css/[name].css"
+        }),
+        new RemoveEmptyScriptsPlugin()
+    ]
+}</code></pre>
+</div>
